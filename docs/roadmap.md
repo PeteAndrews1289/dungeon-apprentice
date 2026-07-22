@@ -16,7 +16,7 @@
 - [x] Establish Navigate learnability across multiple random seeds
 - [x] Implement and qualify the transition-balanced Visible Unlock development slice
 - [x] Replicate Visible Unlock mastery with retained Navigate across three random initializations
-- [ ] Confirm all three U0 mastery checkpoints on the preregistered disjoint 200-case suites
+- [x] Confirm all three U0 mastery checkpoints on the preregistered disjoint 200-case suites
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
 - [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
 
@@ -36,7 +36,8 @@ complete Visible Unlock sequence while retaining Navigate, with measured post-pr
 held at approximately 50/50 by transitions. The frozen
 [replication report](results/v0.2-visible-unlock-replication.md) records the evidence and its narrow
 claim. A [post-training confirmation](v0.2-u0-confirmation-plan.md) was preregistered before any new
-case was inspected; it must pass for all three selected checkpoints before U1 is treated as the next
+case was inspected. All three checkpoints passed every overall and panel gate; the frozen
+[confirmation report](results/v0.2-u0-confirmation.md) now supports treating U1 as the next
 capability step.
 
 ## Scalability gates

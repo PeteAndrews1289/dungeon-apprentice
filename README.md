@@ -100,10 +100,12 @@ mastered the key-to-door-to-exit sequence while retaining Navigate; their final 
 [replication report](docs/results/v0.2-visible-unlock-replication.md) records the full trajectories,
 panels, allocations, artifact digests, and narrow claim.
 
-Those replications share one development validation suite, so they do not yet constitute an
-untouched-layout confirmation. A [post-training confirmation](docs/v0.2-u0-confirmation-plan.md)
-was preregistered before inspecting two disjoint 200-case blocks. All three selected mastery
-checkpoints must pass it before development advances to U1 Local Unlock.
+Those replications shared one development validation suite, so a
+[post-training confirmation](docs/v0.2-u0-confirmation-plan.md) was preregistered before inspecting
+two disjoint 200-case blocks. All three selected checkpoints passed every overall and panel gate:
+their U0 scores were 187/200, 199/200, and 198/200 while Navigate remained between 93.5% and 96.0%.
+The frozen [confirmation report](docs/results/v0.2-u0-confirmation.md) supports advancing to U1
+Local Unlock without claiming that unrestricted Unlock has already been learned.
 
 ## Evidence standard
 

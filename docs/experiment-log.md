@@ -264,3 +264,18 @@ must pass; checkpoint digests and training-allocation evidence must verify befor
 No checkpoint reselection, retuning, seed substitution, or threshold change is allowed after
 evaluation. The complete preregistration is
 [the U0 confirmation plan](v0.2-u0-confirmation-plan.md).
+
+### July 22, 2026 — disjoint U0 confirmation passed
+
+The confirmation was executed from clean commit `2b215e7` without policy updates. Both frozen
+200-case blocks passed oracle qualification before scoring: Navigate contained 200 unique solvable
+layouts, and U0 contained 193 unique solvable layouts. All three selected checkpoints passed every
+overall and panel gate. Their Navigate scores were 189/200, 192/200, and 187/200; their U0 scores
+were 187/200, 199/200, and 198/200.
+
+The strict all-three verdict is positive. The raw 72 KiB report, including seed-to-layout hashes,
+checkpoint and source verification, allocation evidence, and individual metrics, is stored on the
+T7 with SHA-256 `f43610252943fce9c0169ac0231724fc2829686d1899f5f88bd0c250a913b398`.
+The immutable human-readable result is in
+[the U0 confirmation report](results/v0.2-u0-confirmation.md). U1 Local Unlock is now the next
+declared capability question; this result does not pre-approve its generator or training protocol.
