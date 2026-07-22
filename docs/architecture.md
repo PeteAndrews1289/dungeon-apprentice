@@ -41,6 +41,11 @@ evaluation loop, and promotion order are still encoded in tier-specific branches
 for the first learnability experiment, but it is not yet a plug-in mechanics architecture. Adding a
 lever or enemy today would require coordinated edits across those components.
 
+The completed v0.1 canaries also showed that episode-weighted practice does not control experience
+when tier horizons differ: a nominal 30% Navigate episode share became only 4–6% of post-promotion
+transitions. The proposed [v0.2 protocol](protocol-v0.2-design.md) introduces a declarative lesson
+layer and a transition-deficit sampler before any new mechanic is added.
+
 Before the first mechanics expansion, the framework will introduce declarative `MechanicSpec` and
 `TaskSpec` registries, success predicates, procedural blueprints, and a capability dependency graph.
 Each new mechanic must bring:

@@ -13,7 +13,9 @@
 - [x] Independent reward, scheduling, resume, and hardware audit
 - [x] Complete local v0.1 train-save-reload-resume-evaluate qualification
 - [x] Pass the published v0.1 training smoke in GitHub Actions
-- [ ] Establish Navigate learnability across multiple random seeds
+- [x] Establish Navigate learnability across multiple random seeds
+- [ ] Implement and qualify the proposed v0.2 Unlock staircase
+- [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
 
 The first end-to-end 64-step smoke run completed on July 22, 2026. It exercised initialization,
 experience collection, checkpoint publication, held-out evaluation, status history, frame capture,
@@ -21,9 +23,10 @@ model reload, and clean shutdown. It is an engineering test, not a learning resu
 invalidated all v0 runs as capability evidence because curiosity could reward failure and scheduled
 exams measured pre-update policies. Protocol v0.1 fixes both before any long experiment.
 
-The local v0.1 qualification now also covers strict digest/config resume, distinct child RNG streams,
+The local v0.1 qualification also covers strict digest/config resume, distinct child RNG streams,
 discounted reward dominance, terminal timeout semantics, interrupted-child recovery, bounded storage,
-and milestone-rich evaluations. It remains engineering evidence; Navigate learnability is next.
+and milestone-rich evaluations. Three subsequent fresh canaries established Navigate learnability
+and exposed the next two gates: transition-balanced retention and full Unlock discovery.
 
 ## Scalability gates
 
@@ -34,9 +37,12 @@ The project scales in two different senses, and both require evidence:
 2. **Mechanical scale:** declarative mechanics/tasks, a capability graph, isolated and composed
    suites, and objective disambiguation before adding multiple possible quests.
 
-Do not add gameplay breadth merely because one overnight process stays alive. First demonstrate that
-Navigate is learnable, then that Unlock and Retrieve are discoverable under an automatic difficulty
-ramp, and only then generalize the hard-coded tier branches into registries.
+Do not add gameplay breadth merely because one overnight process stays alive. The three v0.1
+canaries established repeatable Navigate learning but exposed both a full-Unlock discovery cliff and
+post-promotion forgetting. The proposed [v0.2 design](protocol-v0.2-design.md) therefore adds a
+declarative lesson layer, progressively harder complete Unlock quests, and transition-balanced
+retention recovery before Retrieve is attempted. Only after full Unlock is learned and Navigate is
+retained should the project add the third capability or a new mechanic.
 
 ## Capability releases
 

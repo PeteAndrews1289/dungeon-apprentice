@@ -81,10 +81,22 @@ valuable than an efficient solution, and its scheduled exams ran before the newe
 4,096 collected steps, the scheduled checkpoint had 70 optimizer updates; the final archive had 80
 and was never evaluated.
 
-Protocol v0.1 corrects those faults, treats v0 as engineering evidence only, and adds reproducible
+Protocol v0.1 corrected those faults, treats v0 as engineering evidence only, and added reproducible
 checkpoint/resume state plus a real train-save-resume-reload-evaluate CI check. Its local and GitHub
-engineering gates now pass. The next result begins from random parameters under v0.1; it will not be
-presented as a continuation of v0.
+engineering gates passed. Three subsequent fresh v0.1 canaries then produced the first replicated
+capability result: all three learned Navigate, reaching 90% held-out success after 163,840–196,608
+trained actions.
+
+The promotion exposed the next two problems. Every policy ended at exactly 75% Navigate retention,
+and all three scored 0% on deterministic full Unlock. The supposed 30% Navigate rehearsal share was
+only 4–6% of actual post-promotion transitions because short Navigate episodes and long Unlock
+timeouts were sampled as equal episodes. See
+[the immutable canary report](docs/results/v0.1-navigate-canaries.md).
+
+The [proposed v0.2 design](docs/protocol-v0.2-design.md) keeps the model, pixels, actions, sparse
+success reward, and algorithm fixed. It tests progressively harder complete Unlock quests plus
+transition-balanced retention recovery. It is a design, not an active protocol, until implementation
+and preregistration are complete.
 
 ## Evidence standard
 
@@ -105,4 +117,6 @@ See [the experiment contract](docs/experiment-contract.md),
 [learning design](docs/learning-design.md), [operations runbook](docs/runbook.md),
 [experiment log](docs/experiment-log.md), [video notebook](docs/video-narrative.md),
 [architecture](docs/architecture.md), [audit and remediation record](docs/audit.md), and
-[roadmap](docs/roadmap.md).
+[roadmap](docs/roadmap.md). The completed v0.1 capability result is preserved in the
+[Navigate canary report](docs/results/v0.1-navigate-canaries.md), and the next proposed protocol is
+specified in [the v0.2 design](docs/protocol-v0.2-design.md).

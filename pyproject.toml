@@ -31,6 +31,7 @@ train = [
 [project.scripts]
 dungeon-qualify = "dungeon_apprentice.qualify:main"
 dungeon-train = "dungeon_apprentice.train:main"
+dungeon-train-v02-sentinel = "dungeon_apprentice.v02_sentinel:main"
 dungeon-evaluate = "dungeon_apprentice.evaluate:main"
 dungeon-dashboard = "dungeon_apprentice.dashboard:main"
 

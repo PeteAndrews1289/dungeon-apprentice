@@ -50,11 +50,30 @@ answer the wrong question. Show the misleading reward comparison, the collected-
 timeline, and the decision to invalidate v0 rather than polish it into evidence. Then introduce v0.1:
 bounded curiosity, post-update exams, and checkpoint sidecars.
 
-### Act IV — The capability ladder
+### Act IV — The first real skill
 
-This section remains open for real results. Each promotion should have three visuals: a representative
-run, the unseen-level success curve crossing 90%, and retention bars for earlier skills. Failed
-variants and plateaus belong in the story if they changed the design.
+The three v0.1 curves supply the first payoff. Begin with 0–15% success, then animate all three
+independent lines rising until every policy crosses the Navigate gate. This is the moment the project
+can finally say “it learned” without relying on one seed or a training reward.
+
+Then let the staircase collapse. All three policies finish at exactly 75% Navigate retention and 0%
+deterministic Unlock. A funnel reveals 978 stochastic Unlock attempts: 532 keys, 23 opened doors, 22
+completions. The apparent 30% Navigate rehearsal share is unmasked as only 4–6% of actual actions
+because short successes and long timeouts were counted as equal episodes.
+
+This gives the failure a concrete cause and a memorable visual: a pie chart labeled “episodes” next
+to the radically different pie chart labeled “experience.”
+
+### Act V — Build a better staircase
+
+Introduce v0.2 as a controlled answer, not another emergency tweak. Keep the same model, pixels,
+actions, rewards, and three algorithm seeds. Replace the single Unlock cliff with progressively
+harder complete key-door-exit dungeons, allocate rehearsal by measured actions, and require two
+consecutive balanced exams before advancement.
+
+The open dramatic question is now precise: can abundant complete early experience turn a rare
+interaction into a deterministic skill without erasing navigation? Full success, transfer failure,
+retention failure, and evidence that sparse reward is insufficient are all honest endings.
 
 ### Ending options
 
@@ -72,6 +91,10 @@ variants and plateaus belong in the story if they changed the design.
 - procedural layout montages to establish that maps are unseen;
 - the oracle solving a map, clearly labeled “qualification only”;
 - promotion and retention events;
+- the three-seed Navigate curve and synchronized 75% final retention bars;
+- episode-share versus transition-share comparison after v0.1 promotion;
+- key → door → exit conversion funnel;
+- the v0.2 lesson staircase and target-versus-realized practice mix;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
 - the v0 audit, reward inversion, and stale-policy evaluation timeline;

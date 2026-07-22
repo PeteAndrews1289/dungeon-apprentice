@@ -34,7 +34,8 @@ aspect-ratio:1;object-fit:contain;image-rendering:pixelated;background:#050806;b
 h2{font-size:18px;margin:0 0 14px}.tier{display:grid;grid-template-columns:110px 1fr 65px;gap:12px;
 align-items:center;margin:16px 0}.bar{height:12px;background:#07100b;border-radius:20px;overflow:hidden}.fill{height:100%;
 background:linear-gradient(90deg,var(--blue),var(--green));border-radius:20px;transition:width .4s}.value{text-align:right;
-font-variant-numeric:tabular-nums}.history{overflow-x:auto}.events{width:100%;min-width:620px;border-collapse:collapse}.events td,.events th{padding:9px 8px;
+font-variant-numeric:tabular-nums}.mix{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.pill{border:1px solid var(--line);
+border-radius:999px;padding:6px 10px;color:var(--muted);font-size:12px}.funnel{color:var(--muted);margin-top:12px}.history{overflow-x:auto}.events{width:100%;min-width:620px;border-collapse:collapse}.events td,.events th{padding:9px 8px;
 border-bottom:1px solid var(--line);text-align:left}.events th{color:var(--muted);font-size:11px;text-transform:uppercase}
 .empty{color:var(--muted);padding:25px 0}.foot{color:var(--muted);margin-top:18px;font-size:12px}@media(max-width:760px){
 .metric{grid-column:span 6}.frame,.progress,.history{grid-column:span 12}header{align-items:start;flex-direction:column}}
@@ -50,7 +51,8 @@ border-bottom:1px solid var(--line);text-align:left}.events th{color:var(--muted
 <div class="card frame"><h2>Agent’s current view</h2>
 <img class="screen" id="frame" alt="The latest pixels seen by the policy"><div class="foot">This is the policy’s entire visual world.</div></div>
 <div class="card progress"><h2>Frozen unseen-level exams</h2><div id="tiers" class="empty">No exam completed yet.</div>
-<div class="foot">90% passes the current lesson. Earlier lessons must remain at or above 80%.</div></div>
+<div id="funnel" class="funnel"></div><div id="practice" class="mix"></div>
+<div class="foot" id="gateNote">90% passes the current lesson. Earlier lessons must remain at or above 80%.</div></div>
 <div class="card history"><h2>Evaluation history</h2><div id="history" class="empty">The first exam has not run yet.</div></div></section></main>
 <script>
 const byId=id=>document.getElementById(id);const dot=document.querySelector('.dot');
@@ -64,9 +66,12 @@ let color=phase==='training'&&!stale?'var(--green)':phase==='crashed'?'var(--red
 byId('state').textContent=meta[0];byId('stateNote').textContent=stale?'No recent heartbeat; an exam may be running, the Mac may be asleep, or training may have stopped.':meta[1];byId('freshness').textContent=stale?`Training heartbeat delayed — last update ${ago(seconds)}`:`${meta[0]} — updated ${ago(seconds)}`}
 function render(d){let collected=Number(d.collected_timesteps??d.total_timesteps??0),trained=Number(d.trained_timesteps??0),waiting=Math.max(0,collected-trained);
 byId('collected').textContent=fmt(collected);byId('trained').textContent=fmt(trained);byId('pending').textContent=waiting?`${fmt(waiting)} steps await the next learning update.`:'All collected experience has been learned from.';
-byId('fps').textContent=`${Math.round(Number(d.fps)||0)}/s`;byId('lesson').textContent=d.current_tier_label||'Navigate';byId('runtime').textContent=duration(d.elapsed_seconds);heartbeat(d);
+byId('fps').textContent=`${Math.round(Number(d.fps)||0)}/s`;byId('lesson').textContent=d.current_lesson_label||d.current_tier_label||'Navigate';byId('runtime').textContent=duration(d.elapsed_seconds);heartbeat(d);
 if(Number(d.frame_revision)>0)byId('frame').src=`frames/latest.png?v=${d.frame_revision}`;let latest=Array.isArray(d.latest_evaluations)?d.latest_evaluations:[];
-byId('tiers').innerHTML=latest.length?latest.map(x=>`<div class="tier"><strong>${x.tier_label||'Lesson'}</strong><div class="bar"><div class="fill" style="width:${pct(x.success_rate)}%"></div></div><div class="value">${pct(x.success_rate)}%</div></div>`).join(''):'<div class="empty">No exam completed yet.</div>';
+byId('tiers').innerHTML=latest.length?latest.map(x=>`<div class="tier"><strong>${x.lesson_label||x.tier_label||'Lesson'}</strong><div class="bar"><div class="fill" style="width:${pct(x.success_rate)}%"></div></div><div class="value">${pct(x.success_rate)}%</div></div>`).join(''):'<div class="empty">No exam completed yet.</div>';
+let active=latest[latest.length-1],milestones=active&&active.milestone_rates||{};byId('funnel').textContent=active&&('key_picked_up' in milestones)?`Interaction funnel: key ${pct(milestones.key_picked_up)}% → door ${pct(milestones.door_opened)}% → exit ${pct(milestones.success)}%`:'';
+let allocation=d.practice_allocation||{},targets=allocation.target_shares||{},realized=allocation.realized_shares||{};byId('practice').innerHTML=Object.keys(targets).map(k=>`<span class="pill">${k.split('/').pop()}: target ${pct(targets[k])}% · actual ${pct(realized[k])}%</span>`).join('');
+let recovery=d.curriculum&&d.curriculum.recovery;byId('gateNote').textContent=d.protocol==='dungeon-apprentice-v0.2-sentinel'?`Two passing exams are required. Navigate retention: 85%.${recovery?' Recovery practice is active.':''}`:'90% passes the current lesson. Earlier lessons must remain at or above 80%.';
 let hist=Array.isArray(d.evaluation_history)?d.evaluation_history.slice().reverse():[];byId('history').innerHTML=hist.length?`<table class="events"><thead><tr><th>Learned step</th><th>Lesson</th><th>Success</th><th>Decision</th></tr></thead><tbody>${hist.map(x=>`<tr><td>${fmt(x.trained_timesteps)}</td><td>${x.tier_label||'Lesson'}</td><td>${pct(x.success_rate)}%</td><td>${x.decision||'Measured'}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">The first exam has not run yet.</div>'}
 let failures=0;async function poll(){try{let r=await fetch(`status.json?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error(`status ${r.status}`);render(await r.json());failures=0}catch(e){failures++;if(failures>1){dot.style.background='var(--red)';dot.style.boxShadow='0 0 15px var(--red)';byId('freshness').textContent='Dashboard cannot reach the run status right now'}}finally{setTimeout(poll,2000)}}poll();
 </script></body></html>"""

@@ -55,6 +55,13 @@ exam requires at least 80% success on every earlier tier or progression is held.
 This is curriculum learning, but it is not a set of demonstrated solutions. It changes which class
 of procedural problem the agent experiences. The policy must still discover every action sequence.
 
+The three v0.1 capability canaries later revealed that this ratio described episode counts, not
+actual experience. Because successful Navigate episodes were much shorter than failed Unlock
+timeouts, the 30% earlier-tier episode share became only 4–6% of post-promotion transitions. That
+finding is preserved in [the canary report](results/v0.1-navigate-canaries.md). The proposed
+[v0.2 design](protocol-v0.2-design.md) controls measured transitions and adds progressively harder
+complete Unlock distributions; it does not retroactively change the frozen v0.1 contract.
+
 ## Why timing matters
 
 Recurrent PPO alternates between collecting a rollout and optimizing on it. An exam triggered while

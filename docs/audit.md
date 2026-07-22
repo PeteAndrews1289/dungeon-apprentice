@@ -93,6 +93,23 @@ includes macOS display sleep prevention without requiring the monitor to remain 
 
 ## Capability risks that remain open
 
+### A-006 — Episode probabilities did not control experience probabilities
+
+The later v0.1 capability canaries exposed a curriculum-allocation assumption that the engineering
+audit had not tested. `CurriculumEnv` chose a tier at episode reset. After promotion, successful
+Navigate episodes usually lasted roughly 29–32 transitions while failed Unlock episodes lasted near
+the 256-transition limit. A nominal 30% Navigate episode probability consequently produced only
+4.4%, 4.8%, and 5.7% Navigate transitions in the three runs.
+
+**Consequence:** the policy received roughly 95% Unlock experience immediately after promotion.
+The resulting 75% final Navigate retention cannot be interpreted as evidence that a true 70/30
+transition mixture is insufficient.
+
+**Proposed v0.2 disposition:** schedule the next complete episode from cumulative transition debt,
+record target and realized shares per evaluation window, and invalidate a run whose realized share
+misses any target by more than five percentage points. The full successor design is in
+[protocol-v0.2-design.md](protocol-v0.2-design.md).
+
 Fixing the framework does not prove PPO can learn the tasks. Random exploration found Navigate
 success occasionally but produced 0/100 random successes on Unlock and Retrieve during the audit.
 Those tiers are discovery cliffs.
@@ -140,8 +157,9 @@ Do not begin the first long capability run until all of the following are true:
 
 Local status on July 22, 2026: reward invariants, checkpoint digest linkage, real train/resume/evaluate,
 300-level qualification, interrupted-child recovery, retention/free-space tests, and public v0
-invalidation are complete. Both jobs in the published GitHub Actions run also passed. The v0.1
-engineering gate is complete; learnability remains unproven.
+invalidation are complete. Both jobs in the published GitHub Actions run also passed. Three later
+v0.1 canaries established Navigate learnability and exposed A-006 plus the full-Unlock discovery
+cliff; see [the result report](results/v0.1-navigate-canaries.md).
 
-Passing this gate establishes a trustworthy instrument. Learnability must still be demonstrated by
-independent v0.1 runs and frozen unseen-seed exams.
+Passing the engineering gate established a trustworthy instrument. The subsequent independent runs
+show why capability evidence and framework auditing must continue together as the curriculum grows.
