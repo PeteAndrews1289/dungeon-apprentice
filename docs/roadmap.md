@@ -14,6 +14,9 @@
 - [x] Complete local v0.1 train-save-reload-resume-evaluate qualification
 - [x] Pass the published v0.1 training smoke in GitHub Actions
 - [x] Establish Navigate learnability across multiple random seeds
+- [x] Implement and qualify the transition-balanced Visible Unlock development slice
+- [x] Replicate Visible Unlock mastery with retained Navigate across three random initializations
+- [ ] Confirm all three U0 mastery checkpoints on the preregistered disjoint 200-case suites
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
 - [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
 
@@ -28,6 +31,14 @@ discounted reward dominance, terminal timeout semantics, interrupted-child recov
 and milestone-rich evaluations. Three subsequent fresh canaries established Navigate learnability
 and exposed the next two gates: transition-balanced retention and full Unlock discovery.
 
+The first v0.2 slice has now passed its replicated gate: all three fresh policies mastered the
+complete Visible Unlock sequence while retaining Navigate, with measured post-promotion experience
+held at approximately 50/50 by transitions. The frozen
+[replication report](results/v0.2-visible-unlock-replication.md) records the evidence and its narrow
+claim. A [post-training confirmation](v0.2-u0-confirmation-plan.md) was preregistered before any new
+case was inspected; it must pass for all three selected checkpoints before U1 is treated as the next
+capability step.
+
 ## Scalability gates
 
 The project scales in two different senses, and both require evidence:
@@ -39,7 +50,7 @@ The project scales in two different senses, and both require evidence:
 
 Do not add gameplay breadth merely because one overnight process stays alive. The three v0.1
 canaries established repeatable Navigate learning but exposed both a full-Unlock discovery cliff and
-post-promotion forgetting. The proposed [v0.2 design](protocol-v0.2-design.md) therefore adds a
+post-promotion forgetting. The [v0.2 design](protocol-v0.2-design.md) therefore adds a
 declarative lesson layer, progressively harder complete Unlock quests, and transition-balanced
 retention recovery before Retrieve is attempted. Only after full Unlock is learned and Navigate is
 retained should the project add the third capability or a new mechanic.

@@ -218,9 +218,9 @@ future three-seed v0.2 confirmation.
 Seed `20260725` mastered the development sentinel after 491,520 trained actions and 54 minutes. Its
 two qualifying Visible Unlock exams scored 74/80 and 79/80 while Navigate retention scored 73/80
 and 74/80. The final 79/80 checkpoint result was independently reproduced after reloading the saved
-model. Post-promotion practice measured 50.0295% Navigate and 49.9705% Visible Unlock; all completed
-windows remained inside tolerance. This is a positive development result, not yet a replicated U0
-claim and not evidence for U1–U3.
+model. Its final completed practice window measured 50.0031% Navigate and 49.9969% Visible Unlock;
+all completed windows remained inside tolerance. This is a positive development result, not yet a
+replicated U0 claim and not evidence for U1–U3.
 
 The audit found that finalization repeated an already completed mastery exam, attached a false
 “held” label to the duplicate, and reset the displayed allocation to an empty window. A
@@ -234,3 +234,33 @@ replications under the identical 524,288-action ceiling and decision rules. Both
 the result to count as replicated. Exact paths, ports, refusal guards, outcome categories, and the
 post-run reporting contract are frozen in
 [the U0 replication plan](v0.2-u0-replication-plan.md).
+
+### July 22, 2026 — replicated U0 result and confirmation preregistration
+
+Both preregistered policies mastered Visible Unlock, so the strict replication criterion passed.
+Seeds `20260725`, `20260726`, and `20260727` all reached mastery at 491,520 trained actions. Their
+final Navigate scores were 74/80, 75/80, and 73/80; their final U0 scores were 79/80, 80/80, and
+80/80. Every final Navigate panel reached at least 85%, every U0 panel reached at least 80%, no
+policy entered retention recovery, and every completed post-promotion practice window remained
+within five percentage points of its 50/50 transition target.
+
+The U0 curves were nonlinear. All three first crossed the qualifying threshold at 458,752 actions,
+after long intervals at low or zero success, and all three required the next frozen exam to confirm
+mastery. This validates the two-consecutive-exam rule and shows why an apparently flat early curve
+was not enough to classify an interaction failure.
+
+The result remains deliberately narrow. All policies were evaluated on the same 80 seeded U0 cases,
+which represent 79 unique layouts. That suite was appropriate for comparing random initializations
+without moving the goalposts, but it is not a disjoint confirmation of layout generalization. Exact
+curves, panels, allocation records, artifact digests, limitations, and the frozen claim are in
+[the v0.2 Visible Unlock replication report](results/v0.2-visible-unlock-replication.md).
+
+Before inspecting any new confirmation case, a post-training protocol froze all three selected
+mastery checkpoints and two disjoint 200-case blocks: Navigate seeds `15_000_000`–`15_000_199` and
+U0 seeds `15_010_000`–`15_010_199`. Each block is split into two fixed 100-case panels and must report
+at least 80% unique layouts. Every checkpoint must independently retain at least 85% Navigate overall
+and in each panel, and reach at least 85% U0 overall with at least 80% in each U0 panel. All three
+must pass; checkpoint digests and training-allocation evidence must verify before any score counts.
+No checkpoint reselection, retuning, seed substitution, or threshold change is allowed after
+evaluation. The complete preregistration is
+[the U0 confirmation plan](v0.2-u0-confirmation-plan.md).

@@ -1,7 +1,8 @@
 # Proposed protocol v0.2: the Unlock staircase
 
-> Status: design only. Protocol v0.1 remains active until this specification is implemented,
-> tested, frozen to a source commit, and preregistered before the first v0.2 learning run.
+> Status: partially implemented. The U0 Visible Unlock development slice has been implemented and
+> replicated; U1–U3 and the complete protocol remain proposed until their own code, qualification,
+> tests, and preregistration are frozen.
 
 ## Experimental question
 
@@ -209,6 +210,7 @@ The implementation must validate that no range overlaps another range or the tra
 | U2 validation | 11,200,000–11,200,079 |
 | U3 validation | 10,100,000–10,100,079 |
 | Post-training Navigate confirmation | 15,000,000–15,000,199 |
+| Post-training U0 confirmation | 15,010,000–15,010,199 |
 | Post-training U3 confirmation | 15,100,000–15,100,199 |
 | Complete-project untouched final allocations | 20,000,000–20,299,999 |
 | Consumed uniform-random diagnostic; never use for claims | 30,000,000–30,000,199 |

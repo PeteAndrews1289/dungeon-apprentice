@@ -93,10 +93,17 @@ only 4–6% of actual post-promotion transitions because short Navigate episodes
 timeouts were sampled as equal episodes. See
 [the immutable canary report](docs/results/v0.1-navigate-canaries.md).
 
-The [proposed v0.2 design](docs/protocol-v0.2-design.md) keeps the model, pixels, actions, sparse
-success reward, and algorithm fixed. It tests progressively harder complete Unlock quests plus
-transition-balanced retention recovery. It is a design, not an active protocol, until implementation
-and preregistration are complete.
+The first [v0.2](docs/protocol-v0.2-design.md) implementation slice corrected that scheduler and
+introduced a short but complete Visible Unlock quest. Three independently initialized policies all
+mastered the key-to-door-to-exit sequence while retaining Navigate; their final U0 scores were
+79/80, 80/80, and 80/80. The frozen
+[replication report](docs/results/v0.2-visible-unlock-replication.md) records the full trajectories,
+panels, allocations, artifact digests, and narrow claim.
+
+Those replications share one development validation suite, so they do not yet constitute an
+untouched-layout confirmation. A [post-training confirmation](docs/v0.2-u0-confirmation-plan.md)
+was preregistered before inspecting two disjoint 200-case blocks. All three selected mastery
+checkpoints must pass it before development advances to U1 Local Unlock.
 
 ## Evidence standard
 
