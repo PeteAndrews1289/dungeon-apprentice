@@ -212,3 +212,25 @@ The exact command is preserved in `scripts/run_v02_sentinel.sh`. It runs one CPU
 space guard, serves the dashboard on port 8781, and makes no online model calls. No behavior-affecting
 setting may change after launch. This sentinel is development evidence and is not pooled with the
 future three-seed v0.2 confirmation.
+
+### July 22, 2026 — v0.2 U0 sentinel result and replication preregistration
+
+Seed `20260725` mastered the development sentinel after 491,520 trained actions and 54 minutes. Its
+two qualifying Visible Unlock exams scored 74/80 and 79/80 while Navigate retention scored 73/80
+and 74/80. The final 79/80 checkpoint result was independently reproduced after reloading the saved
+model. Post-promotion practice measured 50.0295% Navigate and 49.9705% Visible Unlock; all completed
+windows remained inside tolerance. This is a positive development result, not yet a replicated U0
+claim and not evidence for U1–U3.
+
+The audit found that finalization repeated an already completed mastery exam, attached a false
+“held” label to the duplicate, and reset the displayed allocation to an empty window. A
+behavior-neutral correction now skips same-boundary final evaluation and preserves the final
+completed allocation, with regression coverage for both cases. The frozen U0 validation block also
+contains 79 distinct layouts across its 80 seed cases; this is disclosed and retained for direct
+replication rather than silently changing the exam after seeing the result.
+
+Two fresh random initializations, seeds `20260726` and `20260727`, are preregistered as sequential
+replications under the identical 524,288-action ceiling and decision rules. Both must master U0 for
+the result to count as replicated. Exact paths, ports, refusal guards, outcome categories, and the
+post-run reporting contract are frozen in
+[the U0 replication plan](v0.2-u0-replication-plan.md).

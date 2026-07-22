@@ -1,14 +1,19 @@
+from types import SimpleNamespace
+
 import numpy as np
 import pytest
 
+import dungeon_apprentice.v02_sentinel as sentinel_module
 from dungeon_apprentice.contracts import PIXEL_SHAPE, STEP_REWARD, SUCCESS_REWARD
 from dungeon_apprentice.oracle import DungeonOracle
 from dungeon_apprentice.v02_sentinel import (
     PROTOCOL,
+    LessonEvaluation,
     LessonId,
     SentinelCurriculumState,
     TransitionDeficitScheduler,
     V02SentinelEnv,
+    _CallbackFactory,
     make_sentinel_pixel_env,
     qualify_sentinel,
 )
@@ -91,4 +96,105 @@ def test_sentinel_generator_qualification_covers_both_lessons() -> None:
     assert {item["lesson_id"] for item in report["lessons"]} == {
         LessonId.NAVIGATE.value,
         LessonId.VISIBLE_UNLOCK.value,
+    }
+
+
+class _FakeBaseCallback:
+    def __init__(self, *, verbose: int) -> None:
+        self.verbose = verbose
+
+
+@pytest.mark.parametrize(
+    ("last_evaluation_step", "expected_triggers"),
+    [(32_768, []), (None, ["final"])],
+)
+def test_finalize_does_not_duplicate_an_exam_at_the_same_trained_boundary(
+    tmp_path, last_evaluation_step, expected_triggers
+) -> None:
+    state = SentinelCurriculumState(mastered=True)
+    scheduler = TransitionDeficitScheduler(state, seed=17)
+    callback_type = _CallbackFactory.create(_FakeBaseCallback)
+    callback = callback_type(
+        run_directory=tmp_path,
+        state=state,
+        scheduler=scheduler,
+        evaluation_interval=32_768,
+        checkpoint_interval=32_768,
+        evaluation_seed_count=80,
+        frame_interval=2_048,
+        minimum_free_bytes=0,
+        started_at="2026-07-22T00:00:00Z",
+        effective_config={},
+    )
+    callback.model = SimpleNamespace(_n_updates=0, num_timesteps=32_768)
+    callback.trained_timesteps = 32_768
+    callback._last_evaluation_step = last_evaluation_step
+    triggers = []
+    callback._evaluate_and_advance = triggers.append
+    callback._checkpoint = lambda *_args: tmp_path / "final.zip"
+    callback._write_status = lambda _phase: None
+
+    callback.finalize("completed")
+
+    assert triggers == expected_triggers
+
+
+def test_mastery_preserves_the_completed_practice_allocation(
+    tmp_path, monkeypatch
+) -> None:
+    state = SentinelCurriculumState(
+        active_lesson=LessonId.VISIBLE_UNLOCK,
+        consecutive_passes=1,
+    )
+    scheduler = TransitionDeficitScheduler(state, seed=18)
+    for _ in range(100):
+        scheduler.record_step(LessonId.NAVIGATE)
+        scheduler.record_step(LessonId.VISIBLE_UNLOCK)
+    callback_type = _CallbackFactory.create(_FakeBaseCallback)
+    callback = callback_type(
+        run_directory=tmp_path,
+        state=state,
+        scheduler=scheduler,
+        evaluation_interval=32_768,
+        checkpoint_interval=32_768,
+        evaluation_seed_count=80,
+        frame_interval=2_048,
+        minimum_free_bytes=0,
+        started_at="2026-07-22T00:00:00Z",
+        effective_config={},
+    )
+    callback.model = SimpleNamespace(_n_updates=1, num_timesteps=32_768)
+    callback.trained_timesteps = 32_768
+    checkpoint = tmp_path / "checkpoints" / "step.zip"
+    checkpoint.parent.mkdir()
+    checkpoint.write_bytes(b"trained parameters")
+    callback._evaluation_checkpoint = lambda: checkpoint
+    callback._checkpoint = lambda *_args: checkpoint
+
+    def passing_evaluation(_model, lesson, _seeds, **_kwargs):
+        return LessonEvaluation(
+            protocol=PROTOCOL,
+            timestamp="2026-07-22T00:00:00Z",
+            lesson_id=lesson.value,
+            lesson_label=lesson.label,
+            episodes=80,
+            successes=80,
+            success_rate=1.0,
+            panel_success_rates=(1.0, 1.0),
+            mean_steps=10.0,
+        )
+
+    monkeypatch.setattr(sentinel_module, "evaluate_lesson", passing_evaluation)
+
+    callback._evaluate_and_advance("scheduled")
+
+    allocation = scheduler.snapshot()
+    assert state.mastered
+    assert allocation["window_transitions"] == {
+        LessonId.NAVIGATE.value: 100,
+        LessonId.VISIBLE_UNLOCK.value: 100,
+    }
+    assert allocation["realized_shares"] == {
+        LessonId.NAVIGATE.value: 0.5,
+        LessonId.VISIBLE_UNLOCK.value: 0.5,
     }

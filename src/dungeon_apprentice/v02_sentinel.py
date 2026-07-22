@@ -793,7 +793,8 @@ class _CallbackFactory:
                     },
                 )
                 self._last_evaluation_step = self.trained_timesteps
-                self.scheduler.start_window()
+                if not self.state.mastered:
+                    self.scheduler.start_window()
                 self.frame_revision += 1
 
             def _checkpoint(self, name: str, kind: str) -> Path:
@@ -889,7 +890,8 @@ class _CallbackFactory:
                     self._process_boundary()
                 if int(self.model.num_timesteps) != self.trained_timesteps:
                     raise RuntimeError("run ended with an untrained partial rollout")
-                self._evaluate_and_advance("final")
+                if self._last_evaluation_step != self.trained_timesteps:
+                    self._evaluate_and_advance("final")
                 final_phase = "mastered" if self.state.mastered else phase
                 self._checkpoint(final_phase, "final")
                 self._write_status(final_phase)
