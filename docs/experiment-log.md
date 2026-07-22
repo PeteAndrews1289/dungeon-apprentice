@@ -42,7 +42,7 @@ The repeated 64-step run exercised model initialization, rollout collection, che
 held-out evaluation, status history, live frame capture, model reload, and clean shutdown. A random
 policy scored 0/2 on validation, as expected. This was an engineering result, not evidence of skill.
 
-### 4,096-step learning canary
+### 4,096-step v0 canary — engineering evidence only
 
 The first multi-update canary used four environments, recurrent PPO, training-only pixel curiosity,
 and CPU execution.
@@ -51,21 +51,70 @@ and CPU execution.
 | --- | ---: |
 | Wall time | 73.7 seconds |
 | Training steps | 4,096 |
-| PPO optimizer updates | 70 |
+| PPO updates in scheduled 4,096-step checkpoint | 70 |
+| PPO updates in terminal `completed.zip` | 80 |
 | Completed training episodes | 32 |
 | Stochastic training successes | 5/32 (15.6%) |
 | Frozen validation at 2,048 | 0/10 |
-| Frozen validation at 4,096 | 0/10 |
+| Scheduled frozen validation labeled 4,096 | 0/10, 70-update policy |
+| Terminal 80-update policy evaluation | Not run |
 | Curriculum decision | Remain on Navigate |
 
-This is the intended distinction between discovery and mastery. The agent sometimes reached the
-exit while exploring, but its deterministic policy could not yet reproduce that behavior on unseen
-layouts. No promotion occurred.
+The agent sometimes reached the exit while exploring, and the scheduled policy did not reproduce
+that behavior on unseen layouts. No promotion occurred. However, the result cannot support a claim
+about the terminal 4,096-step model: evaluation and checkpoint publication occurred inside rollout
+collection, before PPO applied the latest update. The terminal model had 80 optimizer updates and
+was never evaluated.
+
+An audit also found that v0 curiosity could make failure the optimizer's preferred outcome. The
+training bonus was `0.01 / sqrt(visits)` against a `-0.001` step cost. Measured random failed Unlock
+and Retrieve episodes could outscore efficient successful episodes. Promotion still used task
+success, so it did not falsely declare mastery, but training was optimizing the wrong shaped return.
+
+These findings supersede the earlier interpretation of the canary. It proves that the simulator,
+optimizer, recurrent policy, artifact writer, and evaluator could run end to end. It does not prove
+or disprove learnability. Protocol v0 is closed and will not be resumed for capability claims.
+
+### July 22, 2026 — v0.1 remediation
+
+Protocol v0.1 begins from random parameters and changes the experimental machinery before the first
+long run:
+
+- curiosity pays 0.002 only for a new pixel fingerprint and is capped at 0.1 per episode;
+- unchanged/repeated views pay no intrinsic reward and the reset view begins marked as seen;
+- failed timeouts remain negative while maximum-horizon successes remain positive;
+- exams and public checkpoints move behind complete PPO optimizer phases;
+- status distinguishes collected and trained timesteps;
+- checkpoint archives receive matching reproducibility sidecars;
+- resume becomes a new bounded segment with explicit parentage;
+- CI trains, saves, resumes a child segment, reloads, and evaluates a real recurrent-PPO checkpoint.
+
+The audit and disposition of every finding are preserved in [audit.md](audit.md).
+
+### July 22, 2026 — local v0.1 engineering qualification
+
+The hardened path passed 58 local tests and a fresh 300-level oracle qualification. A real recurrent
+PPO acceptance pair trained 128 steps, saved a digest-linked policy, resumed for another 128 steps,
+and evaluated the 256-step child checkpoint. Lifetime and segment counters were exact (`256` total,
+`128` in the child), both policies had completed optimizer updates, and the child used a distinct
+recorded RNG stream: its first training episode was seed `39161`, not the parent's `814135`.
+
+Scheduled and final exams at the same 128-step boundary named the same checkpoint digest. A separate
+all-pass regression proved that the unchanged policy could cross only one curriculum gate at that
+boundary. Evaluation now records key, door, relic, coverage, collision, and ineffective-interaction
+diagnostics even when success remains zero. These are engineering results, not evidence that Navigate
+has been learned. GitHub's training smoke remains a release gate until it passes on the published
+commit.
+
+A deliberately interrupted grandchild stopped cleanly at a fully trained 4,864-step checkpoint.
+The next child restored exactly 4,864 collected/trained steps, 38 optimizer updates, Navigate state,
+and the parent digest before adding its own 128-step segment. No interrupted policy was mislabeled as
+having learned from unsafely partial experience.
 
 ### Next declared test
 
-Run long enough to reveal a validation trend on Navigate. Do not modify the game in response to a
-single evaluation. If Navigate remains flat across several adequately spaced exams, compare a small
-set of declared exploration settings using the same validation seeds, then select without consulting
+Publish the v0.1 engineering qualification and require its GitHub training smoke to pass. Then run
+independent Navigate learnability trials from random initialization. Do not modify the game in
+response to one exam. If Navigate remains flat across several adequately spaced exams and seeds,
+compare a small declared set of exploration settings on the same validation suite without consulting
 the untouched final suite.
-

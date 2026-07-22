@@ -38,11 +38,17 @@ Introduce Dungeon Apprentice and the rules:
 Visually reveal the tiers as a staircase: exit, key and door, relic and return. Explain that the same
 memory-bearing policy must climb the entire staircase.
 
-### Act III — Learning versus luck
+### Act III — Auditing the scoreboard
 
-Use the first canary as the clean demonstration. It succeeded in 5 of 32 noisy training attempts but
-failed all 20 frozen validation attempts. This is a strong story beat: the dashboard refuses to call
-luck “learning.” Show the policy loss changing, the pixel view, then the validation bar at zero.
+Use the first canary as a lesson in why the experiment itself must be tested. It succeeded in 5 of 32
+noisy training attempts and its two scheduled validation exams scored zero—but the deeper audit found
+two flaws. Failed wandering could earn more shaped return than success, and the 4,096-step exam
+measured a 70-update checkpoint while the terminal model reached 80 updates and was never evaluated.
+
+This is a stronger story beat than a conveniently clean first result: even a green dashboard can
+answer the wrong question. Show the misleading reward comparison, the collected-versus-trained
+timeline, and the decision to invalidate v0 rather than polish it into evidence. Then introduce v0.1:
+bounded curiosity, post-update exams, and checkpoint sidecars.
 
 ### Act IV — The capability ladder
 
@@ -68,11 +74,14 @@ variants and plateaus belong in the story if they changed the design.
 - promotion and retention events;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
+- the v0 audit, reward inversion, and stale-policy evaluation timeline;
+- a v0.1 checkpoint sidecar tied to the exact evaluated model;
+- milestone-rate visuals showing partial quest knowledge before full success;
 - final frozen evaluation with seed list and no edits afterward.
 
 ## Claims to avoid
 
 Do not call a training reward curve intelligence. Do not describe the oracle as part of the agent. Do
 not imply the final suite was untouched if its results influenced later design. Do not call one lucky
-episode mastery. The credibility of the video is the experiment's most valuable output.
-
+episode mastery. Do not present the v0 canary as a capability result. The credibility of the video is
+the experiment's most valuable output.

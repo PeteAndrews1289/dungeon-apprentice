@@ -8,7 +8,7 @@ view. It must learn navigation, interaction, memory, backtracking, and eventuall
 those skills without demonstrations, walkthroughs, coordinates, online model decisions, or human
 controller actions.
 
-The project begins deliberately small. Version 0 has three capability tiers:
+The project begins deliberately small. Protocol v0.1 has three capability tiers:
 
 | Tier | Objective | New demand |
 | ---: | --- | --- |
@@ -67,10 +67,23 @@ frames, and a local dashboard. Once launched from an ordinary Terminal session, 
 learning are entirely local and consume no GPT or Codex usage.
 
 The learner is recurrent PPO: a compact vision network interprets pixels, an LSTM carries memory
-between steps, and PPO updates the policy from its own attempts. During training, a small episodic
-curiosity bonus rewards pixel views that are new within that attempt. Curiosity knows nothing about
-keys, doors, coordinates, routes, or objectives; it encourages looking around, not a particular
-solution. Evaluation disables curiosity and measures game success alone.
+between steps, and PPO updates the policy from its own attempts. During training, bounded episodic
+curiosity pays only for genuinely new pixel views. The bonus defaults to `0.002` per novel view and
+can contribute at most `0.1` across an entire attempt; repeated or unchanged views pay zero.
+Curiosity knows nothing about keys, doors, coordinates, routes, or objectives. Evaluation disables
+it and measures game success alone.
+
+## Current experimental status
+
+The first v0 canary proved that the software could train and occasionally discover the exit, but it
+did **not** establish learned capability. Its curiosity bonus could make unsuccessful wandering more
+valuable than an efficient solution, and its scheduled exams ran before the newest PPO update. At
+4,096 collected steps, the scheduled checkpoint had 70 optimizer updates; the final archive had 80
+and was never evaluated.
+
+Protocol v0.1 corrects those faults, treats v0 as engineering evidence only, and adds reproducible
+checkpoint/resume state plus a real train-save-resume-reload-evaluate CI check. The next result
+begins from random parameters under v0.1; it will not be presented as a continuation of v0.
 
 ## Evidence standard
 
@@ -82,7 +95,13 @@ authority is deterministic evaluation on held-out seeds:
 - validation suite: seeds beginning at `10_000_000`;
 - untouched final suite: seeds beginning at `20_000_000`.
 
+Collected experience and trained experience are reported separately. Exams and public checkpoints
+are emitted after optimization. Every exam record names the exact checkpoint path and SHA-256 digest
+it graded, while milestone rates and movement diagnostics make partial progress visible without
+changing the pixels supplied to the policy.
+
 See [the experiment contract](docs/experiment-contract.md),
 [learning design](docs/learning-design.md), [operations runbook](docs/runbook.md),
 [experiment log](docs/experiment-log.md), [video notebook](docs/video-narrative.md),
-[architecture](docs/architecture.md), and [roadmap](docs/roadmap.md).
+[architecture](docs/architecture.md), [audit and remediation record](docs/audit.md), and
+[roadmap](docs/roadmap.md).

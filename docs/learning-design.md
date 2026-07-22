@@ -30,13 +30,20 @@ experiment is whether one growing policy can acquire and retain a repertoire.
 ## Exploration without a walkthrough
 
 Sparse success rewards make early random experience repetitive. During training only, the agent
-receives a small intrinsic bonus for a pixel view it has rarely seen in the current attempt. The
-bonus is `0.01 / sqrt(N)`, where `N` is that view's episode-local visit count.
+receives a small intrinsic bonus the first time a pixel view appears in the current attempt. The
+default is `0.002` for a novel view, zero for a repeated or unchanged view, and no more than `0.1`
+over the entire episode. The initial reset view is pre-marked as seen.
 
 This mechanism cannot say “pick up the key” or “go north.” It cannot see coordinates, the full map,
 or object labels. A useless new view and a useful new view are equally novel. Its limited purpose is
-to make looking around more attractive than staring at one wall. The held-out exams remove this
-bonus completely, so curiosity cannot manufacture a passing score.
+to make looking around more attractive than staring at one wall. The cap is deliberately smaller
+than the task-success signal and cannot turn a timeout into a positive return. Held-out exams remove
+this bonus completely, so curiosity cannot manufacture a passing score.
+
+The original v0 formula was not merely too generous; it changed what optimization preferred. A
+failed random Retrieve attempt could earn more than an efficient success. Those runs remain useful
+software and storytelling evidence, but they are not learning evidence. Protocol v0.1 begins a new
+comparison from random parameters under the bounded formula.
 
 ## Automatic curriculum
 
@@ -48,6 +55,13 @@ exam requires at least 80% success on every earlier tier or progression is held.
 This is curriculum learning, but it is not a set of demonstrated solutions. It changes which class
 of procedural problem the agent experiences. The policy must still discover every action sequence.
 
+## Why timing matters
+
+Recurrent PPO alternates between collecting a rollout and optimizing on it. An exam triggered while
+the rollout is still being collected measures the previous policy, even if its label shows the new
+step count. Protocol v0.1 schedules exams and checkpoint publication after optimization. It records
+collected/trained timesteps, optimizer updates, and the exact checkpoint digest graded by every exam.
+
 ## What counts as evidence
 
 Loss curves and training reward show whether optimization is alive. They do not prove competence.
@@ -55,10 +69,11 @@ The evidence ladder is:
 
 - generated levels pass the independent solvability oracle;
 - model parameters update and checkpoints reload;
+- a restored checkpoint reproduces its own curriculum and counter state rather than borrowing state
+  from a newer point in the run;
 - a frozen policy passes unseen validation layouts;
 - the same checkpoint retains earlier tiers;
 - a selected checkpoint passes the untouched final suite.
 
 Only the last item supports a generalization claim. Final-suite seeds are deliberately separated so
 that repeated experimentation cannot quietly turn the test set into another training signal.
-

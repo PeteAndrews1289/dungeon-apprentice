@@ -4,17 +4,24 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+import uuid
 from collections.abc import Iterable
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 from PIL import Image
 
-from dungeon_apprentice.artifacts import utc_now
-from dungeon_apprentice.contracts import PROTOCOL, DungeonTier, evaluation_seeds
+from dungeon_apprentice.artifacts import atomic_write_text, file_sha256, utc_now
+from dungeon_apprentice.contracts import (
+    CHECKPOINT_SCHEMA_VERSION,
+    PROTOCOL,
+    DungeonTier,
+    evaluation_seeds,
+)
 from dungeon_apprentice.env import make_pixel_env
 
 
@@ -25,6 +32,10 @@ class EpisodeEvaluation:
     steps: int
     reward: float
     terminal_reason: str | None
+    milestones: dict[str, bool] = field(default_factory=dict)
+    unique_cells: int = 0
+    collisions: int = 0
+    ineffective_interactions: int = 0
 
 
 @dataclass(frozen=True)
@@ -40,6 +51,10 @@ class TierEvaluation:
     mean_steps: float
     mean_reward: float
     results: tuple[EpisodeEvaluation, ...]
+    milestone_rates: dict[str, float] = field(default_factory=dict)
+    mean_unique_cells: float = 0.0
+    mean_collisions: float = 0.0
+    mean_ineffective_interactions: float = 0.0
 
     def public_dict(self, *, include_episodes: bool = True) -> dict[str, Any]:
         value = asdict(self)
@@ -56,6 +71,16 @@ def _policy_observation(observation: np.ndarray, model: Any) -> np.ndarray:
     if tuple(channels_first.shape) == expected:
         return channels_first
     raise ValueError(f"model expects {expected}, but the game produced {observation.shape}")
+
+
+def _atomic_frame(path: Path, observation: np.ndarray) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.stem}.{uuid.uuid4().hex}.tmp.png")
+    try:
+        Image.fromarray(observation).save(temporary, format="PNG")
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
 
 
 def evaluate_policy(
@@ -105,6 +130,15 @@ def evaluate_policy(
                     steps=steps,
                     reward=total_reward,
                     terminal_reason=info.get("terminal_reason"),
+                    milestones={
+                        str(name): bool(reached)
+                        for name, reached in info.get("milestones", {}).items()
+                    },
+                    unique_cells=int(info.get("unique_cells", 0)),
+                    collisions=int(info.get("collisions", 0)),
+                    ineffective_interactions=int(
+                        info.get("ineffective_interactions", 0)
+                    ),
                 )
             )
         finally:
@@ -113,9 +147,11 @@ def evaluate_policy(
     if not results:
         raise ValueError("evaluation requires at least one seed")
     if frame_path is not None and latest_frame is not None:
-        frame_path.parent.mkdir(parents=True, exist_ok=True)
-        Image.fromarray(latest_frame).save(frame_path)
+        _atomic_frame(frame_path, latest_frame)
     successes = sum(result.success for result in results)
+    milestone_names = sorted(
+        {name for result in results for name in result.milestones}
+    )
     return TierEvaluation(
         protocol=PROTOCOL,
         timestamp=utc_now(),
@@ -128,7 +164,74 @@ def evaluate_policy(
         mean_steps=sum(result.steps for result in results) / len(results),
         mean_reward=sum(result.reward for result in results) / len(results),
         results=tuple(results),
+        milestone_rates={
+            name: sum(result.milestones.get(name, False) for result in results)
+            / len(results)
+            for name in milestone_names
+        },
+        mean_unique_cells=sum(result.unique_cells for result in results) / len(results),
+        mean_collisions=sum(result.collisions for result in results) / len(results),
+        mean_ineffective_interactions=(
+            sum(result.ineffective_interactions for result in results) / len(results)
+        ),
     )
+
+
+def _load_checkpoint_bundle(checkpoint: Path) -> tuple[Path, dict[str, Any], str]:
+    """Verify the model archive/sidecar pair before assigning it evaluation results."""
+
+    archive = checkpoint.expanduser().resolve()
+    if archive.suffix != ".zip":
+        archive = archive.with_suffix(".zip")
+    sidecar_path = archive.with_suffix(".json")
+    if not archive.is_file():
+        raise SystemExit(f"checkpoint does not exist: {archive}")
+    if not sidecar_path.is_file():
+        raise SystemExit(f"evaluation requires the checkpoint sidecar: {sidecar_path}")
+    try:
+        sidecar = json.loads(sidecar_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise SystemExit(f"cannot read checkpoint sidecar {sidecar_path}: {error}") from error
+    if sidecar.get("schema_version") != CHECKPOINT_SCHEMA_VERSION:
+        raise SystemExit(
+            "checkpoint schema mismatch: "
+            f"expected {CHECKPOINT_SCHEMA_VERSION}, "
+            f"found {sidecar.get('schema_version')!r}"
+        )
+    if sidecar.get("protocol") != PROTOCOL:
+        raise SystemExit(
+            f"checkpoint protocol mismatch: expected {PROTOCOL!r}, "
+            f"found {sidecar.get('protocol')!r}"
+        )
+    digest = file_sha256(archive)
+    if sidecar.get("checkpoint_sha256") != digest:
+        raise SystemExit(
+            "checkpoint hash does not match its sidecar: "
+            f"archive={digest}, sidecar={sidecar.get('checkpoint_sha256')!r}"
+        )
+    progress = sidecar.get("progress", {})
+    collected = int(progress.get("collected_timesteps", -1))
+    trained = int(progress.get("trained_timesteps", -2))
+    if collected < 0 or collected != trained:
+        raise SystemExit(
+            "evaluation requires a fully trained checkpoint boundary: "
+            f"collected={collected}, trained={trained}"
+        )
+    return archive, sidecar, digest
+
+
+def _evaluation_size(args: argparse.Namespace, sidecar: dict[str, Any]) -> int:
+    try:
+        training_size = int(sidecar["effective_config"]["environment"]["size"])
+    except (KeyError, TypeError, ValueError) as error:
+        raise SystemExit("checkpoint sidecar does not contain a valid training size") from error
+    requested_size = training_size if args.size is None else int(args.size)
+    if requested_size != training_size and not args.allow_size_override:
+        raise SystemExit(
+            f"checkpoint was trained at size {training_size}, but evaluation requested "
+            f"size {requested_size}; add --allow-size-override for a declared transfer test"
+        )
+    return requested_size
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -136,7 +239,16 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("checkpoint", type=Path)
     parser.add_argument("--tier", choices=("all", "0", "1", "2"), default="all")
     parser.add_argument("--seeds", type=int, default=100, help="held-out levels per tier")
-    parser.add_argument("--size", type=int, default=9)
+    parser.add_argument(
+        "--size",
+        type=int,
+        help="dungeon size; defaults to the size recorded in the checkpoint sidecar",
+    )
+    parser.add_argument(
+        "--allow-size-override",
+        action="store_true",
+        help="declare an intentional cross-size transfer evaluation",
+    )
     parser.add_argument(
         "--final",
         action="store_true",
@@ -153,18 +265,27 @@ def main() -> None:
     except ImportError as error:
         raise SystemExit('Install training dependencies with: pip install -e ".[train]"') from error
 
-    model = RecurrentPPO.load(args.checkpoint, device="auto")
+    checkpoint, sidecar, checkpoint_digest = _load_checkpoint_bundle(args.checkpoint)
+    size = _evaluation_size(args, sidecar)
+    training_size = int(sidecar["effective_config"]["environment"]["size"])
+    model = RecurrentPPO.load(checkpoint, device="auto")
     tiers = list(DungeonTier) if args.tier == "all" else [DungeonTier(int(args.tier))]
     report = {
         "protocol": PROTOCOL,
-        "checkpoint": str(args.checkpoint.resolve()),
+        "checkpoint": str(checkpoint),
+        "checkpoint_sha256": checkpoint_digest,
+        "checkpoint_progress": sidecar.get("progress"),
+        "checkpoint_curriculum": sidecar.get("curriculum"),
+        "training_size": training_size,
+        "evaluation_size": size,
+        "size_override": size != training_size,
         "final_suite": args.final,
         "tiers": [
             evaluate_policy(
                 model,
                 tier,
                 evaluation_seeds(tier, args.seeds, final=args.final),
-                size=args.size,
+                size=size,
                 final_suite=args.final,
             ).public_dict()
             for tier in tiers
@@ -172,7 +293,7 @@ def main() -> None:
     }
     rendered = json.dumps(report, indent=2, sort_keys=True) + "\n"
     if args.output:
-        args.output.write_text(rendered, encoding="utf-8")
+        atomic_write_text(args.output, rendered)
     else:
         sys.stdout.write(rendered)
 

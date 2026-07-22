@@ -165,12 +165,12 @@ class DungeonOracle:
     def _act(self, action: int) -> None:
         if self.success:
             raise OracleFailure("oracle attempted an action after terminal success")
-        _, reward, terminated, truncated, info = self.env.step(action)
+        _, reward, terminated, _truncated, info = self.env.step(action)
         self.actions.append(int(action))
         self.total_reward += float(reward)
         self.terminal_reason = info.get("terminal_reason")
         self.success = bool(info.get("success", False))
-        if truncated and not self.success:
+        if self.terminal_reason == "time_limit" and not self.success:
             raise OracleFailure("oracle exceeded the level action limit")
         if terminated and not self.success:
             raise OracleFailure("oracle reached an unexpected terminal state")

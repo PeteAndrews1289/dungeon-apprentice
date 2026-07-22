@@ -8,13 +8,15 @@ flowchart LR
     Policy --> Buttons["Seven game actions"]
     Buttons --> World
     World --> Info["Trainer-only outcome record"]
-    Info --> Curiosity["Pixel-only episodic curiosity"]
-    Curiosity --> PPO["PPO update"]
+    Info --> Curiosity["Bounded pixel-only curiosity"]
+    Curiosity --> Rollout["Complete recurrent rollout"]
+    Rollout --> PPO["PPO optimizer phase"]
     PPO --> Policy
     World --> Oracle["Solvability oracle"]
     Oracle --> Valid["Generator qualification only"]
-    Policy --> Exam["Frozen unseen-seed exams"]
+    PPO --> Exam["Post-update frozen unseen-seed exams"]
     Exam --> Gate["Automatic promotion + retention gate"]
+    PPO --> Bundle["Digest-linked model + JSON sidecar"]
 ```
 
 ## Separation of responsibilities
@@ -25,17 +27,30 @@ flowchart LR
 - **Oracle:** proves a complete legal action sequence exists. It does not teach.
 - **Policy:** receives pixels and produces actions.
 - **Trainer:** updates the policy from ordinary experience and mixes retained tiers.
-- **Curiosity:** counts only policy-visible pixel views within one episode; it is absent from exams.
+- **Curiosity:** pays only for novel policy-visible pixel views, has a hard episodic budget, and is
+  absent from exams.
 - **Evaluator:** freezes updates, resets recurrent state between episodes, and grades held-out seeds.
-- **Run supervisor:** writes manifests, heartbeats, checkpoints, frames, and terminal reasons.
+- **Run supervisor:** separates collected from trained timesteps and writes manifests, heartbeats,
+  checkpoint bundles, frames, and terminal reasons after optimizer boundaries.
 - **Dashboard:** displays evidence but cannot change the run.
 
-## Expansion boundary
+## Present expansion boundary
 
-New objects implement a small mechanic interface: placement constraints, transition behavior,
-rendering, and oracle validation. The observation shape and seven-action vocabulary remain stable
-where possible so old checkpoints can be evaluated after the game expands.
+Protocol v0.1 deliberately implements only three tiers. Their generation, reward, oracle recipe,
+evaluation loop, and promotion order are still encoded in tier-specific branches. That is adequate
+for the first learnability experiment, but it is not yet a plug-in mechanics architecture. Adding a
+lever or enemy today would require coordinated edits across those components.
 
-The generator must provide a mechanical proof of solvability before a new mechanic enters training.
-The evaluator must add both an isolated mechanic suite and at least one composed suite. A model is
-never credited merely because the archive or oracle can solve a level.
+Before the first mechanics expansion, the framework will introduce declarative `MechanicSpec` and
+`TaskSpec` registries, success predicates, procedural blueprints, and a capability dependency graph.
+Each new mechanic must bring:
+
+- placement and transition rules;
+- a mechanical solvability proof;
+- an isolated unseen-seed evaluation suite;
+- at least one composed suite with earlier mechanics;
+- a stable policy-visible objective representation if two tasks can share the same scene.
+
+The observation shape and seven-action vocabulary should remain stable where practical so old
+checkpoints can still be evaluated. A model is never credited merely because the generator or oracle
+can solve a level.

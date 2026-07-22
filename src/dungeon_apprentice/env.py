@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import hashlib
-import math
 from collections import deque
 from dataclasses import asdict, dataclass
 from typing import Any, ClassVar
@@ -17,7 +16,9 @@ from minigrid.minigrid_env import MiniGridEnv
 from minigrid.wrappers import ImgObsWrapper, RGBImgPartialObsWrapper
 
 from dungeon_apprentice.contracts import (
+    CURIOSITY_BUDGET,
     DEFAULT_CURIOSITY_SCALE,
+    NEWEST_TIER_FRACTION,
     OBSERVATION_SIZE,
     PIXEL_TILE_SIZE,
     PROTOCOL,
@@ -76,6 +77,11 @@ class DungeonApprenticeEnv(MiniGridEnv):
         self._size = int(size)
         self.layout: LayoutMetadata | None = None
         self._reset_seed: int | None = None
+        self._visited_positions: set[Position] = set()
+        self._milestones: dict[str, bool] = {}
+        self._collision_count = 0
+        self._ineffective_interaction_count = 0
+        self._left_entrance = False
         mission_space = MissionSpace(mission_func=lambda: "complete the dungeon quest")
         super().__init__(
             mission_space=mission_space,
@@ -100,6 +106,17 @@ class DungeonApprenticeEnv(MiniGridEnv):
     ) -> tuple[dict[str, Any], dict[str, Any]]:
         self._reset_seed = seed
         observation, info = super().reset(seed=seed, options=options)
+        self._visited_positions = {tuple(int(value) for value in self.agent_pos)}
+        self._milestones = {
+            "key_picked_up": False,
+            "door_opened": False,
+            "relic_picked_up": False,
+            "entrance_revisited": False,
+            "success": False,
+        }
+        self._collision_count = 0
+        self._ineffective_interaction_count = 0
+        self._left_entrance = False
         info.update(self._evidence_info(success=False))
         return observation, info
 
@@ -227,8 +244,15 @@ class DungeonApprenticeEnv(MiniGridEnv):
     def step(
         self, action: int
     ) -> tuple[dict[str, Any], float, bool, bool, dict[str, Any]]:
+        previous_position = tuple(int(value) for value in self.agent_pos)
+        previous_carrying = self.carrying
         front = tuple(int(value) for value in self.front_pos)
         front_cell = self.grid.get(*front)
+        previous_door_state = (
+            (front_cell.is_open, front_cell.is_locked)
+            if isinstance(front_cell, Door)
+            else None
+        )
         opening_matching_door = (
             int(action) == int(self.actions.toggle)
             and isinstance(front_cell, Door)
@@ -243,19 +267,58 @@ class DungeonApprenticeEnv(MiniGridEnv):
             # Dungeon Apprentice keys are single-use, keeping Tier 2's inventory rule explicit.
             self.carrying = None
 
+        current_position = tuple(int(value) for value in self.agent_pos)
+        self._visited_positions.add(current_position)
+        if int(action) == int(self.actions.forward) and current_position == previous_position:
+            self._collision_count += 1
+
+        door_state_changed = bool(
+            isinstance(front_cell, Door)
+            and previous_door_state is not None
+            and previous_door_state != (front_cell.is_open, front_cell.is_locked)
+        )
+        carrying_changed = previous_carrying is not self.carrying
+        interaction_actions = {
+            int(self.actions.pickup),
+            int(self.actions.drop),
+            int(self.actions.toggle),
+        }
+        if int(action) in interaction_actions and not (carrying_changed or door_state_changed):
+            self._ineffective_interaction_count += 1
+
+        if int(action) == int(self.actions.pickup) and isinstance(self.carrying, Key):
+            self._milestones["key_picked_up"] = True
+        if opening_matching_door and isinstance(front_cell, Door) and front_cell.is_open:
+            self._milestones["door_opened"] = True
+        if int(action) == int(self.actions.pickup) and isinstance(self.carrying, Ball):
+            self._milestones["relic_picked_up"] = True
+
         on_goal = self.layout is not None and tuple(self.agent_pos) == self.layout.goal
         carrying_relic = isinstance(self.carrying, Ball)
+        if self.tier is DungeonTier.RETRIEVE:
+            self._left_entrance = self._left_entrance or not on_goal
+            if self._left_entrance and on_goal:
+                self._milestones["entrance_revisited"] = True
         if self.tier is DungeonTier.RETRIEVE:
             success = bool(terminated and on_goal and carrying_relic)
             if terminated and not success:
                 terminated = False
         else:
             success = bool(terminated and on_goal)
+        self._milestones["success"] = success
+
+        # The horizon is an actual failed quest, not an exogenous pause in a
+        # continuing MDP. Mark it terminal so PPO cannot bootstrap value into a
+        # reset level beyond the declared action budget.
+        timed_out = bool(truncated and not success)
+        if timed_out:
+            terminated = True
+            truncated = False
 
         reward = SUCCESS_REWARD if success else STEP_REWARD
         info.update(self._evidence_info(success=success))
         info["terminal_reason"] = (
-            "success" if success else "time_limit" if truncated else None
+            "success" if success else "time_limit" if timed_out else None
         )
         return observation, reward, terminated, truncated, info
 
@@ -267,6 +330,10 @@ class DungeonApprenticeEnv(MiniGridEnv):
             "success": bool(success),
             "seed": self._reset_seed,
             "layout_sha256": self.layout.layout_sha256 if self.layout else None,
+            "milestones": dict(self._milestones),
+            "unique_cells": len(self._visited_positions),
+            "collisions": self._collision_count,
+            "ineffective_interactions": self._ineffective_interaction_count,
         }
 
     @staticmethod
@@ -354,7 +421,7 @@ class CurriculumEnv(gym.Wrapper):
         *,
         seed: int,
         state: CurriculumState | None = None,
-        newest_tier_fraction: float = 0.70,
+        newest_tier_fraction: float = NEWEST_TIER_FRACTION,
     ) -> None:
         super().__init__(env)
         if not 0.0 < newest_tier_fraction <= 1.0:
@@ -381,14 +448,31 @@ class CurriculumEnv(gym.Wrapper):
 
 
 class EpisodicPixelCuriosity(gym.Wrapper):
-    """Reward novel pixel observations without any task or map knowledge."""
+    """Pay a small, bounded bonus for each first-seen pixel observation.
 
-    def __init__(self, env: gym.Env, *, scale: float) -> None:
+    The initial observation is marked as seen at reset. Repeated observations,
+    including an unchanged no-op view, never earn intrinsic reward. The hard
+    per-episode budget keeps a failed timeout less valuable than task success.
+    """
+
+    def __init__(
+        self,
+        env: gym.Env,
+        *,
+        scale: float = DEFAULT_CURIOSITY_SCALE,
+        budget: float = CURIOSITY_BUDGET,
+    ) -> None:
         super().__init__(env)
         if scale < 0.0:
             raise ValueError("curiosity scale cannot be negative")
+        if budget < 0.0:
+            raise ValueError("curiosity budget cannot be negative")
+        if budget > CURIOSITY_BUDGET:
+            raise ValueError(f"curiosity budget cannot exceed {CURIOSITY_BUDGET}")
         self.scale = float(scale)
-        self._counts: dict[bytes, int] = {}
+        self.budget = float(budget)
+        self._seen: set[bytes] = set()
+        self._budget_used = 0.0
 
     @staticmethod
     def _fingerprint(observation: np.ndarray) -> bytes:
@@ -396,7 +480,9 @@ class EpisodicPixelCuriosity(gym.Wrapper):
 
     def reset(self, **kwargs: Any) -> tuple[np.ndarray, dict[str, Any]]:
         observation, info = super().reset(**kwargs)
-        self._counts = {self._fingerprint(observation): 1}
+        self._seen = {self._fingerprint(observation)}
+        self._budget_used = 0.0
+        self._update_info(info, reward=0.0, novel=False)
         return observation, info
 
     def step(
@@ -404,11 +490,14 @@ class EpisodicPixelCuriosity(gym.Wrapper):
     ) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
         observation, extrinsic_reward, terminated, truncated, info = super().step(action)
         fingerprint = self._fingerprint(observation)
-        count = self._counts.get(fingerprint, 0) + 1
-        self._counts[fingerprint] = count
-        curiosity_reward = self.scale / math.sqrt(count)
+        novel = fingerprint not in self._seen
+        if novel:
+            self._seen.add(fingerprint)
+        remaining = max(0.0, self.budget - self._budget_used)
+        curiosity_reward = min(self.scale, remaining) if novel else 0.0
+        self._budget_used = min(self.budget, self._budget_used + curiosity_reward)
         info["extrinsic_reward"] = float(extrinsic_reward)
-        info["curiosity_reward"] = curiosity_reward
+        self._update_info(info, reward=curiosity_reward, novel=novel)
         return (
             observation,
             float(extrinsic_reward) + curiosity_reward,
@@ -416,6 +505,22 @@ class EpisodicPixelCuriosity(gym.Wrapper):
             truncated,
             info,
         )
+
+    def _update_info(
+        self,
+        info: dict[str, Any],
+        *,
+        reward: float,
+        novel: bool,
+    ) -> None:
+        """Attach trainer-only accounting without changing the policy observation."""
+
+        info["curiosity_reward"] = float(reward)
+        info["curiosity_observation_novel"] = bool(novel)
+        info["curiosity_unique_observations"] = len(self._seen)
+        info["curiosity_budget"] = self.budget
+        info["curiosity_budget_used"] = self._budget_used
+        info["curiosity_budget_remaining"] = max(0.0, self.budget - self._budget_used)
 
 
 def make_pixel_env(
