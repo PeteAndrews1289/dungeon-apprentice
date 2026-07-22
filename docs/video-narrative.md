@@ -1,0 +1,78 @@
+# Video narrative notebook
+
+## Working premise
+
+**I tried to teach an AI Pokémon. It taught me that the world was the problem. So I built it a world
+where learning could be measured one idea at a time.**
+
+The emotional spine is not guaranteed success. It is the attempt to separate genuine learned skill
+from random progress, hidden assistance, and wishful interpretation.
+
+## Possible title directions
+
+- I Built a Dungeon to Teach an AI How to Learn
+- Can an AI Learn the Idea of an Adventure?
+- Pokémon Was Too Big—So I Built an AI Its Own Game
+- From Random Buttons to a Dungeon Master
+
+## Act structure
+
+### Act I — The honest failure
+
+Open on the seductive promise of “AI plays Pokémon,” then show the actual problem: an enormous game,
+rare rewards, repeated local traps, and human intervention turning one game into many small lessons.
+The important failure was experimental, not personal. We could not tell whether the agent was
+building a general understanding or merely surviving the latest prod.
+
+### Act II — Build a fair test
+
+Introduce Dungeon Apprentice and the rules:
+
+- pixels and seven buttons only;
+- no GPT calls during play;
+- no maps, coordinates, walkthroughs, demonstrations, or savestates;
+- every dungeon is procedural and independently proved solvable;
+- success must repeat on unseen levels;
+- every new lesson includes an exam on the old ones.
+
+Visually reveal the tiers as a staircase: exit, key and door, relic and return. Explain that the same
+memory-bearing policy must climb the entire staircase.
+
+### Act III — Learning versus luck
+
+Use the first canary as the clean demonstration. It succeeded in 5 of 32 noisy training attempts but
+failed all 20 frozen validation attempts. This is a strong story beat: the dashboard refuses to call
+luck “learning.” Show the policy loss changing, the pixel view, then the validation bar at zero.
+
+### Act IV — The capability ladder
+
+This section remains open for real results. Each promotion should have three visuals: a representative
+run, the unseen-level success curve crossing 90%, and retention bars for earlier skills. Failed
+variants and plateaus belong in the story if they changed the design.
+
+### Ending options
+
+- **Full success:** one policy retrieves the relic on unseen final levels and retains every prior
+  skill. End by showing how the world can now grow.
+- **Partial success:** identify exactly which concept became the wall and what the controlled evidence
+  says. The project still answers a sharper question than the Pokémon attempt did.
+- **Unexpected behavior:** center the strategy the agent discovered and determine whether it is robust
+  or an exploit using new frozen tests.
+
+## Capture checklist
+
+- clean pixel-view recordings at each tier;
+- dashboard time lapses with training and validation separated;
+- procedural layout montages to establish that maps are unseen;
+- the oracle solving a map, clearly labeled “qualification only”;
+- promotion and retention events;
+- one example of curiosity encouraging exploration without task knowledge;
+- failed runs, including the first checkpoint-publication bug;
+- final frozen evaluation with seed list and no edits afterward.
+
+## Claims to avoid
+
+Do not call a training reward curve intelligence. Do not describe the oracle as part of the agent. Do
+not imply the final suite was untouched if its results influenced later design. Do not call one lucky
+episode mastery. The credibility of the video is the experiment's most valuable output.
+
