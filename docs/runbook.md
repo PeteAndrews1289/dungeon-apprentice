@@ -71,6 +71,16 @@ before walking away. The learner itself is local and consumes no GPT/Codex allow
 
 For a headless smoke test or a machine where no dashboard is wanted, add `--no-dashboard`.
 
+The preregistered three-seed Navigate canary suite can be launched sequentially with:
+
+```bash
+caffeinate -ims scripts/run_navigate_canaries.sh \
+  "/Volumes/T7 Developer/DungeonApprentice/canaries/v0.1-navigate-20260722"
+```
+
+The same dashboard address is reused as each seed hands off to the next. Do not run another neural
+trainer beside this suite on the audited 8 GB Mac.
+
 ## Artifacts
 
 Each run directory is self-contained:

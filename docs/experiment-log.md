@@ -115,9 +115,21 @@ and the independent train-save-resume-reload-evaluate smoke in 1 minute 22 secon
 [preserved in GitHub Actions](https://github.com/PeteAndrews1289/dungeon-apprentice/actions/runs/29940403120).
 This completes the v0.1 engineering release gate; it does not complete the first capability claim.
 
-### Next declared test
+### July 22, 2026 — preregistered Navigate canaries
 
-Run independent Navigate learnability trials from random initialization. Do not modify the game in
-response to one exam. If Navigate remains flat across several adequately spaced exams and seeds,
-compare a small declared set of exploration settings on the same validation suite without consulting
-the untouched final suite.
+The first capability probe is three sequential, independently initialized runs at seeds `20260722`,
+`20260723`, and `20260724`. Each receives 262,144 training steps on CPU with four workers, 512-step
+rollouts, four PPO epochs, gamma 0.995, and the frozen 0.002/0.1 curiosity contract. Frozen exams run
+every 32,768 trained steps against 40 validation layouts per unlocked tier. Ordinary checkpoints use
+the same interval and retain the newest three. Runs live on the T7 and execute sequentially because
+parallel neural optimization was slower on the audited 8 GB M1.
+
+No reward, architecture, seed suite, or hyperparameter may change between these three runs. Automatic
+promotion remains enabled: crossing 90% Navigate success is itself a canary result, and later exams
+continue to measure Navigate retention if the policy begins Unlock. Training diagnostics and partial
+milestones may explain behavior, but held-out success is the authority. These runs may establish a
+Navigate learning signal; they cannot establish full curriculum mastery or final-suite generalization.
+
+After all three complete, compare their eight-exam trajectories before changing anything. If Navigate
+remains flat across the suite, declare a small controlled exploration study without consulting the
+untouched final seeds.
