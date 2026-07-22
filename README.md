@@ -82,8 +82,9 @@ valuable than an efficient solution, and its scheduled exams ran before the newe
 and was never evaluated.
 
 Protocol v0.1 corrects those faults, treats v0 as engineering evidence only, and adds reproducible
-checkpoint/resume state plus a real train-save-resume-reload-evaluate CI check. The next result
-begins from random parameters under v0.1; it will not be presented as a continuation of v0.
+checkpoint/resume state plus a real train-save-resume-reload-evaluate CI check. Its local and GitHub
+engineering gates now pass. The next result begins from random parameters under v0.1; it will not be
+presented as a continuation of v0.
 
 ## Evidence standard
 

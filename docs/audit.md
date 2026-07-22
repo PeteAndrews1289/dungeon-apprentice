@@ -140,7 +140,8 @@ Do not begin the first long capability run until all of the following are true:
 
 Local status on July 22, 2026: reward invariants, checkpoint digest linkage, real train/resume/evaluate,
 300-level qualification, interrupted-child recovery, retention/free-space tests, and public v0
-invalidation are complete. The published GitHub training smoke remains open.
+invalidation are complete. Both jobs in the published GitHub Actions run also passed. The v0.1
+engineering gate is complete; learnability remains unproven.
 
 Passing this gate establishes a trustworthy instrument. Learnability must still be demonstrated by
 independent v0.1 runs and frozen unseen-seed exams.

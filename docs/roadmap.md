@@ -12,7 +12,7 @@
 - [x] Short v0 engineering canary on Tier 0
 - [x] Independent reward, scheduling, resume, and hardware audit
 - [x] Complete local v0.1 train-save-reload-resume-evaluate qualification
-- [ ] Pass the published v0.1 training smoke in GitHub Actions
+- [x] Pass the published v0.1 training smoke in GitHub Actions
 - [ ] Establish Navigate learnability across multiple random seeds
 
 The first end-to-end 64-step smoke run completed on July 22, 2026. It exercised initialization,

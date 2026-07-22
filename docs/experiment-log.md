@@ -103,18 +103,21 @@ Scheduled and final exams at the same 128-step boundary named the same checkpoin
 all-pass regression proved that the unchanged policy could cross only one curriculum gate at that
 boundary. Evaluation now records key, door, relic, coverage, collision, and ineffective-interaction
 diagnostics even when success remains zero. These are engineering results, not evidence that Navigate
-has been learned. GitHub's training smoke remains a release gate until it passes on the published
-commit.
+has been learned.
 
 A deliberately interrupted grandchild stopped cleanly at a fully trained 4,864-step checkpoint.
 The next child restored exactly 4,864 collected/trained steps, 38 optimizer updates, Navigate state,
 and the parent digest before adding its own 128-step segment. No interrupted policy was mislabeled as
 having learned from unsafely partial experience.
 
+The published branch then passed both GitHub Actions jobs: engine/unit qualification in 21 seconds
+and the independent train-save-resume-reload-evaluate smoke in 1 minute 22 seconds. The run is
+[preserved in GitHub Actions](https://github.com/PeteAndrews1289/dungeon-apprentice/actions/runs/29940403120).
+This completes the v0.1 engineering release gate; it does not complete the first capability claim.
+
 ### Next declared test
 
-Publish the v0.1 engineering qualification and require its GitHub training smoke to pass. Then run
-independent Navigate learnability trials from random initialization. Do not modify the game in
+Run independent Navigate learnability trials from random initialization. Do not modify the game in
 response to one exam. If Navigate remains flat across several adequately spaced exams and seeds,
 compare a small declared set of exploration settings on the same validation suite without consulting
 the untouched final suite.
