@@ -1,9 +1,12 @@
 # Protocol v0.2 U2: Separated Unlock
 
-> Status: activated design boundary and preregistered development plan only. The immutable U1
-> successor confirmation satisfied the activation gate on July 23, 2026. U2 has not been
-> implemented, qualified, generated, or trained under this document. Authoring this plan did not
-> open a U2 engineering, qualification, validation, confirmation, or final-test layout.
+> Status: frozen implementation and execution protocol. The immutable U1 successor confirmation
+> satisfied the activation gate on July 23, 2026, and the disposable U2 engineering sandbox passed
+> its 1,000-map acceptance sweep. At the source-freeze boundary, the one-shot protected
+> qualification, development validation, future confirmation, and final-test ranges remained
+> unopened and no U2 child had trained. Runtime truth after launch belongs to the canonical
+> qualification ledger, external Git tag, cohort manifest, and child status records—not to a
+> retrospective edit of these rules.
 
 ## Question and claim boundary
 
@@ -62,7 +65,7 @@ weights-only export, cross-lineage optimizer, or replacement parent is prohibite
 | 2 | `20260729` | U0 `20260726` → U1 `20260729` | `/Volumes/T7 Developer/DungeonApprentice/u1-local-replication-20260722/v02-u1-replication-seed-20260729/checkpoints/mastered-local-unlock.zip` | `2a300927b48f966d5f6ddfeefe13d2e444da1e5c70bcd54e86abd6a9b2d1830b` | `20260741` | `20260741`–`20260744` |
 | 3 | `20260733` | U0 `20260727` → U1 `20260733` | `/Volumes/T7 Developer/DungeonApprentice/u1-local-replication-20260722/v02-u1-replication-seed-20260733/checkpoints/mastered-local-unlock.zip` | `3d2950e63491d07d3e483660469b8bec869fa137fa61d6b4d22b3d9f0ded2104` | `20260745` | `20260745`–`20260748` |
 
-The proposed protocol ID is `dungeon-apprentice-v0.2-u2`; its checkpoint sidecar schema is 4. The
+The protocol ID is `dungeon-apprentice-v0.2-u2`; its checkpoint sidecar schema is 4. The
 runner must re-verify each parent archive, mastery sidecar, manifest, clean source, optimizer
 boundary, allocation history, supporting-artifact digests, U0 ancestry, and U1 confirmation entry
 before creating a child directory.
@@ -213,7 +216,8 @@ all of the following must pass from a clean committed source:
    curriculum, scheduler RNG, window counts, parent lineage, and child stream.
 7. Post-update evaluation/checkpoint-order tests proving that an exam scores the exact digest named
    in its record.
-8. Deliberate interruption tests proving partial rollouts are discarded and never labeled trained.
+8. Deliberate interruption tests proving completed optimizer phases are durably resumable while
+   genuinely partial collection/optimization is discarded and never labeled trained.
 9. Storage-cap, rolling-retention, T7 mount, free-space, and exclusive-run-directory tests.
 10. A short forced-lesson engineering smoke on sandbox seeds. It proves plumbing only and is not
     capability evidence.
@@ -233,6 +237,14 @@ After those checks, the sealed 2,000-case U2 preflight qualification opens once.
 A qualification failure is an engineering result, not evidence that a policy cannot learn U2. The
 source and report must be frozen before training. No behavior-affecting generator, oracle, reward,
 observation, scheduler, or evaluation change is allowed between qualification and the cohort.
+
+The canonical qualifier has no seed, count, path, or rerun override. Before protected access it
+atomically claims the fixed attempt with a fresh 256-bit launcher token. A passed report is bound to
+its exact bytes, attempt, claim, generator profile, and clean source commit by the fixed annotated
+Git tag `u2-preflight-v0.2-u2-20260723`, pushed to the declared GitHub origin. Training independently
+verifies that exact remote tag object, report digest, attempt identity, and claim identity. It uses
+the already-authenticated in-memory report snapshot and seed capability; it may not reread a mutable
+report path or mint validation access from a digest string.
 
 ## Optimization and cumulative inheritance
 
@@ -359,8 +371,9 @@ Every archive has a matching schema-4 sidecar containing:
 Resume creates a new recorded segment, verifies every structural field and digest, restores the
 scheduler and optimizer, uses a distinct declared segment RNG stream, and preserves the remaining
 cumulative action/storage budgets. It never borrows a newer dashboard state. A partially collected
-rollout after interruption is discarded and reported; only completed optimization is trained
-experience.
+rollout after interruption is discarded and reported; every completed 2,048-action optimizer phase
+atomically replaces one bounded `latest-safe` resume bundle, so completed learning between larger
+32,768-action exams cannot be lost or charged twice.
 
 The sequential launcher must refuse a dirty or changing source, missing T7, less than the free-space
 reserve, an existing target directory, a non-confirmed parent, wrong baseline, occupied dashboard
@@ -369,7 +382,7 @@ must leave a durable terminal/crash record even if the dashboard disappears.
 
 ## Evidence, dashboard, and narrative record
 
-The three sequential children share one read-only dashboard endpoint, proposed as
+The three sequential children share one read-only dashboard endpoint at
 `http://127.0.0.1:8785/`. Closing the browser cannot stop training. The dashboard and append-only
 records must show:
 

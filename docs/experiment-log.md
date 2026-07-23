@@ -416,3 +416,81 @@ The complete qualification, collision, lineage, panel, milestone, and no-update 
 This confirms replicated cumulative Local Unlock on the declared distribution; it does not prove
 full Unlock or Retrieve. The next prospective development boundary is
 [U2 Separated Unlock](protocol-v0.2-u2-separated-unlock.md).
+
+### July 23, 2026 — U2 implementation boundary activated, with no run yet
+
+The full disposable engineering range, seeds `5,200,000`–`5,200,999`, subsequently produced 1,000
+contract-complete and 1,000 exact-unique Separated Unlock layouts. Privileged live-oracle solutions
+covered the full 17–26-action range and all four initial key/door visibility strata. This is
+generator engineering evidence only; no sealed, validation, future-confirmation, or final-test case
+was opened. The full record and chart are in
+[the U2 engineering sandbox report](results/v0.2-u2-engineering-sandbox.md).
+
+The collision-safe U1 confirmation activated design and implementation work on U2; it did not
+retroactively make U2 a learned capability. Each of the three exact confirmed U1 first-mastery
+archives is frozen as the parent of one independent child. Policies, trajectories, replay,
+recurrent episode state, and optimizer updates do not cross between lineages. Each child keeps only
+its own parent's complete recurrent-PPO archive and optimizer.
+
+The next task is Separated Unlock. A 9 × 9 map is divided by a complete wall whose only crossing is
+one locked door. Start and matching key are on the approach side, the goal is on the far side, and
+exactly two additional valid interior walls lengthen or redirect travel. Key and door visibility are
+unconstrained. The pure planner and separately run live oracle must agree on a 17–26-action complete
+key → door → goal solution, including at least one turn between key acquisition and opening the
+door. Qualification actions are never retained as demonstrations.
+
+This is a controlled geometry step. The `56 × 56 × 3` partial pixel observation, seven actions,
+256-unit recurrent state, PPO architecture and hyperparameters, `+1.0` complete-success reward,
+`-0.001` step cost, and bounded `0.002`/`0.1` training-only pixel curiosity remain unchanged. A
+key pickup or opened door is still telemetry, not payment. The episode horizon increases to 160
+because the mechanically qualified solutions are longer.
+
+Every child must preserve four abilities: Navigate, Visible Unlock, Local Unlock, and the new
+Separated Unlock. A four-lesson diagnostic baseline occurs before update one and cannot satisfy a
+gate. Thereafter the exact post-optimizer bytes are checkpointed, hashed, and examined every 32,768
+new trained actions. A prerequisite miss resets U2 progress and invokes a frozen
+transition-balanced recovery profile. Recovery changes practice frequency only; it cannot change
+reward, lower gates, roll weights back, or count as a U2 mastery pass.
+
+The evidence stages are now named explicitly:
+
+- **Engineering proof:** property tests, golden inherited behavior, save/reload/resume,
+  interruption, storage, path confinement, and the one-shot 2,000-case planner/live-oracle
+  qualification establish that the experiment is capable of measuring its question.
+- **Learning evidence:** three sequential children show whether each confirmed lineage changes its
+  four frozen development-exam scores within at most 1,048,576 new actions.
+- **Confirmation evidence:** only a later separately preregistered, collision-aware, no-update
+  evaluation of frozen selected checkpoints can establish generalization beyond development.
+
+The U1 confirmation failure remains part of U2's design: seed roles are separated and exact-layout
+hashes are tracked. Policy training remains below one million; disposable generator engineering is
+`5_200_000`–`5_200_999`; one-shot qualification is `5_210_000`–`5_211_999`; frozen validation
+occupies the existing 10–11.2-million lesson blocks; four future confirmation streams begin at
+`15_200_000`; and the 20-million final allocation remains untouched.
+
+The three children will run sequentially on the audited 8 GB M1 and share a read-only cohort view at
+`127.0.0.1:8785`. Measured U1 throughput suggests roughly 8–10 hours if the cohort approaches its
+full 3,145,728-action ceiling. Scientific evidence is capped at 2 GiB per lineage and 6 GiB for the
+cohort; optional video lives separately under a 10 GiB cap, for a 16 GiB maximum planned addition.
+
+The implementation audit then found several ways an otherwise valid long run could become
+scientifically ambiguous: a completed optimizer update between exams could be lost on interruption;
+the sequential script could launch fresh work but could not safely continue it; an old first-pass
+candidate could outlive a broken mastery streak; and a stale internal directory could masquerade as
+the external T7 mount. Those are engineering failures, not reasons to alter the learning task.
+
+The frozen implementation addresses them without changing observations, rewards, lessons, gates, or
+budgets. Every completed 2,048-action optimizer phase now publishes one bounded `latest-safe`
+resume bundle. A continuation creates a new segment, restores the exact optimizer/curriculum/RNG
+state, and spends only the remaining cumulative budget. The active mastery candidate must be the
+immediately previous 32,768-action passing boundary. Launchers prove the real T7 mount, keep durable
+cohort state through signals and failures, and verify one remote annotated Git tag that binds the
+qualification report bytes, attempt, claim, generator profile, and source commit.
+
+At this source-freeze entry, the protected one-shot qualification, U2 validation, future
+confirmation, and final partitions remained unopened and no U2 child had trained. The accepted
+commands now live in the runbook. Once they execute, runtime truth belongs to the immutable
+qualification attempt, external tag, cohort manifest, segment sidecars, and status records. This
+entry remains a frozen question and engineering decision record—not a capability result. The
+check totals and complete audit disposition are preserved in the
+[U2 launch-readiness record](results/v0.2-u2-launch-readiness.md).

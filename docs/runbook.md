@@ -162,6 +162,114 @@ sidecar with the same launcher settings plus `--resume` and a new run name. The 
 granting a fresh full budget. Parent lineage, optimizer updates, recovery state, transition counts,
 scheduler random state, and the new segment seed are all checked before learning continues.
 
+## Run U2 Separated Unlock
+
+U2 has two accepted entry points and no hand-configurable training command. Do not adapt a U1
+script, call the lower-level trainer directly, or generate a protected “preview.”
+
+Before launch, the repository must be clean and committed, the exact source must already be pushed,
+the T7 must be mounted at `/Volumes/T7 Developer`, the three frozen U1 parents and confirmation
+record must verify, at least 25 GiB must remain free, no neural trainer may be active, and dashboard
+port 8785 must be free. First run the fixed 64-transition engineering-only smoke on the disposable
+5.2-million sandbox:
+
+```bash
+.venv/bin/dungeon-smoke-v02-u2 --run-name v0.2-u2-final-20260723
+```
+
+Its report must say `passed`, show a real optimizer and policy change, reload the same trained
+state, list only engineering seed roles, and perform no evaluation, promotion, or capability claim.
+Then run the one-shot qualification exactly once:
+
+```bash
+./scripts/run_v02_u2_qualification.sh
+```
+
+The launcher creates a fresh private 256-bit token, atomically claims the one canonical attempt,
+and opens only seeds `5_210_000`–`5_211_999` plus the declared U2 validation reference. There is no
+path, count, seed, or rerun override. A pass must solve all 2,000 cases, meet both diversity floors,
+and have no exact U2-validation collision. The launcher then publishes the annotated tag
+`u2-preflight-v0.2-u2-20260723` to the frozen GitHub origin. That tag binds the exact report bytes,
+attempt, claim, generator profile, and source commit. If the network fails after a valid report is
+written, rerunning this launcher performs anchor recovery only; it never reopens the sealed range.
+A failed qualification permanently blocks this cohort.
+
+With the same clean source commit still checked out, begin the three children:
+
+```bash
+./scripts/run_v02_u2_cohort.sh
+```
+
+The launcher re-verifies the remote tag and report, creates
+`/Volumes/T7 Developer/DungeonApprentice/u2-separated-20260723`, starts the read-only dashboard at
+`http://127.0.0.1:8785/`, and runs children `20260737`, `20260741`, and `20260745` sequentially.
+Each inherits its exact confirmed U1 archive and optimizer, receives at most 1,048,576 new trained
+actions, and runs regardless of an earlier valid child's learning outcome. Optional narrative
+captures belong only in the separately measured
+`/Volumes/T7 Developer/DungeonApprentice/u2-separated-media-20260723` directory; never place video
+inside a scientific lineage.
+
+If the Mac, app, or launcher is interrupted, do not delete or rename the cohort directory. Restore
+the same repository commit and T7, ensure no trainer remains active, then run:
+
+```bash
+./scripts/run_v02_u2_cohort.sh --resume
+```
+
+Resume verifies every schema-4 archive, sidecar, digest, source, parent, qualification, curriculum,
+optimizer counter, and action counter; selects the highest-action safe bundle; creates a new
+immutable `-segment-NNN` directory; and spends only the unconsumed cumulative budget. Every
+completed 2,048-action optimizer phase has a bounded `latest-safe` bundle, while genuinely partial
+work is discarded and reported. Signals and unexpected launcher exits are durably reflected in the
+cohort manifest rather than leaving a lineage indefinitely labeled `training`.
+
+Preserve every terminal result. Select first-mastery checkpoints only by the frozen rule; do not use
+the dashboard or a favorable-looking intermediate curve to reselect them. Only after all valid
+children finish may a separate U2 confirmation protocol be authored. Confirmation must remain
+no-update, collision-aware, and preregistered before opening a candidate.
+
+The seed ledger is a refusal list:
+
+| Purpose | Allocation | Present status |
+| --- | --- | --- |
+| Ordinary policy training | `0`–`999_999` | Available only through the frozen trainer |
+| Generator engineering sandbox | `5_200_000`–`5_200_999` | Engineering only; never evidence |
+| One-shot sealed qualification | `5_210_000`–`5_211_999` | Opened only by the canonical claimed qualifier |
+| Navigate retention | `10_000_000`–`10_000_079` | Existing frozen suite |
+| U0 retention | `11_000_000`–`11_000_079` | Existing frozen suite |
+| U1 retention | `11_100_000`–`11_100_079` | Existing frozen suite |
+| U2 development validation | `11_200_000`–`11_200_079` | Opened only by qualification/training with bound access |
+| Future U2 confirmation candidates | `15_200_000`–`15_239_999` in four lesson-specific streams | Reserved; no confirmation plan yet |
+| Complete-project final test | `20_000_000`–`20_299_999` | Untouched throughout U2 |
+
+Numerical separation is not enough. The trainer must also reject exact layout hashes belonging to
+qualification or any frozen validation suite. Never inspect the future confirmation streams to
+debug training, and never substitute the final allocation for a missing confirmation plan.
+
+The launcher owns one read-only cohort dashboard at
+`http://127.0.0.1:8785/`. Port 8785 being occupied is a launch failure, not permission to pick an
+unrecorded fallback. The view reads a small `cohort.json` and the three declared lineage
+`status.json` files, shows pending/completed lineages as well as the active one, and cannot control
+training. Closing the browser has no effect on a trainer. The launcher must still use
+`caffeinate -ims`, reject another neural trainer, and leave a durable terminal or crash record.
+
+Resource envelope on the audited M1:
+
+- one four-worker CPU trainer at a time; never three concurrent children;
+- approximately 8–10 hours for all three if they approach their full ceilings, based on measured
+  U1 throughput plus U2's fourth exam;
+- 2 GiB maximum per lineage and 6 GiB for all scientific run directories;
+- five ordinary rolling checkpoints, with named decision artifacts retained separately;
+- 10 GiB maximum for optional screen capture in a separate media directory;
+- 16 GiB maximum planned addition and a 25 GiB free-space refusal reserve.
+
+These are ceilings, not targets or evidence. A storage stop is operational evidence, a passed
+oracle qualification is engineering evidence, and a rising frozen exam curve is learning evidence.
+Only a later no-update disjoint confirmation can establish confirmation evidence. At the committed
+source-freeze entry, no protected U2 qualification, U2 validation, candidate-confirmation, or final
+seed had been opened and no U2 child had trained. After launch, consult the canonical external
+ledgers and dashboard rather than inferring current state from this frozen instruction page.
+
 ## Artifacts
 
 Each run directory is self-contained:

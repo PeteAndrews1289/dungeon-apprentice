@@ -134,6 +134,45 @@ dungeon. The staircase can now grow one controlled step into
 [U2 Separated Unlock](protocol-v0.2-u2-separated-unlock.md), where key and door search become less
 local without skipping straight to Retrieve.
 
+### Act VII — Can a ritual become a plan?
+
+U2 should open with one clean visual transformation rather than another wall of settings. Show U0:
+the key and door are both in the little window. Slide to U1: the key remains visible, but the door is
+somewhere beyond the initial view. Then reveal U2: a divider cuts the dungeon in two, its locked door
+is the only crossing, and exactly two extra walls bend the route. The key and door are no longer
+guaranteed visible. The oracle-qualified journey has grown to 17–26 actions, but the agent still
+gets the same pixels, the same seven buttons, the same complete-quest reward, and the same recurrent
+brain architecture.
+
+The central narrative beat is: **we are not teaching a new trick; we are asking whether a learned
+ritual can stretch into a plan.** Three confirmed U1 policies each become their own U2 child. They do
+not merge memories, copy trajectories, watch the oracle, or query GPT. Put three apprentice cards on
+screen and run them one at a time. The shared dashboard keeps the completed and waiting lineages
+visible while the active card shows four exam bars, both panels, actions remaining, storage, and the
+current practice mix.
+
+Make recovery emotionally legible. When Navigate, Visible Unlock, or Local Unlock falls, freeze the
+U2 mastery streak and animate practice flowing back toward the weakened foundation. When both
+recovery exams pass, let the normal mix return. The drama is not simply whether the purple U2 line
+rises. It is whether four lines can remain standing together while the newest one rises.
+
+The evidence labels should become recurring on-screen chapter cards:
+
+1. **Engineering proof:** the generator and live oracle agree on all 2,000 sealed qualification
+   maps, tests preserve the old lessons, and interruption/storage guards work. This proves the
+   measuring instrument, not learning.
+2. **Learning evidence:** each child changes its frozen development-exam performance through its own
+   experience. Training reward and one lucky episode remain supporting footage.
+3. **Confirmation evidence:** after three valid children finish, a separately preregistered
+   collision-aware evaluator tests frozen selected checkpoints with no updates. This is the only
+   stage that can confirm disjoint generalization.
+
+At the source-freeze boundary, show the unopened envelope honestly: blank U2 curves, three parent
+digests, the sealed qualification range, the fixed external anchor tag, and dashboard port 8785.
+Then let the immutable qualification and cohort ledgers reveal what happened after launch. This
+keeps the suspense without rewriting preregistration in success tense. If the cohort fails, preserve
+that ending and explain whether it was a learning result or an engineering stop.
+
 ### Ending options
 
 - **Full success:** one policy retrieves the relic on unseen final levels and retains every prior
@@ -165,6 +204,12 @@ local without skipping straight to Retrieve.
   and the shared development exam;
 - a before/after digest card showing that v2 changed no policy or optimizer state;
 - the visual transition from confirmed Local Unlock to the next bounded U2 Separated Unlock map;
+- the U0 → U1 → U2 visual progression: both objects visible, hidden door, then the divided map with
+  exactly two extra walls and a 17–26-action qualified route;
+- the three U2 lineage cards sharing dashboard 8785 while only one CPU trainer runs;
+- four simultaneous lesson bars with panel A/B scores and a visible recovery-practice shift;
+- a clear engineering-proof → learning-evidence → confirmation-evidence title sequence;
+- the unopened U2 seed ledger and blank result panel before any protected case or policy run;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
 - the v0 audit, reward inversion, and stale-policy evaluation timeline;
@@ -177,4 +222,6 @@ local without skipping straight to Retrieve.
 Do not call a training reward curve intelligence. Do not describe the oracle as part of the agent. Do
 not imply the final suite was untouched if its results influenced later design. Do not call one lucky
 episode mastery. Do not present the v0 canary as a capability result. The credibility of the video is
-the experiment's most valuable output.
+the experiment's most valuable output. Do not call planner/oracle qualification U2 learning, do not
+pool three children into one synthetic policy, and do not describe development-exam mastery as
+disjoint confirmation.

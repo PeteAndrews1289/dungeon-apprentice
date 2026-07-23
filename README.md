@@ -151,6 +151,63 @@ This supports beginning the separately frozen
 [U2 Separated Unlock protocol](docs/protocol-v0.2-u2-separated-unlock.md), not a claim that full
 Unlock, Retrieve, or the whole game has already been solved.
 
+### U2 Separated Unlock — frozen implementation, protected run pending at source freeze
+
+The disposable engineering partition has now passed a complete 1,000-map generator/oracle sweep.
+See the [U2 engineering sandbox report](docs/results/v0.2-u2-engineering-sandbox.md). This verifies
+the proposed lesson machinery only; it is deliberately not counted as policy-learning evidence.
+The subsequent [launch-readiness record](docs/results/v0.2-u2-launch-readiness.md) preserves the
+full acceptance checks and every final audit finding before protected access.
+
+U2 does not merge the three confirmed policies or restart from random weights. Each exact confirmed
+U1 archive becomes the parent of its own child, including its optimizer state. The three children
+then face the same new question independently and sequentially: can a policy that learned a local
+key → door → exit ritual extend it into a longer search while retaining everything beneath it?
+
+Separated Unlock remains a small 9 × 9 world, but the locked door is now the only opening through a
+complete divider. The agent and matching key begin on the approach side, the goal is on the far
+side, and exactly two additional interior walls lengthen or redirect the route. Neither key nor door
+is guaranteed to begin in view. A pure planner and a separately executed live oracle must agree on
+a legal 17–26-action solution before a layout can qualify.
+
+The learning interface does not become easier:
+
+- the policy still receives only the same `56 × 56 × 3` partial pixels and recurrent state;
+- it still chooses from the same seven primitive actions;
+- the recurrent-PPO architecture, optimizer settings, step cost, success reward, and bounded
+  pixel-curiosity contract remain unchanged; and
+- key pickup and door opening remain diagnostics, not shaped rewards or demonstrations.
+
+Every post-update exam measures four skills at once: Navigate, Visible Unlock, Local Unlock, and
+Separated Unlock. A weakened prerequisite automatically changes the next practice mix, but recovery
+cannot count toward U2 mastery. Two allocation-valid normal-practice boundaries must pass every
+overall and 40-case panel gate. Each exam names and hashes the exact post-optimizer checkpoint bytes
+it measured.
+
+The evidence ladder is intentionally split:
+
+| Stage | What it can prove | What it cannot prove |
+| --- | --- | --- |
+| Engineering acceptance and one-shot 2,000-layout oracle qualification | The generator, oracle, resume path, storage guards, and measurement machinery obey the frozen contract | That a policy learned U2 |
+| Three sequential U2 children | Whether each confirmed U1 lineage learns and retains the four declared skills within its own budget | Generalization beyond the development validation suites |
+| Later, separately preregistered no-update confirmation | Whether frozen selected U2 checkpoints pass new collision-aware cases without learning during the test | Retrieve, unrestricted puzzle solving, or the complete game |
+
+Training layouts remain in `0`–`999_999`; engineering work has its own `5_200_000` sandbox; the
+sealed one-shot qualification is `5_210_000`–`5_211_999`; the four validation suites occupy their
+declared 10–11.2-million blocks; future confirmation streams begin at `15_200_000`; and the
+20-million final allocation remains untouched. At the committed implementation freeze, no protected
+U2 qualification, U2 validation, future-confirmation, or final case had been opened, and no U2
+policy had trained. Once launched, the canonical external ledgers—not a rewritten README—become the
+authority for current runtime state.
+
+The cohort runs one CPU trainer at a time on the audited 8 GB M1 and shares one
+read-only dashboard at `http://127.0.0.1:8785/`. If all children consume their full 1,048,576-action
+ceilings, the measured U1 throughput suggests roughly 8–10 hours for the sequential cohort. The
+scientific directories are capped at 2 GiB per lineage and 6 GiB total; optional narrative media
+has a separate 10 GiB cap, keeping the maximum planned addition to 16 GiB. The exact operational
+sequence and interruption recovery command are documented in the
+[runbook](docs/runbook.md); direct lower-level trainer invocations are not part of the protocol.
+
 ## Evidence standard
 
 Training reward, loss, map coverage, and one lucky completion are diagnostics. The behavioral

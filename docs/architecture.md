@@ -59,3 +59,74 @@ Each new mechanic must bring:
 The observation shape and seven-action vocabulary should remain stable where practical so old
 checkpoints can still be evaluated. A model is never credited merely because the generator or oracle
 can solve a level.
+
+## U2 cumulative lineage boundary
+
+U2 is the first expansion built from three independently confirmed cumulative parents rather than
+one selected development checkpoint. There is no policy merge and no cross-lineage replay:
+
+```mermaid
+flowchart LR
+    P1["Confirmed U1 parent 20260725"] --> C1["U2 child 20260737"]
+    P2["Confirmed U1 parent 20260729"] --> C2["U2 child 20260741"]
+    P3["Confirmed U1 parent 20260733"] --> C3["U2 child 20260745"]
+    Q["One-shot 2,000-layout oracle qualification"] --> A["Remote annotated evidence tag"]
+    A --> C1
+    A --> C2
+    A --> C3
+    C1 --> E["Four frozen post-update exams"]
+    C2 --> E
+    C3 --> E
+    E --> R["Automatic prerequisite recovery or U2 mastery"]
+    C1 --> D["Read-only cohort dashboard :8785"]
+    C2 --> D
+    C3 --> D
+```
+
+The children execute sequentially on the audited 8 GB M1, but the dashboard presents all three
+lineage states from one small cohort manifest. It reads each lineage's atomic status and frame files;
+it cannot choose an action, update a policy, or stop a trainer when the browser closes.
+
+The new environment changes geometry and distance, not the agent interface. A complete divider has
+one locked-door crossing, the key and start are on the approach side, the goal is beyond it, and
+exactly two extra interior walls create a longer 17–26-action qualified route. The policy still sees
+the same partial RGB pixels, carries the same 256-unit recurrent state, and emits the same seven
+actions. PPO, reward, curiosity, and inherited optimizer state are unchanged.
+
+The trainer now maintains a four-lesson capability graph:
+
+```mermaid
+flowchart LR
+    N["Navigate"] --> U0["Visible Unlock"]
+    U0 --> U1["Local Unlock"]
+    U1 --> U2["Separated Unlock"]
+    Exam["Every 32,768 new trained actions"] --> N
+    Exam --> U0
+    Exam --> U1
+    Exam --> U2
+    N --> Recovery["Transition-balanced recovery"]
+    U0 --> Recovery
+    U1 --> Recovery
+    Recovery --> Exam
+```
+
+A prerequisite miss resets the U2 mastery streak and changes only future practice allocation. It
+does not roll weights back, change reward, or lower a gate. Exams occur after optimization and name
+the exact archive digest they score, so dashboard state can never substitute for checkpoint state.
+Every completed 2,048-action optimizer phase also replaces one bounded `latest-safe` archive,
+sidecar, and integrity record. An interruption may discard incomplete work, but it cannot erase or
+double-charge a completed update; a resumed lineage continues in a new manifest segment.
+
+Seed roles are architectural boundaries as well as numbers. Training uses the sub-million
+partition; generator engineering has a disposable `5_200_000` sandbox; sealed qualification uses
+`5_210_000`–`5_211_999`; four fixed validation suites occupy their declared 10–11.2-million
+blocks; 15.2-million candidate streams remain reserved for a later collision-aware confirmation;
+and the 20-million final allocation remains untouched. Exact-layout hashes defend against the lesson
+learned from U1 confirmation attempt 1: different seed numbers can still generate the same dungeon.
+
+Storage is part of correctness. U2 refuses symlinked or escaping run paths, caps each lineage at
+2 GiB and the scientific cohort at 6 GiB, keeps optional media in a separate 10 GiB directory, and
+checks a 16 GiB combined plan plus the free-space reserve. This implementation work is engineering
+proof only. At source freeze, no protected U2 seed had been opened and no U2 learning or
+confirmation claim existed; later runtime claims must cite the external qualification and cohort
+ledgers.

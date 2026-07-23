@@ -2,9 +2,11 @@
 
 ## Project contract
 
-- The active experimental protocol is `dungeon-apprentice-v0.1`. Results from the original v0
-  canary are engineering evidence only: its intrinsic reward and evaluation timing invalidate it as
-  capability evidence.
+- The active experimental protocol is `dungeon-apprentice-v0.2-u2`, defined by
+  `docs/protocol-v0.2-u2-separated-unlock.md`. U0 and U1 are frozen predecessor evidence; do not
+  modify their environments, reports, checkpoints, launchers, or declared results. Results from the
+  original v0 canary remain engineering evidence only: its intrinsic reward and evaluation timing
+  invalidate it as capability evidence.
 - The learning agent receives pixels and its own recurrent state only. Do not add coordinates,
   map IDs, shortest paths, object labels, oracle actions, or mission text to policy observations.
 - Trainer-visible `info` fields may grade outcomes and create reports, but may never select or
