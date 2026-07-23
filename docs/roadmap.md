@@ -48,6 +48,17 @@ golden regression, all three lessons are graded at every boundary, and separate 
 Navigate and U0 forgetting. The complete frozen design and decision rule are in
 [the U1 development protocol](protocol-v0.2-u1-development.md).
 
+The lead and both preregistered U1 replications mastered Local Unlock. The three first-mastery U1
+scores were all 72/80, while final Navigate ranged from 74/80 to 77/80 and every policy finished U0
+at 80/80. One lineage used Navigate recovery, one used combined and U0-only recovery, and one needed
+no recovery; every completed window remained within allocation tolerance. This passes the frozen
+three-lineage replication rule. Exact evidence is in the
+[Local Unlock replication result](results/v0.2-local-unlock-replication.md).
+
+The next gate is the preregistered [U1 post-training confirmation](v0.2-u1-confirmation-plan.md):
+three frozen policies, three disjoint 200-case lesson blocks, no updates, and a strict all-three
+verdict. Only a positive confirmation supports implementing U2 Separated Unlock.
+
 ## Scalability gates
 
 The project scales in two different senses, and both require evidence:

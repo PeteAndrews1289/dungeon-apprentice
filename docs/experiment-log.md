@@ -332,3 +332,30 @@ sequential replications from the other independently confirmed U0 parents. Fresh
 same generator, reward, optimizer, scheduler, exams, gates, recovery rules, and 524,288-action
 ceiling. Both must master for Local Unlock learnability to count as replicated. See
 [the U1 replication plan](v0.2-u1-replication-plan.md).
+
+### July 22, 2026 — U1 replication passed
+
+Both preregistered Local Unlock children mastered, so the frozen replication rule passed and the
+lead plus replications produced three positive lineages out of three. Child `20260729` mastered at
+393,216 new actions after combined Navigate/U0 recovery and a later U0-only recovery. Child
+`20260733` mastered at 294,912 new actions without entering recovery. Their final U1 scores were
+72/80 with panels 36/40 and 36/40, then 35/40 and 37/40. Final Navigate was 77/80 and 75/80; both
+finished U0 at 80/80.
+
+Every completed transition window matched its active normal or recovery target within 0.28
+percentage points, far inside the five-point tolerance. The lead and first replication each used
+393,216 child actions; the second used 294,912. All three final U1 scores happened to be 72/80, but
+the verdict remains per policy rather than a pooled 216/240 statistic. Complete trajectories,
+recovery windows, whole-child versus final-window allocation, clean source commits, qualification,
+and mastery digests are frozen in
+[the Local Unlock replication result](results/v0.2-local-unlock-replication.md).
+
+### July 22, 2026 — U1 confirmation preregistered
+
+Before generating a layout or policy score from any new confirmation block, the project froze the
+three first-mastery checkpoint digests and three deterministic 200-case exams. Local Unlock uses its
+previously reserved `15_020_000` block; new Navigate and U0 retention blocks begin at `15_030_000`
+and `15_040_000`. Every checkpoint must pass all three overall gates and both fixed panels with no
+weight updates. Qualification, provenance, allocation history, deterministic inference, and a
+strict all-three decision are specified in
+[the U1 confirmation plan](v0.2-u1-confirmation-plan.md).

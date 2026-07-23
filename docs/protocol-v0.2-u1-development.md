@@ -208,8 +208,9 @@ Navigate was 74/80 and final U0 was 80/80. Both U1 panels passed at 39/40 and 33
 
 Navigate briefly missed one panel floor at 131,072 actions. The declared recovery controller shifted
 practice toward Navigate, required two clean anchor exams, and returned to normal U1 practice at
-196,608 actions. Final realized practice was 49.8871% Navigate, 15.1093% U0, and 35.0037% U1. The
-mastery archive SHA-256 is
+196,608 actions. The final completed practice window was 49.8871% Navigate, 15.1093% U0, and
+35.0037% U1. Whole-child shares were 53.9747%, 14.2799%, and 31.7454% because the two recovery
+windows deliberately increased Navigate rehearsal. The mastery archive SHA-256 is
 `bcce9b8251e97ed4fddda32871c891c3783c057bbb1f89deedb3a3d32058102a`.
 
 ## Narrative value

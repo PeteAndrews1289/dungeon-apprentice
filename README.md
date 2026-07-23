@@ -114,15 +114,26 @@ after 393,216 new actions, while final Navigate remained 74/80 and U0 reached 80
 positive cumulative-learning result, but still one selected lineage. Two sequential children from
 the other confirmed U0 parents are therefore frozen in the
 [U1 replication plan](docs/v0.2-u1-replication-plan.md); both must master before the claim counts as
-replicated.
+replicated. Both did: one mastered after 393,216 new actions and the other after 294,912, with all
+three lineages finishing at 72/80 U1 while retaining Navigate and U0. The immutable
+[replication result](docs/results/v0.2-local-unlock-replication.md) records the trajectories,
+recoveries, allocations, and artifact digests.
+
+Before advancing to U2, the project freezes a larger
+[U1 confirmation](docs/v0.2-u1-confirmation-plan.md). The three first-mastery checkpoints receive
+deterministic 200-case Navigate, U0, and U1 exams on disjoint seed blocks without policy updates.
+Every policy must independently pass every lesson and both panels; pooled success cannot rescue a
+failed lineage.
 
 ## Evidence standard
 
 Training reward, loss, map coverage, and one lucky completion are diagnostics. The behavioral
 authority is deterministic evaluation on held-out seeds:
 
-- promotion threshold: at least 90% success on the current tier;
-- retention threshold: at least 80% on every earlier tier;
+- protocol v0.1 promotion threshold: at least 90% success on the current tier;
+- protocol v0.1 retention threshold: at least 80% on every earlier tier;
+- later protocols freeze their own lesson-specific overall and panel gates before training; see
+  each protocol and preregistration rather than treating the v0.1 percentages as universal;
 - validation suite: seeds beginning at `10_000_000`;
 - untouched final suite: seeds beginning at `20_000_000`.
 

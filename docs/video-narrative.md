@@ -89,6 +89,14 @@ when it recovers, show ordinary U1 practice returning. The dramatic question is 
 it?” A pre-update 0/80 U1 baseline also makes later transfer measurable without pretending inherited
 U0 experience was a fresh start.
 
+U1 now supplies that payoff. The lead and both preregistered children mastered, and all three ended
+at 72/80 on the shared frozen U1 exam while preserving U0 and Navigate. Their paths were visibly
+different: one needed Navigate recovery, one needed combined and U0-only recovery, and one climbed
+without recovery and finished earlier. That is better narrative evidence than three identical clean
+curves. The controller was not cosmetic; it protected old skills under three different learning
+histories. Follow this with the larger disjoint confirmation rather than treating 72/80 as the end
+of the claim.
+
 ### Ending options
 
 - **Full success:** one policy retrieves the relic on unseen final levels and retains every prior
@@ -112,6 +120,8 @@ U0 experience was a fresh start.
 - U0's three-policy 200-case confirmation table;
 - side-by-side U0 and U1 first-person frames: visible door versus hidden door;
 - the U1 three-bar exam panel and an automatic U0- or Navigate-recovery transition;
+- the three U1 trajectories converging on 72/80 through different recovery histories;
+- the U1 confirmation table, clearly separated from the shared development exam;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
 - the v0 audit, reward inversion, and stale-policy evaluation timeline;

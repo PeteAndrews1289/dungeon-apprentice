@@ -111,6 +111,24 @@ uses parent `20260727` with stream `20260733`. Both reuse `http://127.0.0.1:8784
 keeps the final dashboard available after training. Exact lineages and the all-two decision rule are
 in [the U1 replication plan](v0.2-u1-replication-plan.md).
 
+## Confirm Local Unlock on disjoint cases
+
+After the lead and both replications have mastered and the confirmation plan is committed from a
+clean tree, run the no-update evaluator once:
+
+```bash
+scripts/run_v02_u1_confirmation.sh
+```
+
+The launcher selects the three exact first-mastery archives, refuses an existing output, qualifies
+all three 200-case seed blocks before scoring, and writes the raw report beneath
+`/Volumes/T7 Developer/DungeonApprentice/confirmations/v0.2-u1-20260723`. It never trains a policy.
+It creates `attempt.json` and `evaluator.log` before qualification, then writes a checksum sidecar
+for any completed report—including a valid negative result. A preexisting ledger, report, log, or
+checksum stops the launcher instead of silently beginning a second attempt. Do not open, substitute,
+or preview the confirmation ranges outside this frozen command. The exact gates and all-three
+verdict are in [the U1 confirmation plan](v0.2-u1-confirmation-plan.md).
+
 If interrupted, resume from the latest intact child archive and sidecar with the same launcher
 settings plus `--resume` and a new run name. The U1 runner interprets 524,288 as a cumulative child
 ceiling: it subtracts already trained child actions instead of granting a fresh full budget. Parent
