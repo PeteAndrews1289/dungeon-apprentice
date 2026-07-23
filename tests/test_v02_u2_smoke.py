@@ -8,8 +8,6 @@ from typing import Any
 import gymnasium as gym
 import numpy as np
 import pytest
-import sb3_contrib
-from stable_baselines3.common import vec_env
 
 from dungeon_apprentice import v02_u2_smoke as smoke
 from dungeon_apprentice.u2_seed_guard import (
@@ -18,6 +16,9 @@ from dungeon_apprentice.u2_seed_guard import (
     classify_u2_seed,
     engineering_seed_access,
 )
+
+sb3_contrib = pytest.importorskip("sb3_contrib")
+vec_env = pytest.importorskip("stable_baselines3.common.vec_env")
 
 
 class _AttestingEnv(gym.Env[np.ndarray, int]):
