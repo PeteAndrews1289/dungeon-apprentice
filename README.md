@@ -107,12 +107,14 @@ their U0 scores were 187/200, 199/200, and 198/200 while Navigate remained betwe
 The frozen [confirmation report](docs/results/v0.2-u0-confirmation.md) supports advancing to U1
 Local Unlock without claiming that unrestricted Unlock has already been learned.
 
-The next declared experiment is now implemented and preregistered as a
-[warm-start U1 child](docs/protocol-v0.2-u1-development.md). It inherits the exact confirmed
-seed-`20260725` U0 policy and optimizer, then learns on maps where the key begins visible but the door
-does not. Every boundary retests Navigate, U0, and U1; forgetting either earlier skill activates
-targeted rehearsal. The child receives no trajectories or demonstrations, and its pre-update U1
-baseline cannot count as learning. The exact launcher is `scripts/run_v02_u1_lead.sh`.
+The [warm-start U1 child](docs/protocol-v0.2-u1-development.md) then inherited the exact confirmed
+seed-`20260725` U0 policy and optimizer and learned maps where the key begins visible but the door
+does not. Its frozen U1 score rose from 0/80 before training to consecutive passes of 73/80 and 72/80
+after 393,216 new actions, while final Navigate remained 74/80 and U0 reached 80/80. This is a
+positive cumulative-learning result, but still one selected lineage. Two sequential children from
+the other confirmed U0 parents are therefore frozen in the
+[U1 replication plan](docs/v0.2-u1-replication-plan.md); both must master before the claim counts as
+replicated.
 
 ## Evidence standard
 

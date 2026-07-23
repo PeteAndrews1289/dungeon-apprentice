@@ -1,8 +1,11 @@
+import json
 from types import SimpleNamespace
+from zipfile import ZipFile
 
 import numpy as np
 import pytest
 
+import dungeon_apprentice.v02_u1 as u1
 from dungeon_apprentice.v02_lessons import (
     LESSON_SPECS,
     PROTOCOL,
@@ -139,9 +142,7 @@ def _simulate_scheduler(
     ],
 )
 def test_scheduler_tracks_each_normal_and_recovery_mix(cause, expected) -> None:
-    scheduler = TransitionDeficitScheduler(
-        CurriculumState(recovery_cause=cause), seed=72
-    )
+    scheduler = TransitionDeficitScheduler(CurriculumState(recovery_cause=cause), seed=72)
     shares = _simulate_scheduler(scheduler)
     for lesson, target in expected.items():
         assert shares[lesson.value] == pytest.approx(target, abs=0.01)
@@ -175,9 +176,7 @@ def test_training_reset_rejects_an_exact_reserved_visual_layout() -> None:
     guarded = make_training_env(
         scheduler=second_scheduler,
         seed=82,
-        forbidden_layout_hashes={
-            selected_lesson: frozenset({first_info["layout_sha256"]})
-        },
+        forbidden_layout_hashes={selected_lesson: frozenset({first_info["layout_sha256"]})},
     )
     try:
         _, guarded_info = guarded.reset(seed=83)
@@ -209,6 +208,59 @@ def _parent() -> ParentProvenance:
         confirmation_verdict="passed",
         confirmation_completed_at="2026-07-22T00:00:00Z",
     )
+
+
+def test_replication_parent_requires_exact_paired_confirmed_seed(tmp_path, monkeypatch) -> None:
+    parent_seed = 20260726
+    child_seed = 20260729
+    digest = u1.EXPECTED_PARENT_BY_CHILD_SEED[child_seed]["sha256"]
+    checkpoint = tmp_path / "parent.zip"
+    with ZipFile(checkpoint, "w") as archive:
+        archive.writestr("policy.optimizer.pth", b"optimizer")
+    sidecar = tmp_path / "parent.json"
+    sidecar.write_text('{"progress":{"n_updates":960}}', encoding="utf-8")
+    report = tmp_path / "report.json"
+    report.write_text(
+        json.dumps(
+            {
+                "protocol": u1.CONFIRMATION_PROTOCOL,
+                "verdict": "passed",
+                "policy_updates": False,
+                "completed_at": "2026-07-22T00:00:00Z",
+                "checkpoints": [
+                    {
+                        "checkpoint": {"checkpoint_sha256": digest},
+                        "passed": True,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    verified = SimpleNamespace(
+        checkpoint=str(checkpoint),
+        checkpoint_sha256=digest,
+        sidecar=str(sidecar),
+        manifest=str(tmp_path / "manifest.json"),
+        source_commit="f" * 40,
+        training_seed=parent_seed,
+        trained_timesteps=491_520,
+    )
+    monkeypatch.setattr(u1, "verify_checkpoint", lambda _checkpoint: verified)
+    monkeypatch.setattr(
+        u1,
+        "file_sha256",
+        lambda path: (
+            u1.EXPECTED_CONFIRMATION_SHA256 if path.resolve() == report.resolve() else digest
+        ),
+    )
+
+    parent = u1.verify_parent(checkpoint, report, child_seed=child_seed)
+
+    assert parent.training_seed == parent_seed
+    assert parent.checkpoint_sha256 == digest
+    with pytest.raises(u1.U1ProtocolError, match="different frozen parent"):
+        u1.verify_parent(checkpoint, report, child_seed=20260733)
 
 
 def _evaluation(lesson: LessonId, successes: int) -> LessonEvaluation:

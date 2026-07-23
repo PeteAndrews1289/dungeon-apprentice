@@ -63,21 +63,34 @@ from dungeon_apprentice.v02_lessons import (
 CHECKPOINT_SCHEMA_VERSION = 3
 CHILD_ACTION_BUDGET = 524_288
 EVALUATION_INTERVAL = 32_768
-EXPECTED_PARENT_TRAINING_SEED = 20260725
-EXPECTED_PARENT_SHA256 = (
-    "2b235ed54746429e737af2a6037069821fdaf81a936edf8f74ce86cc766b40a2"
-)
+LEAD_PARENT_TRAINING_SEED = 20260725
+EXPECTED_PARENT_BY_CHILD_SEED = {
+    20260725: {
+        "training_seed": 20260725,
+        "sha256": "2b235ed54746429e737af2a6037069821fdaf81a936edf8f74ce86cc766b40a2",
+    },
+    20260729: {
+        "training_seed": 20260726,
+        "sha256": "86c5bd42cd36209cd23e27569da4684229d6c52d09082708b7d1fda380826be4",
+    },
+    20260733: {
+        "training_seed": 20260727,
+        "sha256": "aba4d8693ed56c9e3fee57bcee21a33f682b23bc8dad4978dce0f765d620e11b",
+    },
+}
+EXPECTED_PARENT_BASELINES = {
+    20260725: {LessonId.NAVIGATE: 74, LessonId.VISIBLE_UNLOCK: 79},
+    20260726: {LessonId.NAVIGATE: 75, LessonId.VISIBLE_UNLOCK: 80},
+    20260727: {LessonId.NAVIGATE: 73, LessonId.VISIBLE_UNLOCK: 80},
+}
 EXPECTED_PARENT_TRAINED_TIMESTEPS = 491_520
-EXPECTED_CONFIRMATION_SHA256 = (
-    "f43610252943fce9c0169ac0231724fc2829686d1899f5f88bd0c250a913b398"
-)
+EXPECTED_CONFIRMATION_SHA256 = "f43610252943fce9c0169ac0231724fc2829686d1899f5f88bd0c250a913b398"
 DEFAULT_PARENT = Path(
     "/Volumes/T7 Developer/DungeonApprentice/sentinels/v0.2-u0-20260722/"
     "v02-u0-seed-20260725/checkpoints/mastered-visible-unlock.zip"
 )
 DEFAULT_CONFIRMATION = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/confirmations/"
-    "v0.2-u0-20260722/report.json"
+    "/Volumes/T7 Developer/DungeonApprentice/confirmations/v0.2-u0-20260722/report.json"
 )
 POLICY_KWARGS = {"lstm_hidden_size": 256, "n_lstm_layers": 1}
 
@@ -119,19 +132,28 @@ def _read_json(path: Path, label: str) -> dict[str, Any]:
 
 
 def verify_parent(
-    checkpoint: Path, confirmation_report: Path
+    checkpoint: Path, confirmation_report: Path, *, child_seed: int
 ) -> ParentProvenance:
-    """Require the exact selected, confirmed U0 development parent."""
+    """Require one exact confirmed U0 parent and its paired child seed."""
 
     try:
         verified = verify_checkpoint(checkpoint)
     except ConfirmationError as error:
         raise U1ProtocolError(f"U0 parent verification failed: {error}") from error
-    if verified.training_seed != EXPECTED_PARENT_TRAINING_SEED:
+    selection = EXPECTED_PARENT_BY_CHILD_SEED.get(child_seed)
+    if selection is None:
         raise U1ProtocolError(
-            f"U1 lead child requires parent seed {EXPECTED_PARENT_TRAINING_SEED}"
+            f"U1 has no frozen parent/child selection for child seed {child_seed}"
         )
-    if verified.checkpoint_sha256 != EXPECTED_PARENT_SHA256:
+    expected_parent_seed = int(selection["training_seed"])
+    expected_digest = str(selection["sha256"])
+    if verified.training_seed != expected_parent_seed:
+        raise U1ProtocolError(
+            "U1 child seed is paired with a different frozen parent: "
+            f"child {child_seed} requires parent {expected_parent_seed}, got "
+            f"{verified.training_seed}"
+        )
+    if verified.checkpoint_sha256 != expected_digest:
         raise U1ProtocolError("U1 parent checkpoint does not match its frozen digest")
     if verified.trained_timesteps != EXPECTED_PARENT_TRAINED_TIMESTEPS:
         raise U1ProtocolError("U1 parent has the wrong trained boundary")
@@ -156,7 +178,7 @@ def verify_parent(
     matching = [
         item
         for item in report.get("checkpoints", [])
-        if item.get("checkpoint", {}).get("checkpoint_sha256") == EXPECTED_PARENT_SHA256
+        if item.get("checkpoint", {}).get("checkpoint_sha256") == expected_digest
     ]
     if len(matching) != 1 or matching[0].get("passed") is not True:
         raise U1ProtocolError("selected parent did not individually pass confirmation")
@@ -183,11 +205,11 @@ def verify_parent(
     )
 
 
-def _effective_config(args: argparse.Namespace) -> dict[str, Any]:
+def _effective_config(args: argparse.Namespace, *, parent_training_seed: int) -> dict[str, Any]:
     return {
         "protocol": PROTOCOL,
         "warm_start": True,
-        "parent_training_seed": EXPECTED_PARENT_TRAINING_SEED,
+        "parent_training_seed": parent_training_seed,
         "child_algorithm_seed": args.seed,
         "child_action_budget": args.child_budget,
         "environment": {
@@ -430,9 +452,7 @@ class _CallbackFactory:
                             "milestones": info.get("milestones"),
                             "unique_cells": info.get("unique_cells"),
                             "collisions": info.get("collisions"),
-                            "ineffective_interactions": info.get(
-                                "ineffective_interactions"
-                            ),
+                            "ineffective_interactions": info.get("ineffective_interactions"),
                         },
                     )
                 current = int(self.num_timesteps)
@@ -456,9 +476,7 @@ class _CallbackFactory:
                 self.last_updates = int(self.model._n_updates)
                 self._record_optimizer_metrics(self.last_updates - previous_updates)
                 if self.trained_timesteps >= self.next_checkpoint:
-                    self._checkpoint(
-                        f"step-{self.trained_timesteps:012d}", "step"
-                    )
+                    self._checkpoint(f"step-{self.trained_timesteps:012d}", "step")
                     self.next_checkpoint = self._next_child_boundary(
                         self.trained_timesteps, self.checkpoint_interval
                     )
@@ -477,9 +495,7 @@ class _CallbackFactory:
                     and self._last_saved_path.is_file()
                 ):
                     return self._last_saved_path
-                return self._checkpoint(
-                    f"step-{self.trained_timesteps:012d}", "exam"
-                )
+                return self._checkpoint(f"step-{self.trained_timesteps:012d}", "exam")
 
             def _evaluate_all(self, trigger: str, *, decide: bool) -> None:
                 allocation_before = self.scheduler.snapshot()
@@ -489,9 +505,7 @@ class _CallbackFactory:
                 evaluations: dict[LessonId, LessonEvaluation] = {}
                 for lesson in LessonId:
                     frame_path = (
-                        self.run_directory
-                        / "frames"
-                        / f"exam-{lesson.value.replace('/', '-')}.png"
+                        self.run_directory / "frames" / f"exam-{lesson.value.replace('/', '-')}.png"
                     )
                     result = evaluate_lesson(
                         self.model,
@@ -517,6 +531,18 @@ class _CallbackFactory:
                         },
                     )
 
+                child_trained = self.trained_timesteps - self.child_start_timesteps
+                if not decide and child_trained == 0:
+                    expected_baseline = EXPECTED_PARENT_BASELINES[self.parent.training_seed]
+                    for lesson, expected_successes in expected_baseline.items():
+                        observed = evaluations[lesson].successes
+                        if observed != expected_successes:
+                            raise U1ProtocolError(
+                                "U1 parent baseline does not reproduce its frozen result: "
+                                f"{lesson.value}={observed}/80, expected "
+                                f"{expected_successes}/80"
+                            )
+
                 decision = "Diagnostic baseline; cannot count toward a gate"
                 if decide:
                     self.last_completed_allocation = allocation_before
@@ -526,9 +552,7 @@ class _CallbackFactory:
                         self.scheduler.start_window()
                         # The graded archive bytes are unchanged, but its resumable sidecar must
                         # reflect the exam decision and the newly opened allocation window.
-                        self._checkpoint(
-                            f"step-{self.trained_timesteps:012d}", "post-exam"
-                        )
+                        self._checkpoint(f"step-{self.trained_timesteps:012d}", "post-exam")
 
                 self.latest_evaluations = [
                     evaluations[lesson].public_dict()
@@ -548,9 +572,7 @@ class _CallbackFactory:
                             "success_rate": result.success_rate,
                             "panel_successes": result.panel_successes,
                             "decision": (
-                                decision
-                                if lesson is LessonId.LOCAL_UNLOCK
-                                else "Retention exam"
+                                decision if lesson is LessonId.LOCAL_UNLOCK else "Retention exam"
                             ),
                             "counts_toward_gate": decide,
                         }
@@ -752,9 +774,7 @@ class _CallbackFactory:
                         "total_timesteps": collected,
                         "collected_timesteps": collected,
                         "trained_timesteps": self.trained_timesteps,
-                        "child_collected_timesteps": (
-                            collected - self.child_start_timesteps
-                        ),
+                        "child_collected_timesteps": (collected - self.child_start_timesteps),
                         "child_trained_timesteps": (
                             self.trained_timesteps - self.child_start_timesteps
                         ),
@@ -770,9 +790,7 @@ class _CallbackFactory:
                         "current_lesson_label": "Local Unlock",
                         "curriculum": self.state.public_dict(),
                         "practice_allocation": self.scheduler.snapshot(),
-                        "last_completed_practice_allocation": (
-                            self.last_completed_allocation
-                        ),
+                        "last_completed_practice_allocation": (self.last_completed_allocation),
                         "allocation_within_tolerance": self.scheduler.allocation_within(),
                         "recent_training": recent,
                         "latest_optimizer": self.latest_optimizer,
@@ -931,8 +949,8 @@ def _best_effort(label: str, operation: Callable[[], Any]) -> None:
 def main() -> None:
     args = build_parser().parse_args()
     _validate_args(args)
-    parent = verify_parent(args.parent, args.confirmation_report)
-    effective_config = _effective_config(args)
+    parent = verify_parent(args.parent, args.confirmation_report, child_seed=args.seed)
+    effective_config = _effective_config(args, parent_training_seed=parent.training_seed)
     resume = (
         load_resume(args.resume, expected_config=effective_config, parent=parent)
         if args.resume
@@ -1030,7 +1048,8 @@ def main() -> None:
         {
             "protocol": PROTOCOL,
             "started_at": started_at,
-            "development_child": True,
+            "development_child": parent.training_seed == LEAD_PARENT_TRAINING_SEED,
+            "replication_child": parent.training_seed != LEAD_PARENT_TRAINING_SEED,
             "engineering_smoke": bool(args.engineering_smoke),
             "warm_start": True,
             "parent": parent.public_dict(),
@@ -1069,9 +1088,7 @@ def main() -> None:
         initial_updates=expected_updates,
         child_start_timesteps=parent.trained_timesteps,
         keep_checkpoints=args.keep_checkpoints,
-        initial_completed_allocation=(
-            resume.last_completed_allocation if resume else None
-        ),
+        initial_completed_allocation=(resume.last_completed_allocation if resume else None),
     )
     dashboard = None
     if not args.no_dashboard:
@@ -1083,9 +1100,7 @@ def main() -> None:
         except OSError as error:
             dashboard_error = str(error)
             try:
-                dashboard = start_dashboard(
-                    run_directory, host=args.dashboard_host, port=0
-                )
+                dashboard = start_dashboard(run_directory, host=args.dashboard_host, port=0)
             except OSError as fallback:
                 dashboard_error = f"{dashboard_error}; fallback failed: {fallback}"
         if dashboard is not None:

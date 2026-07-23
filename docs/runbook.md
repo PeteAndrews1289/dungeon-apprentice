@@ -100,6 +100,17 @@ Do not substitute a later-looking U0 checkpoint, another seed, a weights-only ex
 confirmation report. Do not run U1 beside another trainer on the 8 GB M1. The full frozen contract is
 in [the U1 development protocol](protocol-v0.2-u1-development.md).
 
+After the positive lead result, launch the two sequential preregistered U1 replications with:
+
+```bash
+scripts/run_v02_u1_replications.sh
+```
+
+The first child uses confirmed U0 parent `20260726` with fresh child stream `20260729`; the second
+uses parent `20260727` with stream `20260733`. Both reuse `http://127.0.0.1:8784/`, and the launcher
+keeps the final dashboard available after training. Exact lineages and the all-two decision rule are
+in [the U1 replication plan](v0.2-u1-replication-plan.md).
+
 If interrupted, resume from the latest intact child archive and sidecar with the same launcher
 settings plus `--resume` and a new run name. The U1 runner interprets 524,288 as a cumulative child
 ceiling: it subtracts already trained child actions instead of granting a fresh full budget. Parent

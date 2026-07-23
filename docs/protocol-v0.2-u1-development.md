@@ -1,8 +1,8 @@
 # Protocol v0.2 U1: the Local Unlock warm-start child
 
-> Status: implementation-complete development protocol, frozen before the lead learning run. This
-> is an accumulating-skill child of the confirmed U0 policy, not a fresh-start replication and not
-> evidence for unrestricted Unlock.
+> Status: positive development result. This is an accumulating-skill child of the confirmed U0
+> policy, not a fresh-start replication and not evidence for unrestricted Unlock. Two additional
+> parent lineages are frozen in the [separate replication plan](v0.2-u1-replication-plan.md).
 
 ## Question
 
@@ -198,6 +198,19 @@ Milestones explain an outcome but never substitute for complete exit success. If
 positive, replications from the other two confirmed U0 parents require a separate frozen plan. If it
 is negative, the next design may change curriculum geometry or declare bounded potential shaping,
 but not relabel this run after seeing its curve.
+
+## Lead result
+
+The lead was positive. It ran from 20:04:13 to 20:55:39 EDT on July 22, 2026 and mastered after
+393,216 new trained actions. Its diagnostic baseline was Navigate 74/80, U0 79/80, and U1 0/80.
+U1 first passed at 360,448 child actions with 73/80 and confirmed at 393,216 with 72/80; final
+Navigate was 74/80 and final U0 was 80/80. Both U1 panels passed at 39/40 and 33/40.
+
+Navigate briefly missed one panel floor at 131,072 actions. The declared recovery controller shifted
+practice toward Navigate, required two clean anchor exams, and returned to normal U1 practice at
+196,608 actions. Final realized practice was 49.8871% Navigate, 15.1093% U0, and 35.0037% U1. The
+mastery archive SHA-256 is
+`bcce9b8251e97ed4fddda32871c891c3783c057bbb1f89deedb3a3d32058102a`.
 
 ## Narrative value
 

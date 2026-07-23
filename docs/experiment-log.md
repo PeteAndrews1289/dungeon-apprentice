@@ -316,3 +316,19 @@ declared 8,192-child-action engineering ceiling at 499,712 lifetime actions and 
 practice counts continued to 3,920 Navigate, 1,360 U0, and 2,912 U1; parent digest, curriculum state,
 and scheduler stream remained intact. The test discarded no trained progress and did not grant the
 resumed segment a replacement budget.
+
+### July 22, 2026 — U1 lead mastered and replication frozen
+
+The Local Unlock lead mastered after 393,216 new actions and 51 minutes. Frozen U1 success rose from
+0/80 before the first update to 73/80 and 72/80 at two consecutive mastery boundaries. Final
+Navigate was 74/80 and Visible Unlock was 80/80, so the new capability did not replace its two
+prerequisites. One temporary Navigate recovery began at 131,072 child actions and ended after two
+clean anchor exams at 196,608, providing direct evidence that the automatic rehearsal controller
+operated as declared.
+
+This remains one selected lineage. Before either new child received an update, the project froze two
+sequential replications from the other independently confirmed U0 parents. Fresh child streams
+`20260729` and `20260733` do not overlap the lead's four worker streams or each other. They retain the
+same generator, reward, optimizer, scheduler, exams, gates, recovery rules, and 524,288-action
+ceiling. Both must master for Local Unlock learnability to count as replicated. See
+[the U1 replication plan](v0.2-u1-replication-plan.md).
