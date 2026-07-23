@@ -26,9 +26,14 @@
 - [x] Freeze a non-post-hoc U2 successor decision before any new training or protected evaluation
 - [x] Implement, qualify, and externally anchor the one-lineage U2r Stability Remediation continuation
 - [x] Preserve U2r launch attempt 1 as a zero-action operational failure under its original tag/root
-- [ ] Implement, qualify, and externally anchor the finite-U0 r1 launch amendment
-- [ ] Run r1's fixed eleven-window budget and grade only the full-budget terminal artifact
-- [ ] If terminal-eligible, run its one fresh no-update confirmation on `15_240_000`–`15_279_999`
+- [x] Implement, qualify, and externally anchor the finite-U0 r1 launch amendment
+- [x] Run r1's fixed eleven-window budget and grade only the full-budget terminal artifact
+- [x] Preserve r1's valid terminal stability failure and leave its fresh confirmation unopened
+- [x] Freeze the prospective matched U2-S mechanism-ablation decision
+- [x] Implement and preflight the four-arm U2-S ablation without creating its canonical root
+- [ ] Qualify and externally anchor the frozen U2-S release
+- [ ] Run all four full-budget arms and select only a learner configuration from the fixed terminal rule
+- [ ] If a configuration qualifies, preregister a fresh multi-lineage U2-S cohort from confirmed U1 parents
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
 - [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
 
@@ -114,27 +119,35 @@ stopped during initial environment reset with zero policy actions and zero optim
 [immutable launch result](results/v0.2-u2r-launch-attempt-1.md) preserves the original tag/root and
 shows why a global history guard was infeasible for U0's finite 2,800-layout domain.
 
-r1 passed implementation qualification. It retains every historical identity, but uses lesson-specific
-training guards: broad history novelty for Navigate, U1, and U2, and only U0's 79 unique development
-layouts as U0 refusals. That leaves 2,721 legal U0 layouts instead of 26. Only failed child
-`20260745` may continue, from its exact selected archive and complete inherited optimizer. It gets
-exactly the 360,448 actions left under its original 1,048,576-action U2 ceiling, using the same
-pixels, PPO, reward, curriculum, 50/7.5/7.5/35 transition mix, algorithm seed, and worker streams.
-All eleven windows must run, and only the full-budget terminal artifact can qualify. Its last two
-exams must pass the original gates plus prospectively stronger interaction-stability criteria.
-r1 is frozen as protocol `dungeon-apprentice-v0.2-u2r-stability-r1`, tag
-`u2r-stability-v0.2-u2r-r1-20260723`, and independent root
-`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-20260723`. The 435-test suite, 300-level
-oracle qualification, immutable-r0 audit, exact exclusion reconstruction, and all 16 fixed
-lesson/worker sampler checks passed before the root existed. No r1 learning claim exists until
-training produces actions and evaluations.
+r1 passed implementation qualification and then completed all eleven windows. It reached the exact
+360,448-remediation-action terminal boundary with 1,048,576 U2 child actions, 1,835,008 lifetime
+actions, and 3,584 optimizer updates. Its terminal U2 score remained 76/80 with panels 37/40 and
+39/40. Every original capability gate and every other stability check passed.
 
-If that terminal artifact qualifies, it receives one no-update confirmation on four fresh candidate
-streams at `15_240_000`–`15_279_999`. A pass would open U3 only with the explicit ancestry label
-**two directly confirmed U2 policies plus one prospectively remediated U2r policy**. It would not
-rewrite the original U2 confirmation as 3/3. The zero-action launch failure is not a capability
-result; a valid r1 stability or confirmation failure leaves U3 closed and cannot trigger another
-unplanned retry.
+The exact terminal artifact nevertheless failed one frozen criterion: U2 mean ineffective
+interactions were 4.1625 against a maximum of 3.0. Two deterministic U2 cases produced 299 of the
+333 ineffective interactions through 145-action toggle and 153-action pickup loops. The
+penultimate artifact had the same 76/80 capability score and only 0.1875 ineffective interactions,
+but terminal-only selection correctly prohibits substituting it after seeing the regression. The
+[authenticated r1 result](results/v0.2-u2r-r1-stability.md) freezes the trajectory and terminal
+report at SHA-256
+`dcfbcbc9fb3e042d44c1bb7762479f005a24a989a96611b85b102c34f955fcc2`.
+
+The fresh `15_240_000`–`15_279_999` confirmation ranges were never opened because the terminal
+artifact was ineligible. Both U2r roots are terminal evidence, U3 remains closed, and no second
+continuation is permitted.
+
+The next bounded question is the prospective
+[U2-S matched stability ablation](protocol-v0.2-u2s-stability-ablation.md). Four sequential arms
+restart from confirmed U1 child `20260733`, not from a U2 or U2r policy. They cross unchanged versus
+conservative PPO with absence versus presence of a pixels-only penalty on repeated visibly
+ineffective interactions. Every arm receives the same matched RNG streams and 1,048,576-action
+budget. Only the fixed final three exams count, including case-level loop-tail gates. The frozen
+priority chooses the simplest eligible configuration—control, conservative, no-effect, then
+combined—and never promotes an ablation checkpoint. No eligible arm means the mechanism study
+stops; an eligible configuration permits only a new separately preregistered multi-lineage cohort.
+The factorial cohort is non-resumable: an interruption invalidates the whole comparison, and any
+replacement requires a new committed/tagged protocol attempt and root before all four arms restart.
 
 ## Scalability gates
 

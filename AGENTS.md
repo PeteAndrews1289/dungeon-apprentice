@@ -6,40 +6,63 @@
   `capability_failed`: two policies passed, while child `20260745` scored 169/200 against the frozen
   170/200 U2 gate. The completed cohort, confirmation attempt, and U0/U1 predecessors are frozen
   evidence; do not modify their environments, reports, checkpoints, launchers, or declared results.
-  U3 protected work remains closed. The first externally anchored
-  `dungeon-apprentice-v0.2-u2r-stability` launch failed during initial environment reset with zero
-  policy actions and zero optimizer updates. Its tag, root, and four-file evidence bundle are
-  immutable and non-resumable. The corrected
-  `dungeon-apprentice-v0.2-u2r-stability-r1` successor is implemented and qualified, but training
-  has not begun.
-  It may use only child `20260745`'s exact mastery archive
-  `56dc459fb94110f41a14b2304425f572fc235c8cfc07e1152306cbf77ac33dee`, including its optimizer,
-  and only the 360,448 actions left under that child's original 1,048,576-action U2 ceiling. Results
-  from the original v0 canary remain engineering evidence only: its intrinsic reward and evaluation
-  timing invalidate it as capability evidence.
-- U2r-r1 must use annotated training tag `u2r-stability-v0.2-u2r-r1-20260723`, algorithm seed
-  `20260749`, and worker streams `20260749`–`20260752`. All eleven 32,768-action windows run; only
-  the exact full-budget terminal artifact may qualify. Do not select an earlier or best-looking
-  checkpoint, reset the optimizer, extend the budget, or imply that writing this protocol means
-  training has started.
-- The failed r0 root `/Volumes/T7 Developer/DungeonApprentice/u2r-stability-20260723` may never be
-  resumed, renamed, or reused. A U2r-r1 interruption may resume only from the launcher's
-  authenticated chain tip beneath
-  `/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-20260723`. Segment zero is
-  `v02-u2r-r1-seed-20260745`; successors are contiguous `-resume-N` directories and add
-  `N × 100,000` to process RNG streams. Never accept a caller-selected checkpoint or run name,
-  overwrite a segment, omit carried exam/case evidence, or continue without a durable record of the
-  four actual active episodes and the exact safe policy/optimizer boundary.
-- U2r-r1 training retains the unchanged U2 generators, pixels, actions, PPO, reward, normal
-  50/7.5/7.5/35 transition mix, and recovery controller. The complete 84,218-layout historical
-  inventory remains digest-bound. Applied guards are lesson-specific: Navigate, U1, and U2 retain
-  same-lesson historical novelty, while finite U0 rejects only its 79 unique development layouts
-  and reports prior-history or consumed-confirmation exact overlap diagnostically. The trainer may
-  never load old evidence images, scores, roles, seeds, or action traces; U0 overlap may arise only
-  from an ordinary training seed independently generating the same exact layout. Do **not** require
-  layouts encountered within U2r-r1 training to be globally unique. Persist every U2r-r1
-  episode-start and active-worker layout identity so a later confirmation can exclude the complete
-  r1 history.
+  Results from the original v0 canary remain engineering evidence only: its intrinsic reward and
+  evaluation timing invalidate it as capability evidence.
+- The first externally anchored `dungeon-apprentice-v0.2-u2r-stability` launch is an immutable
+  zero-action operational failure. The corrected
+  `dungeon-apprentice-v0.2-u2r-stability-r1` successor then completed all eleven fixed windows and
+  reached its exact 360,448-remediation-action terminal boundary. Its valid scientific verdict is
+  `failed`: terminal U2 remained 76/80 with panels 37/40 and 39/40, but mean ineffective
+  interactions were 4.1625 against the frozen maximum of 3.0. The authenticated report SHA-256 is
+  `dcfbcbc9fb3e042d44c1bb7762479f005a24a989a96611b85b102c34f955fcc2`; see
+  `docs/results/v0.2-u2r-r1-stability.md`.
+- Both U2r roots and their tags are now terminal evidence. Never resume, rename, reuse, prune,
+  overwrite, or continue either root. Never substitute r1's favorable 1,015,808-child-action
+  penultimate checkpoint for its required 1,048,576-action terminal artifact. The reserved
+  `15_240_000`–`15_279_999` confirmation candidates were not opened and may not be repurposed as a
+  U2-S development exam. U3 remains closed.
+- The next prospective decision is the matched
+  `dungeon-apprentice-v0.2-u2s-stability-ablation` in
+  `docs/protocol-v0.2-u2s-stability-ablation.md`. This branch contains its implementation and
+  preflight tests, but source and documentation alone do not imply qualification, external
+  anchoring, canonical root creation, or training. Before action one, a clean release must bind the
+  protocol, exact parent, four interventions, seeds, lesson-specific guard digests, terminal rule,
+  protected partitions, storage boundary, and dashboard identity.
+- U2-S may load only confirmed U1 child `20260733`, archive SHA-256
+  `3d2950e63491d07d3e483660469b8bec869fa137fa61d6b4d22b3d9f0ded2104`, including its optimizer.
+  It may not load any U2, U2r, or earlier U2-S policy. Four sequential arms—control, conservative,
+  no-effect, and combined—share algorithm seed `20260753`, worker streams
+  `20260753`–`20260756`, and exactly 1,048,576 new U2 actions apiece. Arms are matched development
+  trajectories, not four independent replications.
+- The conservative U2-S intervention changes only learning rate (`2.5e-4` to `2.5e-5` linearly),
+  clip range (`0.10`), PPO epochs (2), and target KL (`0.015`). The experience-only intervention
+  adds `-0.01` on the second and later consecutive transition in which the same pickup/drop/toggle
+  action leaves the next visible pixel bytes unchanged, capped at `-0.10` per episode. Any pixel
+  change, action change, noninteraction, reset, or termination resets the streak. The rule receives
+  no coordinates, objects, milestones, oracle state, or trainer-only `info`, stays outside the
+  observation, and is absent from evaluation.
+- All U2-S arms must run the full budget with exams every 32,768 post-update actions. Only the fixed
+  final three exams may decide the arm. Each must pass all existing gates, score U2 at least 72/80
+  with both panels at least 34/40, keep U0/U1/U2 mean ineffective interactions at most 3.0, contain
+  no case with 10 or more ineffective interactions, and contain no identical pickup/drop/toggle
+  action run of length 10 or more. Eligible configurations use the frozen
+  simplest-intervention priority `control > conservative > no-effect > combined`.
+- U2-S selects a configuration only. Never promote or reuse an ablation checkpoint. If no arm is
+  eligible, the mechanism study fails and neither a successor cohort nor U3 opens. If one is
+  eligible, only a new separately committed protocol may train fresh multi-lineage children from
+  confirmed U1 parents. The ablation itself cannot use confirmation or final seeds and cannot
+  activate U3.
+- U2-S is non-resumable because continuing only one factorial arm from reset environment, RNG, or
+  recurrent state would break the matched comparison. Any interruption or crash makes the whole
+  canonical cohort terminal `operationally_incomplete`. A replacement must use a separately
+  committed and tagged protocol-attempt identity and root, and restart all four arms fresh from the
+  exact confirmed U1 parent.
+- U2-S retains r1's lesson-specific training guards: Navigate, U1, and U2 use same-lesson
+  historical novelty, while finite U0 rejects only its 79 unique development layouts and reports
+  other historical overlap diagnostically. Freeze one static pre-ablation guard inventory for all
+  four arms; do not add an earlier arm's layouts to a later arm's hard guard. The trainer may never
+  load old evidence images, scores, roles, seeds, or action traces, and within-arm layouts need not
+  be globally unique. Persist every episode-start and active-worker layout identity.
 - The learning agent receives pixels and its own recurrent state only. Do not add coordinates,
   map IDs, shortest paths, object labels, oracle actions, or mission text to policy observations.
 - Trainer-visible `info` fields may grade outcomes and create reports, but may never select or

@@ -272,7 +272,7 @@ Do not delete, move, rename, append to, or pass that root to `--resume`. Its exa
 and checksums are in
 [the launch-attempt result](results/v0.2-u2r-launch-attempt-1.md).
 
-### r1 launch refusal boundary
+### r1 terminal boundary
 
 r1 is a distinct prospective release:
 
@@ -285,48 +285,21 @@ r1 is a distinct prospective release:
 | Initial segment | `v02-u2r-r1-seed-20260745` |
 | Dashboard | `http://127.0.0.1:8786/` |
 
-The launcher must refuse to create the r1 root until the clean r1 source, amended protocol digest,
-external annotated tag, four immutable attempt-1 digests, exact parent, complete historical
-inventory, lesson-specific guard identities, mounted T7, and real four-worker reset preflight all
-qualify. In particular, qualification must prove that U0's 79-identity development guard leaves
-2,721 of its finite 2,800 exact layouts available. Navigate, U1, and U2 retain their historical
-novelty guards.
+The launcher did refuse action until the clean r1 source, amended protocol digest, external
+annotated tag, four immutable attempt-1 digests, exact parent, complete historical inventory,
+lesson-specific guard identities, mounted T7, and real four-worker reset preflight all qualified.
+It then completed all eleven 32,768-action windows and selected only the exact
+1,048,576-child-action terminal artifact.
 
-r1 passed 435 repository tests, 200 focused boundary tests, a 300/300 oracle check, authentic
-reconstruction of the r0 bundle and 84,218-layout inventory, and all 16 fixed lesson/worker sampler
-checks. Do **not** run from the old tag merely because attempt 1 once qualified. Once the amended
-tag is present on the same clean source, launch the sole r1 segment with:
+That artifact retained 76/80 U2 capability but failed the frozen terminal interaction-stability
+limit. The authenticated result is
+[U2r-r1 Stability Remediation: Terminal Result](results/v0.2-u2r-r1-stability.md). The fresh U2r
+confirmation reservation never opened.
 
-```bash
-./scripts/run_v02_u2r.sh
-```
-
-The launcher re-authenticates the parent, failed confirmation, qualification, static layout
-guards and retained inventory, remote r1 annotated tag, mounted T7, free-space reserve, clean
-source, and absence of another neural trainer before it creates evidence. It writes only beneath
-the r1 run and media roots in the table and serves the read-only dashboard on port 8786.
-
-Do not choose a checkpoint or new name by hand after an r1 interruption. If—and only if—a genuine
-r1 segment durably published its fail-closed interruption record after training began, restore the
-same source and T7, verify no trainer remains, and run:
-
-```bash
-./scripts/run_v02_u2r.sh --resume
-```
-
-The resume planner authenticates the complete contiguous r1 chain and chooses only its tip. Segment
-zero is `v02-u2r-r1-seed-20260745`; successors are exactly
-`v02-u2r-r1-seed-20260745-resume-N`. Each segment derives new algorithm and worker RNG streams by
-adding `N × 100,000`, while retaining the same policy, optimizer, curriculum, completed exams, and
-cumulative ceiling. The four partial episode identities captured at interruption are retained and
-explicitly abandoned because active Gym and recurrent states are not serialized. A power loss that
-prevents the interruption record from becoming durable is an operational failure, not permission
-to guess at a recovery point.
-
-All eleven 32,768-action windows run. Only the exact 1,048,576-child-action terminal artifact may
-qualify, and only from the declared final two development exams. No launcher or trainer path opens
-the fresh U2r confirmation reservation; a separately committed no-update evaluator is required
-after a positive terminal stability report.
+Both U2r roots and tags are now terminal evidence. Do **not** run either the launch or `--resume`
+form of `scripts/run_v02_u2r.sh`, choose the favorable penultimate checkpoint, rename a segment, or
+append another continuation. The resume description formerly in this runbook applied only while r1
+was active; terminal closeout permanently ended that authority.
 
 The seed ledger is a refusal list:
 
@@ -389,10 +362,97 @@ selection audit. Replaceable `latest-safe` and `resume` recovery aliases are sep
 immutable exams. The 2 GiB lineage cap, 6 GiB cohort cap, optional 10 GiB media cap, and 25 GiB
 free-space reserve are refusal thresholds rather than estimates of expected consumption.
 
+## Run the U2-S matched stability ablation
+
+U2-S is a four-arm development mechanism study, not another continuation and not a confirmation.
+Its complete scientific contract is
+[Protocol v0.2 U2-S](protocol-v0.2-u2s-stability-ablation.md).
+
+| Field | Fixed identity |
+| --- | --- |
+| Protocol | `dungeon-apprentice-v0.2-u2s-stability-ablation` |
+| Annotated tag | `u2s-stability-ablation-v0.2-u2s-20260723` |
+| Qualification | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.2-u2s-20260723/report.json` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-20260723` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-media-20260723` |
+| Dashboard | `http://127.0.0.1:8787/` |
+| Parent | Confirmed U1 child `20260733` |
+| Sequential arms | `control`, `conservative`, `no-effect`, `combined` |
+
+The sole safe order is:
+
+1. freeze the complete implementation and protocol in one clean commit;
+2. push that commit and its exact one-line annotated tag;
+3. run the claim-bearing qualification, which includes the full tests, mechanical oracle, and a
+   real four-arm disposable rollout/update smoke;
+4. verify the qualification report and checksum while both canonical run roots are still absent;
+5. invoke the fixed launcher once; and
+6. leave the repository, tag, qualification, parent, and protected historical evidence unchanged
+   until the cohort becomes terminal.
+
+The qualification command is:
+
+```bash
+.venv/bin/python -m dungeon_apprentice.v02_u2s_qualify
+```
+
+It fails closed unless the remote annotated tag points to clean `HEAD`, predecessor evidence and
+the confirmed U1 policy/optimizer retain their frozen hashes, all four lesson guards reconstruct
+exactly, confirmation/final partitions stay unavailable, the T7 is a distinct mounted device with
+at least 25 GiB free, and the canonical qualification/cohort/media roots do not already exist. Its
+disposable smoke updates temporary policy copies only; it cannot create a capability claim or a
+promotable checkpoint.
+
+After qualification succeeds, the only launcher command is:
+
+```bash
+./scripts/run_v02_u2s_ablation.sh
+```
+
+The launcher accepts no arm, seed, checkpoint, run-name, budget, or resume override. It creates the
+cohort contract, starts the read-only dashboard, prevents sleep, and runs the four cells
+sequentially. Each cell reloads the exact confirmed U1 policy and optimizer, proves the same
+post-reset pre-action RNG identity, trains exactly 1,048,576 actions, and retains all 32 fixed
+post-update exams.
+
+### U2-S interruption rule
+
+U2-S has no safe resume command. If a trainer, launcher, machine, source tree, or storage boundary
+interrupts any cell, the entire root closes as `operationally_incomplete`. Do not continue the
+current cell and do not reuse already completed cells. A replacement requires a new prospective
+source commit, annotated tag, protocol-attempt identity, and root, followed by all four fresh cells
+from the confirmed U1 parent.
+
+This strict rule exists because resetting only one arm would give it a different environment,
+recurrent, scheduler, and random trajectory than the other factorial cells. A checkpoint may be
+useful forensic evidence without being a valid continuation point.
+
+### U2-S live and terminal evidence
+
+The dashboard reads only bounded public evidence. During training it shows each arm's action
+counter, update count, completed exam curve, U2 score, ineffective-interaction mean and tails,
+generic repeated-interaction run, and visible no-effect streak. It never controls training.
+
+Terminal closeout succeeds only after all four trainers exit normally and the launcher:
+
+- deep-verifies every arm report, all 128 exam bundles, all 40,960 case records, terminal model and
+  optimizer state, reward/optimizer/episode ledgers, and source/qualification bindings;
+- proves all four initial RNG identities are identical;
+- recomputes the fixed final-three-exam grades and simplest-intervention priority;
+- publishes the conservative main, no-effect main, and interaction contrasts;
+- records storage caps and zero trainer/supervisor/caffeinate orphans, with only the dashboard
+  explicitly left running; and
+- seals the cohort report and its integrity record before the dashboard may display a selected
+  mechanism.
+
+The ablation selects only a configuration. No arm checkpoint may be copied into U3, confirmation,
+or a successor. A positive result permits writing a separate multi-lineage protocol that starts
+fresh from confirmed U1 parents; it does not itself confirm U2.
+
 ## Resume a legacy v0/v0.1 run after interruption
 
-This older generic procedure does not apply to U2r. For U2r, use only the authenticated
-`./scripts/run_v02_u2r.sh --resume` path described above.
+This older generic procedure does not apply to U2r or U2-S. Both are terminal/non-resumable under
+their current records; never adapt this generic command to either protocol.
 
 Resume from an archive only when its matching state sidecar is present and passes digest/protocol
 validation. A resume creates a new child run rather than rewriting the parent:

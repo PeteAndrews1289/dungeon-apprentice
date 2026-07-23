@@ -750,3 +750,129 @@ The mounted T7 had roughly 216 GiB free, no trainer was active, and the r1 root 
 Accordingly this is implementation qualification, not a learning result: no r1 action, checkpoint,
 exam, or learning outcome existed at the freeze, the confirmation streams remained sealed, and U3
 remained closed.
+
+### July 23, 2026 — U2r-r1 completes with a valid terminal stability failure
+
+The corrected r1 trainer began at `2026-07-23T16:09:08+00:00` from clean source
+`86d3424a631a661966c763da3e1fabf27df798f1` and annotated tag
+`u2r-stability-v0.2-u2r-r1-20260723`. It used the exact failed-lineage U2 checkpoint and optimizer,
+algorithm seed `20260749`, worker streams `20260749`–`20260752`, and the prospectively amended
+lesson-specific guards. It finished at `2026-07-23T16:53:18+00:00` without a crash.
+
+Every declared boundary was exact:
+
+- 360,448 remediation actions;
+- 1,048,576 total U2 child actions;
+- 1,835,008 lifetime actions;
+- 3,584 optimizer updates;
+- eleven 32,768-action post-update exams; and
+- 3,520 authenticated deterministic case records.
+
+All eleven windows were allocation-valid normal practice. The U2 trajectory was not a simple
+failure to learn:
+
+| Boundary | Navigate | U0 | U1 | U2; panels | U2 ineffective |
+| --- | ---: | ---: | ---: | --- | ---: |
+| Inherited source | 79 | 76 | 77 | 72; 36, 36 | 6.5375 |
+| 32,768 | 73 | 78 | 76 | 70; 35, 35 | 11.8500 |
+| 163,840 | 79 | 80 | 80 | 73; 37, 36 | 0.1250 |
+| 196,608 | 80 | 80 | 80 | 77; 38, 39 | 2.1625 |
+| 327,680 — penultimate | 78 | 80 | 80 | **76; 37, 39** | **0.1875** |
+| 360,448 — terminal | 77 | 80 | 80 | **76; 37, 39** | **4.1625** |
+
+The terminal-pair grader passed every original overall and panel gate, both stronger 72/80 U2
+overall gates, all four 34/40 U2 panel gates, the decline limits, allocation checks, normal-practice
+checks, and penultimate interaction checks. Its sole failed condition was
+`unlock/u2-separated:terminal_ineffective_at_most_3`.
+
+Case evidence explained the mean. The penultimate U2 exam contained only 15 ineffective
+interactions and no case with ten. The terminal exam contained 333. Validation seed `11_200_025`
+opened the door and then repeated toggle 145 times; seed `11_200_027` repeated pickup 153 times.
+Together those two timeouts contributed 299 interactions, 89.8% of the U2 total. A separate Local
+Unlock case produced 42 ineffective interactions and a 41-action repeated run while its lesson mean
+remained only 0.5875. These tails showed why a lesson mean alone was not a sufficient stability
+description.
+
+The valid scientific verdict is **`failed`**, not an engineering crash and not capability
+collapse. The policy still completed 76/80 U2 cases, acquired 79 keys, and opened 78 doors.
+However, the exact terminal artifact exceeded the prospectively frozen mean limit and could not
+enter confirmation. The equally capable, unusually clean penultimate checkpoint remains diagnostic
+evidence only; selecting it after observing the terminal result would violate the terminal-only
+rule.
+
+The raw terminal report SHA-256 is
+`dcfbcbc9fb3e042d44c1bb7762479f005a24a989a96611b85b102c34f955fcc2`.
+The terminal checkpoint SHA-256 is
+`11ce6b1d3a858bdc07182ed935ff8450baba4202b66bb663a56840dc10214818`.
+Closeout authenticated every retained exam/checkpoint/case reference, the parent and source/tag
+bindings, the unchanged r0 evidence bundle, and the no-update report boundary. The run used about
+381.70 MiB, remained under every storage cap, left roughly 215.5 GiB free on the T7, and left no
+orphaned trainer.
+
+The fresh `15_240_000`–`15_279_999` confirmation candidates remained unopened. No confirmation
+evaluator ran, no fresh case was selected, both U2r roots became terminal evidence, and U3 remained
+closed. The complete record is
+[the U2r-r1 terminal result](results/v0.2-u2r-r1-stability.md).
+
+### July 23, 2026 — U2-S freezes a matched mechanism study before implementation
+
+U2r-r1 exhausted the declared “more unchanged experience” path. The next decision does not continue
+that policy, choose its penultimate checkpoint, lower the 3.0 threshold, or open another protected
+exam. It restarts at the last confirmed boundary before U2 and tests two possible causes of the
+loop-tail failure.
+
+The [prospective U2-S protocol](protocol-v0.2-u2s-stability-ablation.md) fixes a 2 × 2 design:
+
+| Sequential arm | PPO rule | Repeated visible no-effect penalty |
+| --- | --- | --- |
+| `control` | Existing U2 PPO | Off |
+| `conservative` | Linear `2.5e-4`→`2.5e-5`, clip 0.10, two epochs, target KL 0.015 | Off |
+| `no-effect` | Existing U2 PPO | On |
+| `combined` | Conservative PPO | On |
+
+All four children must load the exact confirmed U1 `20260733` parent checkpoint
+`3d2950e63491d07d3e483660469b8bec869fa137fa61d6b4d22b3d9f0ded2104`
+and its optimizer. No U2, U2r, or earlier ablation policy may be a parent. The arms deliberately
+share algorithm seed `20260753`, worker streams `20260753`–`20260756`, the same static
+lesson-specific guard inventory, and the same 1,048,576-action U2 budget. This makes them matched
+development trajectories rather than four independent replications.
+
+The comparison is prospectively non-resumable. A reset continuation of only one arm would change
+its environment, recurrent, penalty, and RNG trajectory relative to the other factorial cells.
+Any interruption therefore closes the entire canonical cohort as `operationally_incomplete`; a
+replacement requires a new source commit, annotated tag, protocol-attempt identity, and root before
+all four arms restart from the confirmed parent.
+
+The reward intervention is deliberately narrow. On pickup, drop, or toggle, the wrapper compares
+only the visible pixel bytes before and after the chosen action. A streak exists only while the same
+interaction repeats and every transition leaves the visible pixels byte-identical. Its first
+transition is unpenalized; the second and later transitions receive `-0.01`. A pixel change,
+different action, movement action, reset, or terminal resets the streak. Added penalty is capped at
+`-0.10` per episode. The rule receives no coordinate, object, inventory, milestone, oracle, path,
+or trainer-only state; it never masks an action, stays out of observation, and is disabled during
+evaluation.
+
+Every arm must run all 32 fixed 32,768-action windows. Only exams at 983,040, 1,015,808, and
+1,048,576 actions may decide eligibility, and all three must independently:
+
+- pass the existing prerequisite overall and panel gates;
+- score U2 at least 72/80 with both panels at least 34/40;
+- hold U0, U1, and U2 mean ineffective interactions to at most 3.0;
+- contain no case with ten or more ineffective interactions; and
+- contain no identical pickup/drop/toggle action run of length ten or more.
+
+The report also freezes mean, median, upper quantiles, maxima, tail counts, and worst-case
+concentration so two catastrophic cases cannot hide inside a clean average again.
+
+If several arms qualify, the simplest-intervention priority is fixed as control, conservative,
+no-effect, then combined. The study selects only the learner configuration. It never carries an arm
+checkpoint into a claim-bearing cohort or U3. No eligible arm ends this learner-family experiment;
+an eligible configuration merely permits a new separately preregistered multi-lineage cohort from
+confirmed U1 parents.
+
+The prospective scientific root is
+`/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-20260723`, and the read-only dashboard is
+assigned to port 8787. This entry records a design decision only. At this point it does not claim an
+implementation, clean source freeze, external tag, qualification, root creation, policy action, or
+training result. All U2 confirmation, unopened U2r confirmation, and project-final ranges remain
+unavailable to the ablation.

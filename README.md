@@ -252,62 +252,68 @@ qualification, prior-confirmation, and completed logged training histories while
 declared bounded 12-layout terminal logging limitation. The strict failure means U3 Full Unlock
 protected work cannot activate from this evidence.
 
-### U2r Stability Remediation — attempt 1 failed at zero actions; r1 qualified
+### U2r Stability Remediation — complete, valid terminal stability failure
 
-The next step is not a retry of the opened exam. The
-[U2r protocol](docs/protocol-v0.2-u2r-stability-remediation.md) keeps the original
-`capability_failed` verdict intact and creates one bounded successor artifact from only the failed
-lineage:
+The [U2r protocol](docs/protocol-v0.2-u2r-stability-remediation.md) kept the original
+`capability_failed` verdict intact and permitted one bounded continuation of only child `20260745`.
+Its first externally tagged launch remains an
+[immutable zero-action operational failure](docs/results/v0.2-u2r-launch-attempt-1.md): a global
+history guard left only 26 of finite U0's 2,800 exact layouts and initial reset exhausted 128
+proposals before policy action one.
 
-- exact parent: child `20260745` mastery archive
-  `56dc459fb94110f41a14b2304425f572fc235c8cfc07e1152306cbf77ac33dee`, including its optimizer;
-- additional budget: exactly **360,448 actions**, the eleven 32,768-action windows remaining under
-  that child's original 1,048,576-action ceiling;
-- behavior: unchanged pixels, actions, PPO, reward, four-lesson curriculum, 50/7.5/7.5/35 normal
-  transition mix, and prerequisite recovery;
-- selection: only the exact full-budget terminal artifact, never an earlier or best-looking
-  checkpoint.
+r1 amended only that U0 guard. It retained the exact U2 parent and optimizer, all eleven remaining
+32,768-action windows, unchanged PPO/reward/curriculum, algorithm and worker streams
+`20260749`–`20260752`, and terminal-only selection. It then completed normally:
 
-![One failed lineage receives eleven fixed windows before one entirely fresh confirmation](docs/assets/v0.2-u2r-stability-remediation.svg)
+| Boundary | Navigate | Visible U0 | Local U1 | Separated U2; panels | U2 ineffective |
+| --- | ---: | ---: | ---: | --- | ---: |
+| Inherited source | 79/80 | 76/80 | 77/80 | 72/80; 36, 36 | 6.5375 |
+| First r1 exam | 73/80 | 78/80 | 76/80 | 70/80; 35, 35 | 11.8500 |
+| Penultimate | 78/80 | 80/80 | 80/80 | **76/80; 37, 39** | **0.1875** |
+| Terminal | 77/80 | 80/80 | 80/80 | **76/80; 37, 39** | **4.1625** |
 
-The last two fixed development exams must pass the original overall and panel gates plus a stronger
-prospective stability rule: U2 at least 72/80 with both panels at least 34/40, no more than 3.0 mean
-ineffective interactions independently on U0/U1/U2, and no lesson falling by more than 2/80 at the
-terminal boundary.
+The exact terminal policy retained strong capability, but the frozen stability maximum was 3.0.
+Two U2 cases generated 299 of 333 ineffective interactions: one repeated toggle 145 times after
+opening the door, and one repeated pickup 153 times. Every other terminal check passed. The machine
+verdict is therefore **`failed`**, not a crash and not eligible for the fresh confirmation.
 
-The first externally tagged launcher did start, but it failed during the initial environment reset
-before policy action one. It recorded **zero policy actions, zero remediation actions, and zero
-optimizer updates**. The original global 84,218-layout guard covered 2,774 of finite U0's 2,800
-possible exact layouts; the declared worker encountered 128 excluded U0 proposals in succession.
-The exact four-file evidence bundle, timestamps, hashes, traceback, and zero-counter proof are in
-the [immutable attempt-1 result](docs/results/v0.2-u2r-launch-attempt-1.md).
+The full [authenticated U2r-r1 result](docs/results/v0.2-u2r-r1-stability.md) records all eleven
+exams, 3,520 case records, tail diagnostics, counters, hashes, storage, and claim limits. The
+terminal report SHA-256 is
+`dcfbcbc9fb3e042d44c1bb7762479f005a24a989a96611b85b102c34f955fcc2`.
+The attractive penultimate checkpoint cannot replace the prospectively required terminal artifact.
+The reserved `15_240_000`–`15_279_999` confirmation candidates remained unopened, both U2r roots
+are terminal evidence, and U3 remains closed.
 
-The original tag `u2r-stability-v0.2-u2r-20260723` and root
-`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-20260723` remain immutable failed-launch
-evidence. They are not resumed or renamed.
+### U2-S — prospective matched learner ablation
 
-A frozen r1 amendment changes only the lesson-specific training guard. Navigate, U1, and U2
-retain historical novelty. U0 rejects its 79 unique development layouts but treats earlier
-training-history overlap as a required diagnostic, leaving 2,721 legal layouts. The full historical
-inventory remains digest-bound rather than disappearing from the record.
+U2r showed that more unchanged PPO experience can produce excellent behavior temporarily without
+preserving it reliably. The next question therefore separates two candidate mechanisms:
 
-r1 has protocol `dungeon-apprentice-v0.2-u2r-stability-r1`, annotated tag
-`u2r-stability-v0.2-u2r-r1-20260723`, run root
-`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-20260723`, and segment
-`v02-u2r-r1-seed-20260745`. It retains algorithm/worker seeds `20260749`–`20260752`, because attempt
-1 produced no action or update, and retains the still-sealed `15_240_000`–`15_279_999`
-confirmation streams. Its implementation qualification passed 435 repository tests, 200 focused
-r1 boundary tests, a 300/300 mechanical oracle check, authentic reconstruction of the 84,218-layout
-inventory, and all 16 fixed lesson/worker sampler checks. Training has not yet begun, so no r1
-learning result is claimed here.
+| Arm | PPO | Pixels-only repeated no-effect feedback |
+| --- | --- | --- |
+| Control | Existing | Off |
+| Conservative | Decaying learning rate, tighter clipping, two epochs, target KL | Off |
+| No-effect | Existing | `-0.01` on the second and later identical visibly ineffective interaction, capped at `-0.10` per episode |
+| Combined | Conservative | On |
 
-Only a future terminal-eligible policy may face the sealed streams once, with no update and the
-original confirmation gates. A pass could open U3 only with the explicit label **two directly
-confirmed U2 policies plus one prospectively remediated U2r policy**. It would not rewrite the
-original U2 result as 3/3. The read-only dashboard remains assigned to
-`http://127.0.0.1:8786/`; see the
-[operations runbook](docs/runbook.md#run-the-bounded-u2r-stability-successor) for the launch refusal
-boundary.
+![Four matched children separate gentler PPO updates from pixels-only no-effect feedback](docs/assets/v0.2-u2s-stability-ablation.svg)
+
+The [prospective U2-S protocol](docs/protocol-v0.2-u2s-stability-ablation.md) starts every arm fresh
+from the same confirmed U1 `20260733` policy and optimizer—never from U2 or U2r. All four receive
+the same matched RNG streams and exactly 1,048,576 new U2 actions. Only their fixed final three
+exams count, with case-level loop-tail gates that means alone cannot hide.
+
+The ablation selects the simplest eligible **configuration**, in the frozen order control,
+conservative, no-effect, combined. It never promotes an arm checkpoint, opens confirmation/final
+seeds, or activates U3. If no arm qualifies, this PPO-and-reward mechanism study stops rather than
+adding another unplanned rescue.
+
+The four-cell comparison is intentionally non-resumable. If any arm is interrupted or crashes, the
+entire cohort closes as `operationally_incomplete`; a replacement must restart all four arms from
+the same confirmed U1 parent under a new prospective source commit, annotated tag, protocol-attempt
+identity, and root. This prevents one arm from receiving a different environment or recurrent-state
+continuation than the other matched cells.
 
 ## Evidence standard
 
@@ -333,5 +339,6 @@ See [the experiment contract](docs/experiment-contract.md),
 [roadmap](docs/roadmap.md). The completed v0.1 capability result is preserved in the
 [Navigate canary report](docs/results/v0.1-navigate-canaries.md), and the next proposed protocol is
 specified in [the v0.2 design](docs/protocol-v0.2-design.md). The current controlled decision point
-is the prospectively frozen [U2r Stability Remediation](docs/protocol-v0.2-u2r-stability-remediation.md);
-U3 remains blocked unless its exact terminal artifact passes the declared fresh confirmation.
+is the prospective
+[U2-S matched stability ablation](docs/protocol-v0.2-u2s-stability-ablation.md). U2r-r1 ended in a
+valid terminal stability failure, its fresh confirmation stayed sealed, and U3 remains blocked.
