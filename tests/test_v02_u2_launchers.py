@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -19,8 +20,11 @@ TRAINER_SUPERVISOR = REPOSITORY / "scripts" / "u2_trainer_supervisor.py"
 
 @pytest.mark.parametrize("launcher", (QUALIFICATION_LAUNCHER, COHORT_LAUNCHER))
 def test_u2_launchers_have_valid_zsh_syntax_without_running(launcher: Path) -> None:
+    zsh = shutil.which("zsh")
+    if zsh is None:
+        pytest.skip("zsh is unavailable on this host")
     subprocess.run(
-        ["/bin/zsh", "-n", str(launcher)],
+        [zsh, "-n", str(launcher)],
         check=True,
         capture_output=True,
         text=True,
