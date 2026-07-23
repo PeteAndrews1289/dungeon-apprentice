@@ -38,6 +38,8 @@ jobs:
           cache: pip
       - name: Install training stack
         run: python -m pip install -e ".[dev,train]"
+      - name: Test training-dependent confirmation paths
+        run: pytest -q tests/test_v02_u1_confirm.py tests/test_v02_u1_confirm_v2.py
       - name: Train, save, resume, and evaluate
         run: |
           dungeon-train \

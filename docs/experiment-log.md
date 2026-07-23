@@ -359,3 +359,27 @@ and `15_040_000`. Every checkpoint must pass all three overall gates and both fi
 weight updates. Qualification, provenance, allocation history, deterministic inference, and a
 strict all-three decision are specified in
 [the U1 confirmation plan](v0.2-u1-confirmation-plan.md).
+
+### July 23, 2026 — U1 confirmation attempt 1 stopped at qualification
+
+The preregistered evaluator opened all three 200-case blocks from clean source commit `19137fa`.
+Every block was mechanically valid, oracle-solvable, and above its diversity floors. The numerical
+range audit also passed. The stronger exact-layout audit then found eight U0 cases that repeated
+fixed U0 validation layouts and one U1 case that repeated the engineering-qualification set.
+
+The evaluator honored the frozen rule and stopped before importing or scoring a policy. The
+attempt is therefore `qualification_failed`, not a negative capability result. Its raw report
+SHA-256 is `d2fa53308f7488cc08f5ee67b86a125ad91c6ba3790fcd9433c35aab1215b25c`.
+The complete result and all nine exact collisions are preserved in
+[the immutable attempt-1 record](results/v0.2-u1-confirmation-attempt-1.md).
+
+### July 23, 2026 — collision-safe successor designed
+
+The failure exposed a concrete distinction: disjoint random seeds do not guarantee distinct
+generated dungeons when a finite procedural generator maps multiple seeds to the same layout. The
+successor does not delete cases or relax attempt 1. It prospectively reserves fresh 10,000-seed
+candidate streams, then uses a deterministic policy-blind selector to accept the first 200
+mechanically valid, exact-unique layouts outside the declared development references. It also
+excludes same-lesson layouts from the opened-but-unscored first attempt, and makes U1 exact-layout
+novel to all three frozen child histories. Only after selection and qualification complete may a
+policy load. See [the successor confirmation plan](v0.2-u1-confirmation-v2-plan.md).

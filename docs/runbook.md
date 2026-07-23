@@ -113,21 +113,36 @@ in [the U1 replication plan](v0.2-u1-replication-plan.md).
 
 ## Confirm Local Unlock on disjoint cases
 
-After the lead and both replications have mastered and the confirmation plan is committed from a
-clean tree, run the no-update evaluator once:
+Historical record: after the lead and both replications mastered, attempt 1 was launched once from
+a clean tree with:
 
 ```bash
 scripts/run_v02_u1_confirmation.sh
 ```
 
-The launcher selects the three exact first-mastery archives, refuses an existing output, qualifies
-all three 200-case seed blocks before scoring, and writes the raw report beneath
+Do **not** run that command again. Its launcher selected the three exact first-mastery archives,
+refused an existing output, qualified all three 200-case seed blocks before scoring, and wrote the
+raw report beneath
 `/Volumes/T7 Developer/DungeonApprentice/confirmations/v0.2-u1-20260723`. It never trains a policy.
 It creates `attempt.json` and `evaluator.log` before qualification, then writes a checksum sidecar
 for any completed report—including a valid negative result. A preexisting ledger, report, log, or
 checksum stops the launcher instead of silently beginning a second attempt. Do not open, substitute,
 or preview the confirmation ranges outside this frozen command. The exact gates and all-three
 verdict are in [the U1 confirmation plan](v0.2-u1-confirmation-plan.md).
+
+Attempt 1 stopped at qualification and is immutable. After its result and the successor plan are
+committed from a clean tree, launch the collision-safe successor once:
+
+```bash
+scripts/run_v02_u1_confirmation_v2.sh
+```
+
+The successor first verifies attempt 1's exact report SHA-256, then opens fresh candidate streams.
+It selects cases in ascending seed order using only generator, oracle, uniqueness, and frozen
+reference exclusions; no policy is loaded until all three accepted 200-case panels qualify. Its
+separate ledger, log, report, and checksum live under
+`/Volumes/T7 Developer/DungeonApprentice/confirmations/v0.2-u1-v2-20260723`. Exact rules are frozen
+in [the v2 confirmation plan](v0.2-u1-confirmation-v2-plan.md).
 
 If interrupted, resume from the latest intact child archive and sidecar with the same launcher
 settings plus `--resume` and a new run name. The U1 runner interprets 524,288 as a cumulative child

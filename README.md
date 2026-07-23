@@ -123,7 +123,12 @@ Before advancing to U2, the project freezes a larger
 [U1 confirmation](docs/v0.2-u1-confirmation-plan.md). The three first-mastery checkpoints receive
 deterministic 200-case Navigate, U0, and U1 exams on disjoint seed blocks without policy updates.
 Every policy must independently pass every lesson and both panels; pooled success cannot rescue a
-failed lineage.
+failed lineage. Its first attempt correctly stopped before policy scoring when nine generated
+layouts repeated declared development evidence despite numerically disjoint seeds. The
+[immutable attempt-1 result](docs/results/v0.2-u1-confirmation-attempt-1.md) preserves that
+qualification failure. A separately preregistered
+[collision-safe successor](docs/v0.2-u1-confirmation-v2-plan.md) uses fresh candidate streams and a
+policy-blind exact-layout exclusion rule rather than rewriting the first attempt.
 
 ## Evidence standard
 

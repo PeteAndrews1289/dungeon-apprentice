@@ -97,6 +97,14 @@ curves. The controller was not cosmetic; it protected old skills under three dif
 histories. Follow this with the larger disjoint confirmation rather than treating 72/80 as the end
 of the claim.
 
+The first confirmation attempt creates a useful scientific reversal. Its seed ranges were clean,
+all 600 dungeons were solvable, and every diversity floor passed—yet nine supposedly new cases were
+exact generated-layout repeats from development evidence. The evaluator stopped before seeing a
+single policy action. Visually contrast “different seed numbers” with “the same dungeon,” then show
+the empty checkpoint-results array. This makes the collision-safe successor feel earned: the test
+instrument learned from failure without giving the models a second chance at a score they never
+received.
+
 ### Ending options
 
 - **Full success:** one policy retrieves the relic on unseen final levels and retains every prior
@@ -121,7 +129,10 @@ of the claim.
 - side-by-side U0 and U1 first-person frames: visible door versus hidden door;
 - the U1 three-bar exam panel and an automatic U0- or Navigate-recovery transition;
 - the three U1 trajectories converging on 72/80 through different recovery histories;
-- the U1 confirmation table, clearly separated from the shared development exam;
+- the attempt-1 U1 confirmation stop: different seed numbers producing the same layouts, all 600
+  oracle-qualified cases, nine reference collisions, and an empty policy-results array;
+- the prospectively frozen v2 U1 confirmation table, clearly separated from both the failed
+  measurement instrument and the shared development exam;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
 - the v0 audit, reward inversion, and stale-policy evaluation timeline;

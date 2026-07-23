@@ -55,9 +55,17 @@ no recovery; every completed window remained within allocation tolerance. This p
 three-lineage replication rule. Exact evidence is in the
 [Local Unlock replication result](results/v0.2-local-unlock-replication.md).
 
-The next gate is the preregistered [U1 post-training confirmation](v0.2-u1-confirmation-plan.md):
-three frozen policies, three disjoint 200-case lesson blocks, no updates, and a strict all-three
-verdict. Only a positive confirmation supports implementing U2 Separated Unlock.
+The next gate was the preregistered [U1 post-training confirmation](v0.2-u1-confirmation-plan.md):
+three frozen policies, three 200-case lesson blocks, no updates, and a strict all-three verdict.
+Attempt 1 stopped before policy scoring because nine numerically new seeds generated exact layouts
+from declared development references. That immutable qualification failure is documented in
+[the attempt-1 result](results/v0.2-u1-confirmation-attempt-1.md).
+
+The current gate is a separately preregistered replacement instrument rather than a retroactive
+repair.
+[Confirmation v2](v0.2-u1-confirmation-v2-plan.md) reserves fresh candidate streams and selects the
+first 200 mechanically valid, exact-unique, reference-excluded layouts without loading a policy.
+Only a positive v2 confirmation supports implementing U2 Separated Unlock.
 
 ## Scalability gates
 

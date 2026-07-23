@@ -6,7 +6,6 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
-import torch
 
 import dungeon_apprentice.v02_u1_confirm as confirmation
 from dungeon_apprentice.v02_lessons import (
@@ -349,33 +348,34 @@ def test_u1_qualification_preserves_validation_collision_as_a_failure(
     assert qualified["validation_disjointness_affects_verdict"] is True
 
 
-class _FakePolicy(torch.nn.Module):
-    def __init__(self) -> None:
-        super().__init__()
-        self.head = torch.nn.Linear(2, 2)
-        self.lstm_actor = torch.nn.LSTM(512, 256)
-        self.optimizer = torch.optim.Adam(self.parameters())
-        for parameter in self.parameters():
-            self.optimizer.state[parameter] = {
-                "step": torch.tensor(1.0),
-                "exp_avg": torch.zeros_like(parameter),
-                "exp_avg_sq": torch.zeros_like(parameter),
-            }
+def _fake_model(torch_module):
+    class FakePolicy(torch_module.nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.head = torch_module.nn.Linear(2, 2)
+            self.lstm_actor = torch_module.nn.LSTM(512, 256)
+            self.optimizer = torch_module.optim.Adam(self.parameters())
+            for parameter in self.parameters():
+                self.optimizer.state[parameter] = {
+                    "step": torch_module.tensor(1.0),
+                    "exp_avg": torch_module.zeros_like(parameter),
+                    "exp_avg_sq": torch_module.zeros_like(parameter),
+                }
 
-
-class _FakeModel:
-    def __init__(self) -> None:
-        self.policy = _FakePolicy()
-        self.observation_space = SimpleNamespace(shape=(3, 56, 56))
-        self.action_space = SimpleNamespace(n=7)
-        self.num_timesteps = 884_736
-        self._n_updates = 1_728
+    return SimpleNamespace(
+        policy=FakePolicy(),
+        observation_space=SimpleNamespace(shape=(3, 56, 56)),
+        action_space=SimpleNamespace(n=7),
+        num_timesteps=884_736,
+        _n_updates=1_728,
+    )
 
 
 def test_policy_evaluation_is_deterministic_and_no_update(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    model = _FakeModel()
+    torch = pytest.importorskip("torch")
+    model = _fake_model(torch)
     model_type = SimpleNamespace(load=lambda *_args, **_kwargs: model)
     monkeypatch.setattr(confirmation, "file_sha256", lambda _path: "a" * 64)
     monkeypatch.setattr(
@@ -393,7 +393,7 @@ def test_policy_evaluation_is_deterministic_and_no_update(
             model.policy.head.weight.add_(1)
         return _evaluation(lesson, (90, 90))
 
-    model = _FakeModel()
+    model = _fake_model(torch)
     model_type = SimpleNamespace(load=lambda *_args, **_kwargs: model)
     monkeypatch.setattr(confirmation, "evaluate_lesson", mutate)
     with pytest.raises(confirmation.U1ConfirmationError, match="changed policy"):
