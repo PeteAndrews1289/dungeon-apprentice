@@ -371,10 +371,10 @@ Its complete scientific contract is
 | Field | Fixed identity |
 | --- | --- |
 | Protocol | `dungeon-apprentice-v0.2-u2s-stability-ablation` |
-| Annotated tag | `u2s-stability-ablation-v0.2-u2s-20260723` |
-| Qualification | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.2-u2s-20260723/report.json` |
-| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-20260723` |
-| Media root | `/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-media-20260723` |
+| Annotated tag | `u2s-stability-ablation-v0.2-u2s-r1-20260723` |
+| Qualification | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.2-u2s-r1-20260723/report.json` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-r1-20260723` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-r1-media-20260723` |
 | Dashboard | `http://127.0.0.1:8787/` |
 | Parent | Confirmed U1 child `20260733` |
 | Sequential arms | `control`, `conservative`, `no-effect`, `combined` |
@@ -414,6 +414,13 @@ cohort contract, starts the read-only dashboard, prevents sleep, and runs the fo
 sequentially. Each cell reloads the exact confirmed U1 policy and optimizer, proves the same
 post-reset pre-action RNG identity, trains exactly 1,048,576 actions, and retains all 32 fixed
 post-update exams.
+
+Attempt 0 at `/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-20260723` is immutable failed
+infrastructure evidence. Its control arm stopped before status publication or action one because
+the per-arm media directory had not been created. It must never be resumed or reused. The r1
+launcher creates and validates that exact directory after the manifest opens an arm and before the
+trainer process starts. See the
+[authenticated incident narrative](results/v0.2-u2s-launch-attempt-0.md).
 
 ### U2-S interruption rule
 

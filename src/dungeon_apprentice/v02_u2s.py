@@ -198,10 +198,10 @@ U2_STABILITY_SUCCESSES = 72
 U2_STABILITY_PANEL_SUCCESSES = 34
 
 DEFAULT_QUALIFICATION_REPORT = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.2-u2s-20260723/report.json"
+    "/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.2-u2s-r1-20260723/report.json"
 )
-TRAINING_TAG = "u2s-stability-ablation-v0.2-u2s-20260723"
-COHORT_ID = "v0.2-u2s-ablation-20260723"
+TRAINING_TAG = "u2s-stability-ablation-v0.2-u2s-r1-20260723"
+COHORT_ID = "v0.2-u2s-ablation-r1-20260723"
 PROTOCOL_DOCUMENT = "docs/protocol-v0.2-u2s-stability-ablation.md"
 LINEAGE_CAP_BYTES = 2 * 1024**3
 COHORT_SCIENTIFIC_CAP_BYTES = 6 * 1024**3
@@ -211,8 +211,12 @@ QUALIFIED_GUARD_MAPPING_SHA256 = "cf468f599737220224c696c796d1305c78453359537b80
 U2R_TERMINAL_ACTIVE_RECORDS_SHA256 = (
     "93663439a363a4c47152cc4e320654a1f2807a708637777b1fe71b358817e522"
 )
-CANONICAL_COHORT_ROOT = Path("/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-20260723")
-CANONICAL_MEDIA_ROOT = Path("/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-media-20260723")
+CANONICAL_COHORT_ROOT = Path(
+    "/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-r1-20260723"
+)
+CANONICAL_MEDIA_ROOT = Path(
+    "/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-r1-media-20260723"
+)
 
 
 class U2SProtocolError(RuntimeError):

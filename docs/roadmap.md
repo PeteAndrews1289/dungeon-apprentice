@@ -30,8 +30,10 @@
 - [x] Run r1's fixed eleven-window budget and grade only the full-budget terminal artifact
 - [x] Preserve r1's valid terminal stability failure and leave its fresh confirmation unopened
 - [x] Freeze the prospective matched U2-S mechanism-ablation decision
-- [x] Implement and preflight the four-arm U2-S ablation without creating its canonical root
-- [ ] Qualify and externally anchor the frozen U2-S release
+- [x] Implement, preflight, qualify, and externally anchor U2-S attempt 0
+- [x] Preserve U2-S attempt 0 as a zero-action operational failure under its original tag/root
+- [x] Implement the fail-closed r1 launcher correction and assign fresh identities
+- [ ] Qualify and externally anchor the frozen U2-S r1 release
 - [ ] Run all four full-budget arms and select only a learner configuration from the fixed terminal rule
 - [ ] If a configuration qualifies, preregister a fresh multi-lineage U2-S cohort from confirmed U1 parents
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
@@ -148,6 +150,10 @@ combined—and never promotes an ablation checkpoint. No eligible arm means the 
 stops; an eligible configuration permits only a new separately preregistered multi-lineage cohort.
 The factorial cohort is non-resumable: an interruption invalidates the whole comparison, and any
 replacement requires a new committed/tagged protocol attempt and root before all four arms restart.
+That condition occurred in attempt 0 before action one when the launcher omitted the control arm's
+media directory. The [incident record](results/v0.2-u2s-launch-attempt-0.md) preserves the zero-action
+failure. U2-S r1 adds only the missing fail-closed directory step and restarts all four arms under
+fresh release identities.
 
 ## Scalability gates
 

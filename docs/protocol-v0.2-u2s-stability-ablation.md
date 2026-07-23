@@ -1,9 +1,10 @@
 # Protocol v0.2 U2-S: Matched Interaction-Stability Ablation
 
-> **Status:** prospective development protocol. The design below records the decision after the
-> valid U2r-r1 terminal stability failure and before any U2-S policy action. Implementation,
-> qualification, source commit, external tag, canonical root creation, and training are not
-> claimed by this document.
+> **Status:** prospective r1 development protocol. The scientific design below was frozen after
+> the valid U2r-r1 terminal stability failure. U2-S attempt 0 then ended before action one because
+> its launcher omitted the per-arm media directory. This amendment changes only the operational
+> attempt identity and requires that directory to exist before trainer startup; all four r1 arms
+> must still begin fresh from the same confirmed U1 parent.
 
 ## Decision in one sentence
 
@@ -132,7 +133,11 @@ identity is the state that actually enters the first training rollout.
 
 The canonical scientific root is prospectively assigned:
 
-`/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-20260723`
+`/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-r1-20260723`
+
+The canonical media root is prospectively assigned:
+
+`/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-r1-media-20260723`
 
 The read-only dashboard is prospectively assigned:
 
@@ -141,6 +146,16 @@ The read-only dashboard is prospectively assigned:
 Canonical protocol ID:
 
 `dungeon-apprentice-v0.2-u2s-stability-ablation`
+
+Canonical r1 attempt ID and annotated tag:
+
+- `v0.2-u2s-ablation-r1-20260723`
+- `u2s-stability-ablation-v0.2-u2s-r1-20260723`
+
+The cohort ID is the new protocol-attempt identity. The scientific protocol ID and dashboard port
+remain unchanged because r1 repeats the same preregistered comparison after a pre-action
+infrastructure failure; the new source commit, tag object, qualification, document hash, and roots
+make the attempt unambiguous.
 
 The completed implementation and protocol must first be frozen in a clean commit and externally
 anchored by an annotated tag. Claim-bearing qualification then authenticates that exact remote tag

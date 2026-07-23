@@ -62,21 +62,21 @@ SCHEMA_VERSION = 1
 KIND = "sealed_preflight_qualification"
 VERDICT = "qualified"
 
-QUALIFIED_TAG = "u2s-stability-ablation-v0.2-u2s-20260723"
+QUALIFIED_TAG = "u2s-stability-ablation-v0.2-u2s-r1-20260723"
 QUALIFIED_REMOTE = "origin"
 EXPECTED_ORIGIN_URL = "https://github.com/PeteAndrews1289/dungeon-apprentice.git"
 PROTOCOL_DOCUMENT = Path("docs/protocol-v0.2-u2s-stability-ablation.md")
 
 CANONICAL_QUALIFICATION_DIRECTORY = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.2-u2s-20260723"
+    "/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.2-u2s-r1-20260723"
 )
 CANONICAL_REPORT = CANONICAL_QUALIFICATION_DIRECTORY / "report.json"
 CANONICAL_CHECKSUM = CANONICAL_QUALIFICATION_DIRECTORY / "report.json.sha256"
 CANONICAL_COHORT_ROOT = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-20260723"
+    "/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-r1-20260723"
 )
 CANONICAL_MEDIA_ROOT = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-media-20260723"
+    "/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-r1-media-20260723"
 )
 
 BASE_QUALIFICATION_REPORT = Path(

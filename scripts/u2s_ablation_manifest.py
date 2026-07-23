@@ -18,8 +18,8 @@ from pathlib import Path
 from typing import Any
 
 PROTOCOL = "dungeon-apprentice-v0.2-u2s-stability-ablation"
-COHORT_ID = "v0.2-u2s-ablation-20260723"
-TAG_NAME = "u2s-stability-ablation-v0.2-u2s-20260723"
+COHORT_ID = "v0.2-u2s-ablation-r1-20260723"
+TAG_NAME = "u2s-stability-ablation-v0.2-u2s-r1-20260723"
 ACTION_CAP = 1_048_576
 TOTAL_ACTION_CAP = 4 * ACTION_CAP
 EVALUATION_EVERY = 32_768
@@ -83,7 +83,7 @@ CONFIRMATION_CHECKSUM_SHA256 = (
 )
 QUALIFICATION_REPORT = (
     "/Volumes/T7 Developer/DungeonApprentice/qualifications/"
-    "v0.2-u2s-20260723/report.json"
+    "v0.2-u2s-r1-20260723/report.json"
 )
 QUALIFIED_GUARD_MAPPING_SHA256 = (
     "cf468f599737220224c696c796d1305c78453359537b80d7b32716ae53e1c2ef"

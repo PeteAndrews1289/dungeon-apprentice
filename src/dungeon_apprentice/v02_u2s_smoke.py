@@ -44,7 +44,7 @@ SCHEMA_VERSION = 1
 TOTAL_TRANSITIONS = v02_u2s.ROLLOUT_TRANSITIONS
 
 CANONICAL_QUALIFICATION_ROOT = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.2-u2s-20260723"
+    "/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.2-u2s-r1-20260723"
 )
 CANONICAL_ROOTS = (
     CANONICAL_QUALIFICATION_ROOT,

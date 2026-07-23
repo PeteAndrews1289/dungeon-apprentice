@@ -4,8 +4,8 @@ set -euo pipefail
 repository=${0:A:h:h}
 volume="/Volumes/T7 Developer"
 dungeon_root="$volume/DungeonApprentice"
-run_root="$dungeon_root/u2s-ablation-20260723"
-media_root="$dungeon_root/u2s-ablation-media-20260723"
+run_root="$dungeon_root/u2s-ablation-r1-20260723"
+media_root="$dungeon_root/u2s-ablation-r1-media-20260723"
 contract="$run_root/cohort-contract.json"
 parent="$dungeon_root/u1-local-replication-20260722/v02-u1-replication-seed-20260733/checkpoints/mastered-local-unlock.zip"
 parent_sidecar="${parent:r}.json"
@@ -13,7 +13,7 @@ parent_manifest="${parent:h:h}/manifest.json"
 confirmation_report="$dungeon_root/confirmations/v0.2-u1-v2-20260723/report.json"
 confirmation_attempt="${confirmation_report:h}/attempt.json"
 confirmation_checksum="$confirmation_report.sha256"
-qualification_report="$dungeon_root/qualifications/v0.2-u2s-20260723/report.json"
+qualification_report="$dungeon_root/qualifications/v0.2-u2s-r1-20260723/report.json"
 qualification_checksum="$qualification_report.sha256"
 parent_sha256="3d2950e63491d07d3e483660469b8bec869fa137fa61d6b4d22b3d9f0ded2104"
 parent_sidecar_sha256="268f89361521dd855ba637254b236592186992718ad37ac374e85e5dbf408a07"
@@ -22,8 +22,8 @@ confirmation_sha256="6e577170050f6f14599b793a031776a19bf7c64eba0f243f457298da319
 confirmation_attempt_sha256="62147b2b556fe51e83876f2be35467fb488a4fb3b9c6347a600cf969e2bc86eb"
 confirmation_checksum_sha256="0be93cbbaf6581c4f6188ff6c4c82dee630f28da1cce462fa2acdb9caebed71a"
 training_protocol="dungeon-apprentice-v0.2-u2s-stability-ablation"
-cohort_id="v0.2-u2s-ablation-20260723"
-training_tag="u2s-stability-ablation-v0.2-u2s-20260723"
+cohort_id="v0.2-u2s-ablation-r1-20260723"
+training_tag="u2s-stability-ablation-v0.2-u2s-r1-20260723"
 trainer_module="dungeon_apprentice.v02_u2s"
 dashboard_module="dungeon_apprentice.v02_u2s_dashboard"
 manifest_helper="$repository/scripts/u2s_ablation_manifest.py"
@@ -224,7 +224,7 @@ with urllib.request.urlopen(
 ) as response:
     payload = json.load(response)
 if (
-    payload.get("cohort_id") != "v0.2-u2s-ablation-20260723"
+    payload.get("cohort_id") != "v0.2-u2s-ablation-r1-20260723"
     or payload.get("protocol")
     != "dungeon-apprentice-v0.2-u2s-stability-ablation"
     or payload.get("source_commit") != source
@@ -463,6 +463,12 @@ PY
     --arm "$active_arm"
   )
   manifest_command "${start_arguments[@]}" >/dev/null
+  if [[ -e "$media_directory" || -L "$media_directory" ]]; then
+    print -u2 "refusing to reuse the fresh U2-S arm media target: $media_directory"
+    exit 1
+  fi
+  /bin/mkdir -m 0755 "$media_directory"
+  assert_regular_ancestor_chain "$media_directory/placeholder" "$dungeon_root"
   supervisor_state="$run_root/launcher-$active_arm-attempt-$attempt.json"
   if [[ -e "$supervisor_state" || -L "$supervisor_state" ]]; then
     print -u2 "refusing to replace U2-S supervisor evidence: $supervisor_state"

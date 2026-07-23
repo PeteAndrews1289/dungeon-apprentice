@@ -123,10 +123,10 @@ def test_u2s_launcher_is_fixed_sequential_and_fail_closed() -> None:
     source = LAUNCHER.read_text(encoding="utf-8")
     for text in (
         "set -euo pipefail",
-        'run_root="$dungeon_root/u2s-ablation-20260723"',
-        'media_root="$dungeon_root/u2s-ablation-media-20260723"',
+        'run_root="$dungeon_root/u2s-ablation-r1-20260723"',
+        'media_root="$dungeon_root/u2s-ablation-r1-media-20260723"',
         'training_protocol="dungeon-apprentice-v0.2-u2s-stability-ablation"',
-        'training_tag="u2s-stability-ablation-v0.2-u2s-20260723"',
+        'training_tag="u2s-stability-ablation-v0.2-u2s-r1-20260723"',
         'trainer_module="dungeon_apprentice.v02_u2s"',
         'dashboard_module="dungeon_apprentice.v02_u2s_dashboard"',
         "dashboard_port=8787",
@@ -143,6 +143,7 @@ def test_u2s_launcher_is_fixed_sequential_and_fail_closed() -> None:
         "--cohort-contract",
         "--qualification-report",
         "--dashboard-pid",
+        '[[ -e "$media_directory" || -L "$media_directory" ]]',
         "accepts no options; interrupted cohorts must restart all four arms",
         "http://127.0.0.1:$dashboard_port/",
     ):
@@ -153,8 +154,23 @@ def test_u2s_launcher_is_fixed_sequential_and_fail_closed() -> None:
     assert "--resume" not in source
     qualification = source.index("assert_u2s_qualification")
     root_creation = source.index('/bin/mkdir -m 0755 "$run_root"')
+    manifest_start = source.index('manifest_command "${start_arguments[@]}"')
+    media_reuse_guard = source.index(
+        '[[ -e "$media_directory" || -L "$media_directory" ]]'
+    )
+    media_creation = source.index('/bin/mkdir -m 0755 "$media_directory"')
+    media_ancestor_check = source.index(
+        'assert_regular_ancestor_chain "$media_directory/placeholder" "$dungeon_root"'
+    )
     trainer_start = source.index('"$repository/.venv/bin/python" "$trainer_supervisor"')
     assert qualification < root_creation < trainer_start
+    assert (
+        manifest_start
+        < media_reuse_guard
+        < media_creation
+        < media_ancestor_check
+        < trainer_start
+    )
     final_stop = source.rindex("stop_caffeine\nmanifest_command finalize")
     finalization = source.rindex("manifest_command finalize")
     final_trap_release = source.rindex("launcher_finalized=true")
@@ -321,6 +337,71 @@ def test_manifest_rejects_contract_drift(
     contract["arms"][0]["intervention"]["clip_range"] = 0.19
     contract_path.write_text(json.dumps(contract))
     with pytest.raises(helper.U2sManifestError, match="contract differs"):
+        helper.next_plan(
+            root,
+            source_commit=source_commit,
+            tag_object=tag_object,
+        )
+
+
+def test_manifest_pre_status_crash_closes_the_nonresumable_cohort(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    helper = _load_helper()
+    root = tmp_path / "cohort"
+    media = tmp_path / "media"
+    root.mkdir()
+    media.mkdir()
+    source_commit = "a" * 40
+    tag_object = "b" * 40
+    qualification = _qualification(
+        helper,
+        source_commit=source_commit,
+        tag_object=tag_object,
+    )
+    monkeypatch.setattr(
+        helper,
+        "_verified_qualification_binding",
+        lambda **_kwargs: qualification,
+    )
+    helper.create_cohort(
+        root,
+        media_root=media,
+        source_commit=source_commit,
+        tag_object=tag_object,
+    )
+    helper.start_arm(
+        root,
+        source_commit=source_commit,
+        tag_object=tag_object,
+        arm_id="control",
+    )
+
+    helper.finish_arm(
+        root,
+        source_commit=source_commit,
+        tag_object=tag_object,
+        arm_id="control",
+        outcome="crashed",
+        trainer_exit_code=1,
+    )
+
+    state = json.loads((root / "cohort.json").read_text())
+    assert state["phase"] == "operationally_incomplete"
+    assert state["active_arm"] is None
+    assert state["arms"][0]["state"] == "crashed"
+    assert state["arms"][0]["attempts"] == [
+        {
+            "index": 0,
+            "state": "crashed",
+            "started_at": state["arms"][0]["attempts"][0]["started_at"],
+            "finished_at": state["arms"][0]["attempts"][0]["finished_at"],
+            "trainer_exit_code": 1,
+        }
+    ]
+    assert not (root / "control" / "status.json").exists()
+    with pytest.raises(helper.U2sManifestError, match="terminal operationally_incomplete"):
         helper.next_plan(
             root,
             source_commit=source_commit,

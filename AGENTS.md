@@ -21,13 +21,19 @@
   penultimate checkpoint for its required 1,048,576-action terminal artifact. The reserved
   `15_240_000`–`15_279_999` confirmation candidates were not opened and may not be repurposed as a
   U2-S development exam. U3 remains closed.
-- The next prospective decision is the matched
+- U2-S launch attempt 0 is immutable zero-action operational-failure evidence. Its control trainer
+  stopped before publishing status or taking action one because the launcher had not created the
+  arm's media directory. Never resume, rename, reuse, prune, or overwrite
+  `/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-20260723` or its matching media root; see
+  `docs/results/v0.2-u2s-launch-attempt-0.md`.
+- The replacement prospective decision is the matched
   `dungeon-apprentice-v0.2-u2s-stability-ablation` in
-  `docs/protocol-v0.2-u2s-stability-ablation.md`. This branch contains its implementation and
-  preflight tests, but source and documentation alone do not imply qualification, external
-  anchoring, canonical root creation, or training. Before action one, a clean release must bind the
-  protocol, exact parent, four interventions, seeds, lesson-specific guard digests, terminal rule,
-  protected partitions, storage boundary, and dashboard identity.
+  `docs/protocol-v0.2-u2s-stability-ablation.md`, with r1 cohort ID
+  `v0.2-u2s-ablation-r1-20260723`. This branch contains its implementation and preflight tests, but
+  source and documentation alone do not imply r1 qualification, external anchoring, canonical root
+  creation, or training. Before action one, a clean r1 release must bind the protocol, exact parent,
+  four interventions, seeds, lesson-specific guard digests, terminal rule, protected partitions,
+  storage boundary, and dashboard identity.
 - U2-S may load only confirmed U1 child `20260733`, archive SHA-256
   `3d2950e63491d07d3e483660469b8bec869fa137fa61d6b4d22b3d9f0ded2104`, including its optimizer.
   It may not load any U2, U2r, or earlier U2-S policy. Four sequential arms—control, conservative,

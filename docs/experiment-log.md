@@ -876,3 +876,39 @@ assigned to port 8787. This entry records a design decision only. At this point 
 implementation, clean source freeze, external tag, qualification, root creation, policy action, or
 training result. All U2 confirmation, unopened U2r confirmation, and project-final ranges remain
 unavailable to the ablation.
+
+### July 23, 2026 — U2-S attempt 0 fails safely before action one
+
+The first qualified U2-S launch created its cohort at `19:03:50 UTC`, opened the control cell at
+`19:04:16 UTC`, and closed it as `crashed` at `19:04:42 UTC`. The trainer created the scientific
+`control` directory, then its initial storage audit correctly refused to proceed because the
+matching media directory did not exist. The exact exception was:
+
+`FileNotFoundError: storage directory does not exist: .../u2s-ablation-media-20260723/control`
+
+This was an infrastructure failure, not a failed learning result. The attempt produced:
+
+| Evidence | Attempt-0 outcome |
+| --- | --- |
+| Policy actions | 0 |
+| Optimizer updates | 0 |
+| Frozen exams | 0 |
+| Safe checkpoints | 0 |
+| Arm status | Never published |
+| Cohort phase | `operationally_incomplete` |
+| Scientific reuse | Forbidden |
+
+The failed root, contract, cohort history, and supervisor exit evidence remain untouched under
+`/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-20260723`. The dashboard process was stopped
+only after the terminal state and evidence were verified.
+
+The full incident record, exact timeline, checksums, and scientific interpretation are preserved in
+[U2-S launch attempt 0](results/v0.2-u2s-launch-attempt-0.md).
+
+The r1 correction does not alter the learner, curriculum, rewards, seeds, budgets, evaluation
+cases, decision rule, or four-arm order. It adds one fail-closed launcher step: after the manifest
+opens an arm and before the trainer starts, create the arm's exact media directory non-recursively
+and validate its ancestor chain. Because attempt 0 is non-resumable, r1 receives a new source
+commit, annotated tag `u2s-stability-ablation-v0.2-u2s-r1-20260723`, qualification root, cohort
+root `/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-r1-20260723`, and four entirely fresh
+children from the confirmed U1 parent.

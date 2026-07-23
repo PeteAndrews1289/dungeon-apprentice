@@ -285,7 +285,7 @@ The attractive penultimate checkpoint cannot replace the prospectively required 
 The reserved `15_240_000`–`15_279_999` confirmation candidates remained unopened, both U2r roots
 are terminal evidence, and U3 remains closed.
 
-### U2-S — prospective matched learner ablation
+### U2-S r1 — prospective matched learner ablation
 
 U2r showed that more unchanged PPO experience can produce excellent behavior temporarily without
 preserving it reliably. The next question therefore separates two candidate mechanisms:
@@ -315,6 +315,11 @@ the same confirmed U1 parent under a new prospective source commit, annotated ta
 identity, and root. This prevents one arm from receiving a different environment or recurrent-state
 continuation than the other matched cells.
 
+That rule was exercised before action one: [launch attempt 0](docs/results/v0.2-u2s-launch-attempt-0.md)
+failed safely because its per-arm media directory was missing. It produced no policy actions,
+updates, exams, or checkpoints. The r1 launcher adds the exact directory-creation guard and starts
+all four children fresh under new source, tag, qualification, and storage identities.
+
 ## Evidence standard
 
 Training reward, loss, map coverage, and one lucky completion are diagnostics. The behavioral
@@ -341,4 +346,5 @@ See [the experiment contract](docs/experiment-contract.md),
 specified in [the v0.2 design](docs/protocol-v0.2-design.md). The current controlled decision point
 is the prospective
 [U2-S matched stability ablation](docs/protocol-v0.2-u2s-stability-ablation.md). U2r-r1 ended in a
-valid terminal stability failure, its fresh confirmation stayed sealed, and U3 remains blocked.
+valid terminal stability failure, U2-S attempt 0 is preserved as a zero-action infrastructure
+failure, its r1 replacement is prospective, and U3 remains blocked.

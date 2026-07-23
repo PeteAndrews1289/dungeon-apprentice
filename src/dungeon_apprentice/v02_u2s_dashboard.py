@@ -20,7 +20,7 @@ from urllib.parse import urlparse
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8787
 PROTOCOL = "dungeon-apprentice-v0.2-u2s-stability-ablation"
-COHORT_ID = "v0.2-u2s-ablation-20260723"
+COHORT_ID = "v0.2-u2s-ablation-r1-20260723"
 ACTION_CAP = 1_048_576
 ARM_ORDER = ("control", "conservative", "no-effect", "combined")
 LESSONS = (
