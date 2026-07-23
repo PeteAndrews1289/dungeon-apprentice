@@ -105,6 +105,35 @@ the empty checkpoint-results array. This makes the collision-safe successor feel
 instrument learned from failure without giving the models a second chance at a score they never
 received.
 
+Then deliver the payoff. The successor does not waive the failed instrument or hand-pick easy
+cases. It walks new candidate streams in order, accepting only mechanically valid,
+reference-excluded exact layouts before any policy loads. Turn this into three simple funnels:
+Navigate accepts 200 of 200 examined; Visible Unlock accepts 200 after examining 236 and rejecting
+36 repeats; Local Unlock accepts 200 after examining 207 and rejecting seven prior layouts. The
+accepted exams contain 200 unique exact layouts apiece.
+
+Now reveal the three policy rows:
+
+| U1 child seed | Navigate | Visible Unlock | Local Unlock |
+| ---: | ---: | ---: | ---: |
+| `20260725` | 188/200 | 200/200 | 188/200 |
+| `20260729` | 192/200 | 200/200 | 192/200 |
+| `20260733` | 188/200 | 200/200 | 182/200 |
+
+Every overall bar and both panels pass for every policy. Most importantly, the evaluator performs
+no learning: policy tensors, optimizer state, archive bytes, and counters are identical afterward.
+The models are not being coached through the test; the test is measuring skill they already
+acquired. Preserve the raw report identity on screen:
+`6e577170050f6f14599b793a031776a19bf7c64eba0f243f457298da3193ae8f`.
+The detailed evidence belongs in
+[the confirmation v2 result](results/v0.2-u1-confirmation-v2.md).
+
+This gives the chapter a satisfying but honest ending: the agent has learned and retained a
+small quest concept across progressively harder unseen layouts. It has not beaten the whole
+dungeon. The staircase can now grow one controlled step into
+[U2 Separated Unlock](protocol-v0.2-u2-separated-unlock.md), where key and door search become less
+local without skipping straight to Retrieve.
+
 ### Ending options
 
 - **Full success:** one policy retrieves the relic on unseen final levels and retains every prior
@@ -131,8 +160,11 @@ received.
 - the three U1 trajectories converging on 72/80 through different recovery histories;
 - the attempt-1 U1 confirmation stop: different seed numbers producing the same layouts, all 600
   oracle-qualified cases, nine reference collisions, and an empty policy-results array;
-- the prospectively frozen v2 U1 confirmation table, clearly separated from both the failed
-  measurement instrument and the shared development exam;
+- the completed v2 selector funnels—200/200 Navigate, 200/236 U0, and 200/207 U1—followed by the
+  three-policy confirmation table, clearly separated from both the failed measurement instrument
+  and the shared development exam;
+- a before/after digest card showing that v2 changed no policy or optimizer state;
+- the visual transition from confirmed Local Unlock to the next bounded U2 Separated Unlock map;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
 - the v0 audit, reward inversion, and stale-policy evaluation timeline;

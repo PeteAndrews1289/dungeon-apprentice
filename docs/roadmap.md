@@ -18,7 +18,9 @@
 - [x] Replicate Visible Unlock mastery with retained Navigate across three random initializations
 - [x] Confirm all three U0 mastery checkpoints on the preregistered disjoint 200-case suites
 - [x] Implement, qualify, test, and preregister the U1 Local Unlock warm-start child
-- [ ] Run the U1 lead child to its mastery gate or 524,288-action ceiling
+- [x] Run the U1 lead and both preregistered replications to Local Unlock mastery
+- [x] Confirm all three U1 mastery checkpoints with the collision-safe disjoint instrument
+- [ ] Implement, qualify, and run the U2 Separated Unlock child
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
 - [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
 
@@ -61,11 +63,20 @@ Attempt 1 stopped before policy scoring because nine numerically new seeds gener
 from declared development references. That immutable qualification failure is documented in
 [the attempt-1 result](results/v0.2-u1-confirmation-attempt-1.md).
 
-The current gate is a separately preregistered replacement instrument rather than a retroactive
-repair.
-[Confirmation v2](v0.2-u1-confirmation-v2-plan.md) reserves fresh candidate streams and selects the
-first 200 mechanically valid, exact-unique, reference-excluded layouts without loading a policy.
-Only a positive v2 confirmation supports implementing U2 Separated Unlock.
+The separately preregistered
+[confirmation v2](v0.2-u1-confirmation-v2-plan.md) then passed. Navigate accepted 200/200 examined
+candidates; U0 accepted 200 after examining 236 and rejecting 36; U1 accepted 200 after examining
+207 and rejecting seven. Every accepted exam had 200 unique exact layouts and no accepted reference
+collision. The three policies scored Navigate/U0/U1 totals of 188/200, 200/200, 188/200;
+192/200, 200/200, 192/200; and 188/200, 200/200, 182/200. All overall and panel gates passed with
+no policy or optimizer update. The raw report SHA-256 is
+`6e577170050f6f14599b793a031776a19bf7c64eba0f243f457298da3193ae8f`; see the
+[confirmation v2 result](results/v0.2-u1-confirmation-v2.md).
+
+That positive result closes U1 and opens the next bounded question:
+[U2 Separated Unlock](protocol-v0.2-u2-separated-unlock.md). U2 must make key-to-door search less
+local while preserving cumulative Navigate, U0, and U1 retention; it does not skip directly to
+Retrieve or unrestricted game complexity.
 
 ## Scalability gates
 

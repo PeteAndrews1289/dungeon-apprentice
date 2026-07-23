@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">U1 collision-safe confirmation scores</title>
+  <desc id="desc">Three independently trained policies all pass Navigate, Visible Unlock, and Local Unlock on 200-case exams. Overall scores range from 91 to 100 percent, and the lowest panel score is 87 percent.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#151d36"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000" flood-opacity=".25"/>
+    </filter>
+    <style>
+      text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .title { fill: #f8fafc; font-size: 34px; font-weight: 750; }
+      .subtitle { fill: #aebbd4; font-size: 17px; }
+      .card-title { fill: #f8fafc; font-size: 20px; font-weight: 700; }
+      .label { fill: #dbe5f5; font-size: 15px; font-weight: 600; }
+      .value { fill: #fff; font-size: 15px; font-weight: 750; text-anchor: end; }
+      .axis { fill: #8290aa; font-size: 12px; text-anchor: middle; }
+      .note { fill: #9eabc2; font-size: 14px; }
+      .badge { fill: #b8f7d2; font-size: 15px; font-weight: 750; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="720" rx="24" fill="url(#background)"/>
+  <text id="headline" x="60" y="62" class="title">The skill replicated—and survived a clean exam</text>
+  <text x="60" y="94" class="subtitle">Collision-safe U1 confirmation · 200 unseen accepted cases per lesson · deterministic evaluation · no policy updates</text>
+
+  <g transform="translate(60 128)">
+    <rect width="1080" height="432" rx="20" fill="#111a31" stroke="#293653" filter="url(#shadow)"/>
+
+    <g transform="translate(32 30)">
+      <text x="0" y="0" class="card-title">Child seed 20260725</text>
+      <text x="0" y="30" class="label">Navigate</text>
+      <rect x="120" y="14" width="244" height="22" rx="11" fill="#25304a"/>
+      <rect x="120" y="14" width="229.4" height="22" rx="11" fill="#50a7ff"/>
+      <line x1="327.4" y1="10" x2="327.4" y2="40" stroke="#ffdc6a" stroke-width="2"/>
+      <text x="354" y="30" class="value">188 / 200 · 94%</text>
+
+      <text x="0" y="77" class="label">Visible Unlock</text>
+      <rect x="120" y="61" width="244" height="22" rx="11" fill="#25304a"/>
+      <rect x="120" y="61" width="244" height="22" rx="11" fill="#a98bff"/>
+      <line x1="327.4" y1="57" x2="327.4" y2="87" stroke="#ffdc6a" stroke-width="2"/>
+      <text x="354" y="77" class="value">200 / 200 · 100%</text>
+
+      <text x="0" y="124" class="label">Local Unlock</text>
+      <rect x="120" y="108" width="244" height="22" rx="11" fill="#25304a"/>
+      <rect x="120" y="108" width="229.4" height="22" rx="11" fill="#43d39e"/>
+      <line x1="327.4" y1="104" x2="327.4" y2="134" stroke="#ffdc6a" stroke-width="2"/>
+      <text x="354" y="124" class="value">188 / 200 · 94%</text>
+    </g>
+
+    <g transform="translate(570 30)">
+      <text x="0" y="0" class="card-title">Child seed 20260729</text>
+      <text x="0" y="30" class="label">Navigate</text>
+      <rect x="120" y="14" width="244" height="22" rx="11" fill="#25304a"/>
+      <rect x="120" y="14" width="234.2" height="22" rx="11" fill="#50a7ff"/>
+      <line x1="327.4" y1="10" x2="327.4" y2="40" stroke="#ffdc6a" stroke-width="2"/>
+      <text x="354" y="30" class="value">192 / 200 · 96%</text>
+
+      <text x="0" y="77" class="label">Visible Unlock</text>
+      <rect x="120" y="61" width="244" height="22" rx="11" fill="#25304a"/>
+      <rect x="120" y="61" width="244" height="22" rx="11" fill="#a98bff"/>
+      <line x1="327.4" y1="57" x2="327.4" y2="87" stroke="#ffdc6a" stroke-width="2"/>
+      <text x="354" y="77" class="value">200 / 200 · 100%</text>
+
+      <text x="0" y="124" class="label">Local Unlock</text>
+      <rect x="120" y="108" width="244" height="22" rx="11" fill="#25304a"/>
+      <rect x="120" y="108" width="234.2" height="22" rx="11" fill="#43d39e"/>
+      <line x1="327.4" y1="104" x2="327.4" y2="134" stroke="#ffdc6a" stroke-width="2"/>
+      <text x="354" y="124" class="value">192 / 200 · 96%</text>
+    </g>
+
+    <line x1="32" y1="190" x2="1048" y2="190" stroke="#293653"/>
+
+    <g transform="translate(32 228)">
+      <text x="0" y="0" class="card-title">Child seed 20260733</text>
+      <text x="0" y="30" class="label">Navigate</text>
+      <rect x="120" y="14" width="244" height="22" rx="11" fill="#25304a"/>
+      <rect x="120" y="14" width="229.4" height="22" rx="11" fill="#50a7ff"/>
+      <line x1="327.4" y1="10" x2="327.4" y2="40" stroke="#ffdc6a" stroke-width="2"/>
+      <text x="354" y="30" class="value">188 / 200 · 94%</text>
+
+      <text x="0" y="77" class="label">Visible Unlock</text>
+      <rect x="120" y="61" width="244" height="22" rx="11" fill="#25304a"/>
+      <rect x="120" y="61" width="244" height="22" rx="11" fill="#a98bff"/>
+      <line x1="327.4" y1="57" x2="327.4" y2="87" stroke="#ffdc6a" stroke-width="2"/>
+      <text x="354" y="77" class="value">200 / 200 · 100%</text>
+
+      <text x="0" y="124" class="label">Local Unlock</text>
+      <rect x="120" y="108" width="244" height="22" rx="11" fill="#25304a"/>
+      <rect x="120" y="108" width="222" height="22" rx="11" fill="#43d39e"/>
+      <line x1="327.4" y1="104" x2="327.4" y2="134" stroke="#ffdc6a" stroke-width="2"/>
+      <text x="354" y="124" class="value">182 / 200 · 91%</text>
+    </g>
+
+    <g transform="translate(570 228)">
+      <text x="0" y="0" class="card-title">Lowest 100-case panel</text>
+      <text x="0" y="38" class="label">Navigate</text>
+      <text x="280" y="38" class="value">93% · gate 85%</text>
+      <text x="0" y="78" class="label">Visible Unlock</text>
+      <text x="280" y="78" class="value">100% · gate 80%</text>
+      <text x="0" y="118" class="label">Local Unlock</text>
+      <text x="280" y="118" class="value">87% · gate 80%</text>
+      <rect x="304" y="16" width="142" height="58" rx="29" fill="#183d32" stroke="#2f9f75"/>
+      <text x="375" y="51" class="badge">ALL GATES PASS</text>
+      <text x="304" y="108" class="note">Yellow = 85% overall gate.</text>
+      <text x="304" y="132" class="note">Panels graded separately.</text>
+    </g>
+  </g>
+
+  <g transform="translate(60 600)">
+    <circle cx="8" cy="7" r="6" fill="#50a7ff"/>
+    <text x="24" y="12" class="note">Navigate</text>
+    <circle cx="128" cy="7" r="6" fill="#a98bff"/>
+    <text x="144" y="12" class="note">Visible Unlock</text>
+    <circle cx="300" cy="7" r="6" fill="#43d39e"/>
+    <text x="316" y="12" class="note">Local Unlock</text>
+    <line x1="462" y1="-4" x2="462" y2="18" stroke="#ffdc6a" stroke-width="2"/>
+    <text x="478" y="12" class="note">85% overall gate</text>
+  </g>
+
+  <rect x="60" y="642" width="1080" height="46" rx="14" fill="#0d1529" stroke="#293653"/>
+  <text x="84" y="671" class="note">Strict verdict: every policy had to pass every lesson overall and both panels. Scores were not pooled to rescue a lineage.</text>
+</svg>

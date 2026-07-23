@@ -383,3 +383,36 @@ mechanically valid, exact-unique layouts outside the declared development refere
 excludes same-lesson layouts from the opened-but-unscored first attempt, and makes U1 exact-layout
 novel to all three frozen child histories. Only after selection and qualification complete may a
 policy load. See [the successor confirmation plan](v0.2-u1-confirmation-v2-plan.md).
+
+### July 23, 2026 — collision-safe U1 confirmation passed
+
+Confirmation v2 ran once from clean source commit
+`ebf064afd6e6296bb21524103c2a3c269a56e7a5`. The deterministic selector qualified all three exams
+before importing a policy. Navigate accepted the first 200 candidates with zero rejections and
+200 unique exact layouts/geometries. Visible Unlock examined 236 candidates, rejected 36, and
+accepted 200 unique exact layouts with 180 unique geometries; those rejections removed repeats from
+validation, attempt 1, and the already accepted set. Local Unlock examined 207, rejected seven, and
+accepted 200 exact- and geometry-unique layouts; its rejected cases overlapped attempt 1 or the
+union of frozen U1 training histories. No accepted case overlapped a declared exact-layout
+exclusion.
+
+Every frozen policy independently passed Navigate, Visible Unlock, and Local Unlock overall and in
+both 100-case panels:
+
+| U1 child seed | Navigate | Visible Unlock U0 | Local Unlock U1 |
+| ---: | ---: | ---: | ---: |
+| `20260725` | 188/200 (95 + 93) | 200/200 (100 + 100) | 188/200 (93 + 95) |
+| `20260729` | 192/200 (96 + 96) | 200/200 (100 + 100) | 192/200 (95 + 97) |
+| `20260733` | 188/200 (94 + 94) | 200/200 (100 + 100) | 182/200 (87 + 95) |
+
+The strict all-three verdict is `confirmed`. Evaluation ran under inference mode and performed no
+updates; each checkpoint's policy tensors, optimizer state, archive bytes, trained-timestep count,
+and optimizer-update count were identical before and after its 600 episodes. The externally hashed
+raw report is
+`6e577170050f6f14599b793a031776a19bf7c64eba0f243f457298da3193ae8f`.
+The complete qualification, collision, lineage, panel, milestone, and no-update evidence is in
+[the confirmation v2 result](results/v0.2-u1-confirmation-v2.md).
+
+This confirms replicated cumulative Local Unlock on the declared distribution; it does not prove
+full Unlock or Retrieve. The next prospective development boundary is
+[U2 Separated Unlock](protocol-v0.2-u2-separated-unlock.md).

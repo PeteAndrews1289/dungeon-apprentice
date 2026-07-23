@@ -119,16 +119,37 @@ three lineages finishing at 72/80 U1 while retaining Navigate and U0. The immuta
 [replication result](docs/results/v0.2-local-unlock-replication.md) records the trajectories,
 recoveries, allocations, and artifact digests.
 
-Before advancing to U2, the project freezes a larger
-[U1 confirmation](docs/v0.2-u1-confirmation-plan.md). The three first-mastery checkpoints receive
-deterministic 200-case Navigate, U0, and U1 exams on disjoint seed blocks without policy updates.
-Every policy must independently pass every lesson and both panels; pooled success cannot rescue a
-failed lineage. Its first attempt correctly stopped before policy scoring when nine generated
-layouts repeated declared development evidence despite numerically disjoint seeds. The
+Before advancing to U2, the project froze a larger
+[U1 confirmation](docs/v0.2-u1-confirmation-plan.md). Its first attempt correctly stopped before
+policy scoring when nine generated layouts repeated declared development evidence despite
+numerically disjoint seeds. The
 [immutable attempt-1 result](docs/results/v0.2-u1-confirmation-attempt-1.md) preserves that
 qualification failure. A separately preregistered
 [collision-safe successor](docs/v0.2-u1-confirmation-v2-plan.md) uses fresh candidate streams and a
 policy-blind exact-layout exclusion rule rather than rewriting the first attempt.
+
+That successor is now **confirmed**. Navigate accepted its first 200 candidates with no rejection;
+Visible Unlock examined 236 to accept 200 after 36 rejections; and Local Unlock examined 207 to
+accept 200 after seven. Every accepted lesson contained 200 unique exact layouts, with 200 unique
+geometries for Navigate and U1 and 180 for the intentionally finite U0 retention task. The three
+frozen policies then scored:
+
+| U1 child seed | Navigate | Visible Unlock U0 | Local Unlock U1 |
+| ---: | ---: | ---: | ---: |
+| `20260725` | 188/200 | 200/200 | 188/200 |
+| `20260729` | 192/200 | 200/200 | 192/200 |
+| `20260733` | 188/200 | 200/200 | 182/200 |
+
+![Three independently trained policies pass all collision-safe U1 confirmation gates](docs/assets/v0.2-u1-confirmation-v2-scores.svg)
+
+All nine overall gates and all 18 panel gates passed. Evaluation performed no updates: policy,
+optimizer, archive, timestep, and update-counter evidence remained unchanged for every checkpoint.
+The raw v2 report SHA-256 is
+`6e577170050f6f14599b793a031776a19bf7c64eba0f243f457298da3193ae8f`; the readable
+[confirmation v2 result](docs/results/v0.2-u1-confirmation-v2.md) records the complete evidence.
+This supports beginning the separately frozen
+[U2 Separated Unlock protocol](docs/protocol-v0.2-u2-separated-unlock.md), not a claim that full
+Unlock, Retrieve, or the whole game has already been solved.
 
 ## Evidence standard
 
@@ -153,5 +174,5 @@ See [the experiment contract](docs/experiment-contract.md),
 [architecture](docs/architecture.md), [audit and remediation record](docs/audit.md), and
 [roadmap](docs/roadmap.md). The completed v0.1 capability result is preserved in the
 [Navigate canary report](docs/results/v0.1-navigate-canaries.md), and the next proposed protocol is
-specified in [the v0.2 design](docs/protocol-v0.2-design.md). The currently executable successor is
-the [U1 Local Unlock child](docs/protocol-v0.2-u1-development.md).
+specified in [the v0.2 design](docs/protocol-v0.2-design.md). The next controlled capability step is
+the [U2 Separated Unlock child](docs/protocol-v0.2-u2-separated-unlock.md).

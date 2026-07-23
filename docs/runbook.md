@@ -130,25 +130,37 @@ checksum stops the launcher instead of silently beginning a second attempt. Do n
 or preview the confirmation ranges outside this frozen command. The exact gates and all-three
 verdict are in [the U1 confirmation plan](v0.2-u1-confirmation-plan.md).
 
-Attempt 1 stopped at qualification and is immutable. After its result and the successor plan are
-committed from a clean tree, launch the collision-safe successor once:
+Attempt 1 stopped at qualification and is immutable. Historical record: after committing that
+result and a prospective successor plan, confirmation v2 was launched once with:
 
 ```bash
 scripts/run_v02_u1_confirmation_v2.sh
 ```
 
-The successor first verifies attempt 1's exact report SHA-256, then opens fresh candidate streams.
-It selects cases in ascending seed order using only generator, oracle, uniqueness, and frozen
-reference exclusions; no policy is loaded until all three accepted 200-case panels qualify. Its
-separate ledger, log, report, and checksum live under
-`/Volumes/T7 Developer/DungeonApprentice/confirmations/v0.2-u1-v2-20260723`. Exact rules are frozen
-in [the v2 confirmation plan](v0.2-u1-confirmation-v2-plan.md).
+Do **not** run this command again. The successor verified attempt 1's exact report SHA-256, selected
+cases in ascending seed order using only generator, oracle, uniqueness, and frozen reference
+exclusions, and loaded no policy until all three accepted 200-case panels qualified. Navigate
+accepted 200/200 examined candidates, U0 accepted 200 after 236 examined and 36 rejected, and U1
+accepted 200 after 207 examined and seven rejected.
 
-If interrupted, resume from the latest intact child archive and sidecar with the same launcher
-settings plus `--resume` and a new run name. The U1 runner interprets 524,288 as a cumulative child
-ceiling: it subtracts already trained child actions instead of granting a fresh full budget. Parent
-lineage, optimizer updates, recovery state, transition counts, scheduler random state, and the new
-segment seed are all checked before learning continues.
+All three policies passed all three lessons and both panels: seed `20260725` scored
+188/200 Navigate, 200/200 U0, and 188/200 U1; `20260729` scored 192/200, 200/200, and
+192/200; `20260733` scored 188/200, 200/200, and 182/200. No update occurred. The report SHA-256 is
+`6e577170050f6f14599b793a031776a19bf7c64eba0f243f457298da3193ae8f`.
+Its ledger, log, report, and checksum live under
+`/Volumes/T7 Developer/DungeonApprentice/confirmations/v0.2-u1-v2-20260723`. Exact rules are frozen
+in [the v2 confirmation plan](v0.2-u1-confirmation-v2-plan.md), and the measured outcome is in
+[the confirmation v2 result](results/v0.2-u1-confirmation-v2.md).
+
+The next development boundary is [U2 Separated Unlock](protocol-v0.2-u2-separated-unlock.md).
+Do not improvise a U2 command from the completed U1 launchers; use only the checkpoint lineage,
+generator, curricula, gates, and launcher declared by that successor protocol.
+
+Historical U1 recovery note: an interrupted child run resumes from its latest intact archive and
+sidecar with the same launcher settings plus `--resume` and a new run name. The U1 runner interprets
+524,288 as a cumulative child ceiling: it subtracts already trained child actions instead of
+granting a fresh full budget. Parent lineage, optimizer updates, recovery state, transition counts,
+scheduler random state, and the new segment seed are all checked before learning continues.
 
 ## Artifacts
 
