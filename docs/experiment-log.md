@@ -279,3 +279,40 @@ T7 with SHA-256 `f43610252943fce9c0169ac0231724fc2829686d1899f5f88bd0c250a913b39
 The immutable human-readable result is in
 [the U0 confirmation report](results/v0.2-u0-confirmation.md). U1 Local Unlock is now the next
 declared capability question; this result does not pre-approve its generator or training protocol.
+
+### July 22, 2026 — U1 Local Unlock child frozen
+
+The next implementation does not alter the confirmed U0 sentinel or pretend that a warm start is a
+fresh replication. It creates protocol `dungeon-apprentice-v0.2-u1`, verifies the exact confirmed
+seed-`20260725` mastery archive and confirmation report, restores the full PPO optimizer, and begins
+a new cumulative-learning segment. No trajectory, recurrent episode state, oracle action, or
+demonstration crosses the boundary.
+
+“Local” is now testable rather than rhetorical. The key is visible at reset, the door is hidden, the
+two are non-collinear and at least four cells apart, a turn is required after key pickup, and the
+complete shortest solution takes 9–18 actions. The first 1,000-case engineering qualification
+solved all 1,000, produced 998 exact visual layouts and 991 geometry-only layouts, and had no exact
+visual overlap with the fixed 80-case U1 validation suite. Training rejects exact visual hashes from
+qualification and all validation suites.
+
+The audit also closed a protocol loophole: the earlier proposal could pass U1 while forgetting U0.
+The child now evaluates Navigate, Visible Unlock, and Local Unlock at every 32,768-action boundary.
+Normal practice targets 50/15/35 percent of actual transitions. Navigate-only, U0-only, and combined
+retention failures receive separate rehearsal mixes and need two recovery exams before U1 practice
+can resume. U1 mastery requires two consecutive post-update boundaries where every lesson and both
+panels pass and allocation remains valid.
+
+An end-to-end 2,048-action engineering smoke loaded the parent's 491,520-step/960-update archive,
+recorded a non-counting pre-update baseline of Navigate 74/80, U0 79/80, and U1 0/80, completed four
+new PPO updates, then scored Navigate 71/80, U0 79/80, and U1 1/80. This is plumbing evidence only;
+the tiny post-update U1 result is not a capability claim. The real child remains frozen at a
+524,288-new-action ceiling. Exact parentage, generator rules, seed blocks, gates, recovery, resume,
+and outcomes are in [the U1 development protocol](protocol-v0.2-u1-development.md).
+
+A separate deliberate-interruption smoke then stopped segment 0 at 4,096 child actions: 495,616
+lifetime trained actions, 968 optimizer updates, and lifetime practice counts of 1,977 Navigate,
+657 U0, and 1,462 U1 transitions. Segment 1 loaded that exact schema-3 bundle and completed the
+declared 8,192-child-action engineering ceiling at 499,712 lifetime actions and 976 updates. Its
+practice counts continued to 3,920 Navigate, 1,360 U0, and 2,912 U1; parent digest, curriculum state,
+and scheduler stream remained intact. The test discarded no trained progress and did not grant the
+resumed segment a replacement budget.

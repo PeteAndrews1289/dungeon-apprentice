@@ -1,8 +1,9 @@
 # Proposed protocol v0.2: the Unlock staircase
 
-> Status: partially implemented. The U0 Visible Unlock development slice has been implemented and
-> replicated; U1–U3 and the complete protocol remain proposed until their own code, qualification,
-> tests, and preregistration are frozen.
+> Status: partially implemented. U0 Visible Unlock has been replicated and independently confirmed.
+> U1 now has a separately versioned, warm-start development child with stricter cumulative-retention
+> gates; U2–U3 and the complete fresh-start protocol remain proposed. See
+> [the U1 child specification](protocol-v0.2-u1-development.md).
 
 ## Experimental question
 
@@ -105,7 +106,7 @@ geometry change.
 | --- | --- | --- | ---: |
 | `navigate/full` | Navigate | Exact v0.1 Navigate distribution | 128 |
 | `unlock/u0-visible` | Visible chain | 9 × 9; no extra walls; key and door initially visible; oracle solution 5–10 actions | 128 |
-| `unlock/u1-local` | Local chain | 9 × 9; no extra walls; key initially visible; oracle solution 9–18 actions | 128 |
+| `unlock/u1-local` | Local chain | 9 × 9; no extra walls; key visible, door hidden, non-collinear route; oracle solution 9–18 actions | 128 |
 | `unlock/u2-separated` | Separated chain | 9 × 9; two extra walls; no visibility guarantee; oracle solution 17–26 actions | 160 |
 | `unlock/u3-full` | Full Unlock | Exact v0.1 Unlock distribution: five extra walls and unrestricted valid solution length | 256 |
 
@@ -193,6 +194,11 @@ If a frozen Navigate exam falls below 68/80, stage advancement freezes and the n
 Navigate exams recover to at least 68/80. The active lesson is never changed by a dashboard
 observation or training reward.
 
+The implemented warm-start U1 child deliberately strengthens this proposal: it also requires U0
+retention and has separate Navigate-only, U0-only, and combined recovery mixes. Its exact rules are
+frozen in the [child specification](protocol-v0.2-u1-development.md); they do not retroactively
+change U0 evidence or pre-approve the eventual fresh-start U0–U3 protocol.
+
 This controller converts retention failure into more relevant experience. Protocol v0.1 merely
 noticed a weak earlier skill while continuing the same episode-sampling rule.
 
@@ -211,6 +217,7 @@ The implementation must validate that no range overlaps another range or the tra
 | U3 validation | 10,100,000–10,100,079 |
 | Post-training Navigate confirmation | 15,000,000–15,000,199 |
 | Post-training U0 confirmation | 15,010,000–15,010,199 |
+| Future post-training U1 confirmation | 15,020,000–15,020,199 |
 | Post-training U3 confirmation | 15,100,000–15,100,199 |
 | Complete-project untouched final allocations | 20,000,000–20,299,999 |
 | Consumed uniform-random diagnostic; never use for claims | 30,000,000–30,000,199 |

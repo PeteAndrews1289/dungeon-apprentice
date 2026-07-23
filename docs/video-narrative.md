@@ -75,6 +75,20 @@ The open dramatic question is now precise: can abundant complete early experienc
 interaction into a deterministic skill without erasing navigation? Full success, transfer failure,
 retention failure, and evidence that sparse reward is insufficient are all honest endings.
 
+### Act VI — Can a skill become an idea?
+
+U0 supplies the second real payoff: three agents independently learn the entire visible key → door →
+exit ritual, then all three pass a larger disjoint confirmation. Do not frame this as “the dungeon is
+solved.” Put the tiny straight-line U0 map beside U1, where the key is visible but the door begins
+outside the image and the route must turn.
+
+The U1 visual should carry three bars at every exam: Navigate, Visible Unlock, and Local Unlock. This
+makes cumulative learning legible. When an old bar drops, show the practice mix changing by itself;
+when it recovers, show ordinary U1 practice returning. The dramatic question is no longer only
+“does the new line rise?” It is “can the brain add a behavior without erasing the behaviors beneath
+it?” A pre-update 0/80 U1 baseline also makes later transfer measurable without pretending inherited
+U0 experience was a fresh start.
+
 ### Ending options
 
 - **Full success:** one policy retrieves the relic on unseen final levels and retains every prior
@@ -95,6 +109,9 @@ retention failure, and evidence that sparse reward is insufficient are all hones
 - episode-share versus transition-share comparison after v0.1 promotion;
 - key → door → exit conversion funnel;
 - the v0.2 lesson staircase and target-versus-realized practice mix;
+- U0's three-policy 200-case confirmation table;
+- side-by-side U0 and U1 first-person frames: visible door versus hidden door;
+- the U1 three-bar exam panel and an automatic U0- or Navigate-recovery transition;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
 - the v0 audit, reward inversion, and stale-policy evaluation timeline;

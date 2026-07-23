@@ -17,6 +17,8 @@
 - [x] Implement and qualify the transition-balanced Visible Unlock development slice
 - [x] Replicate Visible Unlock mastery with retained Navigate across three random initializations
 - [x] Confirm all three U0 mastery checkpoints on the preregistered disjoint 200-case suites
+- [x] Implement, qualify, test, and preregister the U1 Local Unlock warm-start child
+- [ ] Run the U1 lead child to its mastery gate or 524,288-action ceiling
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
 - [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
 
@@ -39,6 +41,12 @@ claim. A [post-training confirmation](v0.2-u0-confirmation-plan.md) was preregis
 case was inspected. All three checkpoints passed every overall and panel gate; the frozen
 [confirmation report](results/v0.2-u0-confirmation.md) now supports treating U1 as the next
 capability step.
+
+U1 is now an explicit child protocol rather than an in-place modification of the confirmed
+sentinel. Its generator makes the key visible and door hidden, exact U0 pixels are protected by
+golden regression, all three lessons are graded at every boundary, and separate recovery mixes own
+Navigate and U0 forgetting. The complete frozen design and decision rule are in
+[the U1 development protocol](protocol-v0.2-u1-development.md).
 
 ## Scalability gates
 

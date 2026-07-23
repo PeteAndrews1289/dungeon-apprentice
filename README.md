@@ -107,6 +107,13 @@ their U0 scores were 187/200, 199/200, and 198/200 while Navigate remained betwe
 The frozen [confirmation report](docs/results/v0.2-u0-confirmation.md) supports advancing to U1
 Local Unlock without claiming that unrestricted Unlock has already been learned.
 
+The next declared experiment is now implemented and preregistered as a
+[warm-start U1 child](docs/protocol-v0.2-u1-development.md). It inherits the exact confirmed
+seed-`20260725` U0 policy and optimizer, then learns on maps where the key begins visible but the door
+does not. Every boundary retests Navigate, U0, and U1; forgetting either earlier skill activates
+targeted rehearsal. The child receives no trajectories or demonstrations, and its pre-update U1
+baseline cannot count as learning. The exact launcher is `scripts/run_v02_u1_lead.sh`.
+
 ## Evidence standard
 
 Training reward, loss, map coverage, and one lucky completion are diagnostics. The behavioral
@@ -128,4 +135,5 @@ See [the experiment contract](docs/experiment-contract.md),
 [architecture](docs/architecture.md), [audit and remediation record](docs/audit.md), and
 [roadmap](docs/roadmap.md). The completed v0.1 capability result is preserved in the
 [Navigate canary report](docs/results/v0.1-navigate-canaries.md), and the next proposed protocol is
-specified in [the v0.2 design](docs/protocol-v0.2-design.md).
+specified in [the v0.2 design](docs/protocol-v0.2-design.md). The currently executable successor is
+the [U1 Local Unlock child](docs/protocol-v0.2-u1-development.md).

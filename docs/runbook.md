@@ -81,6 +81,31 @@ caffeinate -ims scripts/run_navigate_canaries.sh \
 The same dashboard address is reused as each seed hands off to the next. Do not run another neural
 trainer beside this suite on the audited 8 GB Mac.
 
+## Start the U1 Local Unlock child
+
+U1 is a warm-start development child, not a random initialization. Its launcher verifies the exact
+confirmed parent archive and raw U0 confirmation report before doing any work:
+
+```bash
+caffeinate -ims scripts/run_v02_u1_lead.sh
+```
+
+The command uses the T7 path
+`/Volumes/T7 Developer/DungeonApprentice/u1-local-20260722/v02-u1-lead-seed-20260725`,
+serves the dashboard at `http://127.0.0.1:8784/`, and runs at most 524,288 new actions. The dashboard
+separates those new child actions from 491,520 inherited parent actions and labels the parent digest.
+Its initial three-lesson exam is diagnostic and cannot satisfy a gate.
+
+Do not substitute a later-looking U0 checkpoint, another seed, a weights-only export, or a different
+confirmation report. Do not run U1 beside another trainer on the 8 GB M1. The full frozen contract is
+in [the U1 development protocol](protocol-v0.2-u1-development.md).
+
+If interrupted, resume from the latest intact child archive and sidecar with the same launcher
+settings plus `--resume` and a new run name. The U1 runner interprets 524,288 as a cumulative child
+ceiling: it subtracts already trained child actions instead of granting a fresh full budget. Parent
+lineage, optimizer updates, recovery state, transition counts, scheduler random state, and the new
+segment seed are all checked before learning continues.
+
 ## Artifacts
 
 Each run directory is self-contained:
@@ -97,6 +122,7 @@ Each run directory is self-contained:
 | `checkpoints/latest.zip` | Most recently published reloadable policy |
 | `checkpoints/latest.json` | Configuration, progress, parentage, and digest paired with `latest.zip` |
 | `frames/latest.png` | Latest pixel view for the live dashboard |
+| `frames/exam-*.png` | Latest frozen frame for each declared lesson |
 | `crash.json` | Full diagnostic trace if the trainer exits unexpectedly |
 
 Each named policy archive has a matching `.json` sidecar. The sidecar records effective environment,

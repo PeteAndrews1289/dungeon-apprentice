@@ -32,6 +32,7 @@ train = [
 dungeon-qualify = "dungeon_apprentice.qualify:main"
 dungeon-train = "dungeon_apprentice.train:main"
 dungeon-train-v02-sentinel = "dungeon_apprentice.v02_sentinel:main"
+dungeon-train-v02-u1 = "dungeon_apprentice.v02_u1:main"
 dungeon-confirm-v02-u0 = "dungeon_apprentice.v02_confirm:main"
 dungeon-evaluate = "dungeon_apprentice.evaluate:main"
 dungeon-dashboard = "dungeon_apprentice.dashboard:main"
