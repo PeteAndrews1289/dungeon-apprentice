@@ -495,7 +495,7 @@ def verify_external_anchor(
         tag_object=tag_object,
         remote=ANCHOR_REMOTE,
         remote_url=EXPECTED_ORIGIN_URL,
-        source_commit=current_commit,
+        source_commit=anchor_commit,
         report=str(CANONICAL_REPORT),
         report_sha256=_require_digest(
             payload["report_sha256"], "qualification report"

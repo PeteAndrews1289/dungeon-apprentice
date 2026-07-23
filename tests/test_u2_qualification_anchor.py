@@ -51,13 +51,14 @@ def test_anchor_builder_rejects_noncanonical_report_and_source() -> None:
 def _runner(
     *,
     message: str,
+    head: str = "e" * 40,
     remote_object: str = "1" * 40,
     tag_type: str = "tag",
     peeled: str = "e" * 40,
     remote_url: str = anchor.EXPECTED_ORIGIN_URL,
 ):
     outputs = {
-        ("rev-parse", "--verify", "HEAD^{commit}"): "e" * 40,
+        ("rev-parse", "--verify", "HEAD^{commit}"): head,
         ("cat-file", "-t", f"refs/tags/{anchor.ANCHOR_TAG}"): tag_type,
         (
             "rev-parse",
@@ -101,6 +102,13 @@ def test_external_anchor_requires_same_annotated_object_on_origin(
     assert verified.source_commit == "e" * 40
     assert verified.report_sha256 == "a" * 64
     assert verified.attempt_id.endswith("attempt-1")
+
+    historical = anchor.verify_external_anchor(
+        tmp_path,
+        expected_source_commit="e" * 40,
+        runner=_runner(message=message, head="f" * 40),
+    )
+    assert historical.source_commit == "e" * 40
 
     with pytest.raises(anchor.U2QualificationAnchorError, match="annotated"):
         anchor.verify_external_anchor(

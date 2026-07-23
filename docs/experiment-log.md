@@ -538,3 +538,13 @@ therefore authenticate every completed logged episode but do not directly persis
 layouts. The prospective confirmation claim was narrowed accordingly rather than hiding the gap.
 U3 must persist an episode-start identity and each worker's active seed, lesson, layout, elapsed
 steps, RNG state, and scheduler reservation at every checkpoint.
+
+The first two confirmation launch commands stopped before preregistration or candidate access. The
+new console shortcut had not yet been installed into the existing virtual environment, so the first
+command never entered Python. Direct module invocation then exposed a historical-anchor adapter bug:
+it verified the frozen U2 training tag correctly but returned the active evaluator commit in its
+public record. That failed the qualification binding before the confirmation tag, canonical claim,
+or any `15.2`-million seed existed. The adapter now returns the anchored training commit when
+historical verification is requested, with a regression test covering an evaluator running from a
+newer clean commit. The full 299-test suite and 300-level mechanical qualification passed again
+before another launch.
