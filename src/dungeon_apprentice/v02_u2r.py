@@ -32,6 +32,7 @@ from types import MappingProxyType
 from typing import Any
 
 import gymnasium as gym
+import numpy as np
 
 from dungeon_apprentice import v02_u1_confirm as state_digests
 from dungeon_apprentice import v02_u2 as frozen_u2
@@ -48,9 +49,10 @@ from dungeon_apprentice.artifacts import (
     utc_now,
 )
 from dungeon_apprentice.contracts import MINIMUM_GAMMA
+from dungeon_apprentice.u2_seed_guard import U2SeedRole
 from dungeon_apprentice.u2_storage import audit_u2_storage
 
-PROTOCOL = "dungeon-apprentice-v0.2-u2r-stability"
+PROTOCOL = "dungeon-apprentice-v0.2-u2r-stability-r1"
 CHECKPOINT_SCHEMA_VERSION = 1
 CASE_EVIDENCE_SCHEMA_VERSION = 1
 
@@ -132,12 +134,14 @@ POLICY_KWARGS = dict(frozen_u2.POLICY_KWARGS)
 
 REMEDIATION_ALGORITHM_SEED = 20260749
 REMEDIATION_WORKER_STREAMS = (20260749, 20260750, 20260751, 20260752)
-DEFAULT_RUN_ROOT = Path("/Volumes/T7 Developer/DungeonApprentice/u2r-stability-20260723")
+DEFAULT_RUN_ROOT = Path(
+    "/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-20260723"
+)
 DEFAULT_STORAGE_ROOT = Path("/Volumes/T7 Developer")
 DEFAULT_MEDIA_DIRECTORY = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/u2r-stability-media-20260723"
+    "/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-media-20260723"
 )
-DEFAULT_RUN_NAME = "v02-u2r-seed-20260745"
+DEFAULT_RUN_NAME = "v02-u2r-r1-seed-20260745"
 SEGMENT_SEED_OFFSET = 100_000
 RESUME_ABANDONMENT_REASON = (
     "the authenticated interruption-time Gym environment cannot "
@@ -149,6 +153,16 @@ INEFFECTIVE_INTERACTION_MAX = 3.0
 U2_STABILITY_OVERALL_REQUIRED = 72
 U2_STABILITY_PANEL_REQUIRED = 34
 MAX_TERMINAL_SUCCESS_DECLINE = 2
+U2R_LAYOUT_RESAMPLE_ATTEMPTS = 8_192
+
+U2R_APPLIED_EXCLUSION_RULES: Mapping[lessons.LessonId, str] = MappingProxyType(
+    {
+        lessons.LessonId.NAVIGATE: "same_lesson_full_historical_inventory",
+        lessons.LessonId.VISIBLE_UNLOCK: "development_only_history_overlap_diagnostic",
+        lessons.LessonId.LOCAL_UNLOCK: "same_lesson_full_historical_inventory",
+        lessons.LessonId.SEPARATED_UNLOCK: "same_lesson_full_historical_inventory",
+    }
+)
 
 
 class U2rProtocolError(RuntimeError):
@@ -247,10 +261,16 @@ class ForbiddenLayoutEvidence:
     history_files: tuple[dict[str, Any], ...]
     selection_journal_files: int
     selection_journal_sha256: str
+    applied_by_lesson: Mapping[str, Mapping[str, Any]]
+    applied_mapping_sha256: str
 
     def public_dict(self) -> dict[str, Any]:
         value = asdict(self)
         value["history_files"] = [dict(item) for item in self.history_files]
+        value["applied_by_lesson"] = {
+            str(lesson): dict(evidence)
+            for lesson, evidence in self.applied_by_lesson.items()
+        }
         return value
 
 
@@ -735,7 +755,10 @@ def _safe_jsonl(path: Path, label: str) -> list[dict[str, Any]]:
 
 def _completed_history_hashes(
     confirmation_report: Mapping[str, Any],
-) -> tuple[set[str], tuple[dict[str, Any], ...]]:
+) -> tuple[
+    Mapping[lessons.LessonId, frozenset[str]],
+    tuple[dict[str, Any], ...],
+]:
     references = confirmation_report.get("reference_exclusions")
     histories = references.get("u2_child_histories") if isinstance(references, Mapping) else None
     if not isinstance(histories, Mapping) or set(histories) != {
@@ -744,7 +767,9 @@ def _completed_history_hashes(
         "20260745",
     }:
         raise U2rProtocolError("U2 confirmation history evidence is incomplete")
-    combined: set[str] = set()
+    combined: dict[lessons.LessonId, set[str]] = {
+        lesson: set() for lesson in lessons.LessonId
+    }
     evidence: list[dict[str, Any]] = []
     for child in ("20260737", "20260741", "20260745"):
         item = histories[child]
@@ -764,7 +789,7 @@ def _completed_history_hashes(
                 raise U2rProtocolError(f"U2 history {child} contains an invalid lesson") from error
             digest = _require_sha256(record.get("layout_sha256"), f"U2 history {child} layout")
             per_lesson[lesson].add(digest)
-            combined.add(digest)
+            combined[lesson].add(digest)
         recorded_lessons = item.get("lessons")
         if not isinstance(recorded_lessons, Mapping):
             raise U2rProtocolError(f"U2 history {child} lacks lesson evidence")
@@ -784,12 +809,26 @@ def _completed_history_hashes(
                 "completed_exact_layouts": len(set().union(*per_lesson.values())),
             }
         )
-    return combined, tuple(evidence)
+    return (
+        MappingProxyType(
+            {
+                lesson: frozenset(values)
+                for lesson, values in combined.items()
+            }
+        ),
+        tuple(evidence),
+    )
 
 
 def _accepted_confirmation_hashes(
     confirmation_report: Mapping[str, Any],
-) -> tuple[set[str], set[str], int, int, str]:
+) -> tuple[
+    Mapping[lessons.LessonId, frozenset[str]],
+    Mapping[lessons.LessonId, frozenset[str]],
+    int,
+    int,
+    str,
+]:
     journal = confirmation_report.get("selection_journal")
     if not isinstance(journal, Mapping):
         raise U2rProtocolError("U2 confirmation has no selection journal identity")
@@ -805,7 +844,9 @@ def _accepted_confirmation_hashes(
     root = U2_CONFIRMATION_REPORT.parent / "selection-journal"
     measured_identities: list[dict[str, Any]] = []
     accepted: dict[lessons.LessonId, set[str]] = {lesson: set() for lesson in lessons.LessonId}
-    inspectable: set[str] = set()
+    inspectable: dict[lessons.LessonId, set[str]] = {
+        lesson: set() for lesson in lessons.LessonId
+    }
     inspectable_outcomes = 0
     for raw in identities:
         if not isinstance(raw, Mapping):
@@ -837,8 +878,14 @@ def _accepted_confirmation_hashes(
             outcome = _read_json(path, "U2 selection outcome")
             layout_digest = outcome.get("layout_sha256")
             if layout_digest is not None:
+                try:
+                    outcome_lesson = lessons.LessonId(str(outcome["lesson_id"]))
+                except (KeyError, ValueError) as error:
+                    raise U2rProtocolError(
+                        "inspectable U2 confirmation outcome has an invalid lesson"
+                    ) from error
                 inspectable_outcomes += 1
-                inspectable.add(
+                inspectable[outcome_lesson].add(
                     _require_sha256(
                         layout_digest,
                         "inspectable U2 confirmation layout",
@@ -869,15 +916,26 @@ def _accepted_confirmation_hashes(
         ):
             raise U2rProtocolError(f"accepted U2 confirmation set changed for {lesson.value}")
     accepted_union = set().union(*accepted.values())
+    inspectable_union = set().union(*inspectable.values())
     if (
         inspectable_outcomes != 819
-        or len(inspectable) < len(accepted_union)
-        or not accepted_union <= inspectable
+        or len(inspectable_union) < len(accepted_union)
+        or not accepted_union <= inspectable_union
     ):
         raise U2rProtocolError("U2 confirmation inspectable set lost accepted layouts")
     return (
-        accepted_union,
-        inspectable,
+        MappingProxyType(
+            {
+                lesson: frozenset(values)
+                for lesson, values in accepted.items()
+            }
+        ),
+        MappingProxyType(
+            {
+                lesson: frozenset(values)
+                for lesson, values in inspectable.items()
+            }
+        ),
         inspectable_outcomes,
         expected_file_count,
         expected_set_digest,
@@ -886,7 +944,7 @@ def _accepted_confirmation_hashes(
 
 def _prior_u1_confirmation_hashes(
     confirmation_report: Mapping[str, Any],
-) -> tuple[set[str], dict[str, Any]]:
+) -> tuple[Mapping[lessons.LessonId, frozenset[str]], dict[str, Any]]:
     references = confirmation_report.get("reference_exclusions")
     reference = references.get("prior_u1_confirmation") if isinstance(references, Mapping) else None
     if not isinstance(reference, Mapping):
@@ -952,12 +1010,96 @@ def _prior_u1_confirmation_hashes(
     combined = set().union(*per_lesson.values())
     if len(combined) != 600:
         raise U2rProtocolError("prior U1 confirmation exact layouts are not unique")
-    return combined, {
-        "path": str(path),
-        "sha256": expected_digest,
-        "exact_layouts": len(combined),
-        "set_sha256": _hash_set_sha256(combined),
+    return (
+        MappingProxyType(
+            {
+                lesson: frozenset(values)
+                for lesson, values in per_lesson.items()
+            }
+        ),
+        {
+            "path": str(path),
+            "sha256": expected_digest,
+            "exact_layouts": len(combined),
+            "set_sha256": _hash_set_sha256(combined),
+        },
+    )
+
+
+def _qualification_and_validation_hashes_by_lesson(
+    qualification_report: Mapping[str, Any],
+    *,
+    access: Any,
+) -> tuple[Mapping[lessons.LessonId, frozenset[str]], frozenset[str]]:
+    """Recover the lesson ownership hidden by the frozen U2 global union.
+
+    The original U2 helper deliberately returned the same global union for all
+    four lessons.  U2r-r1 retains that union as immutable historical inventory,
+    while reconstructing which lesson owns each development hash so the finite
+    U0 generator is not conditioned on its nearly exhaustive training history.
+    """
+
+    global_mapping = lessons.reserved_training_layout_hashes(
+        qualification_report,
+        access=access,
+    )
+    global_union = frozenset().union(*global_mapping.values())
+    per_lesson: dict[lessons.LessonId, set[str]] = {
+        lesson: set() for lesson in lessons.LessonId
     }
+    cases = qualification_report.get("cases")
+    if not isinstance(cases, list) or len(cases) != lessons.SEALED_QUALIFICATION_SEED_COUNT:
+        raise U2rProtocolError("sealed U2 qualification cases changed")
+    for case in cases:
+        if not isinstance(case, Mapping):
+            raise U2rProtocolError("sealed U2 qualification contains an invalid case")
+        per_lesson[lessons.LessonId.SEPARATED_UNLOCK].add(
+            _require_sha256(
+                case.get("layout_sha256"),
+                "sealed U2 qualification layout",
+            )
+        )
+
+    validation_roles = {
+        lessons.LessonId.NAVIGATE: U2SeedRole.NAVIGATE_VALIDATION,
+        lessons.LessonId.VISIBLE_UNLOCK: U2SeedRole.U0_VALIDATION,
+        lessons.LessonId.LOCAL_UNLOCK: U2SeedRole.U1_VALIDATION,
+        lessons.LessonId.SEPARATED_UNLOCK: U2SeedRole.U2_VALIDATION,
+    }
+    for lesson in lessons.LessonId:
+        role = validation_roles[lesson]
+        for seed in lessons.validation_seeds(lesson, access=access):
+            environment = lessons.U2LessonEnv(lesson=lesson)
+            try:
+                environment.reset(
+                    seed=seed,
+                    options={
+                        "u2_seed_role": role.value,
+                        "u2_seed_access": access,
+                    },
+                )
+                if environment.layout is None:
+                    raise U2rProtocolError(
+                        f"{lesson.value} validation generated no exact layout"
+                    )
+                per_lesson[lesson].add(environment.layout.layout_sha256)
+            finally:
+                environment.close()
+
+    measured_union = frozenset().union(*per_lesson.values())
+    if measured_union != global_union:
+        raise U2rProtocolError(
+            "lesson-owned qualification/validation hashes differ from the frozen U2 union"
+        )
+    return (
+        MappingProxyType(
+            {
+                lesson: frozenset(values)
+                for lesson, values in per_lesson.items()
+            }
+        ),
+        global_union,
+    )
 
 
 def build_u2r_forbidden_layout_hashes(
@@ -973,28 +1115,55 @@ def build_u2r_forbidden_layout_hashes(
         or confirmation_report.get("policy_updates") is not False
     ):
         raise U2rProtocolError("U2r exclusions require the terminal U2 report")
-    base = lessons.reserved_training_layout_hashes(
+    base_by_lesson, base_union = _qualification_and_validation_hashes_by_lesson(
         qualification_report,
         access=access,
     )
-    base_union: set[str] = set()
-    for values in base.values():
-        base_union.update(values)
-    histories, history_files = _completed_history_hashes(confirmation_report)
+    history_by_lesson, history_files = _completed_history_hashes(confirmation_report)
     (
-        confirmed,
-        inspectable_confirmation,
+        confirmed_by_lesson,
+        inspectable_by_lesson,
         inspectable_confirmation_outcomes,
         journal_files,
         journal_digest,
     ) = _accepted_confirmation_hashes(confirmation_report)
-    prior_u1, prior_u1_evidence = _prior_u1_confirmation_hashes(confirmation_report)
-    combined = base_union | histories | inspectable_confirmation | prior_u1
-    frozen = frozenset(combined)
-    mapping = MappingProxyType({lesson: frozen for lesson in lessons.LessonId})
+    prior_u1_by_lesson, prior_u1_evidence = _prior_u1_confirmation_hashes(
+        confirmation_report
+    )
+    histories = frozenset().union(*history_by_lesson.values())
+    confirmed = frozenset().union(*confirmed_by_lesson.values())
+    inspectable_confirmation = frozenset().union(*inspectable_by_lesson.values())
+    prior_u1 = frozenset().union(*prior_u1_by_lesson.values())
+    inventory = frozenset(
+        set(base_union) | set(histories) | set(inspectable_confirmation) | set(prior_u1)
+    )
+
+    applied: dict[lessons.LessonId, frozenset[str]] = {}
+    for lesson in lessons.LessonId:
+        values = set(base_by_lesson[lesson])
+        if lesson is not lessons.LessonId.VISIBLE_UNLOCK:
+            values.update(history_by_lesson[lesson])
+            values.update(inspectable_by_lesson[lesson])
+            values.update(prior_u1_by_lesson.get(lesson, frozenset()))
+        applied[lesson] = frozenset(values)
+    mapping = MappingProxyType(applied)
+    applied_public = {
+        lesson.value: {
+            "exact_layouts": len(mapping[lesson]),
+            "exact_layout_set_sha256": _hash_set_sha256(mapping[lesson]),
+            "rule": U2R_APPLIED_EXCLUSION_RULES[lesson],
+        }
+        for lesson in lessons.LessonId
+    }
+    applied_mapping_sha256 = _canonical_sha256(
+        {
+            lesson.value: sorted(mapping[lesson])
+            for lesson in lessons.LessonId
+        }
+    )
     evidence = ForbiddenLayoutEvidence(
-        exact_layouts=len(frozen),
-        exact_layout_set_sha256=_hash_set_sha256(frozen),
+        exact_layouts=len(inventory),
+        exact_layout_set_sha256=_hash_set_sha256(inventory),
         qualification_and_validation_layouts=len(base_union),
         completed_history_layouts=len(histories),
         accepted_confirmation_layouts=len(confirmed),
@@ -1011,8 +1180,86 @@ def build_u2r_forbidden_layout_hashes(
         history_files=history_files,
         selection_journal_files=journal_files,
         selection_journal_sha256=journal_digest,
+        applied_by_lesson=applied_public,
+        applied_mapping_sha256=applied_mapping_sha256,
     )
     return mapping, evidence
+
+
+def preflight_u2r_training_layout_sampler(
+    forbidden_layout_hashes: Mapping[lessons.LessonId, frozenset[str]],
+    *,
+    seed_access: Any,
+    worker_streams: Sequence[int] = REMEDIATION_WORKER_STREAMS,
+    max_attempts: int = U2R_LAYOUT_RESAMPLE_ATTEMPTS,
+) -> tuple[dict[str, Any], ...]:
+    """Prove each fixed worker can sample every lesson before run creation.
+
+    Each lesson/worker pair starts from that worker's declared RNG stream.  The
+    accepted seed and one-based attempt are returned as deterministic preflight
+    evidence; no policy is loaded and no protected confirmation role is opened.
+    """
+
+    if (
+        isinstance(max_attempts, bool)
+        or not isinstance(max_attempts, int)
+        or max_attempts < 1
+    ):
+        raise U2rProtocolError("U2r layout sampler attempt cap must be a positive integer")
+    if set(forbidden_layout_hashes) != set(lessons.LessonId):
+        raise U2rProtocolError("U2r sampler requires one applied guard per lesson")
+    normalized_streams = tuple(int(stream) for stream in worker_streams)
+    if not normalized_streams or len(set(normalized_streams)) != len(normalized_streams):
+        raise U2rProtocolError("U2r sampler worker streams must be nonempty and unique")
+
+    records: list[dict[str, Any]] = []
+    for lesson in lessons.LessonId:
+        forbidden = forbidden_layout_hashes[lesson]
+        for worker_stream in normalized_streams:
+            generator = np.random.default_rng(worker_stream)
+            environment = lessons.U2LessonEnv(lesson=lesson)
+            try:
+                for attempt in range(1, max_attempts + 1):
+                    candidate_seed = int(
+                        generator.integers(0, lessons.TRAINING_SEED_LIMIT)
+                    )
+                    options: dict[str, Any] = {}
+                    if lesson is lessons.LessonId.SEPARATED_UNLOCK:
+                        options = {
+                            "u2_seed_role": U2SeedRole.TRAINING.value,
+                            "u2_seed_access": seed_access,
+                        }
+                    _, info = environment.reset(
+                        seed=candidate_seed,
+                        options=options or None,
+                    )
+                    layout_digest = _require_sha256(
+                        info.get("layout_sha256"),
+                        f"U2r {lesson.value} sampler layout",
+                    )
+                    if layout_digest in forbidden:
+                        continue
+                    records.append(
+                        {
+                            "lesson_id": lesson.value,
+                            "worker_stream": worker_stream,
+                            "accepted_attempt": attempt,
+                            "accepted_seed": candidate_seed,
+                            "layout_sha256": layout_digest,
+                            "forbidden_layouts": len(forbidden),
+                            "max_attempts": max_attempts,
+                        }
+                    )
+                    break
+                else:
+                    raise U2rProtocolError(
+                        "U2r sampler found no admissible "
+                        f"{lesson.value} layout for worker {worker_stream} "
+                        f"within {max_attempts} attempts"
+                    )
+            finally:
+                environment.close()
+    return tuple(records)
 
 
 def _evaluation_value(result: Any, name: str) -> Any:
@@ -1425,6 +1672,7 @@ def effective_config(
             "size": int(args.size),
             "workers": int(args.workers),
             "generator_profile_version": lessons.GENERATOR_PROFILE_VERSION,
+            "layout_resample_attempts": U2R_LAYOUT_RESAMPLE_ATTEMPTS,
             "observation_shape": [56, 56, 3],
             "action_count": 7,
             "mechanics_changed_from_u2": False,
@@ -5193,13 +5441,13 @@ def main() -> None:
     )
     from dungeon_apprentice import u2r_anchor
 
+    u2r_anchor.verify_failed_r0_launch()
     protocol_document_digest = u2r_anchor.protocol_document_sha256(repository)
     anchor = u2r_anchor.verify_external_anchor(
         repository,
         expected_source_commit=str(source["commit"]),
         expected_protocol_sha256=protocol_document_digest,
-        expected_exclusion_set_sha256=(exclusion_evidence.exact_layout_set_sha256),
-        expected_exclusion_layouts=exclusion_evidence.exact_layouts,
+        expected_exclusions=exclusion_evidence,
     )
     config = effective_config(
         args,
@@ -5259,6 +5507,17 @@ def main() -> None:
             "U2r run name is not the deterministic segment identity: "
             f"{args.run_name!r} != {expected_run_name!r}"
         )
+    sampler_segment_index = resume.segment_index if resume is not None else 0
+    sampler_segment_offset = sampler_segment_index * SEGMENT_SEED_OFFSET
+    sampler_worker_streams = tuple(
+        seed + sampler_segment_offset for seed in REMEDIATION_WORKER_STREAMS
+    )
+    sampler_preflight = preflight_u2r_training_layout_sampler(
+        forbidden_layout_hashes,
+        seed_access=seed_access,
+        worker_streams=sampler_worker_streams,
+        max_attempts=U2R_LAYOUT_RESAMPLE_ATTEMPTS,
+    )
 
     minimum_free_bytes = int(float(args.minimum_free_gib) * 1024**3)
     mount_evidence = verify_storage_mount(args.storage_root)
@@ -5372,6 +5631,7 @@ def main() -> None:
             "initial_worker_streams": list(REMEDIATION_WORKER_STREAMS),
             "segment_algorithm_seed": segment_algorithm_seed,
             "segment_worker_streams": list(segment_worker_streams),
+            "layout_sampler_preflight": [dict(record) for record in sampler_preflight],
             "start_lifetime_trained_actions": initial_trained,
             "start_child_trained_actions": child_trained,
             "start_remediation_trained_actions": remediation_trained,
@@ -5424,6 +5684,7 @@ def main() -> None:
                     size=args.size,
                     seed_access=seed_access,
                     forbidden_layout_hashes=forbidden_layout_hashes,
+                    max_layout_resample_attempts=U2R_LAYOUT_RESAMPLE_ATTEMPTS,
                 )
                 recorder = EpisodeEvidenceWrapper(
                     environment,

@@ -1,10 +1,52 @@
 # Protocol v0.2 U2R: Stability Remediation
 
-> Status: implemented, qualified, and externally preregistered; training not started. This
-> document was written after the immutable U2 confirmation returned `capability_failed`, but before
-> the U2R parent was resumed, before an additional policy update occurred, and before any candidate
-> in the fresh `15_240_000`–`15_279_999` confirmation allocation was opened. The clean source
-> freeze and annotated tag `u2r-stability-v0.2-u2r-20260723` bind these rules before training.
+> **Status:** original launch attempt 1 is an immutable zero-action operational failure. Amendment
+> r1 is frozen below and has passed implementation qualification; policy training has not begun.
+> No fresh `15_240_000`–`15_279_999` confirmation candidate has been opened.
+
+The original clean source and annotated tag `u2r-stability-v0.2-u2r-20260723` remain the immutable
+preregistration for attempt 1. They are not moved to r1. The exact launch evidence and checksums are
+preserved in the
+[attempt-1 result](results/v0.2-u2r-launch-attempt-1.md).
+
+## Launch attempt 1 and controlling r1 amendment
+
+Attempt 1 started at `2026-07-23T15:38:06+00:00` and stopped at
+`2026-07-23T15:38:10+00:00` while Stable-Baselines3 was resetting its initial vector environment.
+It performed **zero policy actions, zero remediation actions, and zero optimizer updates**. One
+zero-step U1 episode start was logged; the next worker then proposed 128 excluded U0 layouts and
+hit the fixed rejection ceiling. No checkpoint, evaluation, interruption record, terminal report,
+or resumable state exists.
+
+The original rule had applied one 84,218-layout historical union to all four training lessons.
+Visible Unlock U0 has a finite 2,800-layout exact domain. Of those, 2,774 appeared in the original
+guard, leaving only 26. Attempt 1 therefore revealed an infeasible training-distribution rule,
+not a policy-learning result.
+
+The old root
+`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-20260723`, its empty media root, and tag
+`u2r-stability-v0.2-u2r-20260723` are immutable failed-attempt evidence. They may not be resumed,
+rewritten, deleted, or reused.
+
+The prospective amendment has these independent identities:
+
+| Field | r1 value |
+| --- | --- |
+| Protocol | `dungeon-apprentice-v0.2-u2r-stability-r1` |
+| Annotated tag | `u2r-stability-v0.2-u2r-r1-20260723` |
+| Run root | `/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-20260723` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-media-20260723` |
+| Initial segment | `v02-u2r-r1-seed-20260745` |
+| Dashboard port | `8786` |
+
+r1 changes only the finite-U0 training exclusion rule and the evidence identities required to keep
+the two launches separate. It retains the same parent and optimizer, algorithm seed `20260749`,
+worker streams `20260749`–`20260752`, action budget, learner, reward, curriculum, development
+exams, terminal-only stability gates, and still-sealed confirmation streams. Because attempt 1
+never reached a policy action or update, these seeds do not encode a repeated learning outcome.
+
+For any conflict between the original prospective wording below and this amendment, this section
+controls r1. Everything not explicitly amended remains frozen.
 
 ## Decision in one sentence
 
@@ -132,18 +174,23 @@ U2R has one legal parent:
 | U2R continuation algorithm seed | `20260749` |
 | Four U2R worker streams | `20260749`–`20260752` |
 
-The successor protocol ID is `dungeon-apprentice-v0.2-u2r-stability`. Its canonical scientific
-run is:
+Attempt 1 used protocol ID `dungeon-apprentice-v0.2-u2r-stability`. Its immutable failed
+scientific run is:
 
 `/Volumes/T7 Developer/DungeonApprentice/u2r-stability-20260723/v02-u2r-seed-20260745`
 
-Its fixed annotated training preregistration tag is:
+Its fixed annotated preregistration tag is:
 
 `u2r-stability-v0.2-u2r-20260723`
 
-The source commit is intentionally not guessed in this prospective document. The clean committed
-implementation and external annotated launch tag must bind it before the run directory can be
-created.
+r1 uses protocol ID `dungeon-apprentice-v0.2-u2r-stability-r1` and canonical run:
+
+`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-20260723/v02-u2r-r1-seed-20260745`
+
+Its new annotated preregistration tag must be
+`u2r-stability-v0.2-u2r-r1-20260723`. The clean committed r1 implementation and external annotated
+tag must bind the amended document before the new run directory can be created. r1 is not qualified
+merely because attempt 1's implementation qualified.
 
 The archive must load as a complete recurrent-PPO checkpoint with its optimizer. A weights-only
 export, the earlier 655,360-action first-pass checkpoint, `latest-safe`, `terminal`, a later manual
@@ -260,8 +307,8 @@ development suites remain the only training-time exams:
 | Local Unlock U1 | `11_100_000`–`11_100_079` |
 | Separated Unlock U2 | `11_200_000`–`11_200_079` |
 
-Numerical separation alone is insufficient. Every U2R training environment must exact-reject any
-layout identity present in:
+Numerical separation alone is insufficient. Attempt 1 required every U2R training environment to
+exact-reject any layout identity present in:
 
 - the original U2 sealed qualification;
 - all four development suites;
@@ -270,9 +317,34 @@ layout identity present in:
   confirmation selection journal;
 - every prior U0, U1, or U2 confirmation reference that the frozen U2 protocol already protected.
 
-The exclusion set is an environment guard, not policy input. It may reject and deterministically
-resample a training layout before the policy sees it; it may not expose an old confirmation image,
-score, seed role, or collision reason to the policy.
+That authenticated union contained 84,218 exact identities. For U0, 2,774 of the generator's 2,800
+possible exact layouts were in the union. The 26-layout remainder made the declared rejection
+sampler operationally unreliable; the frozen attempt encountered 128 excluded proposals before
+policy action one.
+
+r1 retains the complete 84,218-identity inventory and every source digest. The failed attempt's
+zero-step U1 identity remains separately authenticated by the r0 evidence bundle, but is not added
+to the training refusal set because the policy never observed or acted in that episode. r1 changes
+only which historical U0 identities are a hard training guard:
+
+| Lesson | r1 exact-layout training guard |
+| --- | --- |
+| Navigate | Development, qualification where applicable, confirmation references, and all authenticated completed historical Navigate identities |
+| Visible Unlock U0 | Its **79 unique frozen development layouts only** |
+| Local Unlock U1 | Development and confirmation references plus all authenticated completed historical U1 identities |
+| Separated Unlock U2 | Sealed qualification, development and confirmation references, and all authenticated completed or active historical U2 identities |
+
+The r1 U0 guard leaves 2,721 of 2,800 exact layouts available. Prior U0 training-history overlap is
+therefore permitted and must be reported diagnostically; it cannot be described as history-novel.
+This is consistent with the already frozen confirmation rule for the finite U0 retention task.
+Navigate, U1, and U2 retain the broader historical-novelty guard.
+
+Every gating exclusion remains an environment guard, not policy input. It may reject and
+deterministically resample a training layout before the policy sees it. The trainer may not load
+an old confirmation image, score, seed role, action trace, or collision reason; an old U0 identity
+may recur only because the ordinary training generator independently produces it. Keeping that
+identity as diagnostic history rather than a U0 training refusal does not erase it from the
+evidence inventory.
 
 The original U2 evidence could not authenticate up to four active final worker layouts per child,
 or 12 across the cohort. Their identities do not exist and therefore cannot be excluded. U2R
@@ -342,33 +414,40 @@ implementation must instead pass a continuation qualification that proves:
 6. no code path can load an intermediate U2R checkpoint as the selected artifact;
 7. no code path can authorize, generate, or inspect either the consumed confirmation streams or
    the fresh successor streams during training;
-8. training exact-layout exclusion includes the authenticated completed confirmation evidence and
-   all three completed U2 histories without exposing any of it to the policy, and records every
-   source-file digest, unique-layout count, and canonical combined set digest before update one;
+8. the full authenticated confirmation and three-child U2 history inventory remains digest-bound;
+   Navigate, U1, and U2 apply the amended historical-novelty guards; finite U0 applies exactly its
+   79-identity development guard; and all gating and diagnostic counts are recorded before update
+   one without exposing evidence to the policy;
 9. save, resume, interruption, storage, and digest tests preserve the inherited optimizer and the
    cumulative 1,048,576-action ceiling rather than resetting either;
 10. episode-start identity and active-worker state survive checkpoint/resume tests; and
-11. local lint, the complete automated test suite, and the mechanical qualification suite pass
+11. a launch-contract preflight instantiates and resets all four real training workers under the
+    frozen initial scheduler, streams, and amended guards before creating the canonical run root;
+    and
+12. local lint, the complete automated test suite, and the mechanical qualification suite pass
     from the same clean source.
 
 A short smoke may use only a permanently non-claim engineering sandbox. It proves plumbing, not
 learning. Any behavior-affecting incompatibility requires a different protocol rather than a
 waiver.
 
-Before the real run, annotated tag `u2r-stability-v0.2-u2r-20260723` must bind the clean source
-commit, this document's path and SHA-256, the exact parent bundle, the frozen U2 confirmation
-report, the canonical static exclusion-set digest, the action budget, terminal stability rule, and
-the still-closed successor confirmation bounds. The launcher must independently verify the remote
-tag object, create one exclusive run directory, and refuse a dirty source, missing T7, low free
-space, another neural trainer, an existing target, or any preregistered identity mismatch.
+Before the r1 run, annotated tag `u2r-stability-v0.2-u2r-r1-20260723` must bind the clean source
+commit, this amended document's path and SHA-256, the exact parent bundle, the frozen U2
+confirmation report, the complete historical inventory and lesson-specific gating digests, the
+four immutable failed-attempt file digests, the action budget, terminal stability rule, and the
+still-closed successor confirmation bounds. The launcher must independently verify the remote tag
+object, create one exclusive r1 run directory, and refuse a dirty source, missing T7, low free
+space, another neural trainer, either old target as a new target, or any preregistered identity
+mismatch.
 
-The canonical initial segment is `v02-u2r-seed-20260745`. A durable interruption may continue only
-through the same launcher's `--resume` mode, which must authenticate the entire segment chain and
-select its sole tip. Successor names are exactly
-`v02-u2r-seed-20260745-resume-N` for contiguous positive integer `N`. Segment `N` derives its
+The canonical r1 initial segment is `v02-u2r-r1-seed-20260745`. A durable interruption after r1 has
+actually begun may continue only through the same r1 launcher's `--resume` mode, which must
+authenticate the entire segment chain and select its sole tip. Successor names are exactly
+`v02-u2r-r1-seed-20260745-resume-N` for contiguous positive integer `N`. Segment `N` derives its
 algorithm seed and four worker streams by adding `N × 100,000` to the initial values. The manifest
 must bind the prior segment index, exact safe checkpoint path and SHA-256, and inherited policy and
 optimizer digests. No caller may supply a different checkpoint, run name, segment index, or seed.
+The zero-action attempt-1 root has no safe tip and is never a resume source.
 
 The scientific action ceiling is cumulative across all segments. A resume restores only a fully
 optimized checkpoint. It carries the exact contiguous exam prefix and all immutable per-case
@@ -519,7 +598,10 @@ positive U2R terminal report exists and a separate U3 protocol is committed.
 
 ## No repeated rescue
 
-U2R is one declared successor, not the first turn of an indefinite retry loop.
+U2R is one declared behavioral successor, not the first turn of an indefinite retry loop. r1 is
+permitted only because attempt 1 failed before policy action one and because its infeasible finite-
+U0 guard, root, tag, and exact evidence are preserved. It is an operational protocol amendment,
+not another policy selected after observing learning.
 
 - No extra action follows the 1,048,576 child-action terminal boundary.
 - No intermediate checkpoint can replace the terminal artifact.
@@ -528,6 +610,8 @@ U2R is one declared successor, not the first turn of an indefinite retry loop.
 - No candidate stream is extended, reordered, supplemented, or reused.
 - No threshold or panel rule changes after a candidate opens.
 - The original failed policy is never rescored as a route around remediation.
+- Once r1 records its first policy action, another launch amendment may not restart the same
+  continuation as though no learning occurred.
 
 If U2R fails validly, U3 remains closed. The next prospective decision must choose between one
 explicitly reported fourth-lineage study and a genuinely new learner or interaction-stability
@@ -541,13 +625,19 @@ The story is not “the AI was one point short, so we gave it an easier test.”
 2. two passed the larger confirmation;
 3. the third revealed a deterministic interaction-loop regression;
 4. the failed result and opened test were frozen;
-5. that exact lineage received only the budget it had originally left unused;
-6. the unchanged learner had to finish all eleven windows;
-7. only the terminal model could qualify under a stricter stability rule; and
-8. any qualifying terminal model still faced an entirely new one-shot exam.
+5. the first remediation launch stopped at zero actions because a finite training domain had been
+   almost entirely excluded;
+6. that operational failure, including its mistaken rule, was frozen instead of overwritten;
+7. r1 relaxed only U0 history novelty while preserving U0 validation isolation and every historical
+   identity;
+8. that exact lineage may receive only the budget it had originally left unused;
+9. the unchanged learner must finish all eleven windows;
+10. only the terminal model can qualify under a stricter stability rule; and
+11. any qualifying terminal model still faces an entirely new one-shot exam.
 
-The decisive visual is an unbroken line from **169/200** to **eleven fixed windows** to a still
-sealed fresh envelope. Whatever happens next is useful:
+The decisive visual is now an unbroken line from **169/200** to **zero-action launch failure** to a
+finite-domain amendment to **eleven fixed windows** and a still sealed fresh envelope. Whatever
+happens next is useful:
 
 - a pass shows that more ordinary experience stabilized one weak branch without moving the test;
 - a stability failure shows that deterministic loops persisted under the unchanged learner; and

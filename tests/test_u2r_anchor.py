@@ -23,10 +23,39 @@ def _exclusions() -> dict[str, object]:
     return {
         "exact_layout_set_sha256": "e" * 64,
         "exact_layouts": 12_345,
+        "qualification_and_validation_layouts": 2_319,
+        "completed_history_layouts": 10_000,
+        "accepted_confirmation_layouts": 800,
+        "inspectable_confirmation_outcomes": 819,
+        "inspectable_confirmation_layouts": 807,
+        "prior_u1_confirmation_layouts": 600,
         "unavailable_original_terminal_active_worker_layouts_upper_bound": 12,
         "unavailable_original_terminal_active_worker_layouts_status": (
             "unauthenticated_unavailable_not_in_static_exclusion_set"
         ),
+        "prior_u1_confirmation_report": "/evidence/u1-report.json",
+        "prior_u1_confirmation_report_sha256": "1" * 64,
+        "prior_u1_confirmation_set_sha256": "2" * 64,
+        "history_files": [
+            {
+                "child_seed": seed,
+                "path": f"/evidence/{seed}/episodes.jsonl",
+                "sha256": str(index) * 64,
+                "completed_exact_layouts": 3_000 + index,
+            }
+            for index, seed in enumerate((20260737, 20260741, 20260745), start=3)
+        ],
+        "selection_journal_files": 1_643,
+        "selection_journal_sha256": "6" * 64,
+        "applied_by_lesson": {
+            lesson: {
+                "exact_layouts": 100 + index,
+                "exact_layout_set_sha256": f"{index + 7:x}" * 64,
+                "rule": rule,
+            }
+            for index, (lesson, rule) in enumerate(anchor.APPLIED_GUARD_RULES.items())
+        },
+        "applied_mapping_sha256": "b" * 64,
     }
 
 
@@ -36,8 +65,7 @@ def _verification_contract(repository: Path) -> dict[str, object]:
         "expected_protocol_sha256": hashlib.sha256(
             (repository / anchor.PROTOCOL_REPOSITORY_PATH).read_bytes()
         ).hexdigest(),
-        "expected_exclusion_set_sha256": "e" * 64,
-        "expected_exclusion_layouts": 12_345,
+        "expected_exclusions": _exclusions(),
     }
 
 
@@ -83,9 +111,18 @@ def test_payload_freezes_parent_budget_stability_and_closed_confirmation(
         "u2_score": 169,
         "u2_panels": [84, 85],
     }
-    assert payload["static_exclusions"] == {
-        "exact_layout_set_sha256": "e" * 64,
-        "exact_layouts": 12_345,
+    expected_inventory = {
+        key: value
+        for key, value in _exclusions().items()
+        if key in anchor.STATIC_INVENTORY_FIELDS
+    }
+    assert payload["static_exclusions"] == expected_inventory
+    assert payload["failed_r0_launch"] == anchor.FAILED_R0_EVIDENCE
+    assert payload["applied_training_guards"] == {
+        "mapping_sha256": "b" * 64,
+        "by_lesson": _exclusions()["applied_by_lesson"],
+        "full_static_inventory_sha256": "e" * 64,
+        "full_static_inventory_layouts": 12_345,
         "unavailable_original_terminal_active_worker_layouts_upper_bound": 12,
         "unavailable_original_terminal_active_worker_layouts_status": (
             "unauthenticated_unavailable_not_in_static_exclusion_set"
@@ -107,8 +144,8 @@ def test_payload_freezes_parent_budget_stability_and_closed_confirmation(
         "worker_streams": [20260749, 20260750, 20260751, 20260752],
         "training_allocation": [0, 999_999],
         "segment_seed_offset": 100_000,
-        "initial_run_name": "v02-u2r-seed-20260745",
-        "resume_run_name_pattern": "v02-u2r-seed-20260745-resume-N",
+        "initial_run_name": "v02-u2r-r1-seed-20260745",
+        "resume_run_name_pattern": "v02-u2r-r1-seed-20260745-resume-N",
         "segment_algorithm_seed_formula": ("algorithm_seed + segment_index * segment_seed_offset"),
         "segment_worker_stream_formula": (
             "initial_worker_stream + segment_index * segment_seed_offset"
@@ -161,6 +198,70 @@ def test_message_is_one_canonical_json_line(tmp_path: Path) -> None:
     assert second["confirmation"]["fresh_reserved_ranges"]["separated_u2"][0] == 15_240_000
 
 
+def test_failed_r0_launch_verifier_requires_exact_zero_action_inventory(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = tmp_path / "u2r-stability-20260723"
+    run = root / "v02-u2r-seed-20260745"
+    run.mkdir(parents=True)
+    values = {
+        run / "manifest.json": {
+            "protocol": "dungeon-apprentice-v0.2-u2r-stability",
+            "source": {
+                "commit": anchor.FAILED_R0_SOURCE_COMMIT,
+                "dirty": False,
+            },
+        },
+        run / "crash.json": {
+            "classification": "training_failure",
+            "setup_complete": True,
+            "traceback": (
+                "RuntimeError: could not sample a training layout outside "
+                "reserved evidence sets"
+            ),
+        },
+        root / ".launcher-v02-u2r-seed-20260745.json": {
+            "state": "exited",
+            "exit_status": 1,
+            "forwarded_signal": None,
+        },
+    }
+    for path, value in values.items():
+        path.write_text(json.dumps(value), encoding="utf-8")
+    episode = {
+        "type": "episode_start",
+        "active": True,
+        "elapsed_steps": 0,
+        "worker_transition_at_start": 0,
+        "diagnostics": {"action_histogram": {}},
+    }
+    (run / "episode-starts.jsonl").write_text(
+        json.dumps(episode) + "\n",
+        encoding="utf-8",
+    )
+    evidence = json.loads(json.dumps(anchor.FAILED_R0_EVIDENCE))
+    evidence["root"] = str(root)
+    evidence["run"] = str(run)
+    artifact_paths = {
+        "manifest": run / "manifest.json",
+        "crash": run / "crash.json",
+        "episode_starts": run / "episode-starts.jsonl",
+        "supervisor": root / ".launcher-v02-u2r-seed-20260745.json",
+    }
+    for label, path in artifact_paths.items():
+        evidence["artifacts"][label] = {
+            "path": str(path),
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        }
+    monkeypatch.setattr(anchor, "FAILED_R0_EVIDENCE", evidence)
+
+    assert anchor.verify_failed_r0_launch() == evidence
+    (run / "unexpected.txt").write_text("unexpected", encoding="utf-8")
+    with pytest.raises(anchor.U2rAnchorError, match="inventory changed"):
+        anchor.verify_failed_r0_launch()
+
+
 def test_payload_rejects_unsafe_protocol_and_invalid_exclusions(
     tmp_path: Path,
 ) -> None:
@@ -179,31 +280,21 @@ def test_payload_rejects_unsafe_protocol_and_invalid_exclusions(
 
     protocol.unlink()
     protocol.write_text("# protocol\n", encoding="utf-8")
+    invalid_digest = _exclusions()
+    invalid_digest["exact_layout_set_sha256"] = "not-a-digest"
     with pytest.raises(anchor.U2rAnchorError, match="SHA-256"):
         anchor.build_anchor_payload(
             repository,
             source_commit="a" * 40,
-            exclusions={
-                "exact_layout_set_sha256": "not-a-digest",
-                "exact_layouts": 10,
-                "unavailable_original_terminal_active_worker_layouts_upper_bound": 12,
-                "unavailable_original_terminal_active_worker_layouts_status": (
-                    "unauthenticated_unavailable_not_in_static_exclusion_set"
-                ),
-            },
+            exclusions=invalid_digest,
         )
+    invalid_count = _exclusions()
+    invalid_count["exact_layouts"] = 0
     with pytest.raises(anchor.U2rAnchorError, match="positive integer"):
         anchor.build_anchor_payload(
             repository,
             source_commit="a" * 40,
-            exclusions={
-                "exact_layout_set_sha256": "e" * 64,
-                "exact_layouts": 0,
-                "unavailable_original_terminal_active_worker_layouts_upper_bound": 12,
-                "unavailable_original_terminal_active_worker_layouts_status": (
-                    "unauthenticated_unavailable_not_in_static_exclusion_set"
-                ),
-            },
+            exclusions=invalid_count,
         )
     wrong_limitation = _exclusions()
     wrong_limitation["unavailable_original_terminal_active_worker_layouts_upper_bound"] = 11
@@ -225,11 +316,37 @@ def _runner(
     peeled: str = "a" * 40,
     remote_url: str = anchor.EXPECTED_ORIGIN_URL,
     remote_object: str = "b" * 40,
+    failed_r0_object: str = anchor.FAILED_R0_TAG_OBJECT,
 ):
     outputs = {
         ("rev-parse", "--verify", "HEAD^{commit}"): head,
         ("status", "--porcelain=v1", "--untracked-files=all"): status,
         ("remote", "get-url", anchor.ANCHOR_REMOTE): remote_url,
+        (
+            "cat-file",
+            "-t",
+            f"refs/tags/{anchor.FAILED_R0_TAG}",
+        ): "tag",
+        (
+            "rev-parse",
+            "--verify",
+            f"refs/tags/{anchor.FAILED_R0_TAG}",
+        ): failed_r0_object,
+        (
+            "rev-list",
+            "-n",
+            "1",
+            f"refs/tags/{anchor.FAILED_R0_TAG}",
+        ): anchor.FAILED_R0_SOURCE_COMMIT,
+        (
+            "ls-remote",
+            "--tags",
+            anchor.ANCHOR_REMOTE,
+            f"refs/tags/{anchor.FAILED_R0_TAG}",
+        ): (
+            f"{failed_r0_object}\t"
+            f"refs/tags/{anchor.FAILED_R0_TAG}"
+        ),
         ("cat-file", "-t", f"refs/tags/{anchor.ANCHOR_TAG}"): tag_type,
         (
             "rev-parse",
@@ -278,6 +395,10 @@ def test_verifier_requires_clean_exact_annotated_object_on_origin(
     assert verified.tag_object == "b" * 40
     assert verified.static_exclusion_set_sha256 == "e" * 64
     assert verified.static_exclusion_layouts == 12_345
+    assert verified.static_exclusion_inventory["completed_history_layouts"] == 10_000
+    assert verified.applied_training_guard_mapping_sha256 == "b" * 64
+    assert set(verified.applied_training_guards) == set(anchor.APPLIED_GUARD_RULES)
+    assert verified.failed_r0_launch == anchor.FAILED_R0_EVIDENCE
     assert verified.additional_action_budget == 360_448
     assert verified.terminal_child_actions == 1_048_576
     assert verified.terminal_lifetime_actions == 1_835_008
@@ -289,6 +410,12 @@ def test_verifier_requires_clean_exact_annotated_object_on_origin(
             repository,
             **_verification_contract(repository),
             runner=_runner(message=message, status=" M README.md"),
+        )
+    with pytest.raises(anchor.U2rAnchorError, match="r0 annotated tag identity changed"):
+        anchor.verify_external_anchor(
+            repository,
+            **_verification_contract(repository),
+            runner=_runner(message=message, failed_r0_object="c" * 40),
         )
     with pytest.raises(anchor.U2rAnchorError, match="annotated"):
         anchor.verify_external_anchor(

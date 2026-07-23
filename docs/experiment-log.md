@@ -673,3 +673,80 @@ fixed dashboard port 8786 available, and neither the canonical U2r run root nor 
 The fresh `15_240_000`–`15_279_999` candidate streams remained structurally sealed and no issuer was
 created. Accordingly this entry records **implementation readiness, not a learning result**:
 trained U2r actions remain zero, all eleven windows remain pending, and U3 remains closed.
+
+### July 23, 2026 — U2r launch attempt 1 stops before policy action one
+
+The externally preregistered launcher started at `2026-07-23T15:38:06+00:00`. Four seconds later,
+during Stable-Baselines3's initial vector-environment reset, it exited with status `1`. The policy
+had taken **zero actions**, the remediation counter had advanced by **zero actions**, and the
+optimizer had completed **zero updates**. The inherited counters remained 688,128 child actions,
+1,474,560 lifetime actions, and 2,880 updates.
+
+One worker durably logged a Local Unlock U1 episode start at seed `767339` and layout
+`3bab367b4263d0638d9d98142686c1f34c7026dc3d83465d12ffba3c1c30784c`.
+Its record shows zero elapsed steps, zero worker transitions, and an empty action histogram. The
+next scheduler assignment was finite Visible Unlock U0. Worker stream `20260750` proposed 128
+candidates—126 unique layouts—and every proposal hit the frozen exclusion union. The environment
+then failed with `could not sample a training layout outside reserved evidence sets` before rollout
+collection or policy inference.
+
+The frozen implementation had correctly reconstructed 84,218 historical exact identities and
+applied the entire union to every lesson. That was too strong for the finite U0 generator. Its exact
+domain contains 2,800 layouts; 2,774 were hard-excluded, leaving only 26. The failure therefore
+invalidates the launch rule, not the learner.
+
+The failed evidence remains immutable:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| Launcher state | `99bde1ff17ea54b6d573305100f351e67829cd10320a5cebe326ab6a0f414ec5` |
+| Manifest | `5d2b0a632f03ed6963c5eff496d4907f5b811d34efbc3ed102f63d4012c4fc16` |
+| Crash report | `aca77af751f987c363f7deb292ffcba5b3ed919a2fdd2e381dda13405f47482a` |
+| Episode-start ledger | `f5117f0bf22256774a2b802a99311a8a9fea3c02ff5faaaa9f85df4cd0ed063b` |
+
+No status, progress ledger, completed episode, evaluation, checkpoint, interruption record,
+integrity record, terminal report, or resumable state was produced. The parent archive remains
+unchanged at
+`56dc459fb94110f41a14b2304425f572fc235c8cfc07e1152306cbf77ac33dee`.
+The original tag `u2r-stability-v0.2-u2r-20260723`, source, run root, empty media root, and four-file
+bundle remain the permanent attempt-1 record. Full interpretation is in the
+[launch result](results/v0.2-u2r-launch-attempt-1.md).
+
+### July 23, 2026 — U2r r1 amendment qualifies before training
+
+The project does not rewrite attempt 1 or invoke its nonexistent resume path. It prospectively
+defines `dungeon-apprentice-v0.2-u2r-stability-r1`, annotated tag
+`u2r-stability-v0.2-u2r-r1-20260723`, root
+`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-20260723`, media root
+`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-media-20260723`, and initial segment
+`v02-u2r-r1-seed-20260745`.
+
+r1 retains the exact policy and optimizer parent, remaining 360,448-action budget, algorithm seed
+`20260749`, worker streams `20260749`–`20260752`, unchanged PPO/reward/curriculum, terminal-only
+selection, stability gates, and still-sealed `15_240_000`–`15_279_999` confirmation allocation.
+Using the same streams is not repeated learning because attempt 1 ended before action one or update
+one; the independent root and tag preserve the launch history.
+
+The only behavioral amendment is lesson-specific training exclusion. Navigate, U1, and U2 retain
+the authenticated historical-novelty guard. U0 rejects only its 79 unique frozen development
+layouts, leaving 2,721 legal layouts; earlier U0 training-history overlap remains mandatory
+diagnostic evidence rather than a gating exclusion. The complete historical inventory and source
+digests remain retained. The attempt-1 U1 start identity is separately bound by the failed-launch
+evidence, but does not join the U1 refusal set because no policy action occurred in that episode.
+
+r1 then passed its release boundary before a canonical run root existed:
+
+- **435/435** repository tests and **200/200** focused r1 boundary tests;
+- Ruff, Python compilation, launcher syntax, and patch-integrity checks;
+- **300/300** generated levels solved by the mechanical oracle;
+- exact authentication of the four-file r0 zero-action bundle;
+- reconstruction of all **84,218** retained identities at digest
+  `4157869d218289eebdd6a04dd0bd4cd2c91e6717cbe6eb6d966fc96749cf0fb3`;
+- exact r1 guard mapping digest
+  `d58e063841be32a36a3c6bdadb333da90401f282b7734c1d6307a2d097c49536`; and
+- all **16/16** fixed lesson/worker sampler checks accepted on their first proposal.
+
+The mounted T7 had roughly 216 GiB free, no trainer was active, and the r1 root did not exist.
+Accordingly this is implementation qualification, not a learning result: no r1 action, checkpoint,
+exam, or learning outcome existed at the freeze, the confirmation streams remained sealed, and U3
+remained closed.

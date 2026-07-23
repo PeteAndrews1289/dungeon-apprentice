@@ -252,7 +252,7 @@ qualification, prior-confirmation, and completed logged training histories while
 declared bounded 12-layout terminal logging limitation. The strict failure means U3 Full Unlock
 protected work cannot activate from this evidence.
 
-### U2r Stability Remediation — implemented and qualified, not started
+### U2r Stability Remediation — attempt 1 failed at zero actions; r1 qualified
 
 The next step is not a retry of the opened exam. The
 [U2r protocol](docs/protocol-v0.2-u2r-stability-remediation.md) keeps the original
@@ -266,8 +266,7 @@ lineage:
 - behavior: unchanged pixels, actions, PPO, reward, four-lesson curriculum, 50/7.5/7.5/35 normal
   transition mix, and prerequisite recovery;
 - selection: only the exact full-budget terminal artifact, never an earlier or best-looking
-  checkpoint; and
-- preregistration identity: annotated tag `u2r-stability-v0.2-u2r-20260723`.
+  checkpoint.
 
 ![One failed lineage receives eleven fixed windows before one entirely fresh confirmation](docs/assets/v0.2-u2r-stability-remediation.svg)
 
@@ -276,24 +275,39 @@ prospective stability rule: U2 at least 72/80 with both panels at least 34/40, n
 ineffective interactions independently on U0/U1/U2, and no lesson falling by more than 2/80 at the
 terminal boundary.
 
-Training has **not** begun. The consumed `15_200_000`–`15_239_999` cases remain immutable evidence,
-while four fresh U2r confirmation candidate streams at `15_240_000`–`15_279_999` remain sealed.
-Only a terminal-eligible policy may face them once, with no update and the original confirmation
-gates. A pass could open U3 only with the explicit label **two directly confirmed U2 policies plus
-one prospectively remediated U2r policy**. It would not rewrite the original U2 result as 3/3.
+The first externally tagged launcher did start, but it failed during the initial environment reset
+before policy action one. It recorded **zero policy actions, zero remediation actions, and zero
+optimizer updates**. The original global 84,218-layout guard covered 2,774 of finite U0's 2,800
+possible exact layouts; the declared worker encountered 128 excluded U0 proposals in succession.
+The exact four-file evidence bundle, timestamps, hashes, traceback, and zero-counter proof are in
+the [immutable attempt-1 result](docs/results/v0.2-u2r-launch-attempt-1.md).
 
-The clean implementation commit is externally bound by annotated tag
-`u2r-stability-v0.2-u2r-20260723`. The fixed launcher is:
+The original tag `u2r-stability-v0.2-u2r-20260723` and root
+`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-20260723` remain immutable failed-launch
+evidence. They are not resumed or renamed.
 
-```bash
-./scripts/run_v02_u2r.sh
-```
+A frozen r1 amendment changes only the lesson-specific training guard. Navigate, U1, and U2
+retain historical novelty. U0 rejects its 79 unique development layouts but treats earlier
+training-history overlap as a required diagnostic, leaving 2,721 legal layouts. The full historical
+inventory remains digest-bound rather than disappearing from the record.
 
-It serves a read-only dashboard at `http://127.0.0.1:8786/`. A durably interrupted segment can be
-continued only with `./scripts/run_v02_u2r.sh --resume`; the launcher chooses the authenticated
-chain tip and deterministic `-resume-N` identity itself. See the
-[operations runbook](docs/runbook.md#run-the-bounded-u2r-stability-successor) for the recovery and
-evidence rules.
+r1 has protocol `dungeon-apprentice-v0.2-u2r-stability-r1`, annotated tag
+`u2r-stability-v0.2-u2r-r1-20260723`, run root
+`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-20260723`, and segment
+`v02-u2r-r1-seed-20260745`. It retains algorithm/worker seeds `20260749`–`20260752`, because attempt
+1 produced no action or update, and retains the still-sealed `15_240_000`–`15_279_999`
+confirmation streams. Its implementation qualification passed 435 repository tests, 200 focused
+r1 boundary tests, a 300/300 mechanical oracle check, authentic reconstruction of the 84,218-layout
+inventory, and all 16 fixed lesson/worker sampler checks. Training has not yet begun, so no r1
+learning result is claimed here.
+
+Only a future terminal-eligible policy may face the sealed streams once, with no update and the
+original confirmation gates. A pass could open U3 only with the explicit label **two directly
+confirmed U2 policies plus one prospectively remediated U2r policy**. It would not rewrite the
+original U2 result as 3/3. The read-only dashboard remains assigned to
+`http://127.0.0.1:8786/`; see the
+[operations runbook](docs/runbook.md#run-the-bounded-u2r-stability-successor) for the launch refusal
+boundary.
 
 ## Evidence standard
 

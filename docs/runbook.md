@@ -260,31 +260,63 @@ U2 confirmation is complete and remains `capability_failed`: two policies passed
 that verdict. It continues only the failed child's exact mastery archive and optimizer for the
 360,448 actions left under its original 1,048,576-action ceiling.
 
-After the clean implementation commit and annotated tag
-`u2r-stability-v0.2-u2r-20260723` have been pushed, launch the sole canonical segment with:
+### Do not resume launch attempt 1
+
+The original tag `u2r-stability-v0.2-u2r-20260723` and root
+`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-20260723` identify a completed operational
+failure. At `2026-07-23T15:38:10+00:00`, its initial vector reset stopped after one zero-step U1
+episode start and 128 excluded U0 proposals. It took zero policy actions and made zero optimizer
+updates. It has no safe checkpoint, interruption record, or resume-eligible state.
+
+Do not delete, move, rename, append to, or pass that root to `--resume`. Its exact file inventory
+and checksums are in
+[the launch-attempt result](results/v0.2-u2r-launch-attempt-1.md).
+
+### r1 launch refusal boundary
+
+r1 is a distinct prospective release:
+
+| Field | Required identity |
+| --- | --- |
+| Protocol | `dungeon-apprentice-v0.2-u2r-stability-r1` |
+| Annotated tag | `u2r-stability-v0.2-u2r-r1-20260723` |
+| Run root | `/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-20260723` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-media-20260723` |
+| Initial segment | `v02-u2r-r1-seed-20260745` |
+| Dashboard | `http://127.0.0.1:8786/` |
+
+The launcher must refuse to create the r1 root until the clean r1 source, amended protocol digest,
+external annotated tag, four immutable attempt-1 digests, exact parent, complete historical
+inventory, lesson-specific guard identities, mounted T7, and real four-worker reset preflight all
+qualify. In particular, qualification must prove that U0's 79-identity development guard leaves
+2,721 of its finite 2,800 exact layouts available. Navigate, U1, and U2 retain their historical
+novelty guards.
+
+r1 passed 435 repository tests, 200 focused boundary tests, a 300/300 oracle check, authentic
+reconstruction of the r0 bundle and 84,218-layout inventory, and all 16 fixed lesson/worker sampler
+checks. Do **not** run from the old tag merely because attempt 1 once qualified. Once the amended
+tag is present on the same clean source, launch the sole r1 segment with:
 
 ```bash
 ./scripts/run_v02_u2r.sh
 ```
 
 The launcher re-authenticates the parent, failed confirmation, qualification, static layout
-exclusions, remote annotated tag, mounted T7, free-space reserve, clean source, and absence of
-another neural trainer before it creates evidence. It writes the scientific lineage beneath
-`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-20260723`, keeps optional media beneath
-`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-media-20260723`, and serves the read-only
-dashboard at `http://127.0.0.1:8786/`.
+guards and retained inventory, remote r1 annotated tag, mounted T7, free-space reserve, clean
+source, and absence of another neural trainer before it creates evidence. It writes only beneath
+the r1 run and media roots in the table and serves the read-only dashboard on port 8786.
 
-Do not choose a checkpoint or new name by hand after an interruption. If—and only if—the prior
-segment durably published its fail-closed interruption record, restore the same source and T7,
-verify no trainer remains, and run:
+Do not choose a checkpoint or new name by hand after an r1 interruption. If—and only if—a genuine
+r1 segment durably published its fail-closed interruption record after training began, restore the
+same source and T7, verify no trainer remains, and run:
 
 ```bash
 ./scripts/run_v02_u2r.sh --resume
 ```
 
-The resume planner authenticates the complete contiguous chain and chooses only its tip. Segment
-zero is `v02-u2r-seed-20260745`; successors are exactly
-`v02-u2r-seed-20260745-resume-N`. Each segment derives new algorithm and worker RNG streams by
+The resume planner authenticates the complete contiguous r1 chain and chooses only its tip. Segment
+zero is `v02-u2r-r1-seed-20260745`; successors are exactly
+`v02-u2r-r1-seed-20260745-resume-N`. Each segment derives new algorithm and worker RNG streams by
 adding `N × 100,000`, while retaining the same policy, optimizer, curriculum, completed exams, and
 cumulative ceiling. The four partial episode identities captured at interruption are retained and
 explicitly abandoned because active Gym and recurrent states are not serialized. A power loss that
@@ -311,14 +343,17 @@ The seed ledger is a refusal list:
 | Fresh U2r confirmation reservation | `15_240_000`–`15_279_999` in four lesson-specific streams | Structurally sealed; no training access issuer exists |
 | Complete-project final test | `20_000_000`–`20_299_999` | Untouched throughout U2 |
 
-Numerical separation is not enough. The trainer must also reject exact layout hashes belonging to
-qualification or any frozen validation suite. Never inspect the future confirmation streams to
-debug training, and never substitute the final allocation for a missing confirmation plan.
+Numerical separation is not enough. The r1 trainer must apply the lesson-specific guard bound by
+its tag: broad historical novelty for Navigate, U1, and U2; U0 development-only refusal with all
+other U0 history retained diagnostically. Never inspect the future confirmation streams to debug
+training, and never substitute the final allocation for a missing confirmation plan.
 
 ## U2r artifacts
 
-Each immutable U2r segment directory is self-contained, while a terminal report binds the complete
-contiguous segment chain:
+The original failed root contains only its launcher state, manifest, crash report, and one-line
+episode-start ledger. The table below describes artifacts expected only after qualified r1 training
+begins. Each immutable r1 segment directory is self-contained, while a terminal report binds the
+complete contiguous segment chain:
 
 | Path | Meaning |
 | --- | --- |

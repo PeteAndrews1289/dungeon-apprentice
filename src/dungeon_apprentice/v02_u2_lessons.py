@@ -73,6 +73,7 @@ EVALUATION_PANEL_SIZE = 40
 EVALUATION_SEED_COUNT = EVALUATION_PANEL_SIZE * 2
 ALLOCATION_TOLERANCE = 0.05
 MAX_GENERATION_ATTEMPTS = 2_048
+DEFAULT_LAYOUT_RESAMPLE_ATTEMPTS = 128
 FULL_LAYOUT_UNIQUENESS_FLOOR = 0.99
 GEOMETRY_UNIQUENESS_FLOOR = 0.95
 
@@ -1022,14 +1023,22 @@ class CurriculumEnv(gym.Wrapper):
         forbidden_layout_hashes: (
             Mapping[U2LessonId, frozenset[str]] | frozenset[str] | None
         ) = None,
+        max_layout_resample_attempts: int = DEFAULT_LAYOUT_RESAMPLE_ATTEMPTS,
     ) -> None:
         super().__init__(env)
+        if (
+            isinstance(max_layout_resample_attempts, bool)
+            or not isinstance(max_layout_resample_attempts, int)
+            or max_layout_resample_attempts < 1
+        ):
+            raise ValueError("layout resample attempt cap must be a positive integer")
         self.scheduler = scheduler
         self._rng = np.random.default_rng(seed)
         self._seed_access = seed_access
         self._lesson: U2LessonId | None = None
         self._reservation = 0
         self._forbidden_layout_hashes = forbidden_layout_hashes or {}
+        self._max_layout_resample_attempts = max_layout_resample_attempts
 
     def _forbidden_for(self, lesson: U2LessonId) -> frozenset[str]:
         if isinstance(self._forbidden_layout_hashes, Mapping):
@@ -1045,9 +1054,10 @@ class CurriculumEnv(gym.Wrapper):
         self._lesson, self._reservation = self.scheduler.assign()
         self.unwrapped.set_lesson(self._lesson)
         forbidden = self._forbidden_for(self._lesson)
-        for rejected in range(128):
+        base_options = dict(kwargs.pop("options", {}) or {})
+        for rejected in range(self._max_layout_resample_attempts):
             episode_seed = int(self._rng.integers(0, TRAINING_SEED_LIMIT))
-            options = dict(kwargs.pop("options", {}) or {})
+            options = dict(base_options)
             if self._lesson is U2LessonId.SEPARATED_UNLOCK:
                 options["u2_seed_role"] = U2SeedRole.TRAINING.value
                 if self._seed_access is not None:
@@ -1060,7 +1070,11 @@ class CurriculumEnv(gym.Wrapper):
             if info.get("layout_sha256") not in forbidden:
                 info["reserved_layout_rejections"] = rejected
                 return observation, info
-        raise RuntimeError("could not sample a training layout outside reserved evidence sets")
+        raise RuntimeError(
+            "could not sample a training layout outside reserved evidence sets "
+            f"for {self._lesson.value} within "
+            f"{self._max_layout_resample_attempts} attempts"
+        )
 
     def step(self, action: int) -> tuple[Any, float, bool, bool, dict[str, Any]]:
         observation, reward, terminated, truncated, info = super().step(action)
@@ -1084,6 +1098,7 @@ def make_training_env(
     forbidden_layout_hashes: (
         Mapping[U2LessonId, frozenset[str]] | frozenset[str] | None
     ) = None,
+    max_layout_resample_attempts: int = DEFAULT_LAYOUT_RESAMPLE_ATTEMPTS,
 ) -> gym.Env:
     base = U2LessonEnv(
         lesson=U2LessonId.SEPARATED_UNLOCK,
@@ -1096,6 +1111,7 @@ def make_training_env(
         seed=seed,
         seed_access=seed_access,
         forbidden_layout_hashes=forbidden_layout_hashes,
+        max_layout_resample_attempts=max_layout_resample_attempts,
     )
     env = RGBImgPartialObsWrapper(env, tile_size=PIXEL_TILE_SIZE)
     env = ImgObsWrapper(env)

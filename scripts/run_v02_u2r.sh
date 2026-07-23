@@ -4,9 +4,9 @@ set -euo pipefail
 repository=${0:A:h:h}
 volume="/Volumes/T7 Developer"
 dungeon_root="$volume/DungeonApprentice"
-run_root="$dungeon_root/u2r-stability-20260723"
-media_root="$dungeon_root/u2r-stability-media-20260723"
-initial_run_name="v02-u2r-seed-20260745"
+run_root="$dungeon_root/u2r-stability-r1-20260723"
+media_root="$dungeon_root/u2r-stability-r1-media-20260723"
+initial_run_name="v02-u2r-r1-seed-20260745"
 initial_target="$run_root/$initial_run_name"
 parent="$dungeon_root/u2-separated-20260723/v02-u2-seed-20260745/checkpoints/mastered-separated-unlock.zip"
 parent_sidecar="${parent:r}.json"
@@ -19,6 +19,7 @@ trainer_module="dungeon_apprentice.v02_u2r"
 supervisor="$repository/scripts/u2_trainer_supervisor.py"
 dashboard_module="dungeon_apprentice.v02_u2r_dashboard"
 dashboard_port=8786
+training_protocol="dungeon-apprentice-v0.2-u2r-stability-r1"
 minimum_free_gib=25
 
 parent_sha256="56dc459fb94110f41a14b2304425f572fc235c8cfc07e1152306cbf77ac33dee"
@@ -222,15 +223,15 @@ print(process.pid)
 PY
   )
   if ! "$repository/.venv/bin/python" - \
-    "$dashboard_pid" "$dashboard_port" "$source_commit" \
-    "$expected_segment_index" <<'PY'
+      "$dashboard_pid" "$dashboard_port" "$source_commit" "$training_protocol" \
+      "$expected_segment_index" <<'PY'
 import json
 import os
 import sys
 import time
 import urllib.request
 
-pid, port, source_commit, expected_segment = sys.argv[1:]
+pid, port, source_commit, protocol, expected_segment = sys.argv[1:]
 url = f"http://127.0.0.1:{port}/api/u2r.json"
 for _attempt in range(100):
     try:
@@ -239,7 +240,7 @@ for _attempt in range(100):
             payload = json.load(response)
         active = payload.get("active_status", {})
         if (
-            payload.get("protocol") == "dungeon-apprentice-v0.2-u2r-stability"
+            payload.get("protocol") == protocol
             and int(payload.get("active_segment_index", -1))
             == int(expected_segment)
             and active.get("source", {}).get("commit") == source_commit
@@ -420,6 +421,7 @@ from dungeon_apprentice import v02_u2r
 from dungeon_apprentice.u2_qualification_anchor import verify_external_anchor as verify_u2_anchor
 from dungeon_apprentice.u2r_anchor import (
     protocol_document_sha256,
+    verify_failed_r0_launch,
     verify_external_anchor,
 )
 
@@ -436,22 +438,29 @@ qualification = frozen_u2.verify_qualification(
     expected_source_commit=v02_u2r.SOURCE_TRAINING_COMMIT,
     anchor=qualification_anchor,
 )
-_forbidden, exclusions = v02_u2r.build_u2r_forbidden_layout_hashes(
+forbidden, exclusions = v02_u2r.build_u2r_forbidden_layout_hashes(
     qualification.verified_report(),
     parent.confirmation_snapshot(),
     access=qualification.seed_access(),
 )
+verify_failed_r0_launch()
 verified = verify_external_anchor(
     repository,
     expected_source_commit=source_commit,
     expected_protocol_sha256=protocol_document_sha256(repository),
-    expected_exclusion_set_sha256=exclusions.exact_layout_set_sha256,
-    expected_exclusion_layouts=exclusions.exact_layouts,
+    expected_exclusions=exclusions,
+)
+sampler_preflight = v02_u2r.preflight_u2r_training_layout_sampler(
+    forbidden,
+    seed_access=qualification.seed_access(),
+    worker_streams=v02_u2r.REMEDIATION_WORKER_STREAMS,
+    max_attempts=v02_u2r.U2R_LAYOUT_RESAMPLE_ATTEMPTS,
 )
 print(
-    "Verified U2r preregistration "
+    "Verified U2r-r1 preregistration "
     f"{verified.tag} ({verified.tag_object[:12]}) with "
-    f"{verified.static_exclusion_layouts:,} exact exclusions."
+    f"{verified.static_exclusion_layouts:,} inventoried exact exclusions "
+    f"and {len(sampler_preflight)} feasible lesson/worker pairs."
 )
 PY
 

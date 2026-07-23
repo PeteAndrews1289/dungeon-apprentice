@@ -1,5 +1,7 @@
+import hashlib
 from types import SimpleNamespace
 
+import gymnasium as gym
 import numpy as np
 import pytest
 
@@ -405,6 +407,94 @@ def test_all_normal_and_recovery_profiles_are_exact(weak, expected) -> None:
     assert tuple(targets.values()) == expected
     assert sum(targets.values()) == pytest.approx(1.0)
     assert u2.TARGET_PROFILES[weak] == targets
+
+
+def test_curriculum_layout_resample_cap_is_optional_and_legacy_default_is_128() -> None:
+    worker_stream = 914_227
+    lesson = u2.LessonId.VISIBLE_UNLOCK
+
+    def layout_hash(seed: int) -> str:
+        return hashlib.sha256(f"layout:{seed}".encode()).hexdigest()
+
+    generator = np.random.default_rng(worker_stream)
+    sampled_seeds = [
+        int(generator.integers(0, 1_000_000))
+        for _ in range(256)
+    ]
+    forbidden = frozenset(layout_hash(seed) for seed in sampled_seeds[:128])
+    expected_attempt = next(
+        index
+        for index, seed in enumerate(sampled_seeds, start=1)
+        if index > 128 and layout_hash(seed) not in forbidden
+    )
+
+    class FixedScheduler:
+        def assign(self):
+            return lesson, 128
+
+        def release(self, _lesson, _reservation):
+            return None
+
+        def record_step(self, _lesson):
+            return None
+
+    class SeedHashEnv(gym.Env):
+        observation_space = gym.spaces.Box(0, 255, (1,), dtype=np.uint8)
+        action_space = gym.spaces.Discrete(7)
+
+        def set_lesson(self, selected):
+            self.lesson = u2.LessonId(selected)
+
+        def reset(self, *, seed=None, options=None):
+            del options
+            return np.zeros((1,), dtype=np.uint8), {
+                "layout_sha256": layout_hash(int(seed)),
+            }
+
+        def step(self, _action):
+            raise AssertionError("sampler test should not step the environment")
+
+    legacy = u2.CurriculumEnv(
+        SeedHashEnv(),
+        scheduler=FixedScheduler(),
+        seed=worker_stream,
+        forbidden_layout_hashes={lesson: forbidden},
+    )
+    try:
+        with pytest.raises(RuntimeError, match="within 128 attempts"):
+            legacy.reset()
+    finally:
+        legacy.close()
+
+    widened = u2.CurriculumEnv(
+        SeedHashEnv(),
+        scheduler=FixedScheduler(),
+        seed=worker_stream,
+        forbidden_layout_hashes={lesson: forbidden},
+        max_layout_resample_attempts=256,
+    )
+    try:
+        _, info = widened.reset()
+    finally:
+        widened.close()
+    assert expected_attempt > u2.DEFAULT_LAYOUT_RESAMPLE_ATTEMPTS
+    assert info["reserved_layout_rejections"] == expected_attempt - 1
+
+
+@pytest.mark.parametrize("invalid", [0, -1, True, 1.5])
+def test_curriculum_rejects_invalid_layout_resample_caps(invalid) -> None:
+    environment = u2.U2LessonEnv(lesson=u2.LessonId.VISIBLE_UNLOCK)
+    scheduler = u2.TransitionDeficitScheduler(u2.CurriculumState(), seed=17)
+    try:
+        with pytest.raises(ValueError, match="positive integer"):
+            u2.CurriculumEnv(
+                environment,
+                scheduler=scheduler,
+                seed=18,
+                max_layout_resample_attempts=invalid,
+            )
+    finally:
+        environment.close()
 
 
 def _simulate_scheduler(

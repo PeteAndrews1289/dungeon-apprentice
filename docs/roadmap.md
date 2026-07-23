@@ -25,7 +25,9 @@
 - [ ] Establish a three-policy U2 activation set; original attempt 1 remains a strict 2/3 failure
 - [x] Freeze a non-post-hoc U2 successor decision before any new training or protected evaluation
 - [x] Implement, qualify, and externally anchor the one-lineage U2r Stability Remediation continuation
-- [ ] Run its fixed eleven-window budget and grade only the full-budget terminal artifact
+- [x] Preserve U2r launch attempt 1 as a zero-action operational failure under its original tag/root
+- [ ] Implement, qualify, and externally anchor the finite-U0 r1 launch amendment
+- [ ] Run r1's fixed eleven-window budget and grade only the full-budget terminal artifact
 - [ ] If terminal-eligible, run its one fresh no-update confirmation on `15_240_000`–`15_279_999`
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
 - [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
@@ -106,19 +108,33 @@ no-update, integrity, and diagnostic evidence.
 U3 is therefore blocked. The opened 15.2-million confirmation cases cannot become a fresh test,
 and the one-case margin cannot be rounded, retuned, or retried away after observation.
 
-The prospective decision is now frozen as
-[U2r Stability Remediation](protocol-v0.2-u2r-stability-remediation.md). Only failed child
+The prospective decision is frozen as
+[U2r Stability Remediation](protocol-v0.2-u2r-stability-remediation.md). Its first tagged launcher
+stopped during initial environment reset with zero policy actions and zero optimizer updates. The
+[immutable launch result](results/v0.2-u2r-launch-attempt-1.md) preserves the original tag/root and
+shows why a global history guard was infeasible for U0's finite 2,800-layout domain.
+
+r1 passed implementation qualification. It retains every historical identity, but uses lesson-specific
+training guards: broad history novelty for Navigate, U1, and U2, and only U0's 79 unique development
+layouts as U0 refusals. That leaves 2,721 legal U0 layouts instead of 26. Only failed child
 `20260745` may continue, from its exact selected archive and complete inherited optimizer. It gets
 exactly the 360,448 actions left under its original 1,048,576-action U2 ceiling, using the same
-pixels, PPO, reward, curriculum, and 50/7.5/7.5/35 transition mix. All eleven windows must run, and
-only the full-budget terminal artifact can qualify. Its last two exams must pass the original gates
-plus prospectively stronger interaction-stability criteria.
+pixels, PPO, reward, curriculum, 50/7.5/7.5/35 transition mix, algorithm seed, and worker streams.
+All eleven windows must run, and only the full-budget terminal artifact can qualify. Its last two
+exams must pass the original gates plus prospectively stronger interaction-stability criteria.
+r1 is frozen as protocol `dungeon-apprentice-v0.2-u2r-stability-r1`, tag
+`u2r-stability-v0.2-u2r-r1-20260723`, and independent root
+`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-r1-20260723`. The 435-test suite, 300-level
+oracle qualification, immutable-r0 audit, exact exclusion reconstruction, and all 16 fixed
+lesson/worker sampler checks passed before the root existed. No r1 learning claim exists until
+training produces actions and evaluations.
 
 If that terminal artifact qualifies, it receives one no-update confirmation on four fresh candidate
 streams at `15_240_000`–`15_279_999`. A pass would open U3 only with the explicit ancestry label
 **two directly confirmed U2 policies plus one prospectively remediated U2r policy**. It would not
-rewrite the original U2 confirmation as 3/3. A valid U2r stability or confirmation failure leaves
-U3 closed and cannot trigger another unplanned retry.
+rewrite the original U2 confirmation as 3/3. The zero-action launch failure is not a capability
+result; a valid r1 stability or confirmation failure leaves U3 closed and cannot trigger another
+unplanned retry.
 
 ## Scalability gates
 

@@ -30,12 +30,13 @@ def test_launcher_freezes_exact_storage_parent_and_terminal_budget() -> None:
     source = LAUNCHER.read_text(encoding="utf-8")
     assert "set -euo pipefail" in source
     assert (
-        'run_root="$dungeon_root/u2r-stability-20260723"' in source
+        'run_root="$dungeon_root/u2r-stability-r1-20260723"' in source
     )
     assert (
-        'media_root="$dungeon_root/u2r-stability-media-20260723"' in source
+        'media_root="$dungeon_root/u2r-stability-r1-media-20260723"' in source
     )
-    assert 'initial_run_name="v02-u2r-seed-20260745"' in source
+    assert 'initial_run_name="v02-u2r-r1-seed-20260745"' in source
+    assert 'training_protocol="dungeon-apprentice-v0.2-u2r-stability-r1"' in source
     assert (
         "u2-separated-20260723/v02-u2-seed-20260745/checkpoints/"
         "mastered-separated-unlock.zip"
@@ -87,10 +88,11 @@ def test_launcher_is_fail_closed_before_target_creation() -> None:
     assert "trap request_launcher_stop INT TERM" in source
 
     anchor_check = source.index("verify_external_anchor(")
+    sampler_preflight = source.index("preflight_u2r_training_layout_sampler(")
     resume_authentication = source.index("select_resume_plan(")
     run_root_creation = source.index('/bin/mkdir -m 0755 "$run_root"')
     trainer_start = source.index('"$repository/.venv/bin/python" "$supervisor"')
-    assert anchor_check < run_root_creation < trainer_start
+    assert anchor_check < sampler_preflight < run_root_creation < trainer_start
     assert resume_authentication < run_root_creation
 
 
@@ -98,8 +100,10 @@ def test_launcher_verifies_remote_preregistration_without_opening_seeds() -> Non
     source = LAUNCHER.read_text(encoding="utf-8")
     assert "protocol_document_sha256" in source
     assert "build_u2r_forbidden_layout_hashes" in source
-    assert "expected_exclusion_set_sha256" in source
-    assert "expected_exclusion_layouts" in source
+    assert "expected_exclusions=exclusions" in source
+    assert "verify_failed_r0_launch()" in source
+    assert "preflight_u2r_training_layout_sampler" in source
+    assert "U2R_LAYOUT_RESAMPLE_ATTEMPTS" in source
     assert "verify_u2r_parent()" in source
     assert "expected_source_commit=source_commit" in source
     assert u2r_anchor.ANCHOR_TAG not in source

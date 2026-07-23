@@ -235,10 +235,16 @@ def _write_parent_fixture(
 def _write_exclusion_fixture(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
-) -> tuple[dict, set[str], dict[str, Path]]:
+) -> tuple[
+    dict,
+    set[str],
+    dict[lessons.LessonId, set[str]],
+    dict[str, Path],
+]:
     prior_u1_path = tmp_path / "u1-v2-confirmation.json"
     prior_u1_layouts: set[str] = set()
     prior_u1_lessons: dict[str, dict] = {}
+    prior_u1_by_lesson: dict[lessons.LessonId, set[str]] = {}
     prior_u1_selections = []
     for lesson in (
         lessons.LessonId.NAVIGATE,
@@ -247,6 +253,7 @@ def _write_exclusion_fixture(
     ):
         values = {_sha(f"u1-v2-{lesson.value}-{case}") for case in range(200)}
         prior_u1_layouts.update(values)
+        prior_u1_by_lesson[lesson] = values
         prior_u1_lessons[lesson.value] = {
             "unique_layouts": 200,
             "set_sha256": u2r._hash_set_sha256(values),
@@ -281,6 +288,9 @@ def _write_exclusion_fixture(
 
     histories: dict[str, dict] = {}
     history_layouts: set[str] = set()
+    history_by_lesson: dict[lessons.LessonId, set[str]] = {
+        lesson: set() for lesson in lessons.LessonId
+    }
     history_paths: dict[str, Path] = {}
     for child in ("20260737", "20260741", "20260745"):
         path = tmp_path / f"episodes-{child}.jsonl"
@@ -299,6 +309,7 @@ def _write_exclusion_fixture(
                 "set_sha256": u2r._hash_set_sha256({layout}),
             }
             history_layouts.add(layout)
+            history_by_lesson[lesson].add(layout)
         path.write_text(
             "".join(json.dumps(record, sort_keys=True) + "\n" for record in records),
             encoding="utf-8",
@@ -321,6 +332,9 @@ def _write_exclusion_fixture(
     identities: list[dict] = []
     accepted_layouts: set[str] = set()
     inspectable_layouts: set[str] = set()
+    inspectable_by_lesson: dict[lessons.LessonId, set[str]] = {
+        lesson: set() for lesson in lessons.LessonId
+    }
     index = 0
     for lesson in lessons.LessonId:
         for case in range(200):
@@ -344,6 +358,7 @@ def _write_exclusion_fixture(
             )
             accepted_layouts.add(layout)
             inspectable_layouts.add(layout)
+            inspectable_by_lesson[lesson].add(layout)
             index += 1
     for rejected in range(19):
         layout = _sha(f"rejected-{rejected}")
@@ -365,6 +380,7 @@ def _write_exclusion_fixture(
             }
         )
         inspectable_layouts.add(layout)
+        inspectable_by_lesson[lessons.LessonId.VISIBLE_UNLOCK].add(layout)
         index += 1
     while len(identities) < 1_643:
         relative = Path(f"{len(identities):04d}-opened.json")
@@ -380,9 +396,12 @@ def _write_exclusion_fixture(
 
     base = {lesson: frozenset({_sha(f"base-{lesson.value}")}) for lesson in lessons.LessonId}
     monkeypatch.setattr(
-        lessons,
-        "reserved_training_layout_hashes",
-        lambda _report, *, access: base,
+        u2r,
+        "_qualification_and_validation_hashes_by_lesson",
+        lambda _report, *, access: (
+            base,
+            frozenset().union(*base.values()),
+        ),
     )
     report = {
         "verdict": "capability_failed",
@@ -407,7 +426,15 @@ def _write_exclusion_fixture(
     expected = (
         set().union(*base.values()) | history_layouts | inspectable_layouts | prior_u1_layouts
     )
-    return report, expected, history_paths
+    expected_applied: dict[lessons.LessonId, set[str]] = {}
+    for lesson in lessons.LessonId:
+        values = set(base[lesson])
+        if lesson is not lessons.LessonId.VISIBLE_UNLOCK:
+            values.update(history_by_lesson[lesson])
+            values.update(inspectable_by_lesson[lesson])
+            values.update(prior_u1_by_lesson.get(lesson, set()))
+        expected_applied[lesson] = values
+    return report, expected, expected_applied, history_paths
 
 
 def _qualification(tmp_path: Path) -> u2r.frozen_u2.QualificationProvenance:
@@ -1644,7 +1671,7 @@ class _EvidenceEnv(gym.Env):
 
 
 def test_u2r_is_bound_to_the_failed_parent_and_only_its_unspent_budget() -> None:
-    assert u2r.PROTOCOL == "dungeon-apprentice-v0.2-u2r-stability"
+    assert u2r.PROTOCOL == "dungeon-apprentice-v0.2-u2r-stability-r1"
     assert u2r.SOURCE_CHILD_SEED == 20260745
     assert (
         Path(
@@ -1790,7 +1817,7 @@ def test_training_exclusions_union_all_histories_and_inspectable_confirmation(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    report, expected, history_paths = _write_exclusion_fixture(
+    report, expected_inventory, expected_applied, history_paths = _write_exclusion_fixture(
         tmp_path,
         monkeypatch,
     )
@@ -1807,9 +1834,29 @@ def test_training_exclusions_union_all_histories_and_inspectable_confirmation(
     assert evidence.inspectable_confirmation_layouts == 819
     assert evidence.prior_u1_confirmation_layouts == 600
     assert evidence.selection_journal_files == 1_643
-    assert evidence.exact_layouts == len(expected) == 1_435
-    assert evidence.exact_layout_set_sha256 == u2r._hash_set_sha256(expected)
-    assert all(set(forbidden[lesson]) == expected for lesson in lessons.LessonId)
+    assert evidence.exact_layouts == len(expected_inventory) == 1_435
+    assert evidence.exact_layout_set_sha256 == u2r._hash_set_sha256(expected_inventory)
+    assert {
+        lesson: set(forbidden[lesson])
+        for lesson in lessons.LessonId
+    } == expected_applied
+    assert set(forbidden[lessons.LessonId.VISIBLE_UNLOCK]) == {
+        _sha(f"base-{lessons.LessonId.VISIBLE_UNLOCK.value}")
+    }
+    assert evidence.applied_by_lesson == {
+        lesson.value: {
+            "exact_layouts": len(expected_applied[lesson]),
+            "exact_layout_set_sha256": u2r._hash_set_sha256(expected_applied[lesson]),
+            "rule": u2r.U2R_APPLIED_EXCLUSION_RULES[lesson],
+        }
+        for lesson in lessons.LessonId
+    }
+    assert evidence.applied_mapping_sha256 == u2r._canonical_sha256(
+        {
+            lesson.value: sorted(expected_applied[lesson])
+            for lesson in lessons.LessonId
+        }
+    )
 
     history_paths["20260745"].write_text("changed\n", encoding="utf-8")
     with pytest.raises(
@@ -1820,6 +1867,92 @@ def test_training_exclusions_union_all_histories_and_inspectable_confirmation(
             {},
             report,
             access=object(),
+        )
+
+
+def test_sampler_preflight_is_deterministic_and_can_accept_after_128(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    worker_stream = 812_337
+
+    class FakeLessonEnv:
+        def __init__(self, *, lesson):
+            self.lesson = lessons.LessonId(lesson)
+
+        def reset(self, *, seed, options=None):
+            del options
+            digest = _sha(f"{self.lesson.value}:{seed}")
+            return np.zeros((1,), dtype=np.uint8), {"layout_sha256": digest}
+
+        def close(self):
+            return None
+
+    monkeypatch.setattr(lessons, "U2LessonEnv", FakeLessonEnv)
+    generator = np.random.default_rng(worker_stream)
+    first_hashes: dict[lessons.LessonId, set[str]] = {
+        lesson: set() for lesson in lessons.LessonId
+    }
+    first_seeds = [
+        int(generator.integers(0, lessons.TRAINING_SEED_LIMIT))
+        for _ in range(128)
+    ]
+    for lesson in lessons.LessonId:
+        first_hashes[lesson] = {
+            _sha(f"{lesson.value}:{seed}") for seed in first_seeds
+        }
+
+    records = u2r.preflight_u2r_training_layout_sampler(
+        {
+            lesson: frozenset(values)
+            for lesson, values in first_hashes.items()
+        },
+        seed_access=object(),
+        worker_streams=(worker_stream,),
+        max_attempts=256,
+    )
+
+    assert len(records) == len(lessons.LessonId)
+    assert all(record["accepted_attempt"] > 128 for record in records)
+    assert records == u2r.preflight_u2r_training_layout_sampler(
+        {
+            lesson: frozenset(values)
+            for lesson, values in first_hashes.items()
+        },
+        seed_access=object(),
+        worker_streams=(worker_stream,),
+        max_attempts=256,
+    )
+
+
+def test_sampler_preflight_fails_closed_for_an_impossible_guard(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    blocked = _sha("always-blocked")
+
+    class ImpossibleLessonEnv:
+        def __init__(self, *, lesson):
+            self.lesson = lessons.LessonId(lesson)
+
+        def reset(self, *, seed, options=None):
+            del seed, options
+            return np.zeros((1,), dtype=np.uint8), {"layout_sha256": blocked}
+
+        def close(self):
+            return None
+
+    monkeypatch.setattr(lessons, "U2LessonEnv", ImpossibleLessonEnv)
+    with pytest.raises(
+        u2r.U2rProtocolError,
+        match="within 3 attempts",
+    ):
+        u2r.preflight_u2r_training_layout_sampler(
+            {
+                lesson: frozenset({blocked})
+                for lesson in lessons.LessonId
+            },
+            seed_access=object(),
+            worker_streams=(91,),
+            max_attempts=3,
         )
 
 

@@ -22,11 +22,65 @@ from typing import Any
 from dungeon_apprentice import v02_u2r
 
 ANCHOR_SCHEMA_VERSION = 1
-ANCHOR_PROTOCOL = "dungeon-apprentice-v0.2-u2r-stability-anchor"
-ANCHOR_TAG = "u2r-stability-v0.2-u2r-20260723"
+ANCHOR_PROTOCOL = "dungeon-apprentice-v0.2-u2r-stability-r1-anchor"
+ANCHOR_TAG = "u2r-stability-v0.2-u2r-r1-20260723"
 ANCHOR_REMOTE = "origin"
 EXPECTED_ORIGIN_URL = "https://github.com/PeteAndrews1289/dungeon-apprentice.git"
 PROTOCOL_REPOSITORY_PATH = "docs/protocol-v0.2-u2r-stability-remediation.md"
+
+FAILED_R0_ROOT = Path(
+    "/Volumes/T7 Developer/DungeonApprentice/u2r-stability-20260723"
+)
+FAILED_R0_RUN = FAILED_R0_ROOT / "v02-u2r-seed-20260745"
+FAILED_R0_SOURCE_COMMIT = "0cfe1425acb0181ea6d4f33af0e69b68c0f6da2e"
+FAILED_R0_TAG = "u2r-stability-v0.2-u2r-20260723"
+FAILED_R0_TAG_OBJECT = "86bf2ffa716715b1340c63cf3183adf62ce44fc8"
+FAILED_R0_EVIDENCE = {
+    "classification": "pre_action_sampler_failure",
+    "immutable": True,
+    "root": str(FAILED_R0_ROOT),
+    "run": str(FAILED_R0_RUN),
+    "source_commit": FAILED_R0_SOURCE_COMMIT,
+    "preregistration_tag": FAILED_R0_TAG,
+    "preregistration_tag_object": FAILED_R0_TAG_OBJECT,
+    "policy_actions": 0,
+    "remediation_actions": 0,
+    "optimizer_updates_performed": 0,
+    "inherited_child_actions": 688_128,
+    "inherited_lifetime_actions": 1_474_560,
+    "inherited_optimizer_updates": 2_880,
+    "completed_episodes": 0,
+    "episode_starts": 1,
+    "resumable": False,
+    "absent_artifacts": [
+        "checkpoint",
+        "status",
+        "progress",
+        "evaluation",
+        "completed_episode",
+        "interruption",
+        "integrity",
+        "terminal_report",
+    ],
+    "artifacts": {
+        "manifest": {
+            "path": str(FAILED_R0_RUN / "manifest.json"),
+            "sha256": "5d2b0a632f03ed6963c5eff496d4907f5b811d34efbc3ed102f63d4012c4fc16",
+        },
+        "crash": {
+            "path": str(FAILED_R0_RUN / "crash.json"),
+            "sha256": "aca77af751f987c363f7deb292ffcba5b3ed919a2fdd2e381dda13405f47482a",
+        },
+        "episode_starts": {
+            "path": str(FAILED_R0_RUN / "episode-starts.jsonl"),
+            "sha256": "f5117f0bf22256774a2b802a99311a8a9fea3c02ff5faaaa9f85df4cd0ed063b",
+        },
+        "supervisor": {
+            "path": str(FAILED_R0_ROOT / ".launcher-v02-u2r-seed-20260745.json"),
+            "sha256": "99bde1ff17ea54b6d573305100f351e67829cd10320a5cebe326ab6a0f414ec5",
+        },
+    },
+}
 
 PARENT_POLICY_MEMBER_SHA256 = "0783c6955ff1d62b87980d7801c8fbaedcb010174d640c4ee0f07f340371b6db"
 PARENT_OPTIMIZER_STATE_SHA256 = "e821dec631c76e32ce3ac2a0fc3aac70ae55dbe4cd625ed29a11b5b35febaba2"
@@ -73,6 +127,33 @@ STABILITY_RULE = {
     "terminal_success_decline_max": 2,
 }
 
+STATIC_INVENTORY_FIELDS = frozenset(
+    {
+        "exact_layouts",
+        "exact_layout_set_sha256",
+        "qualification_and_validation_layouts",
+        "completed_history_layouts",
+        "accepted_confirmation_layouts",
+        "inspectable_confirmation_outcomes",
+        "inspectable_confirmation_layouts",
+        "prior_u1_confirmation_layouts",
+        "unavailable_original_terminal_active_worker_layouts_upper_bound",
+        "unavailable_original_terminal_active_worker_layouts_status",
+        "prior_u1_confirmation_report",
+        "prior_u1_confirmation_report_sha256",
+        "prior_u1_confirmation_set_sha256",
+        "history_files",
+        "selection_journal_files",
+        "selection_journal_sha256",
+    }
+)
+APPLIED_GUARD_RULES = {
+    "navigate/full": "same_lesson_full_historical_inventory",
+    "unlock/u0-visible": "development_only_history_overlap_diagnostic",
+    "unlock/u1-local": "same_lesson_full_historical_inventory",
+    "unlock/u2-separated": "same_lesson_full_historical_inventory",
+}
+
 ANCHOR_FIELDS = frozenset(
     {
         "schema_version",
@@ -86,7 +167,9 @@ ANCHOR_FIELDS = frozenset(
         "protocol_document_sha256",
         "parent",
         "failed_confirmation",
+        "failed_r0_launch",
         "static_exclusions",
+        "applied_training_guards",
         "budget",
         "seeds",
         "stability_rule",
@@ -115,6 +198,10 @@ class U2rAnchor:
     protocol_document_sha256: str
     static_exclusion_set_sha256: str
     static_exclusion_layouts: int
+    static_exclusion_inventory: Mapping[str, Any]
+    applied_training_guard_mapping_sha256: str
+    applied_training_guards: Mapping[str, Mapping[str, Any]]
+    failed_r0_launch: Mapping[str, Any]
     unavailable_original_active_layouts_upper_bound: int
     unavailable_original_active_layouts_status: str
     parent_checkpoint_sha256: str
@@ -258,6 +345,107 @@ def _canonical_json_sha256(value: Any) -> str:
             separators=(",", ":"),
         ).encode()
     ).hexdigest()
+
+
+def verify_failed_r0_launch(
+    evidence: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Authenticate the immutable zero-action r0 launch failure."""
+
+    expected = json.loads(json.dumps(FAILED_R0_EVIDENCE))
+    candidate = expected if evidence is None else json.loads(json.dumps(evidence))
+    if candidate != expected:
+        raise U2rAnchorError("failed U2r r0 evidence contract changed")
+    root = Path(str(expected["root"]))
+    run = Path(str(expected["run"]))
+    if (
+        root.is_symlink()
+        or not root.is_dir()
+        or run.is_symlink()
+        or not run.is_dir()
+        or run.parent != root
+    ):
+        raise U2rAnchorError("failed U2r r0 evidence root is missing or unsafe")
+    expected_paths: set[Path] = set()
+    for label, artifact in expected["artifacts"].items():
+        path = Path(str(artifact["path"]))
+        expected_paths.add(path)
+        if (
+            path.is_symlink()
+            or not path.is_file()
+            or _file_sha256(path) != _require_sha256(
+                artifact.get("sha256"),
+                f"failed U2r r0 {label}",
+            )
+        ):
+            raise U2rAnchorError(f"failed U2r r0 {label} evidence changed")
+    measured_entries = tuple(root.rglob("*"))
+    if any(path.is_symlink() for path in measured_entries):
+        raise U2rAnchorError("failed U2r r0 artifact inventory contains a symlink")
+    measured_paths = {path for path in measured_entries if path.is_file()}
+    if measured_paths != expected_paths:
+        raise U2rAnchorError("failed U2r r0 artifact inventory changed")
+
+    manifest = _read_safe_json(run / "manifest.json", "failed U2r r0 manifest")
+    crash = _read_safe_json(run / "crash.json", "failed U2r r0 crash")
+    supervisor = _read_safe_json(
+        root / ".launcher-v02-u2r-seed-20260745.json",
+        "failed U2r r0 supervisor",
+    )
+    episode_records = (run / "episode-starts.jsonl").read_text(encoding="utf-8").splitlines()
+    if len(episode_records) != 1:
+        raise U2rAnchorError("failed U2r r0 episode-start inventory changed")
+    try:
+        episode = json.loads(episode_records[0])
+    except json.JSONDecodeError as error:
+        raise U2rAnchorError("failed U2r r0 episode-start evidence is invalid") from error
+    if (
+        manifest.get("source", {}).get("commit") != FAILED_R0_SOURCE_COMMIT
+        or manifest.get("source", {}).get("dirty") is not False
+        or manifest.get("protocol") != "dungeon-apprentice-v0.2-u2r-stability"
+        or crash.get("classification") != "training_failure"
+        or crash.get("setup_complete") is not True
+        or "could not sample a training layout outside reserved evidence sets"
+        not in str(crash.get("traceback", ""))
+        or supervisor.get("state") != "exited"
+        or int(supervisor.get("exit_status", -1)) != 1
+        or supervisor.get("forwarded_signal") is not None
+        or episode.get("type") != "episode_start"
+        or episode.get("active") is not True
+        or int(episode.get("elapsed_steps", -1)) != 0
+        or int(episode.get("worker_transition_at_start", -1)) != 0
+        or episode.get("diagnostics", {}).get("action_histogram") != {}
+    ):
+        raise U2rAnchorError("failed U2r r0 zero-action semantics changed")
+    return expected
+
+
+def _verify_failed_r0_tag(
+    repository: Path,
+    *,
+    runner: Runner,
+) -> None:
+    """Verify that the superseded r0 preregistration still has one exact identity."""
+
+    repo = repository.expanduser().resolve()
+    reference = f"refs/tags/{FAILED_R0_TAG}"
+    if (
+        _git(repo, ["cat-file", "-t", reference], runner=runner) != "tag"
+        or _git(repo, ["rev-parse", "--verify", reference], runner=runner)
+        != FAILED_R0_TAG_OBJECT
+        or _git(repo, ["rev-list", "-n", "1", reference], runner=runner)
+        != FAILED_R0_SOURCE_COMMIT
+        or _git(repo, ["remote", "get-url", ANCHOR_REMOTE], runner=runner)
+        != EXPECTED_ORIGIN_URL
+    ):
+        raise U2rAnchorError("failed U2r r0 annotated tag identity changed")
+    remote = _git(
+        repo,
+        ["ls-remote", "--tags", ANCHOR_REMOTE, reference],
+        runner=runner,
+    ).split()
+    if remote != [FAILED_R0_TAG_OBJECT, reference]:
+        raise U2rAnchorError("failed U2r r0 annotated tag is not exact on origin")
 
 
 def _safe_relative_artifact(
@@ -1082,7 +1270,15 @@ def select_resume_plan(
 
 def _static_exclusion_fields(
     evidence: Any,
-) -> tuple[str, int, int, str]:
+) -> tuple[
+    str,
+    int,
+    int,
+    str,
+    dict[str, Any],
+    str,
+    dict[str, dict[str, Any]],
+]:
     if hasattr(evidence, "public_dict"):
         public = evidence.public_dict()
     elif isinstance(evidence, Mapping):
@@ -1091,6 +1287,12 @@ def _static_exclusion_fields(
         raise U2rAnchorError("U2r exclusion evidence has no public mapping")
     if not isinstance(public, Mapping):
         raise U2rAnchorError("U2r exclusion evidence is not a mapping")
+    expected_fields = STATIC_INVENTORY_FIELDS | {
+        "applied_by_lesson",
+        "applied_mapping_sha256",
+    }
+    if set(public) != expected_fields:
+        raise U2rAnchorError("U2r exclusion inventory fields are incomplete or unknown")
     unavailable = _require_positive_int(
         public.get("unavailable_original_terminal_active_worker_layouts_upper_bound"),
         "unavailable original U2 active-layout upper bound",
@@ -1101,17 +1303,88 @@ def _static_exclusion_fields(
         or unavailable_status != UNAVAILABLE_ORIGINAL_ACTIVE_LAYOUTS_STATUS
     ):
         raise U2rAnchorError("original U2 active-layout evidence limitation changed")
+    inventory = {
+        field: json.loads(json.dumps(public[field]))
+        for field in sorted(STATIC_INVENTORY_FIELDS)
+    }
+    for field in (
+        "exact_layouts",
+        "qualification_and_validation_layouts",
+        "completed_history_layouts",
+        "accepted_confirmation_layouts",
+        "inspectable_confirmation_outcomes",
+        "inspectable_confirmation_layouts",
+        "prior_u1_confirmation_layouts",
+        "selection_journal_files",
+    ):
+        _require_positive_int(inventory.get(field), f"U2r static inventory {field}")
+    for field in (
+        "exact_layout_set_sha256",
+        "prior_u1_confirmation_report_sha256",
+        "prior_u1_confirmation_set_sha256",
+        "selection_journal_sha256",
+    ):
+        _require_sha256(inventory.get(field), f"U2r static inventory {field}")
+    history_files = inventory.get("history_files")
+    if (
+        not isinstance(history_files, list)
+        or len(history_files) != 3
+        or not all(isinstance(item, Mapping) for item in history_files)
+    ):
+        raise U2rAnchorError("U2r static history-file inventory changed")
+    try:
+        child_seeds = {int(item.get("child_seed", -1)) for item in history_files}
+    except (TypeError, ValueError) as error:
+        raise U2rAnchorError("U2r static history-file inventory changed") from error
+    if child_seeds != {20260737, 20260741, 20260745}:
+        raise U2rAnchorError("U2r static history-file inventory changed")
+    for item in history_files:
+        if (
+            not isinstance(item.get("path"), str)
+            or _require_positive_int(
+                item.get("completed_exact_layouts"),
+                "U2r completed history layouts",
+            )
+            <= 0
+        ):
+            raise U2rAnchorError("U2r static history-file inventory is invalid")
+        _require_sha256(item.get("sha256"), "U2r completed history file")
+
+    raw_guards = public.get("applied_by_lesson")
+    if not isinstance(raw_guards, Mapping) or set(raw_guards) != set(APPLIED_GUARD_RULES):
+        raise U2rAnchorError("U2r applied lesson guards are incomplete or unknown")
+    applied: dict[str, dict[str, Any]] = {}
+    for lesson, rule in APPLIED_GUARD_RULES.items():
+        raw = raw_guards.get(lesson)
+        if (
+            not isinstance(raw, Mapping)
+            or set(raw) != {"exact_layouts", "exact_layout_set_sha256", "rule"}
+            or raw.get("rule") != rule
+        ):
+            raise U2rAnchorError(f"U2r applied guard changed for {lesson}")
+        applied[lesson] = {
+            "exact_layouts": _require_positive_int(
+                raw.get("exact_layouts"),
+                f"U2r applied guard count for {lesson}",
+            ),
+            "exact_layout_set_sha256": _require_sha256(
+                raw.get("exact_layout_set_sha256"),
+                f"U2r applied guard set for {lesson}",
+            ),
+            "rule": rule,
+        }
+    applied_mapping_sha256 = _require_sha256(
+        public.get("applied_mapping_sha256"),
+        "U2r applied lesson-guard mapping",
+    )
     return (
-        _require_sha256(
-            public.get("exact_layout_set_sha256"),
-            "U2r static exclusion set",
-        ),
-        _require_positive_int(
-            public.get("exact_layouts"),
-            "U2r static exclusion layout count",
-        ),
+        str(inventory["exact_layout_set_sha256"]),
+        int(inventory["exact_layouts"]),
         unavailable,
         str(unavailable_status),
+        inventory,
+        applied_mapping_sha256,
+        applied,
     )
 
 
@@ -1130,6 +1403,9 @@ def build_anchor_payload(
         exclusion_layouts,
         unavailable_active_layouts,
         unavailable_active_layouts_status,
+        static_inventory,
+        applied_mapping_sha256,
+        applied_by_lesson,
     ) = _static_exclusion_fields(exclusions)
     protocol_sha256 = protocol_document_sha256(repo)
     parent_sidecar = v02_u2r.SOURCE_ARCHIVE.with_suffix(".json")
@@ -1169,9 +1445,13 @@ def build_anchor_payload(
             "u2_score": 169,
             "u2_panels": [84, 85],
         },
-        "static_exclusions": {
-            "exact_layout_set_sha256": exclusion_sha256,
-            "exact_layouts": exclusion_layouts,
+        "failed_r0_launch": json.loads(json.dumps(FAILED_R0_EVIDENCE)),
+        "static_exclusions": static_inventory,
+        "applied_training_guards": {
+            "mapping_sha256": applied_mapping_sha256,
+            "by_lesson": applied_by_lesson,
+            "full_static_inventory_sha256": exclusion_sha256,
+            "full_static_inventory_layouts": exclusion_layouts,
             "unavailable_original_terminal_active_worker_layouts_upper_bound": (
                 unavailable_active_layouts
             ),
@@ -1254,8 +1534,7 @@ def verify_external_anchor(
     *,
     expected_source_commit: str,
     expected_protocol_sha256: str,
-    expected_exclusion_set_sha256: str,
-    expected_exclusion_layouts: int,
+    expected_exclusions: Any,
     runner: Runner = subprocess.run,
 ) -> U2rAnchor:
     """Verify one exact annotated tag object locally and on frozen origin."""
@@ -1265,30 +1544,23 @@ def verify_external_anchor(
         expected_protocol_sha256,
         "expected U2r protocol document",
     )
-    exclusion_sha256 = _require_sha256(
-        expected_exclusion_set_sha256,
-        "expected U2r static exclusion set",
-    )
-    exclusion_layouts = _require_positive_int(
-        expected_exclusion_layouts,
-        "expected U2r static exclusion layout count",
-    )
+    (
+        _exclusion_sha256,
+        _exclusion_layouts,
+        _unavailable,
+        _unavailable_status,
+        _inventory,
+        _applied_mapping_sha256,
+        _applied_by_lesson,
+    ) = _static_exclusion_fields(expected_exclusions)
     measured_protocol_sha256 = protocol_document_sha256(repo)
     if measured_protocol_sha256 != protocol_sha256:
         raise U2rAnchorError("active U2r protocol document differs from the expected digest")
+    _verify_failed_r0_tag(repo, runner=runner)
     expected_payload = build_anchor_payload(
         repo,
         source_commit=expected_source_commit,
-        exclusions={
-            "exact_layout_set_sha256": exclusion_sha256,
-            "exact_layouts": exclusion_layouts,
-            "unavailable_original_terminal_active_worker_layouts_upper_bound": (
-                UNAVAILABLE_ORIGINAL_ACTIVE_LAYOUTS_UPPER_BOUND
-            ),
-            "unavailable_original_terminal_active_worker_layouts_status": (
-                UNAVAILABLE_ORIGINAL_ACTIVE_LAYOUTS_STATUS
-            ),
-        },
+        exclusions=expected_exclusions,
     )
     head = _clean_head(
         repo,
@@ -1346,6 +1618,7 @@ def verify_external_anchor(
     if dict(payload) != expected_payload:
         raise U2rAnchorError("U2r tag payload differs from source, protocol, parent, or rules")
     static = expected_payload["static_exclusions"]
+    applied = expected_payload["applied_training_guards"]
     budget = expected_payload["budget"]
     seeds = expected_payload["seeds"]
     confirmation = expected_payload["confirmation"]
@@ -1359,6 +1632,10 @@ def verify_external_anchor(
         protocol_document_sha256=str(expected_payload["protocol_document_sha256"]),
         static_exclusion_set_sha256=str(static["exact_layout_set_sha256"]),
         static_exclusion_layouts=int(static["exact_layouts"]),
+        static_exclusion_inventory=json.loads(json.dumps(static)),
+        applied_training_guard_mapping_sha256=str(applied["mapping_sha256"]),
+        applied_training_guards=json.loads(json.dumps(applied["by_lesson"])),
+        failed_r0_launch=json.loads(json.dumps(expected_payload["failed_r0_launch"])),
         unavailable_original_active_layouts_upper_bound=int(
             static["unavailable_original_terminal_active_worker_layouts_upper_bound"]
         ),
@@ -1468,17 +1745,10 @@ def publish_external_anchor(
             ["push", ANCHOR_REMOTE, f"refs/tags/{ANCHOR_TAG}"],
             runner=runner,
         )
-    (
-        exclusion_sha256,
-        exclusion_layouts,
-        _unavailable_active_layouts,
-        _unavailable_active_layouts_status,
-    ) = _static_exclusion_fields(exclusions)
     return verify_external_anchor(
         repo,
         expected_source_commit=source_commit,
         expected_protocol_sha256=protocol_document_sha256(repo),
-        expected_exclusion_set_sha256=exclusion_sha256,
-        expected_exclusion_layouts=exclusion_layouts,
+        expected_exclusions=exclusions,
         runner=runner,
     )
