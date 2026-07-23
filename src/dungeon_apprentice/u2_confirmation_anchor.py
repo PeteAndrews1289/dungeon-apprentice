@@ -283,7 +283,7 @@ def publish_external_anchor(
             "confirmation preregistration remote is not the frozen GitHub origin"
         )
     local = runner(
-        ["git", "show-ref", "--verify", f"refs/tags/{ANCHOR_TAG}"],
+        ["git", "show-ref", "--verify", "--quiet", f"refs/tags/{ANCHOR_TAG}"],
         cwd=repo,
         check=False,
         capture_output=True,

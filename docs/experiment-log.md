@@ -548,3 +548,8 @@ or any `15.2`-million seed existed. The adapter now returns the anchored trainin
 historical verification is requested, with a regression test covering an evaluator running from a
 newer clean commit. The full 299-test suite and 300-level mechanical qualification passed again
 before another launch.
+
+A second pre-claim stop found a portability edge in Git itself: on the installed Apple Git,
+`show-ref --verify` returns `128` rather than the expected absent-ref code unless `--quiet` is
+present. The tag publisher treated that as indeterminate and again stopped before creating a tag,
+claim, or candidate layout. Both U2 tag publishers now use the portable quiet form.
