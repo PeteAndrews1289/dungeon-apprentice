@@ -119,14 +119,56 @@ double-charge a completed update; a resumed lineage continues in a new manifest 
 
 Seed roles are architectural boundaries as well as numbers. Training uses the sub-million
 partition; generator engineering has a disposable `5_200_000` sandbox; sealed qualification uses
-`5_210_000`–`5_211_999`; four fixed validation suites occupy their declared 10–11.2-million
-blocks; 15.2-million candidate streams remain reserved for a later collision-aware confirmation;
-and the 20-million final allocation remains untouched. Exact-layout hashes defend against the lesson
-learned from U1 confirmation attempt 1: different seed numbers can still generate the same dungeon.
+`5_210_000`–`5_211_999`; and four fixed validation suites occupy their declared 10–11.2-million
+blocks. At the U2 source freeze, four 15.2-million candidate streams were reserved for the later
+collision-aware confirmation, while the 20-million final allocation remained untouched.
+Exact-layout hashes defend against the lesson learned from U1 confirmation attempt 1: different seed
+numbers can still generate the same dungeon.
 
 Storage is part of correctness. U2 refuses symlinked or escaping run paths, caps each lineage at
 2 GiB and the scientific cohort at 6 GiB, keeps optional media in a separate 10 GiB directory, and
-checks a 16 GiB combined plan plus the free-space reserve. This implementation work is engineering
-proof only. At source freeze, no protected U2 seed had been opened and no U2 learning or
-confirmation claim existed; later runtime claims must cite the external qualification and cohort
-ledgers.
+checks a 16 GiB combined plan plus the free-space reserve. At U2 source freeze, no protected U2
+seed had been opened and no U2 learning or confirmation claim existed. Later runtime claims cite
+the external qualification, cohort, and confirmation ledgers rather than rewriting that prospective
+boundary.
+
+## U2r successor boundary
+
+Runtime evidence has now answered the original U2 confirmation: two children passed, while child
+`20260745` scored 169/200 against its 170/200 U2 gate. That immutable 2/3 failure does not disappear
+from the architecture. [U2r Stability Remediation](protocol-v0.2-u2r-stability-remediation.md)
+adds one bounded successor branch:
+
+```mermaid
+flowchart LR
+    C1["20260737 direct pass"] --> A["Potential U3 activation set"]
+    C2["20260741 direct pass"] --> A
+    C3["20260745 failed 169/200"] --> R["Exact optimizer continuation"]
+    R --> W["11 fixed windows"]
+    W --> T["Terminal-only stability gate"]
+    T --> F["Fresh one-shot confirmation"]
+    F -->|"only if passed"| A
+    A --> L["Label: two direct + one remediated"]
+```
+
+Only the failed branch changes. It cannot load either passing sibling, reset its optimizer, select
+an intermediate checkpoint, exceed the original 1,048,576-child-action ceiling, or inspect a fresh
+confirmation candidate while training. The last two fixed exams must pass both the original
+capability gates and the new prospective stability diagnostics.
+
+Process recovery is an append-only lineage rather than an overwrite. The initial directory has the
+fixed child name; contiguous successors use `-resume-N`, add `N × 100,000` to their process RNG
+streams, and authenticate the prior safe checkpoint plus policy/optimizer state. Completed exams
+and their 320 raw case records are copied and reverified in every successor. The four genuinely
+active episodes at interruption are preserved as abandoned identities, while a terminal report
+hashes every segment manifest and episode-start ledger so later collision exclusion covers the
+whole lineage.
+
+The consumed `15_200_000`–`15_239_999` confirmation roles are permanently unavailable for
+successor training, retries, or new selection; claim-bound historical verifier access remains so
+the frozen result can still be authenticated. Four new structurally sealed roles occupy
+`15_240_000`–`15_279_999`, but only a full-budget terminal-eligible U2r artifact can authorize
+their one-shot evaluator. The `20_000_000` final
+allocation remains closed. Episode-start and active-worker layout identity now become part of every
+checkpoint record so a future collision-aware selector can exclude the complete successor history,
+including episodes active at the terminal boundary.

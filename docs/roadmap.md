@@ -22,8 +22,11 @@
 - [x] Confirm all three U1 mastery checkpoints with the collision-safe disjoint instrument
 - [x] Implement, qualify, and run all three U2 Separated Unlock children to mastery
 - [x] Run the preregistered collision-aware U2 confirmation and preserve its strict failed verdict
-- [ ] Confirm U2 across all three lineages; attempt 1 passed two policies and missed one U2 gate by 1
-- [ ] Freeze a non-post-hoc U2 successor decision before any new training or protected evaluation
+- [ ] Establish a three-policy U2 activation set; original attempt 1 remains a strict 2/3 failure
+- [x] Freeze a non-post-hoc U2 successor decision before any new training or protected evaluation
+- [x] Implement, qualify, and externally anchor the one-lineage U2r Stability Remediation continuation
+- [ ] Run its fixed eleven-window budget and grade only the full-budget terminal artifact
+- [ ] If terminal-eligible, run its one fresh no-update confirmation on `15_240_000`–`15_279_999`
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
 - [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
 
@@ -100,9 +103,22 @@ panels, but its U2 total was 169/200 against a frozen 170/200 requirement. All 2
 [confirmation result](results/v0.2-u2-confirmation.md) records all selection, collision,
 no-update, integrity, and diagnostic evidence.
 
-U3 is therefore blocked. The next scientific decision must be frozen before another training or
-protected-evaluation attempt. The opened 15.2-million confirmation cases cannot become a fresh test,
+U3 is therefore blocked. The opened 15.2-million confirmation cases cannot become a fresh test,
 and the one-case margin cannot be rounded, retuned, or retried away after observation.
+
+The prospective decision is now frozen as
+[U2r Stability Remediation](protocol-v0.2-u2r-stability-remediation.md). Only failed child
+`20260745` may continue, from its exact selected archive and complete inherited optimizer. It gets
+exactly the 360,448 actions left under its original 1,048,576-action U2 ceiling, using the same
+pixels, PPO, reward, curriculum, and 50/7.5/7.5/35 transition mix. All eleven windows must run, and
+only the full-budget terminal artifact can qualify. Its last two exams must pass the original gates
+plus prospectively stronger interaction-stability criteria.
+
+If that terminal artifact qualifies, it receives one no-update confirmation on four fresh candidate
+streams at `15_240_000`–`15_279_999`. A pass would open U3 only with the explicit ancestry label
+**two directly confirmed U2 policies plus one prospectively remediated U2r policy**. It would not
+rewrite the original U2 confirmation as 3/3. A valid U2r stability or confirmation failure leaves
+U3 closed and cannot trigger another unplanned retry.
 
 ## Scalability gates
 

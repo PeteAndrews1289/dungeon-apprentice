@@ -33,6 +33,10 @@ class U2SeedRole(StrEnum):
     FUTURE_NAVIGATE_CONFIRMATION = "future_navigate_confirmation"
     FUTURE_U0_CONFIRMATION = "future_u0_confirmation"
     FUTURE_U1_CONFIRMATION = "future_u1_confirmation"
+    U2R_U2_CONFIRMATION = "u2r_u2_confirmation"
+    U2R_NAVIGATE_CONFIRMATION = "u2r_navigate_confirmation"
+    U2R_U0_CONFIRMATION = "u2r_u0_confirmation"
+    U2R_U1_CONFIRMATION = "u2r_u1_confirmation"
     FINAL_TEST = "final_test"
 
 
@@ -69,12 +73,21 @@ SEED_PARTITIONS: tuple[SeedPartition, ...] = (
     SeedPartition(U2SeedRole.U0_VALIDATION, 11_000_000, 11_000_080, False),
     SeedPartition(U2SeedRole.U1_VALIDATION, 11_100_000, 11_100_080, False),
     SeedPartition(U2SeedRole.U2_VALIDATION, 11_200_000, 11_200_080, True),
-    SeedPartition(U2SeedRole.FUTURE_U2_CONFIRMATION, 15_200_000, 15_210_000, False),
+    # The first four confirmation streams were consumed by the terminal U2
+    # attempt.  Their legacy enum names remain stable for report compatibility,
+    # while ``opened_by_u2`` now records their historical exposure.
+    SeedPartition(U2SeedRole.FUTURE_U2_CONFIRMATION, 15_200_000, 15_210_000, True),
     SeedPartition(
-        U2SeedRole.FUTURE_NAVIGATE_CONFIRMATION, 15_210_000, 15_220_000, False
+        U2SeedRole.FUTURE_NAVIGATE_CONFIRMATION, 15_210_000, 15_220_000, True
     ),
-    SeedPartition(U2SeedRole.FUTURE_U0_CONFIRMATION, 15_220_000, 15_230_000, False),
-    SeedPartition(U2SeedRole.FUTURE_U1_CONFIRMATION, 15_230_000, 15_240_000, False),
+    SeedPartition(U2SeedRole.FUTURE_U0_CONFIRMATION, 15_220_000, 15_230_000, True),
+    SeedPartition(U2SeedRole.FUTURE_U1_CONFIRMATION, 15_230_000, 15_240_000, True),
+    SeedPartition(U2SeedRole.U2R_U2_CONFIRMATION, 15_240_000, 15_250_000, False),
+    SeedPartition(
+        U2SeedRole.U2R_NAVIGATE_CONFIRMATION, 15_250_000, 15_260_000, False
+    ),
+    SeedPartition(U2SeedRole.U2R_U0_CONFIRMATION, 15_260_000, 15_270_000, False),
+    SeedPartition(U2SeedRole.U2R_U1_CONFIRMATION, 15_270_000, 15_280_000, False),
     SeedPartition(U2SeedRole.FINAL_TEST, 20_000_000, 20_300_000, False),
 )
 
@@ -526,9 +539,19 @@ def authorize_u2_seed(
             or access.confirmation_claim_sha256 is None
         ):
             raise U2SeedAccessError(
-                "future confirmation layouts require the persisted U2 confirmation claim"
+                "consumed confirmation layouts require the terminal U2 confirmation claim"
             )
         return PARTITION_BY_ROLE[expected]
+    if expected in {
+        U2SeedRole.U2R_U2_CONFIRMATION,
+        U2SeedRole.U2R_NAVIGATE_CONFIRMATION,
+        U2SeedRole.U2R_U0_CONFIRMATION,
+        U2SeedRole.U2R_U1_CONFIRMATION,
+    }:
+        raise U2SeedAccessError(
+            "U2r confirmation layouts remain closed until a separately "
+            "preregistered post-training confirmation protocol issues access"
+        )
     raise U2SeedAccessError(f"{expected.value} is reserved and cannot be opened during U2")
 
 

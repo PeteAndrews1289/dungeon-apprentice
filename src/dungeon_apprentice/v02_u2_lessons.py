@@ -15,7 +15,7 @@ import hashlib
 import math
 import os
 from collections import Counter, defaultdict
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import asdict, dataclass, field
 from enum import StrEnum
 from pathlib import Path
@@ -1253,6 +1253,220 @@ def _oracle_action_count(
         oracle_env.close()
 
 
+def aggregate_u2_case_evidence(
+    lesson: U2LessonId | str,
+    cases: Sequence[Mapping[str, Any]],
+    *,
+    timestamp: str | None = None,
+) -> U2LessonEvaluation:
+    """Recompute one lesson evaluation solely from immutable per-case evidence."""
+
+    selected = U2LessonId(lesson)
+    outcomes = [dict(case) for case in cases]
+    if not outcomes:
+        raise ValueError("evaluation requires at least one case")
+    midpoint = len(outcomes) // 2
+    expected_histogram_keys = {str(action) for action in range(7)}
+    seeds: set[int] = set()
+    for index, outcome in enumerate(outcomes):
+        if outcome.get("lesson_id") != selected.value:
+            raise ValueError("case evidence lesson identity changed")
+        if int(outcome.get("case_index", -1)) != index:
+            raise ValueError("case evidence index is not contiguous")
+        expected_panel = 0 if index < midpoint else 1
+        if int(outcome.get("panel", -1)) != expected_panel:
+            raise ValueError("case evidence panel assignment changed")
+        seed = int(outcome.get("seed", -1))
+        if seed < 0 or seed in seeds:
+            raise ValueError("case evidence seeds are invalid or duplicated")
+        seeds.add(seed)
+        if not isinstance(outcome.get("success"), bool):
+            raise ValueError("case evidence success is not boolean")
+        for name in (
+            "steps",
+            "oracle_actions",
+            "collisions",
+            "ineffective_interactions",
+            "unique_cells",
+            "reachable_cells",
+            "longest_repeated_action_run",
+        ):
+            raw = outcome.get(name)
+            if isinstance(raw, bool) or int(raw) != raw or int(raw) < 0:
+                raise ValueError(f"case evidence {name} is invalid")
+        if int(outcome["steps"]) <= 0 or int(outcome["oracle_actions"]) <= 0:
+            raise ValueError("case evidence action counts must be positive")
+        if int(outcome["reachable_cells"]) <= 0:
+            raise ValueError("case evidence reachable-cell count must be positive")
+        milestones = outcome.get("milestones")
+        if not isinstance(milestones, Mapping):
+            raise ValueError("case evidence milestones are missing")
+        histogram = outcome.get("action_histogram")
+        if not isinstance(histogram, Mapping) or set(histogram) != expected_histogram_keys:
+            raise ValueError("case evidence action histogram is incomplete")
+        histogram_values = []
+        for raw in histogram.values():
+            if isinstance(raw, bool) or int(raw) != raw or int(raw) < 0:
+                raise ValueError("case evidence action histogram is invalid")
+            histogram_values.append(int(raw))
+        if sum(histogram_values) != int(outcome["steps"]):
+            raise ValueError("case evidence action histogram disagrees with steps")
+        for name in (
+            "path_actions_per_oracle_action",
+            "coverage",
+            "extrinsic_return",
+            "curiosity_return",
+        ):
+            value = float(outcome.get(name, math.nan))
+            if not math.isfinite(value):
+                raise ValueError(f"case evidence {name} is not finite")
+        expected_ratio = int(outcome["steps"]) / int(outcome["oracle_actions"])
+        if not math.isclose(
+            float(outcome["path_actions_per_oracle_action"]),
+            expected_ratio,
+            rel_tol=0.0,
+            abs_tol=1e-12,
+        ):
+            raise ValueError("case evidence path ratio disagrees with action counts")
+        expected_coverage = int(outcome["unique_cells"]) / int(
+            outcome["reachable_cells"]
+        )
+        if not math.isclose(
+            float(outcome["coverage"]),
+            expected_coverage,
+            rel_tol=0.0,
+            abs_tol=1e-12,
+        ):
+            raise ValueError("case evidence coverage disagrees with cell counts")
+
+    panels = (outcomes[:midpoint], outcomes[midpoint:])
+    panel_successes = tuple(
+        sum(bool(item["success"]) for item in panel) for panel in panels
+    )
+    successes = sum(bool(item["success"]) for item in outcomes)
+    milestone_names = sorted(
+        {
+            str(name)
+            for outcome in outcomes
+            for name in outcome["milestones"]
+        }
+    )
+    milestone_counts = {
+        name: sum(
+            bool(outcome["milestones"].get(name, False))
+            for outcome in outcomes
+        )
+        for name in milestone_names
+    }
+    key_count = milestone_counts.get("key_picked_up", 0)
+    door_count = milestone_counts.get("door_opened", 0)
+    success_count = milestone_counts.get("success", successes)
+    strata: dict[str, dict[str, Any]] = {}
+    if selected is U2LessonId.SEPARATED_UNLOCK:
+        for label in (
+            "key_hidden_door_hidden",
+            "key_hidden_door_visible",
+            "key_visible_door_hidden",
+            "key_visible_door_visible",
+        ):
+            stratum_cases = [
+                item
+                for item in outcomes
+                if item.get("visibility_stratum") == label
+            ]
+            stratum_successes = sum(
+                bool(item["success"]) for item in stratum_cases
+            )
+            strata[label] = {
+                "episodes": len(stratum_cases),
+                "successes": stratum_successes,
+                "success_rate": (
+                    stratum_successes / len(stratum_cases)
+                    if stratum_cases
+                    else None
+                ),
+                "wilson_interval": (
+                    _wilson_interval(stratum_successes, len(stratum_cases))
+                    if stratum_cases
+                    else None
+                ),
+            }
+    action_counts: Counter[int] = Counter()
+    for outcome in outcomes:
+        action_counts.update(
+            {
+                int(action): int(count)
+                for action, count in outcome["action_histogram"].items()
+            }
+        )
+    total_actions = sum(action_counts.values())
+    return U2LessonEvaluation(
+        protocol=PROTOCOL,
+        timestamp=timestamp or utc_now(),
+        lesson_id=selected.value,
+        lesson_label=U2_LESSON_SPECS[selected].label,
+        episodes=len(outcomes),
+        successes=successes,
+        success_rate=successes / len(outcomes),
+        panel_successes=panel_successes,
+        panel_success_rates=tuple(
+            count / len(panel) if panel else 0.0
+            for count, panel in zip(panel_successes, panels, strict=True)
+        ),
+        mean_steps=sum(int(item["steps"]) for item in outcomes) / len(outcomes),
+        success_wilson_interval=_wilson_interval(successes, len(outcomes)),
+        panel_wilson_intervals=tuple(
+            _wilson_interval(count, len(panel))
+            for count, panel in zip(panel_successes, panels, strict=True)
+        ),
+        milestone_rates={
+            name: count / len(outcomes)
+            for name, count in milestone_counts.items()
+        },
+        milestone_counts=milestone_counts,
+        door_given_key=(door_count / key_count if key_count else None),
+        success_given_door=(success_count / door_count if door_count else None),
+        visibility_strata=strata,
+        mean_path_actions_per_oracle_action=(
+            sum(
+                float(item["path_actions_per_oracle_action"])
+                for item in outcomes
+            )
+            / len(outcomes)
+        ),
+        mean_coverage=(
+            sum(float(item["coverage"]) for item in outcomes) / len(outcomes)
+        ),
+        mean_collisions=(
+            sum(int(item["collisions"]) for item in outcomes) / len(outcomes)
+        ),
+        mean_ineffective_interactions=(
+            sum(int(item["ineffective_interactions"]) for item in outcomes)
+            / len(outcomes)
+        ),
+        action_histogram={
+            str(action): int(action_counts.get(action, 0))
+            for action in range(7)
+        },
+        largest_action_share=(
+            max(action_counts.values(), default=0) / total_actions
+            if total_actions
+            else 0.0
+        ),
+        longest_repeated_action_run=max(
+            int(item["longest_repeated_action_run"]) for item in outcomes
+        ),
+        mean_extrinsic_return=(
+            sum(float(item["extrinsic_return"]) for item in outcomes)
+            / len(outcomes)
+        ),
+        mean_curiosity_return=(
+            sum(float(item["curiosity_return"]) for item in outcomes)
+            / len(outcomes)
+        ),
+    )
+
+
 def evaluate_u2_lesson(
     model: Any,
     lesson: U2LessonId | str,
@@ -1261,16 +1475,16 @@ def evaluate_u2_lesson(
     size: int = 9,
     frame_path: Path | None = None,
     seed_access: U2SeedAccess | None = None,
+    case_evidence_sink: Callable[[Mapping[str, Any]], None] | None = None,
 ) -> U2LessonEvaluation:
     """Evaluate pixels-only actions with privileged diagnostics kept out of policy input."""
 
     selected = U2LessonId(lesson)
+    seed_values = tuple(int(raw_seed) for raw_seed in seeds)
+    midpoint = len(seed_values) // 2
     outcomes: list[dict[str, Any]] = []
     latest: np.ndarray | None = None
-    action_counts: Counter[int] = Counter()
-    global_longest_run = 0
-    for raw_seed in seeds:
-        seed = int(raw_seed)
+    for case_index, seed in enumerate(seed_values):
         env = make_u2_pixel_env(lesson=selected, size=size)
         try:
             observation, reset_info = _reset_lesson_env(
@@ -1306,11 +1520,6 @@ def evaluate_u2_lesson(
                 if terminated or truncated:
                     break
             latest = observation
-            action_counts.update(actions)
-            global_longest_run = max(
-                global_longest_run,
-                _longest_action_run(actions),
-            )
             oracle_actions = _oracle_action_count(
                 selected,
                 seed,
@@ -1320,30 +1529,61 @@ def evaluate_u2_lesson(
             reachable = _reachable_cell_count(base)
             key_visible = reset_info.get("initial_key_visible")
             door_visible = reset_info.get("initial_door_visible")
-            outcomes.append(
-                {
-                    "success": bool(info.get("success", False)),
-                    "steps": len(actions),
-                    "milestones": dict(info.get("milestones", {})),
-                    "collisions": int(info.get("collisions", 0)),
-                    "ineffective": int(
-                        info.get("ineffective_interactions", 0)
-                    ),
-                    "coverage": (
-                        int(info.get("unique_cells", 0)) / reachable
-                        if reachable
-                        else 0.0
-                    ),
-                    "oracle_ratio": len(actions) / oracle_actions,
-                    "extrinsic_return": extrinsic_return,
-                    "curiosity_return": curiosity_return,
-                    "visibility_stratum": (
-                        _visibility_stratum(key_visible, door_visible)
-                        if selected is U2LessonId.SEPARATED_UNLOCK
-                        else None
-                    ),
-                }
-            )
+            per_case_actions = Counter(actions)
+            outcome = {
+                "lesson_id": selected.value,
+                "lesson_label": U2_LESSON_SPECS[selected].label,
+                "case_index": case_index,
+                "panel": 0 if case_index < midpoint else 1,
+                "panel_case_index": (
+                    case_index if case_index < midpoint else case_index - midpoint
+                ),
+                "seed": seed,
+                "layout_sha256": str(reset_info.get("layout_sha256", "")),
+                "geometry_sha256": str(
+                    reset_info.get("geometry_sha256", "")
+                ),
+                "success": bool(info.get("success", False)),
+                "terminal_reason": info.get("terminal_reason"),
+                "steps": len(actions),
+                "milestones": dict(info.get("milestones", {})),
+                "collisions": int(info.get("collisions", 0)),
+                "ineffective_interactions": int(
+                    info.get("ineffective_interactions", 0)
+                ),
+                "unique_cells": int(info.get("unique_cells", 0)),
+                "reachable_cells": int(reachable),
+                "coverage": (
+                    int(info.get("unique_cells", 0)) / reachable
+                    if reachable
+                    else 0.0
+                ),
+                "oracle_actions": int(oracle_actions),
+                "path_actions_per_oracle_action": (
+                    len(actions) / oracle_actions
+                ),
+                "action_histogram": {
+                    str(action): int(per_case_actions.get(action, 0))
+                    for action in range(7)
+                },
+                "longest_repeated_action_run": _longest_action_run(actions),
+                "extrinsic_return": float(extrinsic_return),
+                "curiosity_return": float(curiosity_return),
+                "initial_key_visible": (
+                    bool(key_visible) if key_visible is not None else None
+                ),
+                "initial_door_visible": (
+                    bool(door_visible) if door_visible is not None else None
+                ),
+                "visibility_stratum": (
+                    _visibility_stratum(key_visible, door_visible)
+                    if selected is U2LessonId.SEPARATED_UNLOCK
+                    else None
+                ),
+            }
+            outcomes.append(outcome)
+            if case_evidence_sink is not None:
+                case_evidence_sink(dict(outcome))
         finally:
             env.close()
     if not outcomes:
@@ -1354,109 +1594,10 @@ def evaluate_u2_lesson(
         Image.fromarray(latest).save(temporary, format="PNG")
         os.replace(temporary, frame_path)
 
-    midpoint = len(outcomes) // 2
-    panels = (outcomes[:midpoint], outcomes[midpoint:])
-    panel_successes = tuple(
-        sum(item["success"] for item in panel) for panel in panels
-    )
-    successes = sum(item["success"] for item in outcomes)
-    milestone_names = sorted(
-        {
-            name
-            for outcome in outcomes
-            for name in outcome["milestones"]
-        }
-    )
-    milestone_counts = {
-        name: sum(
-            bool(outcome["milestones"].get(name, False))
-            for outcome in outcomes
-        )
-        for name in milestone_names
-    }
-    key_count = milestone_counts.get("key_picked_up", 0)
-    door_count = milestone_counts.get("door_opened", 0)
-    success_count = milestone_counts.get("success", successes)
-    strata: dict[str, dict[str, Any]] = {}
-    if selected is U2LessonId.SEPARATED_UNLOCK:
-        for label in (
-            "key_hidden_door_hidden",
-            "key_hidden_door_visible",
-            "key_visible_door_hidden",
-            "key_visible_door_visible",
-        ):
-            cases = [
-                item for item in outcomes if item["visibility_stratum"] == label
-            ]
-            stratum_successes = sum(item["success"] for item in cases)
-            strata[label] = {
-                "episodes": len(cases),
-                "successes": stratum_successes,
-                "success_rate": (
-                    stratum_successes / len(cases) if cases else None
-                ),
-                "wilson_interval": (
-                    _wilson_interval(stratum_successes, len(cases))
-                    if cases
-                    else None
-                ),
-            }
-    total_actions = sum(action_counts.values())
-    return U2LessonEvaluation(
-        protocol=PROTOCOL,
+    return aggregate_u2_case_evidence(
+        selected,
+        outcomes,
         timestamp=utc_now(),
-        lesson_id=selected.value,
-        lesson_label=U2_LESSON_SPECS[selected].label,
-        episodes=len(outcomes),
-        successes=successes,
-        success_rate=successes / len(outcomes),
-        panel_successes=panel_successes,
-        panel_success_rates=tuple(
-            count / len(panel) if panel else 0.0
-            for count, panel in zip(panel_successes, panels, strict=True)
-        ),
-        mean_steps=sum(item["steps"] for item in outcomes) / len(outcomes),
-        success_wilson_interval=_wilson_interval(successes, len(outcomes)),
-        panel_wilson_intervals=tuple(
-            _wilson_interval(count, len(panel))
-            for count, panel in zip(panel_successes, panels, strict=True)
-        ),
-        milestone_rates={
-            name: count / len(outcomes)
-            for name, count in milestone_counts.items()
-        },
-        milestone_counts=milestone_counts,
-        door_given_key=(door_count / key_count if key_count else None),
-        success_given_door=(
-            success_count / door_count if door_count else None
-        ),
-        visibility_strata=strata,
-        mean_path_actions_per_oracle_action=(
-            sum(item["oracle_ratio"] for item in outcomes) / len(outcomes)
-        ),
-        mean_coverage=sum(item["coverage"] for item in outcomes) / len(outcomes),
-        mean_collisions=(
-            sum(item["collisions"] for item in outcomes) / len(outcomes)
-        ),
-        mean_ineffective_interactions=(
-            sum(item["ineffective"] for item in outcomes) / len(outcomes)
-        ),
-        action_histogram={
-            str(action): int(action_counts.get(action, 0))
-            for action in range(7)
-        },
-        largest_action_share=(
-            max(action_counts.values(), default=0) / total_actions
-            if total_actions
-            else 0.0
-        ),
-        longest_repeated_action_run=global_longest_run,
-        mean_extrinsic_return=(
-            sum(item["extrinsic_return"] for item in outcomes) / len(outcomes)
-        ),
-        mean_curiosity_return=(
-            sum(item["curiosity_return"] for item in outcomes) / len(outcomes)
-        ),
     )
 
 

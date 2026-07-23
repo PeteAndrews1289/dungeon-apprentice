@@ -220,6 +220,72 @@ ineffective interactions than the passing peers. End the chapter on two adjacent
 The next act is not automatically U3. It is a prospectively frozen decision about how to strengthen
 U2 without training on the already opened confirmation cases.
 
+### Act IX — Eleven windows, no moving line
+
+Open on four tempting shortcuts and cross them out one at a time: round 169 to 170, test the same
+model again, continue until any checkpoint looks good, or take only the two strongest policies into
+U3. Then reveal the bounded successor:
+[U2r Stability Remediation](protocol-v0.2-u2r-stability-remediation.md).
+
+The framing matters. The original exam stays red. U2r does not “fix” its historical score. It asks
+a new question of a new artifact: can the exact failed lineage become more stable using only the
+part of its original action budget it never spent?
+
+Turn the budget into the scene's visual clock:
+
+- the parent remains the exact `20260745` mastery archive and optimizer;
+- 688,128 of 1,048,576 child actions were already spent;
+- 360,448 remain;
+- that remainder is exactly eleven 32,768-action windows; and
+- every window must run, even if window three looks perfect or window eight looks hopeless.
+
+Show eleven empty blocks filling from left to right. There is no “best model” cursor following the
+curve. Only the eleventh block connects to the next gate.
+
+The new stability gate should be explained as a response to the behavioral diagnosis, not an
+invisible rule change. Rewind child `20260745` from its original first pass to mastery:
+
+| Lesson | First pass | Mastery | Mean ineffective interactions |
+| --- | ---: | ---: | ---: |
+| Visible U0 | 80/80 | 76/80 | 0.00 → 6.55 |
+| Local U1 | 80/80 | 77/80 | 0.04 → 4.74 |
+| Separated U2 | 76/80 | 72/80 | 2.49 → 6.54 |
+
+The second checkpoint still cleared the old success gates, but it had become much more likely to
+repeat pickup or toggle actions. That makes the successor's title literal: it is looking for
+deterministic stability, not merely another score over a line.
+
+At both final U2r exams, the original capability gates remain. On top of them, U2 must score at
+least 72/80 with both panels at least 34/40, U0/U1/U2 must each average no more than three
+ineffective interactions per episode, and no lesson may fall more than two successes between the
+penultimate and terminal exam. Recovery and an invalid practice allocation disqualify the pair.
+These are openly post-result diagnostics turned into **prospective rules for the successor**. They
+never regrade original U2.
+
+If the terminal model is eligible, reveal a third envelope. Its four streams begin at 15.24 million,
+after the permanently consumed 15.20–15.239-million attempt:
+
+| Fresh lesson exam | Candidate stream |
+| --- | --- |
+| Separated U2 | `15_240_000`–`15_249_999` |
+| Navigate | `15_250_000`–`15_259_999` |
+| Visible U0 | `15_260_000`–`15_269_999` |
+| Local U1 | `15_270_000`–`15_279_999` |
+
+The terminal policy gets one no-update measurement on 200 accepted cases per skill. The frozen
+170/200 overall line and panel floors do not move. The two directly passing policies are not tested
+again; their original evidence remains closed.
+
+End the act with the only honest U3 equation:
+
+> U3 parent set = two directly confirmed U2 policies + one prospectively remediated and freshly
+> confirmed U2r policy.
+
+Even on success, never replace that sentence with “U2 passed 3/3.” On failure, do not make the
+chapter a tragedy. The result will distinguish three different limits: unchanged experience could
+not stabilize the terminal policy; development stability did not generalize; or one bounded
+continuation did create a usable third parent. Each is a real answer.
+
 ### Ending options
 
 - **Full success:** one policy retrieves the relic on unseen final levels and retains every prior
@@ -265,6 +331,14 @@ U2 without training on the already opened confirmation cases.
   `capability_failed — U3 blocked`;
 - the failed lineage's 188 key → 172 door → 169 completion funnel beside the two passing peers;
 - a before/after digest card showing zero U2 confirmation policy or optimizer updates;
+- the U2r protocol diagram: immutable 2/3 result → eleven fixed windows → one sealed fresh exam;
+- child `20260745` first-pass-versus-mastery ineffective-interaction comparison;
+- an eleven-block action clock with no intermediate “best checkpoint” marker;
+- the penultimate and terminal U2r stability cards, including the 3.0 ineffective-interaction
+  ceilings and no-more-than-2/80 decline rule;
+- the unopened `15_240_000`–`15_279_999` U2r confirmation envelope;
+- if activated, the exact title card “two direct + one prospectively remediated,” never “original
+  U2 3/3”;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
 - the v0 audit, reward inversion, and stale-policy evaluation timeline;
@@ -281,4 +355,6 @@ the experiment's most valuable output. Do not call planner/oracle qualification 
 pool three children into one synthetic policy, and do not describe development-exam mastery as
 disjoint confirmation. Do not describe 169/200 as a pass, “round it” to 85%, or imply that two
 passing policies satisfy an all-three preregistered rule. Equally, do not frame the one-case miss as
-a total learning collapse.
+a total learning collapse. Do not present U2r as a rerun of the failed exam, hide that its stability
+criteria were designed after observing the failure, select an intermediate checkpoint, or describe
+a future U2r pass as retroactive 3/3 confirmation.

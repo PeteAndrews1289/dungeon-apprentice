@@ -597,3 +597,79 @@ Its larger collision-aware generalization claim is only 2/3 and therefore fails 
 rule. The opened 15.2-million exams cannot be recycled, the threshold cannot be moved after seeing
 169, and U3 remains blocked. Full selection, integrity, launch-stop, diagnostic, and limitation
 evidence is in the [immutable confirmation result](results/v0.2-u2-confirmation.md).
+
+### July 23, 2026 — U2r freezes one bounded stability-remediation path
+
+The project did not reinterpret 169/200 as a pass, rerun the unchanged checkpoint, open U3 with
+only the two strongest policies, or silently add replacement lineages until one passed. Instead it
+froze [U2r Stability Remediation](protocol-v0.2-u2r-stability-remediation.md) before another policy
+update or fresh protected case.
+
+The successor continues only child `20260745` from exact mastery archive
+`56dc459fb94110f41a14b2304425f572fc235c8cfc07e1152306cbf77ac33dee`, including its optimizer.
+The child stopped at 688,128 of its original 1,048,576-action U2 ceiling, leaving exactly 360,448
+actions, or eleven 32,768-action windows. U2r must spend all eleven under the unchanged learner,
+reward, four-lesson curriculum, 50/7.5/7.5/35 normal mix, and existing recovery controller. Segment
+algorithm seed `20260749`, worker streams `20260749`–`20260752`, and annotated training tag
+`u2r-stability-v0.2-u2r-20260723` are frozen prospectively.
+
+No favorable intermediate checkpoint may be selected. The only eligible artifact is the exact
+1,048,576-child-action terminal checkpoint with 1,835,008 lifetime actions and optimizer counter
+3,584. Its exams at 1,015,808 and 1,048,576 child actions must both follow allocation-valid normal
+practice, with recovery inactive, and pass all original overall and panel gates. Both must also
+score at least 72/80 U2 with panels at least 34/40, hold mean ineffective interactions to at most
+3.0 per episode independently on U0/U1/U2, and avoid any terminal lesson decline greater than 2/80
+from the penultimate exam.
+
+This stronger rule is explicitly post-result but prospectively applied to a new artifact. It is
+motivated by the broad interaction-loop regression seen between child `20260745`'s original first
+pass and selected mastery boundary; it does not regrade either checkpoint.
+
+Only a terminal-eligible artifact may face the one new confirmation allocation:
+
+| Lesson | Fresh candidate stream |
+| --- | --- |
+| Separated U2 | `15_240_000`–`15_249_999` |
+| Navigate | `15_250_000`–`15_259_999` |
+| Visible U0 | `15_260_000`–`15_269_999` |
+| Local U1 | `15_270_000`–`15_279_999` |
+
+The consumed `15_200_000`–`15_239_999` ranges remain inaccessible, and the complete-project final
+allocation beginning at 20 million remains unopened. The new evaluator gets one attempt, selects
+200 accepted cases per lesson before loading the policy, preserves the existing 170/200 overall
+and 80/85 panel gates, and performs no update.
+
+A positive outcome may open a separately frozen U3 protocol only with the ancestry label **two
+directly confirmed U2 policies plus one prospectively remediated U2r policy**. The original U2
+confirmation remains 2/3 and `capability_failed` in every outcome. A valid U2r failure ends this
+rescue path rather than authorizing another extension, checkpoint substitution, or confirmation
+retry.
+
+### July 23, 2026 — U2r implementation qualifies without starting training
+
+The bounded successor is now implemented, qualified, and externally anchored under annotated tag
+`u2r-stability-v0.2-u2r-20260723`. This release adds the sole-parent continuation trainer,
+terminal-only stability grader, exact case evidence, static history exclusions, fail-closed
+interruption/resume chain, storage guards, read-only dashboard, fixed launcher, and narrative
+documentation. It does not add a confirmation evaluator or any route to U3.
+
+The release boundary passed:
+
+- **427/427** repository tests;
+- **133/133** U2r-focused provenance, trainer, dashboard, launcher, anchor, and seed-guard tests;
+- Ruff, Python compilation, launcher syntax, and patch-integrity checks;
+- the existing mechanical oracle qualification on **300/300** generated levels; and
+- a fresh read-only reconstruction of **84,218** exact static exclusion layouts with canonical
+  set digest
+  `4157869d218289eebdd6a04dd0bd4cd2c91e6717cbe6eb6d966fc96749cf0fb3`.
+
+The exclusion evidence preserves the original protocol's explicit upper-bound limitation: up to 12
+terminal active-worker layouts were never authenticated by the historical U2 logging and therefore
+cannot be invented or added now. U2r closes that evidence gap prospectively by recording every
+episode start and the four actual active workers at a durable interruption or terminal boundary.
+
+Release verification found the mounted T7 with roughly 216 GiB free, no active neural trainer,
+fixed dashboard port 8786 available, and neither the canonical U2r run root nor media root present.
+The fresh `15_240_000`–`15_279_999` candidate streams remained structurally sealed and no issuer was
+created. Accordingly this entry records **implementation readiness, not a learning result**:
+trained U2r actions remain zero, all eleven windows remain pending, and U3 remains closed.

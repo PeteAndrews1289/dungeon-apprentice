@@ -77,6 +77,32 @@ recurrent episode state never cross between lineages. A later fresh-start experi
 show that one launcher can reproduce the entire staircase from random initialization without manual
 stage stitching.
 
+## Learning more versus testing again
+
+U2 exposed an important difference between those two actions. All three policies passed adjacent
+development exams, but the larger no-update confirmation passed only two of them. The third scored
+169/200 against a frozen 170/200 U2 gate. Testing the unchanged checkpoint repeatedly would not
+teach it anything; it would only create more chances for a borderline sample to cross the line.
+
+[U2r Stability Remediation](protocol-v0.2-u2r-stability-remediation.md) therefore creates a new
+learned artifact before opening another test. Only the failed lineage continues, its complete
+optimizer remains intact, and it receives exactly the 360,448 actions left under its original U2
+ceiling. It still gets pixels, sparse completion reward, the same four-lesson practice mixture, and
+no knowledge of the future exam.
+
+The distinction is visible in the selection rule. Eleven additional windows must run regardless of
+intermediate scores, and only the full-budget terminal model can qualify. Its last two development
+exams must not only pass the old success gates; they must also avoid the repeated-interaction
+behavior diagnosed in the failed lineage. A qualifying terminal model then gets one fresh,
+collision-aware, no-update confirmation. Thus:
+
+- **training** may change the policy using ordinary self-generated experience;
+- **development exams** may determine whether the fixed terminal artifact is stable enough to test;
+- **confirmation** measures that already selected artifact and cannot change it; and
+- the old failed confirmation remains failed in every future outcome.
+
+This is what prevents “keep testing until it passes” from masquerading as learning.
+
 ## Why timing matters
 
 Recurrent PPO alternates between collecting a rollout and optimizing on it. An exam triggered while

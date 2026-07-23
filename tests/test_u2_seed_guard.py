@@ -84,6 +84,42 @@ def test_sealed_and_validation_ranges_fail_closed_without_opening_them() -> None
             authorize_u2_seed(seed, expected_role=role)
 
 
+def test_consumed_u2_confirmation_and_fresh_u2r_streams_are_distinct() -> None:
+    consumed = (
+        (15_200_000, 15_210_000),
+        (15_210_000, 15_220_000),
+        (15_220_000, 15_230_000),
+        (15_230_000, 15_240_000),
+    )
+    for start, stop in consumed:
+        role = classify_u2_seed(start)
+        assert role is not None
+        partition = PARTITION_BY_ROLE[role]
+        assert (partition.start, partition.stop) == (start, stop)
+        assert partition.opened_by_u2 is True
+
+    fresh = (
+        (15_240_000, 15_250_000, U2SeedRole.U2R_U2_CONFIRMATION),
+        (15_250_000, 15_260_000, U2SeedRole.U2R_NAVIGATE_CONFIRMATION),
+        (15_260_000, 15_270_000, U2SeedRole.U2R_U0_CONFIRMATION),
+        (15_270_000, 15_280_000, U2SeedRole.U2R_U1_CONFIRMATION),
+    )
+    fresh_roles = []
+    for start, stop, expected_role in fresh:
+        role = classify_u2_seed(start)
+        assert role is expected_role
+        partition = PARTITION_BY_ROLE[role]
+        assert (partition.start, partition.stop) == (start, stop)
+        assert partition.opened_by_u2 is False
+        assert classify_u2_seed(stop - 1) is role
+        with pytest.raises(U2SeedAccessError):
+            authorize_u2_seed(start, expected_role=role)
+        fresh_roles.append(role)
+
+    assert len(set(fresh_roles)) == 4
+    assert classify_u2_seed(15_280_000) is None
+
+
 def test_capabilities_cannot_be_directly_constructed_or_minted_from_strings() -> None:
     with pytest.raises(U2SeedAccessError, match="issued"):
         U2SeedAccess(

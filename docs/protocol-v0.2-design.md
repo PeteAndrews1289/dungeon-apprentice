@@ -5,9 +5,11 @@
 > development lineages under its dedicated
 > [U2 protocol](protocol-v0.2-u2-separated-unlock.md). Its one-shot disjoint confirmation passed
 > two of three policies, but the third scored 169/200 against the frozen 170/200 U2 gate. The
-> strict verdict is `capability_failed`, so U3 and the complete fresh-start protocol remain closed
-> separate gates. This document preserves the original staircase proposal rather than
-> retroactively rewriting its rules.
+> strict verdict remains `capability_failed`. The separately declared
+> [U2r Stability Remediation](protocol-v0.2-u2r-stability-remediation.md) now gives only that failed
+> lineage its 360,448-action unused U2 remainder and one fresh terminal-only confirmation. U3 and
+> the complete fresh-start protocol remain closed unless that successor passes. This document
+> preserves the original staircase proposal rather than retroactively rewriting its rules.
 
 ## Experimental question
 

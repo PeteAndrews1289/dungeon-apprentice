@@ -228,6 +228,74 @@ the dashboard or a favorable-looking intermediate curve to reselect them. Only a
 children finish may a separate U2 confirmation protocol be authored. Confirmation must remain
 no-update, collision-aware, and preregistered before opening a candidate.
 
+The historical U2 launcher owned one read-only cohort dashboard at
+`http://127.0.0.1:8785/`. Port 8785 being occupied was a launch failure, not permission to pick an
+unrecorded fallback. The view read a small `cohort.json` and the three declared lineage
+`status.json` files, showed pending/completed lineages as well as the active one, and could not
+control training. Closing the browser had no effect on a trainer. The launcher used
+`caffeinate -ims`, rejected another neural trainer, and left a durable terminal or crash record.
+
+The historical U2 resource envelope on the audited M1 was:
+
+- one four-worker CPU trainer at a time; never three concurrent children;
+- approximately 8–10 hours for all three if they approached their full ceilings, based on measured
+  U1 throughput plus U2's fourth exam;
+- 2 GiB maximum per lineage and 6 GiB for all scientific run directories;
+- five ordinary rolling checkpoints, with named decision artifacts retained separately;
+- 10 GiB maximum for optional screen capture in a separate media directory;
+- 16 GiB maximum planned addition and a 25 GiB free-space refusal reserve.
+
+Those were ceilings, not targets or evidence. A storage stop was operational evidence, a passed
+oracle qualification was engineering evidence, and a rising frozen exam curve was learning
+evidence. Only the later no-update disjoint confirmation could establish confirmation evidence. At
+the committed source-freeze entry, no protected U2 qualification, U2 validation,
+candidate-confirmation, or final seed had been opened and no U2 child had trained. The completed
+external ledgers, result document, and frozen dashboard artifacts now supersede that prospective
+status.
+
+## Run the bounded U2r stability successor
+
+U2 confirmation is complete and remains `capability_failed`: two policies passed, while child
+`20260745` missed the frozen U2 overall gate by one case. U2r does not retry that exam or replace
+that verdict. It continues only the failed child's exact mastery archive and optimizer for the
+360,448 actions left under its original 1,048,576-action ceiling.
+
+After the clean implementation commit and annotated tag
+`u2r-stability-v0.2-u2r-20260723` have been pushed, launch the sole canonical segment with:
+
+```bash
+./scripts/run_v02_u2r.sh
+```
+
+The launcher re-authenticates the parent, failed confirmation, qualification, static layout
+exclusions, remote annotated tag, mounted T7, free-space reserve, clean source, and absence of
+another neural trainer before it creates evidence. It writes the scientific lineage beneath
+`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-20260723`, keeps optional media beneath
+`/Volumes/T7 Developer/DungeonApprentice/u2r-stability-media-20260723`, and serves the read-only
+dashboard at `http://127.0.0.1:8786/`.
+
+Do not choose a checkpoint or new name by hand after an interruption. If—and only if—the prior
+segment durably published its fail-closed interruption record, restore the same source and T7,
+verify no trainer remains, and run:
+
+```bash
+./scripts/run_v02_u2r.sh --resume
+```
+
+The resume planner authenticates the complete contiguous chain and chooses only its tip. Segment
+zero is `v02-u2r-seed-20260745`; successors are exactly
+`v02-u2r-seed-20260745-resume-N`. Each segment derives new algorithm and worker RNG streams by
+adding `N × 100,000`, while retaining the same policy, optimizer, curriculum, completed exams, and
+cumulative ceiling. The four partial episode identities captured at interruption are retained and
+explicitly abandoned because active Gym and recurrent states are not serialized. A power loss that
+prevents the interruption record from becoming durable is an operational failure, not permission
+to guess at a recovery point.
+
+All eleven 32,768-action windows run. Only the exact 1,048,576-child-action terminal artifact may
+qualify, and only from the declared final two development exams. No launcher or trainer path opens
+the fresh U2r confirmation reservation; a separately committed no-update evaluator is required
+after a positive terminal stability report.
+
 The seed ledger is a refusal list:
 
 | Purpose | Allocation | Present status |
@@ -239,52 +307,38 @@ The seed ledger is a refusal list:
 | U0 retention | `11_000_000`–`11_000_079` | Existing frozen suite |
 | U1 retention | `11_100_000`–`11_100_079` | Existing frozen suite |
 | U2 development validation | `11_200_000`–`11_200_079` | Opened only by qualification/training with bound access |
-| Future U2 confirmation candidates | `15_200_000`–`15_239_999` in four lesson-specific streams | Reserved; no confirmation plan yet |
+| Consumed U2 confirmation | `15_200_000`–`15_239_999` in four lesson-specific streams | Opened once; immutable and permanently unavailable to U2r |
+| Fresh U2r confirmation reservation | `15_240_000`–`15_279_999` in four lesson-specific streams | Structurally sealed; no training access issuer exists |
 | Complete-project final test | `20_000_000`–`20_299_999` | Untouched throughout U2 |
 
 Numerical separation is not enough. The trainer must also reject exact layout hashes belonging to
 qualification or any frozen validation suite. Never inspect the future confirmation streams to
 debug training, and never substitute the final allocation for a missing confirmation plan.
 
-The launcher owns one read-only cohort dashboard at
-`http://127.0.0.1:8785/`. Port 8785 being occupied is a launch failure, not permission to pick an
-unrecorded fallback. The view reads a small `cohort.json` and the three declared lineage
-`status.json` files, shows pending/completed lineages as well as the active one, and cannot control
-training. Closing the browser has no effect on a trainer. The launcher must still use
-`caffeinate -ims`, reject another neural trainer, and leave a durable terminal or crash record.
+## U2r artifacts
 
-Resource envelope on the audited M1:
-
-- one four-worker CPU trainer at a time; never three concurrent children;
-- approximately 8–10 hours for all three if they approach their full ceilings, based on measured
-  U1 throughput plus U2's fourth exam;
-- 2 GiB maximum per lineage and 6 GiB for all scientific run directories;
-- five ordinary rolling checkpoints, with named decision artifacts retained separately;
-- 10 GiB maximum for optional screen capture in a separate media directory;
-- 16 GiB maximum planned addition and a 25 GiB free-space refusal reserve.
-
-These are ceilings, not targets or evidence. A storage stop is operational evidence, a passed
-oracle qualification is engineering evidence, and a rising frozen exam curve is learning evidence.
-Only a later no-update disjoint confirmation can establish confirmation evidence. At the committed
-source-freeze entry, no protected U2 qualification, U2 validation, candidate-confirmation, or final
-seed had been opened and no U2 child had trained. After launch, consult the canonical external
-ledgers and dashboard rather than inferring current state from this frozen instruction page.
-
-## Artifacts
-
-Each run directory is self-contained:
+Each immutable U2r segment directory is self-contained, while a terminal report binds the complete
+contiguous segment chain:
 
 | Path | Meaning |
 | --- | --- |
-| `manifest.json` | Exact arguments, package versions, platform, and source revision |
-| `qualification.json` | Generator solvability evidence recorded before learning |
+| `manifest.json` | Exact arguments, qualification provenance, package versions, platform, source revision, exclusions, anchor, and segment identity |
 | `status.json` | Atomic current state used by the dashboard |
 | `episodes.jsonl` | Append-only trainer-only outcomes, milestones, returns, and curiosity telemetry |
 | `optimizer.jsonl` | Append-only post-update PPO metrics and trained-step counters |
 | `evaluations.jsonl` | Unseen-level results, milestone rates, and exact checkpoint digests |
 | `events.jsonl` | Promotions, holds, checkpoints, and warnings |
-| `checkpoints/latest.zip` | Most recently published reloadable policy |
-| `checkpoints/latest.json` | Configuration, progress, parentage, and digest paired with `latest.zip` |
+| `episode-starts.jsonl` | U2r episode identities written before the first action, including interruption/resume disposition |
+| `checkpoints/initial.*` | Exact policy/optimizer state loaded at this segment's start; segment zero also binds the raw frozen-parent baseline |
+| `checkpoints/latest-safe.*` | Most recent fully optimized intra-window recovery bundle, atomically replaced |
+| `checkpoints/resume.*` | Exact post-exam recovery bundle, atomically replaced when another window remains |
+| `checkpoints/rolling/exam-*.*` | All eleven immutable development exams, their sidecars, integrity records, and raw case evidence |
+| `checkpoints/rolling/exam-*.cases.json` | U2r's immutable 320-case evidence behind each development aggregate |
+| `checkpoints/terminal.*` | Exact full-budget terminal policy, sidecar, and integrity record; never resume-eligible |
+| `interruption.json` | U2r's actual four active episodes and exact safe resume boundary, when durably interrupted |
+| `interruption.integrity.json` | Digest binding for an interruption record |
+| `report.json` | U2r's immutable terminal stability verdict, complete exam inventory, and lineage-history bindings |
+| `report.integrity.json` | Digest binding for the terminal report |
 | `frames/latest.png` | Latest pixel view for the live dashboard |
 | `frames/exam-*.png` | Latest frozen frame for each declared lesson |
 | `crash.json` | Full diagnostic trace if the trainer exits unexpectedly |
@@ -295,11 +349,15 @@ protocol; parentage; and the archive's SHA-256 digest. Each file is written atom
 detects a missing or torn pair. A power loss may make the newest alias unusable, but resume rejects it
 rather than guessing; the most recent intact named checkpoint remains the recovery point.
 
-`--keep-checkpoints 5` bounds ordinary rolling snapshots. `latest`, initial, promotion, mastery, and
-terminal artifacts may be retained separately because they explain a decision. The 25 GiB reserve
-is a refusal threshold, not an estimate of what one run will consume.
+U2r retains exactly eleven rolling exam bundles because all eleven are part of its terminal
+selection audit. Replaceable `latest-safe` and `resume` recovery aliases are separate from those
+immutable exams. The 2 GiB lineage cap, 6 GiB cohort cap, optional 10 GiB media cap, and 25 GiB
+free-space reserve are refusal thresholds rather than estimates of expected consumption.
 
-## Resume after interruption
+## Resume a legacy v0/v0.1 run after interruption
+
+This older generic procedure does not apply to U2r. For U2r, use only the authenticated
+`./scripts/run_v02_u2r.sh --resume` path described above.
 
 Resume from an archive only when its matching state sidecar is present and passes digest/protocol
 validation. A resume creates a new child run rather than rewriting the parent:

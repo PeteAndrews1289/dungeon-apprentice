@@ -51,6 +51,79 @@ from dungeon_apprentice.v02_u2_lessons import (
     U2LessonId,
 )
 
+# The one-shot qualification predates U2 confirmation consumption and the U2r
+# successor reservation.  Its externally anchored report must remain
+# verifiable against the ledger that was true when those bytes were written.
+FROZEN_U2_QUALIFICATION_SEED_LEDGER: tuple[dict[str, Any], ...] = (
+    {"role": "training", "start": 0, "opened_by_u2": True, "end": 999_999},
+    {
+        "role": "engineering",
+        "start": 5_200_000,
+        "opened_by_u2": True,
+        "end": 5_200_999,
+    },
+    {
+        "role": "sealed_qualification",
+        "start": 5_210_000,
+        "opened_by_u2": True,
+        "end": 5_211_999,
+    },
+    {
+        "role": "navigate_validation",
+        "start": 10_000_000,
+        "opened_by_u2": False,
+        "end": 10_000_079,
+    },
+    {
+        "role": "u0_validation",
+        "start": 11_000_000,
+        "opened_by_u2": False,
+        "end": 11_000_079,
+    },
+    {
+        "role": "u1_validation",
+        "start": 11_100_000,
+        "opened_by_u2": False,
+        "end": 11_100_079,
+    },
+    {
+        "role": "u2_validation",
+        "start": 11_200_000,
+        "opened_by_u2": True,
+        "end": 11_200_079,
+    },
+    {
+        "role": "future_u2_confirmation",
+        "start": 15_200_000,
+        "opened_by_u2": False,
+        "end": 15_209_999,
+    },
+    {
+        "role": "future_navigate_confirmation",
+        "start": 15_210_000,
+        "opened_by_u2": False,
+        "end": 15_219_999,
+    },
+    {
+        "role": "future_u0_confirmation",
+        "start": 15_220_000,
+        "opened_by_u2": False,
+        "end": 15_229_999,
+    },
+    {
+        "role": "future_u1_confirmation",
+        "start": 15_230_000,
+        "opened_by_u2": False,
+        "end": 15_239_999,
+    },
+    {
+        "role": "final_test",
+        "start": 20_000_000,
+        "opened_by_u2": False,
+        "end": 20_299_999,
+    },
+)
+
 PROTOCOL = "dungeon-apprentice-v0.2-u2"
 QUALIFICATION_SCHEMA_VERSION = 2
 QUALIFICATION_KIND = "sealed_preflight_qualification"
@@ -869,7 +942,22 @@ def _verify_report_schema(
         "count": QUALIFICATION_CASES,
     }:
         raise U2QualificationError("qualification seed partition changed")
-    if report["seed_partition_ledger"] != list(seed_partition_ledger()):
+    if json.dumps(
+        report["seed_partition_ledger"],
+        sort_keys=True,
+        separators=(",", ":"),
+    ) not in {
+        json.dumps(
+            list(seed_partition_ledger()),
+            sort_keys=True,
+            separators=(",", ":"),
+        ),
+        json.dumps(
+            list(FROZEN_U2_QUALIFICATION_SEED_LEDGER),
+            sort_keys=True,
+            separators=(",", ":"),
+        ),
+    }:
         raise U2QualificationError("qualification seed partition ledger changed")
     for field_name, expected in {
         "requested": QUALIFICATION_CASES,

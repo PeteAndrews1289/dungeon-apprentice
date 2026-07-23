@@ -250,7 +250,50 @@ archives on prospectively selected, collision-aware cases with no policy update.
 `20260745` missed the frozen U2 overall gate by one. The selector excluded validation,
 qualification, prior-confirmation, and completed logged training histories while retaining the
 declared bounded 12-layout terminal logging limitation. The strict failure means U3 Full Unlock
-design cannot activate from this evidence.
+protected work cannot activate from this evidence.
+
+### U2r Stability Remediation — implemented and qualified, not started
+
+The next step is not a retry of the opened exam. The
+[U2r protocol](docs/protocol-v0.2-u2r-stability-remediation.md) keeps the original
+`capability_failed` verdict intact and creates one bounded successor artifact from only the failed
+lineage:
+
+- exact parent: child `20260745` mastery archive
+  `56dc459fb94110f41a14b2304425f572fc235c8cfc07e1152306cbf77ac33dee`, including its optimizer;
+- additional budget: exactly **360,448 actions**, the eleven 32,768-action windows remaining under
+  that child's original 1,048,576-action ceiling;
+- behavior: unchanged pixels, actions, PPO, reward, four-lesson curriculum, 50/7.5/7.5/35 normal
+  transition mix, and prerequisite recovery;
+- selection: only the exact full-budget terminal artifact, never an earlier or best-looking
+  checkpoint; and
+- preregistration identity: annotated tag `u2r-stability-v0.2-u2r-20260723`.
+
+![One failed lineage receives eleven fixed windows before one entirely fresh confirmation](docs/assets/v0.2-u2r-stability-remediation.svg)
+
+The last two fixed development exams must pass the original overall and panel gates plus a stronger
+prospective stability rule: U2 at least 72/80 with both panels at least 34/40, no more than 3.0 mean
+ineffective interactions independently on U0/U1/U2, and no lesson falling by more than 2/80 at the
+terminal boundary.
+
+Training has **not** begun. The consumed `15_200_000`–`15_239_999` cases remain immutable evidence,
+while four fresh U2r confirmation candidate streams at `15_240_000`–`15_279_999` remain sealed.
+Only a terminal-eligible policy may face them once, with no update and the original confirmation
+gates. A pass could open U3 only with the explicit label **two directly confirmed U2 policies plus
+one prospectively remediated U2r policy**. It would not rewrite the original U2 result as 3/3.
+
+The clean implementation commit is externally bound by annotated tag
+`u2r-stability-v0.2-u2r-20260723`. The fixed launcher is:
+
+```bash
+./scripts/run_v02_u2r.sh
+```
+
+It serves a read-only dashboard at `http://127.0.0.1:8786/`. A durably interrupted segment can be
+continued only with `./scripts/run_v02_u2r.sh --resume`; the launcher chooses the authenticated
+chain tip and deterministic `-resume-N` identity itself. See the
+[operations runbook](docs/runbook.md#run-the-bounded-u2r-stability-successor) for the recovery and
+evidence rules.
 
 ## Evidence standard
 
@@ -276,5 +319,5 @@ See [the experiment contract](docs/experiment-contract.md),
 [roadmap](docs/roadmap.md). The completed v0.1 capability result is preserved in the
 [Navigate canary report](docs/results/v0.1-navigate-canaries.md), and the next proposed protocol is
 specified in [the v0.2 design](docs/protocol-v0.2-design.md). The current controlled decision point
-is a prospectively frozen response to the failed U2 confirmation; U3 remains blocked until U2
-satisfies a new valid advancement gate.
+is the prospectively frozen [U2r Stability Remediation](docs/protocol-v0.2-u2r-stability-remediation.md);
+U3 remains blocked unless its exact terminal artifact passes the declared fresh confirmation.
