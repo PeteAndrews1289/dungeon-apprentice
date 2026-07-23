@@ -553,3 +553,47 @@ A second pre-claim stop found a portability edge in Git itself: on the installed
 `show-ref --verify` returns `128` rather than the expected absent-ref code unless `--quiet` is
 present. The tag publisher treated that as indeterminate and again stopped before creating a tag,
 claim, or candidate layout. Both U2 tag publishers now use the portable quiet form.
+
+### July 23, 2026 — U2 confirmation completes with a one-case strict failure
+
+The canonical attempt then opened once from clean commit
+`6c266e0a51cc951a9a37d98e611049f08b1e143f`, externally anchored by annotated tag
+`u2-confirmation-v0.2-u2-20260723`. The policy-blind selector examined 819 candidates to accept four
+200-case exams. Navigate and U2 accepted their first 200 candidates. U0 examined 215, rejecting four
+development-validation exact overlaps and 11 duplicates of already accepted exact layouts. U1
+examined 204, rejecting four exact overlaps with completed logged U2-child histories. All accepted
+exams had 200 unique exact layouts; the numerical partition audit found no collision.
+
+The three frozen checkpoints scored:
+
+| Child seed | Navigate | Visible U0 | Local U1 | Separated U2 | Strict result |
+| ---: | ---: | ---: | ---: | ---: | --- |
+| `20260737` | 193/200 | 200/200 | 200/200 | 184/200 | Passed |
+| `20260741` | 188/200 | 200/200 | 200/200 | 188/200 | Passed |
+| `20260745` | 190/200 | 188/200 | 196/200 | **169/200** | Failed U2 overall by 1 |
+
+Every one of the 24 panel gates passed. Child `20260745` retained all three prerequisite lessons
+and produced U2 panels of 84/100 and 85/100, both above the 80-case panel floor. Its combined 169
+was nevertheless below the preregistered 170/200 overall requirement. The strict all-three verdict
+is `capability_failed`, not confirmed.
+
+The failed policy acquired the U2 key in 188 cases, opened the door in 172, and completed 169. Once
+the door opened, completion was 98.26%; door opening after key acquisition was 91.49%. It also
+averaged 5.135 ineffective interactions and 2.526 policy actions per oracle action, versus
+0.71/2.105 and 0.19/1.905 for the two passing policies. These are useful post-result diagnostics,
+not new gates or permission to tune against the opened exam. A Binomial(200, 0.85) model assigns
+45.1489% probability to 169 or fewer successes, so the result is not evidence of collapse; the
+frozen discrete rule still makes it a protocol failure.
+
+Evaluation made no update. For every checkpoint, policy tensors, optimizer state, archive bytes,
+trained-action counters, update counters, and supporting artifact hashes matched before and after.
+The evaluator used deterministic actions, reset recurrent state per case, made no online model
+calls, and finished without interruption. The raw 1,388,908-byte report is frozen at SHA-256
+`7522eb8742ed567577d1f02a2a9960d698981044128e0866daa262d36aaf1c69`; its external checksum,
+attempt ledger, and terminal bundle agree.
+
+The result preserves two claims at once. U2 remains a positive 3/3 development-replication result.
+Its larger collision-aware generalization claim is only 2/3 and therefore fails the declared cohort
+rule. The opened 15.2-million exams cannot be recycled, the threshold cannot be moved after seeing
+169, and U3 remains blocked. Full selection, integrity, launch-stop, diagnostic, and limitation
+evidence is in the [immutable confirmation result](results/v0.2-u2-confirmation.md).

@@ -184,6 +184,42 @@ steered recovery and stopping. The next scene should be a second unopened envelo
 preregistered collision-aware confirmation. No new case may be shown and no result may be implied
 until its selection rules and checkpoint hashes are committed.
 
+### Act VIII — One completion short
+
+The confirmation gives the story a better ending than a frictionless pass would have. Begin with
+the instrument, not the score. Show the console shortcut that never entered Python, then the two
+fail-closed launch defects: the historical tag adapter reporting the evaluator commit and Apple
+Git's absent-ref status without the quiet form. Put “zero protected candidates opened” beside both
+stops. The important beat is that the safeguards were inconvenient and therefore real.
+
+Then animate the selector. Four streams feed four 200-case exams: 200/200 accepted for Navigate,
+200/215 for U0, 200/204 for U1, and 200/200 for U2. Keep the 19 rejected layouts visible—four U0
+validation collisions, 11 repeated U0 acceptances, and four U1 training-history collisions. This is
+the payoff to the earlier U1 seed-versus-layout lesson: numerical novelty is no longer mistaken for
+layout novelty.
+
+Reveal each policy as its own card. Seeds `20260737` and `20260741` pass all four skills. Seed
+`20260745` keeps Navigate, U0, and U1, and even passes both U2 panels at 84 and 85. Then let the
+combined counter stop at **169/200** while the frozen line remains at **170**. Do not round it, pool
+it, or call it “basically confirmed.” Put the protocol verdict on screen:
+`capability_failed — U3 blocked`.
+
+The emotional point is not that the model collapsed. It was one completion short, and a
+Binomial(200, 0.85) model would produce 169 or fewer successes 45.1489% of the time. The scientific
+point is that preregistration matters most when the result hurts. If the line moves now, none of the
+earlier clean wins mean as much.
+
+Use the milestone funnel to turn the miss into the next question without pretending it answers it.
+The failed policy reached 188 keys, opened 172 doors, and finished 169 quests. Completion after an
+opened door was 98.26%; the larger leak was between key and door, accompanied by many more
+ineffective interactions than the passing peers. End the chapter on two adjacent truths:
+
+- three lineages learned the development lesson;
+- only two lineages confirmed it on the larger collision-aware exam.
+
+The next act is not automatically U3. It is a prospectively frozen decision about how to strengthen
+U2 without training on the already opened confirmation cases.
+
 ### Ending options
 
 - **Full success:** one policy retrieves the relic on unseen final levels and retains every prior
@@ -223,6 +259,12 @@ until its selection rules and checkpoint hashes are committed.
 - the unopened U2 seed ledger and blank result panel before any protected case or policy run;
 - the three U2 baseline → first-exam → mastery trajectories and their exact action counts;
 - a 3/3 mastery card paired with the explicit label “development replication; confirmation next”;
+- the fail-closed U2 confirmation launch stops, each labeled “zero protected candidates opened”;
+- the U2 selector funnels: 200/200 Navigate, 200/215 U0, 200/204 U1, and 200/200 U2;
+- the three frozen U2 confirmation cards, ending with `169/200`, the untouched `170` gate, and
+  `capability_failed — U3 blocked`;
+- the failed lineage's 188 key → 172 door → 169 completion funnel beside the two passing peers;
+- a before/after digest card showing zero U2 confirmation policy or optimizer updates;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
 - the v0 audit, reward inversion, and stale-policy evaluation timeline;
@@ -237,4 +279,6 @@ not imply the final suite was untouched if its results influenced later design. 
 episode mastery. Do not present the v0 canary as a capability result. The credibility of the video is
 the experiment's most valuable output. Do not call planner/oracle qualification U2 learning, do not
 pool three children into one synthetic policy, and do not describe development-exam mastery as
-disjoint confirmation.
+disjoint confirmation. Do not describe 169/200 as a pass, “round it” to 85%, or imply that two
+passing policies satisfy an all-three preregistered rule. Equally, do not frame the one-case miss as
+a total learning collapse.

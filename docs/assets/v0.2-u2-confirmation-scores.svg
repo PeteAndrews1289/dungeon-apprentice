@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">U2 collision-aware confirmation scores</title>
+  <desc id="desc">Two of three policies pass every confirmation gate. Seed 20260745 scores 169 out of 200 on Separated Unlock, one below the 170 overall requirement, so the strict cohort fails and U3 remains blocked.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#171b34"/>
+    </linearGradient>
+    <linearGradient id="passBar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#6ee7b7"/>
+    </linearGradient>
+    <linearGradient id="missBar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fb7185"/>
+      <stop offset="1" stop-color="#fda4af"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.28"/>
+    </filter>
+    <style>
+      .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .title { font-size: 36px; font-weight: 760; letter-spacing: -0.8px; fill: #f8fafc; }
+      .subtitle { font-size: 17px; font-weight: 500; fill: #a9b4d0; }
+      .seed { font-size: 22px; font-weight: 750; fill: #f8fafc; }
+      .badge { font-size: 12px; font-weight: 800; letter-spacing: 1.2px; }
+      .label { font-size: 14px; font-weight: 650; fill: #cbd5e1; }
+      .score { font-size: 14px; font-weight: 750; fill: #f8fafc; }
+      .small { font-size: 12px; font-weight: 520; fill: #94a3b8; }
+      .footerBig { font-size: 22px; font-weight: 760; fill: #fecdd3; }
+      .footerSmall { font-size: 14px; font-weight: 540; fill: #cbd5e1; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="760" fill="url(#background)"/>
+  <circle cx="1150" cy="70" r="180" fill="#7c3aed" opacity="0.09"/>
+  <circle cx="100" cy="730" r="220" fill="#14b8a6" opacity="0.07"/>
+
+  <g class="sans">
+    <text class="title" x="54" y="62">U2 confirmation: two policies pass. The cohort does not.</text>
+    <text class="subtitle" x="54" y="94">Frozen all-three rule • 800 accepted cases per policy • no learning during the exam</text>
+
+    <g transform="translate(50 130)" filter="url(#shadow)">
+      <rect width="370" height="470" rx="22" fill="#151b31" stroke="#2a3556"/>
+      <text class="seed" x="28" y="45">Seed 20260737</text>
+      <rect x="267" y="22" width="75" height="30" rx="15" fill="#123c36" stroke="#2dd4bf"/>
+      <text class="badge" x="304.5" y="42" text-anchor="middle" fill="#6ee7b7">PASSED</text>
+
+      <text class="label" x="28" y="98">Navigate</text>
+      <text class="score" x="342" y="98" text-anchor="end">193 / 200</text>
+      <rect x="28" y="112" width="314" height="14" rx="7" fill="#283149"/>
+      <rect x="28" y="112" width="303" height="14" rx="7" fill="url(#passBar)"/>
+      <line x1="295" y1="108" x2="295" y2="130" stroke="#f8fafc" stroke-width="2" opacity="0.8"/>
+      <text class="small" x="28" y="147">Panels 97 / 96</text>
+
+      <text class="label" x="28" y="190">Visible U0</text>
+      <text class="score" x="342" y="190" text-anchor="end">200 / 200</text>
+      <rect x="28" y="204" width="314" height="14" rx="7" fill="#283149"/>
+      <rect x="28" y="204" width="314" height="14" rx="7" fill="url(#passBar)"/>
+      <line x1="295" y1="200" x2="295" y2="222" stroke="#f8fafc" stroke-width="2" opacity="0.8"/>
+      <text class="small" x="28" y="239">Panels 100 / 100</text>
+
+      <text class="label" x="28" y="282">Local U1</text>
+      <text class="score" x="342" y="282" text-anchor="end">200 / 200</text>
+      <rect x="28" y="296" width="314" height="14" rx="7" fill="#283149"/>
+      <rect x="28" y="296" width="314" height="14" rx="7" fill="url(#passBar)"/>
+      <line x1="295" y1="292" x2="295" y2="314" stroke="#f8fafc" stroke-width="2" opacity="0.8"/>
+      <text class="small" x="28" y="331">Panels 100 / 100</text>
+
+      <text class="label" x="28" y="374">Separated U2</text>
+      <text class="score" x="342" y="374" text-anchor="end">184 / 200</text>
+      <rect x="28" y="388" width="314" height="14" rx="7" fill="#283149"/>
+      <rect x="28" y="388" width="289" height="14" rx="7" fill="url(#passBar)"/>
+      <line x1="295" y1="384" x2="295" y2="406" stroke="#f8fafc" stroke-width="2" opacity="0.8"/>
+      <text class="small" x="28" y="423">Panels 87 / 97</text>
+      <text class="small" x="342" y="447" text-anchor="end">Overall gate 170</text>
+    </g>
+
+    <g transform="translate(455 130)" filter="url(#shadow)">
+      <rect width="370" height="470" rx="22" fill="#151b31" stroke="#2a3556"/>
+      <text class="seed" x="28" y="45">Seed 20260741</text>
+      <rect x="267" y="22" width="75" height="30" rx="15" fill="#123c36" stroke="#2dd4bf"/>
+      <text class="badge" x="304.5" y="42" text-anchor="middle" fill="#6ee7b7">PASSED</text>
+
+      <text class="label" x="28" y="98">Navigate</text>
+      <text class="score" x="342" y="98" text-anchor="end">188 / 200</text>
+      <rect x="28" y="112" width="314" height="14" rx="7" fill="#283149"/>
+      <rect x="28" y="112" width="295" height="14" rx="7" fill="url(#passBar)"/>
+      <line x1="295" y1="108" x2="295" y2="130" stroke="#f8fafc" stroke-width="2" opacity="0.8"/>
+      <text class="small" x="28" y="147">Panels 94 / 94</text>
+
+      <text class="label" x="28" y="190">Visible U0</text>
+      <text class="score" x="342" y="190" text-anchor="end">200 / 200</text>
+      <rect x="28" y="204" width="314" height="14" rx="7" fill="#283149"/>
+      <rect x="28" y="204" width="314" height="14" rx="7" fill="url(#passBar)"/>
+      <line x1="295" y1="200" x2="295" y2="222" stroke="#f8fafc" stroke-width="2" opacity="0.8"/>
+      <text class="small" x="28" y="239">Panels 100 / 100</text>
+
+      <text class="label" x="28" y="282">Local U1</text>
+      <text class="score" x="342" y="282" text-anchor="end">200 / 200</text>
+      <rect x="28" y="296" width="314" height="14" rx="7" fill="#283149"/>
+      <rect x="28" y="296" width="314" height="14" rx="7" fill="url(#passBar)"/>
+      <line x1="295" y1="292" x2="295" y2="314" stroke="#f8fafc" stroke-width="2" opacity="0.8"/>
+      <text class="small" x="28" y="331">Panels 100 / 100</text>
+
+      <text class="label" x="28" y="374">Separated U2</text>
+      <text class="score" x="342" y="374" text-anchor="end">188 / 200</text>
+      <rect x="28" y="388" width="314" height="14" rx="7" fill="#283149"/>
+      <rect x="28" y="388" width="295" height="14" rx="7" fill="url(#passBar)"/>
+      <line x1="295" y1="384" x2="295" y2="406" stroke="#f8fafc" stroke-width="2" opacity="0.8"/>
+      <text class="small" x="28" y="423">Panels 94 / 94</text>
+      <text class="small" x="342" y="447" text-anchor="end">Overall gate 170</text>
+    </g>
+
+    <g transform="translate(860 130)" filter="url(#shadow)">
+      <rect width="370" height="470" rx="22" fill="#1b1930" stroke="#71364a"/>
+      <text class="seed" x="28" y="45">Seed 20260745</text>
+      <rect x="251" y="22" width="91" height="30" rx="15" fill="#4a202d" stroke="#fb7185"/>
+      <text class="badge" x="296.5" y="42" text-anchor="middle" fill="#fda4af">1 SHORT</text>
+
+      <text class="label" x="28" y="98">Navigate</text>
+      <text class="score" x="342" y="98" text-anchor="end">190 / 200</text>
+      <rect x="28" y="112" width="314" height="14" rx="7" fill="#283149"/>
+      <rect x="28" y="112" width="298" height="14" rx="7" fill="url(#passBar)"/>
+      <line x1="295" y1="108" x2="295" y2="130" stroke="#f8fafc" stroke-width="2" opacity="0.8"/>
+      <text class="small" x="28" y="147">Panels 97 / 93</text>
+
+      <text class="label" x="28" y="190">Visible U0</text>
+      <text class="score" x="342" y="190" text-anchor="end">188 / 200</text>
+      <rect x="28" y="204" width="314" height="14" rx="7" fill="#283149"/>
+      <rect x="28" y="204" width="295" height="14" rx="7" fill="url(#passBar)"/>
+      <line x1="295" y1="200" x2="295" y2="222" stroke="#f8fafc" stroke-width="2" opacity="0.8"/>
+      <text class="small" x="28" y="239">Panels 94 / 94</text>
+
+      <text class="label" x="28" y="282">Local U1</text>
+      <text class="score" x="342" y="282" text-anchor="end">196 / 200</text>
+      <rect x="28" y="296" width="314" height="14" rx="7" fill="#283149"/>
+      <rect x="28" y="296" width="308" height="14" rx="7" fill="url(#passBar)"/>
+      <line x1="295" y1="292" x2="295" y2="314" stroke="#f8fafc" stroke-width="2" opacity="0.8"/>
+      <text class="small" x="28" y="331">Panels 99 / 97</text>
+
+      <text class="label" x="28" y="374">Separated U2</text>
+      <text class="score" x="342" y="374" text-anchor="end" fill="#fda4af">169 / 200</text>
+      <rect x="28" y="388" width="314" height="14" rx="7" fill="#283149"/>
+      <rect x="28" y="388" width="265" height="14" rx="7" fill="url(#missBar)"/>
+      <line x1="295" y1="384" x2="295" y2="406" stroke="#f8fafc" stroke-width="2" opacity="0.95"/>
+      <text class="small" x="28" y="423">Panels 84 / 85 both pass</text>
+      <text class="small" x="342" y="447" text-anchor="end" fill="#fda4af">Gate 170</text>
+    </g>
+
+    <rect x="50" y="630" width="1180" height="88" rx="18" fill="#321b2b" stroke="#7f3950"/>
+    <text class="footerBig" x="76" y="666">Strict verdict: capability_failed • U3 remains blocked</text>
+    <text class="footerSmall" x="76" y="696">Two strong confirmations are promising evidence. The preregistered all-three rule still makes one missing completion decisive.</text>
+  </g>
+</svg>

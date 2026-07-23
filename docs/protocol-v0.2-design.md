@@ -3,9 +3,11 @@
 > Status: superseded in part by separately frozen successor protocols. U0 and U1 were replicated
 > and independently confirmed; U2 Separated Unlock subsequently produced three positive cumulative
 > development lineages under its dedicated
-> [U2 protocol](protocol-v0.2-u2-separated-unlock.md). U2 disjoint confirmation, U3, and the
-> complete fresh-start protocol remain separate gates. This document preserves the original
-> staircase proposal rather than retroactively rewriting its rules.
+> [U2 protocol](protocol-v0.2-u2-separated-unlock.md). Its one-shot disjoint confirmation passed
+> two of three policies, but the third scored 169/200 against the frozen 170/200 U2 gate. The
+> strict verdict is `capability_failed`, so U3 and the complete fresh-start protocol remain closed
+> separate gates. This document preserves the original staircase proposal rather than
+> retroactively rewriting its rules.
 
 ## Experimental question
 

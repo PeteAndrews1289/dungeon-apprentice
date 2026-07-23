@@ -154,7 +154,7 @@ This supports beginning the separately frozen
 [U2 Separated Unlock protocol](docs/protocol-v0.2-u2-separated-unlock.md), not a claim that full
 Unlock, Retrieve, or the whole game has already been solved.
 
-### U2 Separated Unlock — replicated development result; confirmation pending
+### U2 Separated Unlock — replicated development result; strict confirmation not passed
 
 The disposable engineering partition has now passed a complete 1,000-map generator/oracle sweep.
 See the [U2 engineering sandbox report](docs/results/v0.2-u2-engineering-sandbox.md). This verifies
@@ -183,7 +183,26 @@ exam remained above its gate.
 The immutable
 [U2 replication result](docs/results/v0.2-u2-separated-unlock-replication.md) records the full
 trajectories, recovery episodes, allocation evidence, checkpoint digests, and narrow claim. This is
-replicated learning evidence on frozen development suites, not yet disjoint confirmation.
+replicated learning evidence on frozen development suites.
+
+The separately preregistered collision-aware confirmation has now run once. Two frozen policies
+passed every Navigate, U0, U1, and U2 gate. The third retained all three earlier lessons and passed
+both U2 panels, but completed 169/200 U2 cases against the frozen 170/200 overall requirement:
+
+| U2 child seed | Navigate | Visible U0 | Local U1 | Separated U2 | Strict result |
+| ---: | ---: | ---: | ---: | ---: | --- |
+| `20260737` | 193/200 | 200/200 | 200/200 | 184/200 | Passed |
+| `20260741` | 188/200 | 200/200 | 200/200 | 188/200 | Passed |
+| `20260745` | 190/200 | 188/200 | 196/200 | **169/200** | Failed U2 overall by 1 |
+
+![Two U2 policies pass the entire confirmation while a one-case miss blocks the strict cohort](docs/assets/v0.2-u2-confirmation-scores.svg)
+
+All 24 panel gates passed, but only 11 of 12 lesson-level overall gates passed. Because the
+preregistered rule required all three policies to pass independently, the immutable verdict is
+**`capability_failed`**, not confirmed. The
+[U2 confirmation result](docs/results/v0.2-u2-confirmation.md) preserves the full candidate
+selection, rejection accounting, no-update evidence, launch defects, hashes, diagnostics, and
+limits. U3 remains blocked.
 
 Separated Unlock remains a small 9 × 9 world, but the locked door is now the only opening through a
 complete divider. The agent and matching key begin on the approach side, the goal is on the far
@@ -211,25 +230,27 @@ The evidence ladder is intentionally split:
 | --- | --- | --- |
 | Engineering acceptance and one-shot 2,000-layout oracle qualification | The generator, oracle, resume path, storage guards, and measurement machinery obey the frozen contract | That a policy learned U2 |
 | Three sequential U2 children | Whether each confirmed U1 lineage learns and retains the four declared skills within its own budget | Generalization beyond the development validation suites |
-| Later, separately preregistered no-update confirmation | Whether frozen selected U2 checkpoints pass new collision-aware cases without learning during the test | Retrieve, unrestricted puzzle solving, or the complete game |
+| Completed, separately preregistered no-update confirmation | Two checkpoints passed; the third retained prior skills but missed U2 overall by one, so the strict cohort did not confirm | U3, Retrieve, unrestricted puzzle solving, or the complete game |
 
 Training layouts remain in `0`–`999_999`; engineering work has its own `5_200_000` sandbox; the
 sealed one-shot qualification is `5_210_000`–`5_211_999`; the four validation suites occupy their
-declared 10–11.2-million blocks; future confirmation streams begin at `15_200_000`; and the
-20-million final allocation remains untouched. The committed implementation freeze correctly
+declared 10–11.2-million blocks; the now-consumed U2 confirmation streams occupy
+`15_200_000`–`15_239_999`; and the 20-million final allocation remains untouched. The committed
+implementation freeze correctly
 recorded that no protected case had yet opened. The subsequently anchored external qualification
-and cohort ledgers are now the authority for the completed run; the future-confirmation and final
-partitions remain unopened at this closeout boundary.
+and cohort ledgers are the authority for the completed run. The 15.2-million confirmation streams
+are now opened, immutable evidence; the final partition remains untouched.
 
-The cohort runs one CPU trainer at a time on the audited 8 GB M1 and shares one
-read-only dashboard at `http://127.0.0.1:8785/`. The completed sequential cohort took 3 hours,
-41 minutes, and 26 seconds, used 1,933,312 of its possible 3,145,728 child actions, and retained
-about 826 MiB of scientific evidence. The separately preregistered
-[U2 confirmation](docs/v0.2-u2-confirmation-plan.md) is the next gate. It must evaluate the three
-frozen first-mastery archives on prospectively selected, collision-aware cases with no policy
-update before U3 Full Unlock design can activate. The selector excludes validation, qualification,
-prior-confirmation, and completed logged training histories; the plan also records the bounded
-12-layout terminal logging gap that the U3 instrument must eliminate.
+The cohort ran one CPU trainer at a time on the audited 8 GB M1 and was observed through one
+read-only dashboard. The completed sequential cohort took 3 hours, 41 minutes, and 26 seconds,
+used 1,933,312 of its possible 3,145,728 child actions, and retained about 826 MiB of scientific
+evidence. The separately preregistered
+[U2 confirmation](docs/v0.2-u2-confirmation-plan.md) evaluated the three frozen first-mastery
+archives on prospectively selected, collision-aware cases with no policy update. Two passed; child
+`20260745` missed the frozen U2 overall gate by one. The selector excluded validation,
+qualification, prior-confirmation, and completed logged training histories while retaining the
+declared bounded 12-layout terminal logging limitation. The strict failure means U3 Full Unlock
+design cannot activate from this evidence.
 
 ## Evidence standard
 
@@ -254,5 +275,6 @@ See [the experiment contract](docs/experiment-contract.md),
 [architecture](docs/architecture.md), [audit and remediation record](docs/audit.md), and
 [roadmap](docs/roadmap.md). The completed v0.1 capability result is preserved in the
 [Navigate canary report](docs/results/v0.1-navigate-canaries.md), and the next proposed protocol is
-specified in [the v0.2 design](docs/protocol-v0.2-design.md). The next controlled capability step is
-the [U2 Separated Unlock child](docs/protocol-v0.2-u2-separated-unlock.md).
+specified in [the v0.2 design](docs/protocol-v0.2-design.md). The current controlled decision point
+is a prospectively frozen response to the failed U2 confirmation; U3 remains blocked until U2
+satisfies a new valid advancement gate.

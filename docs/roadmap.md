@@ -21,7 +21,9 @@
 - [x] Run the U1 lead and both preregistered replications to Local Unlock mastery
 - [x] Confirm all three U1 mastery checkpoints with the collision-safe disjoint instrument
 - [x] Implement, qualify, and run all three U2 Separated Unlock children to mastery
-- [ ] Confirm all three U2 mastery checkpoints on a preregistered collision-aware instrument
+- [x] Run the preregistered collision-aware U2 confirmation and preserve its strict failed verdict
+- [ ] Confirm U2 across all three lineages; attempt 1 passed two policies and missed one U2 gate by 1
+- [ ] Freeze a non-post-hoc U2 successor decision before any new training or protected evaluation
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
 - [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
 
@@ -86,11 +88,21 @@ Navigate, Visible Unlock, and Local Unlock score remained above its frozen gate.
 [immutable U2 result](results/v0.2-u2-separated-unlock-replication.md) preserves the evidence.
 
 Because the 80-case development suites influenced curriculum recovery and stopping, the next gate
-is not U3 training. The three first-mastery archives must first pass the separately committed
-[collision-aware U2 confirmation](v0.2-u2-confirmation-plan.md) with no updates. It excludes every
+was not U3 training. The three first-mastery archives first faced the separately committed
+[collision-aware U2 confirmation](v0.2-u2-confirmation-plan.md) with no updates. It excluded every
 persisted reference and completed logged training layout, while explicitly retaining the bounded
-12-layout terminal logging limitation discovered during closeout. A strict all-three pass
-authorizes U3 Full Unlock design; it does not authorize Retrieve or the final partition.
+12-layout terminal logging limitation discovered during closeout.
+
+That confirmation is complete, and its strict all-three gate did **not** pass. Children `20260737`
+and `20260741` passed all four lessons. Child `20260745` passed Navigate, U0, U1, and both U2
+panels, but its U2 total was 169/200 against a frozen 170/200 requirement. All 24 panel gates passed;
+11 of 12 overall lesson gates passed. The immutable verdict remains `capability_failed`, and the
+[confirmation result](results/v0.2-u2-confirmation.md) records all selection, collision,
+no-update, integrity, and diagnostic evidence.
+
+U3 is therefore blocked. The next scientific decision must be frozen before another training or
+protected-evaluation attempt. The opened 15.2-million confirmation cases cannot become a fresh test,
+and the one-case margin cannot be rounded, retuned, or retried away after observation.
 
 ## Scalability gates
 
