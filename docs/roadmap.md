@@ -20,7 +20,8 @@
 - [x] Implement, qualify, test, and preregister the U1 Local Unlock warm-start child
 - [x] Run the U1 lead and both preregistered replications to Local Unlock mastery
 - [x] Confirm all three U1 mastery checkpoints with the collision-safe disjoint instrument
-- [ ] Implement, qualify, and run the U2 Separated Unlock child
+- [x] Implement, qualify, and run all three U2 Separated Unlock children to mastery
+- [ ] Confirm all three U2 mastery checkpoints on a preregistered collision-aware instrument
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
 - [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
 
@@ -77,6 +78,19 @@ That positive result closes U1 and opens the next bounded question:
 [U2 Separated Unlock](protocol-v0.2-u2-separated-unlock.md). U2 must make key-to-door search less
 local while preserving cumulative Navigate, U0, and U1 retention; it does not skip directly to
 Retrieve or unrestricted game complexity.
+
+The U2 cohort is now a replicated positive development result. All three independently inherited
+children mastered Separated Unlock after 688,128, 557,056, and 688,128 new actions. Their U2 scores
+rose from 32/80, 33/80, and 24/80 at inheritance to 75/80, 74/80, and 72/80, while every terminal
+Navigate, Visible Unlock, and Local Unlock score remained above its frozen gate. The
+[immutable U2 result](results/v0.2-u2-separated-unlock-replication.md) preserves the evidence.
+
+Because the 80-case development suites influenced curriculum recovery and stopping, the next gate
+is not U3 training. The three first-mastery archives must first pass the separately committed
+[collision-aware U2 confirmation](v0.2-u2-confirmation-plan.md) with no updates. It excludes every
+persisted reference and completed logged training layout, while explicitly retaining the bounded
+12-layout terminal logging limitation discovered during closeout. A strict all-three pass
+authorizes U3 Full Unlock design; it does not authorize Retrieve or the final partition.
 
 ## Scalability gates
 

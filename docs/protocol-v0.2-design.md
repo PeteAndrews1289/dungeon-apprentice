@@ -1,9 +1,11 @@
 # Proposed protocol v0.2: the Unlock staircase
 
-> Status: partially implemented. U0 Visible Unlock has been replicated and independently confirmed.
-> U1 now has a separately versioned, warm-start development child with stricter cumulative-retention
-> gates; U2–U3 and the complete fresh-start protocol remain proposed. See
-> [the U1 child specification](protocol-v0.2-u1-development.md).
+> Status: superseded in part by separately frozen successor protocols. U0 and U1 were replicated
+> and independently confirmed; U2 Separated Unlock subsequently produced three positive cumulative
+> development lineages under its dedicated
+> [U2 protocol](protocol-v0.2-u2-separated-unlock.md). U2 disjoint confirmation, U3, and the
+> complete fresh-start protocol remain separate gates. This document preserves the original
+> staircase proposal rather than retroactively rewriting its rules.
 
 ## Experimental question
 

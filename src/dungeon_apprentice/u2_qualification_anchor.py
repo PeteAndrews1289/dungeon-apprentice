@@ -380,6 +380,7 @@ def _parse_anchor_payload(raw_message: str) -> Mapping[str, Any]:
 def verify_external_anchor(
     repository: Path,
     *,
+    expected_source_commit: str | None = None,
     runner: Runner = subprocess.run,
 ) -> U2QualificationAnchor:
     """Verify the fixed annotated tag against its remote object and strict payload."""
@@ -390,6 +391,15 @@ def verify_external_anchor(
         ["rev-parse", "--verify", "HEAD^{commit}"],
         runner=runner,
     )
+    anchor_commit = (
+        current_commit
+        if expected_source_commit is None
+        else str(expected_source_commit)
+    )
+    if _GIT_OBJECT.fullmatch(anchor_commit) is None:
+        raise U2QualificationAnchorError(
+            "expected qualification source commit is invalid"
+        )
     if _git(repo, ["cat-file", "-t", f"refs/tags/{ANCHOR_TAG}"], runner=runner) != "tag":
         raise U2QualificationAnchorError(
             "qualification anchor must be an annotated Git tag"
@@ -406,9 +416,14 @@ def verify_external_anchor(
         ["rev-list", "-n", "1", f"refs/tags/{ANCHOR_TAG}"],
         runner=runner,
     )
-    if peeled_commit != current_commit:
+    if peeled_commit != anchor_commit:
+        description = (
+            "active source commit"
+            if expected_source_commit is None
+            else "expected source commit"
+        )
         raise U2QualificationAnchorError(
-            "qualification anchor does not point to the active source commit"
+            f"qualification anchor does not point to the {description}"
         )
     remote_url = _git(
         repo,
@@ -455,7 +470,7 @@ def verify_external_anchor(
         or payload["tag"] != ANCHOR_TAG
         or payload["remote"] != ANCHOR_REMOTE
         or payload["remote_url"] != EXPECTED_ORIGIN_URL
-        or payload["source_commit"] != current_commit
+        or payload["source_commit"] != anchor_commit
         or payload["report"] != str(CANONICAL_REPORT)
     ):
         raise U2QualificationAnchorError(

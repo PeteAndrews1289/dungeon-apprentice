@@ -494,3 +494,47 @@ qualification attempt, external tag, cohort manifest, segment sidecars, and stat
 entry remains a frozen question and engineering decision record—not a capability result. The
 check totals and complete audit disposition are preserved in the
 [U2 launch-readiness record](results/v0.2-u2-launch-readiness.md).
+
+### July 23, 2026 — U2 Separated Unlock replicated 3/3
+
+The protected cohort ran once from frozen source
+`b7b5d361b0aa2eeabedc435fa0d4b9e1ffdd09db`, bound to annotated qualification tag
+`u2-preflight-v0.2-u2-20260723`. The sealed generator instrument solved all 2,000 declared cases
+before any child update. Three confirmed U1 first-mastery archives then became three independent U2
+children; no policy, trajectory, replay, recurrent state, or optimizer update crossed lineages.
+
+All three children reached the complete two-consecutive-exam mastery rule:
+
+| Child seed | U2 baseline | First 32,768 | Terminal N / U0 / U1 / U2 | Child actions |
+| ---: | ---: | ---: | ---: | ---: |
+| `20260737` | 32/80 | 40/80 | 78 / 80 / 80 / 75 | 688,128 |
+| `20260741` | 33/80 | 44/80 | 74 / 80 / 79 / 74 | 557,056 |
+| `20260745` | 24/80 | 29/80 | 79 / 76 / 77 / 72 | 688,128 |
+
+The average U2 score rose from 37.1% at inheritance to 47.1% after one practice window and 92.1% at
+mastery. Child `20260737` recovered Navigate once. Child `20260741` recovered Navigate and then U1.
+Child `20260745` entered no prerequisite recovery. Earlier promising U2 passes that did not remain
+adjacent were correctly discarded; each selected first-pass artifact is the immediately preceding
+32,768-action boundary in the final mastery pair.
+
+The sequential cohort finished in 13,286 seconds—3 hours, 41 minutes, and 26 seconds—using
+1,933,312 of its possible 3,145,728 actions. Independent terminal verification recomputed 66 hashes
+across 33 retained checkpoint/integrity pairs with no mismatch, authenticated the three U1 parents
+and U1 confirmation, verified every promotion chain and allocation-valid boundary, found no orphaned
+trainer, and measured 866,332,331 bytes of scientific evidence under the 6 GiB cohort cap.
+
+This is a positive 3/3 development replication under the frozen U2 rule. It supports the narrow
+claim that three cumulative pixel-only policies extended the learned key → door → exit ritual into
+a longer, partially observed search while retaining Navigate, Visible Unlock, and Local Unlock. It
+does not yet support disjoint U2 generalization. The four reserved 15.2-million candidate streams
+remain closed until the separately committed
+[U2 confirmation plan](v0.2-u2-confirmation-plan.md) freezes selection, collision exclusions,
+panels, gates, checkpoint identities, and no-update verification.
+
+Closeout found one bounded instrumentation gap before confirmation was opened. Each four-worker
+trainer stopped on an optimizer boundary while four episodes were still active, so 12 layouts
+contributed final transitions without producing completed-episode records. The frozen histories
+therefore authenticate every completed logged episode but do not directly persist those 12 active
+layouts. The prospective confirmation claim was narrowed accordingly rather than hiding the gap.
+U3 must persist an episode-start identity and each worker's active seed, lesson, layout, elapsed
+steps, RNG state, and scheduler reservation at every checkpoint.

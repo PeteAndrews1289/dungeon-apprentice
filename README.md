@@ -20,6 +20,9 @@ Every layout is generated from a seed and mechanically checked for solvability. 
 evaluation use disjoint seed partitions. A policy advances only through frozen no-update exams on
 unseen levels, and every promotion retests earlier tiers to detect forgetting.
 
+The names `U0`–`U3` refer to progressively harder **Unlock lessons** inside Tier 1. In particular,
+`U2 Separated Unlock` is not Tier 2 Retrieve. Retrieve remains a later relic-and-return capability.
+
 ## What makes this our game
 
 MiniGrid supplies fast grid simulation and rendering. This repository owns the dungeon generator,
@@ -151,7 +154,7 @@ This supports beginning the separately frozen
 [U2 Separated Unlock protocol](docs/protocol-v0.2-u2-separated-unlock.md), not a claim that full
 Unlock, Retrieve, or the whole game has already been solved.
 
-### U2 Separated Unlock — frozen implementation, protected run pending at source freeze
+### U2 Separated Unlock — replicated development result; confirmation pending
 
 The disposable engineering partition has now passed a complete 1,000-map generator/oracle sweep.
 See the [U2 engineering sandbox report](docs/results/v0.2-u2-engineering-sandbox.md). This verifies
@@ -163,6 +166,24 @@ U2 does not merge the three confirmed policies or restart from random weights. E
 U1 archive becomes the parent of its own child, including its optimizer state. The three children
 then face the same new question independently and sequentially: can a policy that learned a local
 key → door → exit ritual extend it into a longer search while retaining everything beneath it?
+
+All three children answered that development question positively. Their frozen Separated Unlock
+scores rose from 40.0%, 41.25%, and 30.0% at inheritance to 93.75%, 92.5%, and 90.0% at mastery.
+They stopped after 688,128, 557,056, and 688,128 new actions while every final Navigate, U0, and U1
+exam remained above its gate.
+
+| U2 child seed | Baseline U2 | First 32,768-action exam | Terminal U2 | New actions |
+| ---: | ---: | ---: | ---: | ---: |
+| `20260737` | 32/80 | 40/80 | 75/80 | 688,128 |
+| `20260741` | 33/80 | 44/80 | 74/80 | 557,056 |
+| `20260745` | 24/80 | 29/80 | 72/80 | 688,128 |
+
+![Three cumulative policies independently master Separated Unlock](docs/assets/v0.2-u2-separated-unlock-replication.svg)
+
+The immutable
+[U2 replication result](docs/results/v0.2-u2-separated-unlock-replication.md) records the full
+trajectories, recovery episodes, allocation evidence, checkpoint digests, and narrow claim. This is
+replicated learning evidence on frozen development suites, not yet disjoint confirmation.
 
 Separated Unlock remains a small 9 × 9 world, but the locked door is now the only opening through a
 complete divider. The agent and matching key begin on the approach side, the goal is on the far
@@ -195,18 +216,20 @@ The evidence ladder is intentionally split:
 Training layouts remain in `0`–`999_999`; engineering work has its own `5_200_000` sandbox; the
 sealed one-shot qualification is `5_210_000`–`5_211_999`; the four validation suites occupy their
 declared 10–11.2-million blocks; future confirmation streams begin at `15_200_000`; and the
-20-million final allocation remains untouched. At the committed implementation freeze, no protected
-U2 qualification, U2 validation, future-confirmation, or final case had been opened, and no U2
-policy had trained. Once launched, the canonical external ledgers—not a rewritten README—become the
-authority for current runtime state.
+20-million final allocation remains untouched. The committed implementation freeze correctly
+recorded that no protected case had yet opened. The subsequently anchored external qualification
+and cohort ledgers are now the authority for the completed run; the future-confirmation and final
+partitions remain unopened at this closeout boundary.
 
 The cohort runs one CPU trainer at a time on the audited 8 GB M1 and shares one
-read-only dashboard at `http://127.0.0.1:8785/`. If all children consume their full 1,048,576-action
-ceilings, the measured U1 throughput suggests roughly 8–10 hours for the sequential cohort. The
-scientific directories are capped at 2 GiB per lineage and 6 GiB total; optional narrative media
-has a separate 10 GiB cap, keeping the maximum planned addition to 16 GiB. The exact operational
-sequence and interruption recovery command are documented in the
-[runbook](docs/runbook.md); direct lower-level trainer invocations are not part of the protocol.
+read-only dashboard at `http://127.0.0.1:8785/`. The completed sequential cohort took 3 hours,
+41 minutes, and 26 seconds, used 1,933,312 of its possible 3,145,728 child actions, and retained
+about 826 MiB of scientific evidence. The separately preregistered
+[U2 confirmation](docs/v0.2-u2-confirmation-plan.md) is the next gate. It must evaluate the three
+frozen first-mastery archives on prospectively selected, collision-aware cases with no policy
+update before U3 Full Unlock design can activate. The selector excludes validation, qualification,
+prior-confirmation, and completed logged training histories; the plan also records the bounded
+12-layout terminal logging gap that the U3 instrument must eliminate.
 
 ## Evidence standard
 

@@ -173,6 +173,17 @@ Then let the immutable qualification and cohort ledgers reveal what happened aft
 keeps the suspense without rewriting preregistration in success tense. If the cohort fails, preserve
 that ending and explain whether it was a learning result or an engineering stop.
 
+The envelope opened cleanly. The three inherited policies began U2 at 40.0%, 41.25%, and 30.0%.
+After 557,056–688,128 new actions, all three reached the complete two-exam mastery rule and finished
+at 93.75%, 92.5%, and 90.0% while retaining the three earlier skills. Animate the average U2 line as
+three fixed chapter cards—37.1% at inheritance, 47.1% after the first 32,768 actions, and 92.1% at
+mastery—rather than pooling their episodes into one imaginary policy.
+
+The dramatic qualifier belongs immediately after the rise: these are frozen development exams that
+steered recovery and stopping. The next scene should be a second unopened envelope: the separately
+preregistered collision-aware confirmation. No new case may be shown and no result may be implied
+until its selection rules and checkpoint hashes are committed.
+
 ### Ending options
 
 - **Full success:** one policy retrieves the relic on unseen final levels and retains every prior
@@ -210,6 +221,8 @@ that ending and explain whether it was a learning result or an engineering stop.
 - four simultaneous lesson bars with panel A/B scores and a visible recovery-practice shift;
 - a clear engineering-proof → learning-evidence → confirmation-evidence title sequence;
 - the unopened U2 seed ledger and blank result panel before any protected case or policy run;
+- the three U2 baseline → first-exam → mastery trajectories and their exact action counts;
+- a 3/3 mastery card paired with the explicit label “development replication; confirmation next”;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
 - the v0 audit, reward inversion, and stale-policy evaluation timeline;

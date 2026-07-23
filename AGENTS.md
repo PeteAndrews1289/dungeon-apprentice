@@ -2,11 +2,12 @@
 
 ## Project contract
 
-- The active experimental protocol is `dungeon-apprentice-v0.2-u2`, defined by
-  `docs/protocol-v0.2-u2-separated-unlock.md`. U0 and U1 are frozen predecessor evidence; do not
-  modify their environments, reports, checkpoints, launchers, or declared results. Results from the
-  original v0 canary remain engineering evidence only: its intrinsic reward and evaluation timing
-  invalidate it as capability evidence.
+- The active experimental gate is the one-shot post-training confirmation of
+  `dungeon-apprentice-v0.2-u2`, defined by `docs/v0.2-u2-confirmation-plan.md`. The completed U2
+  cohort and U0/U1 predecessors are frozen evidence; do not modify their environments, reports,
+  checkpoints, launchers, or declared results. U3 work may begin only after the strict three-policy
+  U2 confirmation verdict is `confirmed`. Results from the original v0 canary remain engineering
+  evidence only: its intrinsic reward and evaluation timing invalidate it as capability evidence.
 - The learning agent receives pixels and its own recurrent state only. Do not add coordinates,
   map IDs, shortest paths, object labels, oracle actions, or mission text to policy observations.
 - Trainer-visible `info` fields may grade outcomes and create reports, but may never select or
@@ -14,6 +15,9 @@
 - The scripted oracle proves generated levels are solvable. Its actions are never training data.
 - Validation seeds begin at `10_000_000`; final-test seeds begin at `20_000_000`. Training code
   must not use either partition.
+- U2 confirmation candidates occupy only the four frozen `15_200_000`–`15_239_999` streams. They
+  may be opened once, by the clean committed confirmation evaluator and its authenticated remote
+  preregistration tag. Never inspect, preview, retry, replace, or reuse them outside that evaluator.
 - Curriculum promotions come only from frozen deterministic evaluation. Do not promote from
   rollout reward, training loss, or a hand-observed dashboard frame.
 - Training-only intrinsic reward must remain bounded below the task-success signal, pay nothing for

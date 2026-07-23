@@ -235,18 +235,21 @@ _LESSON_SEED_ROLES: Mapping[U2LessonId, frozenset[U2SeedRole]] = MappingProxyTyp
             {
                 U2SeedRole.TRAINING,
                 U2SeedRole.NAVIGATE_VALIDATION,
+                U2SeedRole.FUTURE_NAVIGATE_CONFIRMATION,
             }
         ),
         U2LessonId.VISIBLE_UNLOCK: frozenset(
             {
                 U2SeedRole.TRAINING,
                 U2SeedRole.U0_VALIDATION,
+                U2SeedRole.FUTURE_U0_CONFIRMATION,
             }
         ),
         U2LessonId.LOCAL_UNLOCK: frozenset(
             {
                 U2SeedRole.TRAINING,
                 U2SeedRole.U1_VALIDATION,
+                U2SeedRole.FUTURE_U1_CONFIRMATION,
             }
         ),
         U2LessonId.SEPARATED_UNLOCK: frozenset(
@@ -255,6 +258,7 @@ _LESSON_SEED_ROLES: Mapping[U2LessonId, frozenset[U2SeedRole]] = MappingProxyTyp
                 U2SeedRole.ENGINEERING,
                 U2SeedRole.SEALED_QUALIFICATION,
                 U2SeedRole.U2_VALIDATION,
+                U2SeedRole.FUTURE_U2_CONFIRMATION,
             }
         ),
     }

@@ -40,6 +40,7 @@ class U2AccessPhase(StrEnum):
     ENGINEERING = "engineering"
     SEALED_PREFLIGHT = "sealed_preflight"
     QUALIFIED_TRAINING = "qualified_training"
+    POST_TRAINING_CONFIRMATION = "post_training_confirmation"
 
 
 @dataclass(frozen=True)
@@ -82,6 +83,7 @@ PARTITION_BY_ROLE = MappingProxyType({partition.role: partition for partition in
 _CAPABILITY_MARKER = object()
 _SEALED_CLAIM_MARKER = object()
 _QUALIFICATION_BINDING_MARKER = object()
+_CONFIRMATION_CLAIM_MARKER = object()
 _SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 _COMMIT_PATTERN = re.compile(r"^[0-9a-f]{7,64}$")
 _IDENTITY_PATTERN = re.compile(r"^[a-z0-9][a-z0-9._:-]{7,127}$")
@@ -123,6 +125,28 @@ class _VerifiedQualificationBinding:
 
 
 @dataclass(frozen=True)
+class _ConfirmationLaunchClaim:
+    """Opaque proof that one preregistered confirmation attempt was persisted."""
+
+    source_commit: str
+    protocol: str
+    plan_sha256: str
+    checkpoint_set_sha256: str
+    anchor_tag: str
+    anchor_tag_object: str
+    anchor_remote_url: str
+    attempt_id: str
+    claim_id: str
+    claim_sha256: str
+    launcher_token_sha256: str
+    _marker: object = field(repr=False, compare=False)
+
+    def __post_init__(self) -> None:
+        if self._marker is not _CONFIRMATION_CLAIM_MARKER:
+            raise U2SeedAccessError("confirmation claims are evaluator-issued only")
+
+
+@dataclass(frozen=True)
 class U2SeedAccess:
     """A process-local capability; it is deliberately not reconstructible from JSON."""
 
@@ -134,6 +158,15 @@ class U2SeedAccess:
     qualification_attempt_sha256: str | None = None
     qualification_claim_id: str | None = None
     qualification_claim_sha256: str | None = None
+    confirmation_protocol: str | None = None
+    confirmation_plan_sha256: str | None = None
+    confirmation_checkpoint_set_sha256: str | None = None
+    confirmation_anchor_tag: str | None = None
+    confirmation_anchor_tag_object: str | None = None
+    confirmation_anchor_remote_url: str | None = None
+    confirmation_attempt_id: str | None = None
+    confirmation_claim_id: str | None = None
+    confirmation_claim_sha256: str | None = None
     _marker: object = field(repr=False, compare=False, default=None)
 
     def __post_init__(self) -> None:
@@ -150,6 +183,17 @@ class U2SeedAccess:
             "qualification_attempt_sha256": self.qualification_attempt_sha256,
             "qualification_claim_id": self.qualification_claim_id,
             "qualification_claim_sha256": self.qualification_claim_sha256,
+            "confirmation_protocol": self.confirmation_protocol,
+            "confirmation_plan_sha256": self.confirmation_plan_sha256,
+            "confirmation_checkpoint_set_sha256": (
+                self.confirmation_checkpoint_set_sha256
+            ),
+            "confirmation_anchor_tag": self.confirmation_anchor_tag,
+            "confirmation_anchor_tag_object": self.confirmation_anchor_tag_object,
+            "confirmation_anchor_remote_url": self.confirmation_anchor_remote_url,
+            "confirmation_attempt_id": self.confirmation_attempt_id,
+            "confirmation_claim_id": self.confirmation_claim_id,
+            "confirmation_claim_sha256": self.confirmation_claim_sha256,
         }
 
 
@@ -301,6 +345,93 @@ def qualified_training_seed_access(
     )
 
 
+def _new_confirmation_launch_claim(
+    *,
+    source_commit: str,
+    clean_source: bool,
+    protocol: str,
+    plan_sha256: str,
+    checkpoint_set_sha256: str,
+    anchor_tag: str,
+    anchor_tag_object: str,
+    anchor_remote_url: str,
+    attempt_id: str,
+    claim_id: str,
+    claim_sha256: str,
+    launcher_token_sha256: str,
+) -> _ConfirmationLaunchClaim:
+    """Bind confirmation access to a clean source, plan, policies, and attempt."""
+
+    if not clean_source:
+        raise U2SeedAccessError("post-training confirmation requires clean source")
+    normalized_protocol = protocol.strip().lower()
+    if normalized_protocol != "dungeon-apprentice-v0.2-u2-confirmation":
+        raise U2SeedAccessError("the confirmation protocol identity is not frozen U2")
+    if anchor_tag != "u2-confirmation-v0.2-u2-20260723":
+        raise U2SeedAccessError("the confirmation anchor tag identity is not frozen")
+    if not re.fullmatch(r"[0-9a-f]{40,64}", anchor_tag_object):
+        raise U2SeedAccessError("the confirmation anchor tag object is invalid")
+    if (
+        anchor_remote_url
+        != "https://github.com/PeteAndrews1289/dungeon-apprentice.git"
+    ):
+        raise U2SeedAccessError("the confirmation anchor remote is not frozen origin")
+    return _ConfirmationLaunchClaim(
+        source_commit=_valid_commit(source_commit),
+        protocol=normalized_protocol,
+        plan_sha256=_valid_sha256(plan_sha256),
+        checkpoint_set_sha256=_valid_sha256(checkpoint_set_sha256),
+        anchor_tag=anchor_tag,
+        anchor_tag_object=anchor_tag_object,
+        anchor_remote_url=anchor_remote_url,
+        attempt_id=_valid_identity(attempt_id, "confirmation attempt ID"),
+        claim_id=_valid_sha256(claim_id),
+        claim_sha256=_valid_sha256(claim_sha256),
+        launcher_token_sha256=_valid_sha256(launcher_token_sha256),
+        _marker=_CONFIRMATION_CLAIM_MARKER,
+    )
+
+
+def _post_training_confirmation_seed_access(
+    *,
+    claim: _ConfirmationLaunchClaim,
+    launcher_token: str,
+) -> U2SeedAccess:
+    """Open only the reserved U2 confirmation streams for one persisted claim."""
+
+    if (
+        not isinstance(claim, _ConfirmationLaunchClaim)
+        or claim._marker is not _CONFIRMATION_CLAIM_MARKER
+    ):
+        raise U2SeedAccessError("a persisted U2 confirmation claim is required")
+    try:
+        token_bytes = bytes.fromhex(launcher_token)
+    except ValueError as error:
+        raise U2SeedAccessError("the confirmation launcher token is not hexadecimal") from error
+    if len(token_bytes) != 32:
+        raise U2SeedAccessError("the confirmation launcher token must contain 256 bits")
+    measured = hashlib.sha256(launcher_token.encode("ascii")).hexdigest()
+    if measured != claim.launcher_token_sha256:
+        raise U2SeedAccessError(
+            "the confirmation launcher token does not match the persisted claim"
+        )
+    return U2SeedAccess(
+        phase=U2AccessPhase.POST_TRAINING_CONFIRMATION,
+        source_commit=claim.source_commit,
+        qualification_sha256=None,
+        confirmation_protocol=claim.protocol,
+        confirmation_plan_sha256=claim.plan_sha256,
+        confirmation_checkpoint_set_sha256=claim.checkpoint_set_sha256,
+        confirmation_anchor_tag=claim.anchor_tag,
+        confirmation_anchor_tag_object=claim.anchor_tag_object,
+        confirmation_anchor_remote_url=claim.anchor_remote_url,
+        confirmation_attempt_id=claim.attempt_id,
+        confirmation_claim_id=claim.claim_id,
+        confirmation_claim_sha256=claim.claim_sha256,
+        _marker=_CAPABILITY_MARKER,
+    )
+
+
 def classify_u2_seed(seed: int) -> U2SeedRole | None:
     candidate = int(seed)
     for partition in SEED_PARTITIONS:
@@ -370,6 +501,33 @@ def authorize_u2_seed(
             or access.qualification_claim_sha256 is None
         ):
             raise U2SeedAccessError("qualified seed access is not bound to exact evidence bytes")
+        return PARTITION_BY_ROLE[expected]
+    if expected in {
+        U2SeedRole.FUTURE_U2_CONFIRMATION,
+        U2SeedRole.FUTURE_NAVIGATE_CONFIRMATION,
+        U2SeedRole.FUTURE_U0_CONFIRMATION,
+        U2SeedRole.FUTURE_U1_CONFIRMATION,
+    }:
+        if (
+            access is None
+            or access.phase is not U2AccessPhase.POST_TRAINING_CONFIRMATION
+            or access.source_commit is None
+            or access.confirmation_protocol
+            != "dungeon-apprentice-v0.2-u2-confirmation"
+            or access.confirmation_plan_sha256 is None
+            or access.confirmation_checkpoint_set_sha256 is None
+            or access.confirmation_anchor_tag
+            != "u2-confirmation-v0.2-u2-20260723"
+            or access.confirmation_anchor_tag_object is None
+            or access.confirmation_anchor_remote_url
+            != "https://github.com/PeteAndrews1289/dungeon-apprentice.git"
+            or access.confirmation_attempt_id is None
+            or access.confirmation_claim_id is None
+            or access.confirmation_claim_sha256 is None
+        ):
+            raise U2SeedAccessError(
+                "future confirmation layouts require the persisted U2 confirmation claim"
+            )
         return PARTITION_BY_ROLE[expected]
     raise U2SeedAccessError(f"{expected.value} is reserved and cannot be opened during U2")
 

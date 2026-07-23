@@ -62,6 +62,21 @@ finding is preserved in [the canary report](results/v0.1-navigate-canaries.md). 
 [v0.2 design](protocol-v0.2-design.md) controls measured transitions and adds progressively harder
 complete Unlock distributions; it does not retroactively change the frozen v0.1 contract.
 
+The implemented cumulative controller now measures **actions**, not episode counts. Its Unlock
+staircase is Navigate → U0 Visible Unlock → U1 Local Unlock → U2 Separated Unlock, with every
+post-update boundary retesting all inherited skills. Practice uses a declared transition mix. If an
+older skill misses either its overall or panel gate, the newest mastery streak is erased and the
+next complete practice window reallocates actions toward the weak prerequisite. Recovery changes
+future experience only: it never rolls weights back, lowers a gate, pays for a milestone, or counts
+as mastery.
+
+U1 and U2 were launched as versioned cumulative children because their exact rules were frozen only
+after the previous checkpoint set passed disjoint confirmation. Policy weights, LSTM parameters,
+value function, and optimizer state remain continuous within each lineage; trajectories and
+recurrent episode state never cross between lineages. A later fresh-start experiment must still
+show that one launcher can reproduce the entire staircase from random initialization without manual
+stage stitching.
+
 ## Why timing matters
 
 Recurrent PPO alternates between collecting a rollout and optimizing on it. An exam triggered while
