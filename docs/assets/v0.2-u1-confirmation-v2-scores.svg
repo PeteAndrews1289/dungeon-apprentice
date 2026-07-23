@@ -24,7 +24,7 @@
 
   <rect width="1200" height="720" rx="24" fill="url(#background)"/>
   <text id="headline" x="60" y="62" class="title">The skill replicated—and survived a clean exam</text>
-  <text x="60" y="94" class="subtitle">Collision-safe U1 confirmation · 200 unseen accepted cases per lesson · deterministic evaluation · no policy updates</text>
+  <text x="60" y="94" class="subtitle">Collision-safe U1 confirmation · 200 reference-disjoint cases per lesson · deterministic evaluation · no policy updates</text>
 
   <g transform="translate(60 128)">
     <rect width="1080" height="432" rx="20" fill="#111a31" stroke="#293653" filter="url(#shadow)"/>
