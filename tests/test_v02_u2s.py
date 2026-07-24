@@ -624,7 +624,7 @@ def test_initial_rng_identity_rejects_an_unrecomputed_aggregate() -> None:
 def test_diagnostic_rng_guard_restores_the_actual_pre_action_state(
     tmp_path: Path,
 ) -> None:
-    import torch
+    torch = pytest.importorskip("torch")
 
     random.seed(u2s.ALGORITHM_SEED)
     np.random.seed(u2s.ALGORITHM_SEED)

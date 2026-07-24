@@ -43,7 +43,8 @@ jobs:
           pytest -q \
             tests/test_v02_u1_confirm.py \
             tests/test_v02_u1_confirm_v2.py \
-            tests/test_v02_u2_smoke.py
+            tests/test_v02_u2_smoke.py \
+            tests/test_v02_u2s.py::test_diagnostic_rng_guard_restores_the_actual_pre_action_state
       - name: Test v0.3 action-effect architecture paths
         run: |
           pytest -q \
