@@ -463,9 +463,9 @@ fresh from confirmed U1 parents; it does not itself confirm U2.
 
 The actual all-arm result was negative, so that conditional successor did not open. U3 remains
 closed. The current prospective boundary is the
-[v0.3 Stage-A r2 action-effect architecture study](protocol-v0.3-action-effect-architecture-r2.md).
+[v0.3 Stage-A r3 action-effect architecture study](protocol-v0.3-action-effect-architecture-r3.md).
 
-## Prepare the implemented v0.3 action-effect architecture study
+## Prepare the prospective v0.3 action-effect architecture study
 
 v0.3 is not a continuation of U2-S and does not reuse an ablation checkpoint. It is a two-arm,
 matched architecture study from the exact confirmed U1 child `20260733`:
@@ -507,38 +507,46 @@ Preserve the
 [r1 incident record](results/v0.3-action-effect-stage-a-r1-operational-failure.md) and never resume,
 reuse, rename, prune, or overwrite its tag, qualification, cohort, media root, or checkpoint.
 
-The prospective r2 replacement keeps every scientific variable fixed and changes only process-role
-classification and explicit abnormal-exit cleanup:
+r2 kept every scientific variable fixed and corrected process-role classification plus
+abnormal-exit cleanup. It then froze, qualified, and ran. Sham completed exactly 1,048,576 child
+actions and all 32 exams, but terminal closeout recomputed its first-rollout identity without the
+line-feed byte used by qualification and training. The cohort stopped `integrity_failed` before
+action-effect began. Preserve the
+[r2 incident record](results/v0.3-action-effect-stage-a-r2-operational-failure.md) and never resume,
+reuse, rename, prune, overwrite, or use its terminal sham checkpoint as a parent.
 
-| Boundary | Prospective r2 identity |
+The prospective r3 replacement keeps every scientific variable fixed and changes only that
+evidence-verification boundary:
+
+| Boundary | Prospective r3 identity |
 | --- | --- |
-| Cohort ID | `v0.3-action-effect-stage-a-r2-20260724` |
-| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-r2-20260724` |
-| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r2-20260724` |
-| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-20260724` |
-| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-media-20260724` |
-| Dashboard | `http://127.0.0.1:8790/` |
-| Sole launcher | `scripts/run_v03_action_effect_stage_a_r2.sh` |
+| Cohort ID | `v0.3-action-effect-stage-a-r3-20260724` |
+| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-r3-20260724` |
+| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r3-20260724` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-20260724` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-media-20260724` |
+| Dashboard | `http://127.0.0.1:8791/` |
+| Prospective sole launcher | `scripts/run_v03_action_effect_stage_a_r3.sh` |
 
-No final r2 source hash, tag object, qualification claim/report, cohort, media root, policy action,
-or result exists at this source entry. Do not improvise a root, adapt either failed launcher, call
-the lower-level trainer directly, or invent release hashes. Scientific training remains blocked
-until one clean r2 release:
+r3 source commit, tag object, tag payload, qualification claim/report, checksum files, and cohort
+contract remain **TBD** until their ordered release steps create them. Scientific training remains
+blocked until one clean r3 release:
 
 1. freezes and pushes the exact source and protocol;
 2. publishes the assigned annotated tag and its one-line source-preregistration payload;
-3. authenticates the confirmed U1 parent, attempt 0, r1, and every immutable predecessor result;
+3. authenticates the confirmed U1 parent, attempt 0, r1, r2, and every immutable predecessor;
 4. proves the Dict observation and exact named tensor/Adam transplant;
 5. proves bit-exact zero-context equivalence and matched first-rollout identity in a disposable
    four-worker smoke;
-6. verifies unchanged reward/PPO/curriculum and the static layout guards;
-7. proves that a real supervisor carrying its child command counts as one supervisor and one
-   trainer;
-8. proves explicit cleanup leaves no trainer, supervisor, or `caffeinate` process after every
+6. recomputes r2's preserved first-rollout identity as `fa4c7bda…` with the named
+   `u2s-canonical-json-v1-lf` profile and reproduces the legacy no-LF `3b9ecf3a…` mismatch;
+7. verifies unchanged reward/PPO/curriculum, seeds, partitions, and static layout guards;
+8. passes cross-component trainer-to-manifest round-trip and tamper tests;
+9. proves explicit cleanup leaves no trainer, supervisor, or `caffeinate` process after every
    post-spawn failure;
-9. proves zero confirmation/final seed access, a mounted T7 with the declared reserve, and no
-   competing trainer; and
-10. emits one claim-bearing qualification report bound to that exact tag object before action one.
+10. proves zero confirmation/final seed access, a mounted T7 with the declared reserve, and no
+    competing trainer; and
+11. emits one claim-bearing qualification report bound to that exact tag object before action one.
 
 The old sealed U2 qualification range may not be reopened. The v0.3 engineering smoke must use only
 disposable engineering layouts, leave canonical and predecessor evidence unchanged, and destroy
@@ -554,7 +562,35 @@ fresh lineages from confirmed U1 children `20260725`, `20260729`, and `20260733`
 streams and no Stage A state. Even a successful Stage B would still require a separate,
 prospectively frozen no-update confirmation before U3 could open.
 
-### Release, qualify, and launch v0.3 Stage A r2
+### Prepare release, qualification, and launch for v0.3 Stage A r3
+
+This section is prospective. Do not run an r3 qualifier or launcher until implementation, tests,
+science-diff audit, clean source commit, and annotated tag are complete. The exact sequence is:
+
+1. run the ordinary repository, link, digest-profile, cross-component closeout, launcher, and
+   tamper tests;
+2. review the complete diff and prove that learner observations, architecture, transplant, reward,
+   PPO, curriculum, seeds, guards, budgets, exams, and selection are unchanged;
+3. commit and push one clean source, then replace no `TBD` value by hand;
+4. generate the canonical one-line payload from that clean source;
+5. create and push annotated tag
+   `action-effect-architecture-v0.3-stage-a-r3-20260724`;
+6. run one-shot qualification into the absent assigned r3 qualification root;
+7. verify the qualification checksum, source/tag binding, r2 predecessor evidence, mounted T7,
+   storage reserve, absent r3 cohort/media roots, port `8791`, and process inventory;
+8. invoke `scripts/run_v03_action_effect_stage_a_r3.sh` exactly once;
+9. audit sham terminal closeout and handoff before action-effect records action one; and
+10. after both arms finish, seal process closeout and the matched terminal report.
+
+The qualifier and launcher commands are intentionally not presented as runnable instructions while
+their implementation and release identities remain prospective. Once released, the r3 protocol
+and exact tagged source become authoritative.
+
+### Historical r2 release procedure — do not run
+
+r2 is terminal. The commands below are retained only to explain how its immutable source, tag,
+qualification, and cohort were created. Never rerun them, delete their outputs, or adapt them to
+r3.
 
 The release chain is intentionally non-circular:
 
@@ -568,60 +604,20 @@ The release chain is intentionally non-circular:
 3. the cohort contract and manifest bind the exact qualification-report SHA-256 before either
    trainer may act.
 
-Run the ordinary repository checks while the tree is still a working candidate:
+The historical release record is intentionally static. It is not a command recipe:
 
-```bash
-.venv/bin/ruff check .
-.venv/bin/pytest
-.venv/bin/dungeon-qualify --seeds 100
-git diff --check
-```
+| Frozen r2 step | Historical evidence |
+|---|---|
+| Source validation | Repository checks passed at source commit `01b1b910edbb676f5de7375fa55d1b6e3bc6a54c` |
+| Source preregistration | Annotated tag `action-effect-architecture-v0.3-stage-a-r2-20260724`, tag object `87d4ce7d24bd13d3a5e3e182c29889c36db35d87` |
+| One-shot qualification | Report SHA-256 `148bb469cf66753b3ab998299e5f595c94d4fb868c5c38d93c8ec0e9cd097a9e` |
+| Fixed launcher | The r2-tagged `scripts/run_v03_action_effect_stage_a_r2.sh`; it is deliberately absent from current r3 source |
+| Dashboard | Historical read-only endpoint `http://127.0.0.1:8790/` |
 
-Then review the complete diff, commit it, push that exact commit to the approved `origin`, and
-confirm the repository is clean. Do not substitute a commit identifier in this document; the
-qualifier derives and verifies the eventual release commit itself.
-
-Generate the canonical one-line tag payload only from that clean commit, create the annotated tag
-with that exact line as its complete message, and publish it:
-
-```bash
-V03_TAG_PAYLOAD="$(
-  .venv/bin/python -m dungeon_apprentice.v03_action_effect_qualify \
-    --tag-payload-only
-)"
-git tag -a action-effect-architecture-v0.3-stage-a-r2-20260724 \
-  -m "$V03_TAG_PAYLOAD"
-git push origin HEAD
-git push origin refs/tags/action-effect-architecture-v0.3-stage-a-r2-20260724
-```
-
-Do not hand-edit the payload. The tag preregisters inputs; it does **not** contain a qualification
-report digest that can only exist later.
-
-With the T7 mounted, at least 25 GiB free, no competing trainer, all three assigned roots absent,
-and the repository still clean at the tagged commit, create the one-shot qualification:
-
-```bash
-.venv/bin/python -m dungeon_apprentice.v03_action_effect_qualify
-```
-
-The qualifier creates the durable claim first, runs the disposable real four-worker rollout/update
-smoke, destroys its updated policy copies, and writes `report.json` plus its SHA-256 sidecar in the
-assigned qualification root. Failure or partial output permanently consumes that attempt identity;
-do not delete the claim or retry it under the same tag and roots.
-
-Only after the qualification report verifies may the fixed launcher be invoked once:
-
-```bash
-./scripts/run_v03_action_effect_stage_a_r2.sh
-```
-
-The launcher owns cohort/media creation, contract sealing, fixed arm order (`sham`, then
-`action-effect`), trainer supervision, sleep prevention, the read-only dashboard at
-`http://127.0.0.1:8790/`, and terminal closeout. The dashboard performs its expensive full evidence
-authentication once before binding. Each poll rereads live status and rehashes the immutable
-contract, qualification report, and checksum. The launcher validates the payload identities; the
-API does not return a literal `healthy: true` field.
+The qualifier and launcher named in this record mean the files frozen inside source
+`01b1b910edbb676f5de7375fa55d1b6e3bc6a54c`, not the current unversioned Python modules or current
+working-tree scripts. Do not invoke, reconstruct, or adapt the historical commands. The immutable
+r2 qualification, cohort, media, and log roots are the authoritative evidence of what ran.
 
 r2 classifies roles only from leading executable arguments. A supervisor's embedded child command
 must not classify the supervisor as a trainer. Every critical post-spawn assertion uses an explicit,
@@ -651,7 +647,9 @@ They are refreshed by the repository's editable-install command. The canonical i
 use the equivalent module entry point so their availability does not depend on a stale generated
 shell wrapper.
 
-The sole scientific start command is `scripts/run_v03_action_effect_stage_a_r2.sh`.
+There is currently no authorized Stage-A start command. After r3 implementation, release,
+qualification, and prelaunch verification, the sole prospective scientific start command is
+`scripts/run_v03_action_effect_stage_a_r3.sh`.
 
 ## Resume a legacy v0/v0.1 run after interruption
 

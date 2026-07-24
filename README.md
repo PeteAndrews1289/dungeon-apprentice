@@ -326,7 +326,7 @@ activation was selected. The full
 [U2-S result](docs/results/v0.2-u2s-r1-stability-ablation.md) preserves the exact evidence and
 claim limits.
 
-### v0.3 — two operational lessons; r2 replacement prepared
+### v0.3 — three operational lessons; r3 replacement designed
 
 The ablation resolved the next design decision: another reward amount or gentler PPO schedule is
 not enough. The original
@@ -334,9 +334,12 @@ not enough. The original
 causal fact into a learnable network pathway; its operationally corrected
 [r1 replacement](docs/protocol-v0.3-action-effect-architecture-r1.md) preserved that scientific
 question unchanged and fixed the dashboard boundary. Its launcher then exposed a second,
-independent process-control defect. The current
-[r2 replacement](docs/protocol-v0.3-action-effect-architecture-r2.md) preserves the same question
-while correcting process classification and abnormal-exit cleanup.
+independent process-control defect.
+[r2](docs/protocol-v0.3-action-effect-architecture-r2.md) preserved the same question while
+correcting process classification and abnormal-exit cleanup. It completed the entire sham arm,
+then exposed a third operational defect in terminal evidence authentication. The current
+[r3 replacement](docs/protocol-v0.3-action-effect-architecture-r3.md) changes only that byte-level
+verification contract.
 
 Both fresh twins inherit the exact confirmed U1 `20260733` CNN, actor/critic LSTMs, action/value
 heads, and Adam moments by parameter name. Both have the same new nine-value input and a
@@ -380,23 +383,34 @@ started, and the matched scientific comparison never occurred. r1 is terminal
 [authenticated incident record](docs/results/v0.3-action-effect-stage-a-r1-operational-failure.md).
 Its roots and checkpoints are immutable and unusable.
 
-r2 again changes no scientific variable. It classifies processes from their leading executable
-arguments and uses explicit cleanup branches rather than implicit zsh `errexit`. Both arms restart
-fresh from confirmed U1. The prospective assignments are:
+r2 froze source `01b1b910…`, published and qualified its annotated tag, and launched the assigned
+fresh cohort in the correct sham-first order. Sham then completed 1,048,576 child actions, 2,048
+new optimizer updates, and all 32 exams. Its terminal three U2 scores were 77, 78, and 78/80, but
+the middle exam contained one 85-action ineffective/repeated-interaction tail.
 
-| Boundary | Assigned identity |
+The learner closed normally. The manifest then recomputed the authentic first-rollout aggregate
+without the final line-feed byte used by qualification and training. It obtained `3b9ecf3a…`
+instead of the recorded `fa4c7bda…` and stopped fail-closed. Action-effect never received an
+attempt, so r2 produced no matched architecture verdict. Its exact evidence is preserved in the
+[r2 operational-failure result](docs/results/v0.3-action-effect-stage-a-r2-operational-failure.md).
+
+r3 retains r2's dashboard, process classification, cleanup, confirmed-U1 parent, seeds, reward,
+PPO, curriculum, budget, guard, exam cases, and terminal-three rule. It names and shares the
+qualified line-feed-terminated digest profile across qualification, training, and closeout. Both
+arms must restart fresh; no r2 policy or optimizer state may cross the boundary.
+
+| Boundary | Prospective r3 identity |
 | --- | --- |
-| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-r2-20260724` |
-| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r2-20260724` |
-| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-20260724` |
-| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-media-20260724` |
-| Dashboard | `http://127.0.0.1:8790/` |
-| Sole launcher | `scripts/run_v03_action_effect_stage_a_r2.sh` |
+| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-r3-20260724` |
+| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r3-20260724` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-20260724` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-media-20260724` |
+| Dashboard | `http://127.0.0.1:8791/` |
+| Prospective sole launcher | `scripts/run_v03_action_effect_stage_a_r3.sh` |
 
-Attempt 0 and r1 are separate immutable historical records and must never be reused. At this r2
-preparation checkpoint, no final r2 source hash, tag object, qualification claim/report, cohort,
-media root, policy action, or result exists. The exact replacement release sequence is preserved in
-the [operations runbook](docs/runbook.md#release-qualify-and-launch-v03-stage-a-r2).
+These are protocol assignments only. Exact source, tag, qualification, and cohort identities are
+not embedded recursively in this prospective text; they must be read from the later external
+release evidence. No action or result is claimed here.
 
 ## Evidence standard
 
@@ -422,7 +436,7 @@ See [the experiment contract](docs/experiment-contract.md),
 [roadmap](docs/roadmap.md). The completed v0.1 capability result is preserved in the
 [Navigate canary report](docs/results/v0.1-navigate-canaries.md), and the next proposed protocol is
 specified in [the v0.2 design](docs/protocol-v0.2-design.md). The current controlled decision point
-is the implemented but not yet frozen or qualified
-[v0.3 Stage-A r2 action-effect architecture study](docs/protocol-v0.3-action-effect-architecture-r2.md).
+is the prospective
+[v0.3 Stage-A r3 action-effect architecture study](docs/protocol-v0.3-action-effect-architecture-r3.md).
 U2r-r1 ended in a valid terminal stability failure, U2-S r1 completed with no eligible mechanism,
 and U3 remains blocked.

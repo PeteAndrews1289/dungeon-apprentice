@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import base64
 import hashlib
 import importlib.util
 import json
+import zlib
 from pathlib import Path
 from types import ModuleType
 
@@ -14,6 +16,45 @@ from dungeon_apprentice.artifacts import atomic_write_json, file_sha256
 
 REPOSITORY = Path(__file__).resolve().parents[1]
 HELPER = REPOSITORY / "scripts" / "v03_action_effect_manifest.py"
+# Canonical compact JSON for the sealed r2 sham first-rollout core. Keeping the
+# exact evidence compressed makes the one-byte LF regression portable without
+# depending on the developer's mounted T7.
+_R2_FIRST_ROLLOUT_CORE_ZLIB_BASE64 = (
+    "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"
+)
 
 
 def _load_helper() -> ModuleType:
@@ -50,6 +91,11 @@ def _qualification(
         "resume_authorized": False,
         "reuse_authorized": False,
     }
+    failed_r2_attempt = {
+        "disposition": "integrity_failed",
+        "resume_authorized": False,
+        "reuse_authorized": False,
+    }
     _write_json(
         report,
         {
@@ -76,6 +122,7 @@ def _qualification(
             "parent": {},
             "predecessors": {},
             "failed_stage_a_attempt": failed_attempt,
+            "failed_stage_a_r2_attempt": failed_r2_attempt,
             "guards": {},
             "sampler_preflight": [],
             "architecture_contract": {},
@@ -109,6 +156,8 @@ def _qualification(
                 "stage_a_resume_supported": False,
                 "failed_attempt_resume_authorized": False,
                 "failed_attempt_root_reuse_authorized": False,
+                "failed_r2_attempt_resume_authorized": False,
+                "failed_r2_attempt_root_reuse_authorized": False,
                 "replacement_restarts_both_arms_from_confirmed_u1": True,
                 "development_checkpoint_reuse_authorized": False,
                 "u3_authorized": False,
@@ -138,6 +187,9 @@ def _qualification(
         "protected_partitions_sha256": "7" * 64,
         "failed_stage_a_attempt_sha256": helper._canonical_sha256(
             failed_attempt
+        ),
+        "failed_stage_a_r2_attempt_sha256": helper._canonical_sha256(
+            failed_r2_attempt
         ),
         "storage_caps": {
             "per_arm_bytes": helper.LINEAGE_CAP_BYTES,
@@ -354,8 +406,45 @@ def _first_rollout_identity(helper: ModuleType) -> dict:
     }
     return {
         **core,
-        "aggregate_sha256": helper._canonical_sha256(core),
+        "aggregate_sha256": trainer._qualification_canonical_sha256(core),
     }
+
+
+def test_manifest_accepts_the_producer_first_rollout_profile() -> None:
+    helper = _load_helper()
+    identity = _first_rollout_identity(helper)
+    core = {
+        key: value
+        for key, value in identity.items()
+        if key != "aggregate_sha256"
+    }
+    assert identity["aggregate_sha256"] == helper.v03.first_rollout_identity_sha256(
+        core
+    )
+    assert identity["aggregate_sha256"] != helper._canonical_sha256(core)
+    assert helper._first_rollout_evidence(identity, arm_id="sham") == identity
+
+
+def test_r2_first_rollout_lf_hash_regression() -> None:
+    helper = _load_helper()
+    core = json.loads(
+        zlib.decompress(
+            base64.b64decode(_R2_FIRST_ROLLOUT_CORE_ZLIB_BASE64)
+        )
+    )
+    assert helper.v03.first_rollout_identity_sha256(core) == (
+        "fa4c7bda99a261f8fa49741a49360cd1bfc6ab3081db51aeffc64266a109ce72"
+    )
+    assert helper._canonical_sha256(core) == (
+        "3b9ecf3ac69c834ddc879d1a542e9f109d833f30aa2324e80c099f7a2195b81c"
+    )
+    identity = {
+        **core,
+        "aggregate_sha256": (
+            "fa4c7bda99a261f8fa49741a49360cd1bfc6ab3081db51aeffc64266a109ce72"
+        ),
+    }
+    assert helper._first_rollout_evidence(identity, arm_id="sham") == identity
 
 
 def _arm_terminal(
@@ -365,6 +454,7 @@ def _arm_terminal(
     source: str,
     arm: str,
     eligible: bool,
+    first_rollout_override: dict | None = None,
 ) -> None:
     contract_digest = hashlib.sha256(
         (root / "cohort-contract.json").read_bytes()
@@ -469,6 +559,33 @@ def _arm_terminal(
         )
     terminal = directory / "checkpoints" / "terminal.zip"
     terminal.write_bytes(b"fixture terminal checkpoint")
+    first_rollout_identity = (
+        first_rollout_override
+        if first_rollout_override is not None
+        else _first_rollout_identity(helper)
+    )
+    first_rollout_path = directory / "first-rollout.json"
+    _write_json(
+        first_rollout_path,
+        {
+            "schema_version": trainer.FIRST_ROLLOUT_SCHEMA_VERSION,
+            "protocol": helper.PROTOCOL,
+            "cohort_id": helper.COHORT_ID,
+            "cohort_contract_sha256": contract_digest,
+            "arm": arm,
+            "digest_profile": helper.v03.FIRST_ROLLOUT_DIGEST_PROFILE,
+            "captured_before_first_optimizer": True,
+            "identity": first_rollout_identity,
+            "qualification_report_sha256": contract["qualification"][
+                "report_sha256"
+            ],
+            "qualification_identity_sha256": (
+                first_rollout_identity["aggregate_sha256"]
+            ),
+            "checkpoint_reuse_authorized": False,
+        },
+    )
+    first_rollout_sha256 = file_sha256(first_rollout_path)
     sidecar = {
         "schema_version": trainer.SCHEMA_VERSION,
         "protocol": helper.PROTOCOL,
@@ -481,6 +598,11 @@ def _arm_terminal(
         "promotable": False,
         "development_checkpoint_reuse_authorized": False,
         "checkpoint_sha256": file_sha256(terminal),
+        "first_rollout_digest_profile": (
+            helper.v03.FIRST_ROLLOUT_DIGEST_PROFILE
+        ),
+        "first_rollout_identity": first_rollout_identity,
+        "first_rollout_envelope_sha256": first_rollout_sha256,
         "progress": {
             "child_trained_actions": helper.ACTION_CAP,
         },
@@ -570,7 +692,11 @@ def _arm_terminal(
             "exam_records": exams,
             "practice_decisions": [],
         },
-        "first_rollout_identity": _first_rollout_identity(helper),
+        "first_rollout_digest_profile": (
+            helper.v03.FIRST_ROLLOUT_DIGEST_PROFILE
+        ),
+        "first_rollout_identity": first_rollout_identity,
+        "first_rollout_envelope_sha256": first_rollout_sha256,
         "context_metrics": context_metrics,
         "encoder_history": [initial_encoder, terminal_encoder],
         "terminal_encoder": terminal_encoder,
@@ -609,6 +735,13 @@ def _arm_terminal(
             "cohort_contract_sha256": contract_digest,
             "report": "report.json",
             "report_sha256": report_sha256,
+            "first_rollout_digest_profile": (
+                helper.v03.FIRST_ROLLOUT_DIGEST_PROFILE
+            ),
+            "first_rollout_identity_sha256": (
+                first_rollout_identity["aggregate_sha256"]
+            ),
+            "first_rollout_envelope_sha256": first_rollout_sha256,
             "terminal_checkpoint_sha256": file_sha256(terminal),
             "terminal_sidecar_sha256": file_sha256(
                 terminal.with_suffix(".json")
@@ -641,6 +774,15 @@ def _arm_terminal(
             "optimizer_updates": helper.TERMINAL_OPTIMIZER_UPDATES,
             "exam_count": helper.EXAM_COUNT,
             "report_sha256": report_sha256,
+            "first_rollout_digest_profile": (
+                helper.v03.FIRST_ROLLOUT_DIGEST_PROFILE
+            ),
+            "first_rollout_identity": first_rollout_identity,
+            "first_rollout_identity_sha256": (
+                first_rollout_identity["aggregate_sha256"]
+            ),
+            "first_rollout_envelope_sha256": first_rollout_sha256,
+            "first_rollout_verified": True,
             "updated_at": "2026-07-24T01:00:00+00:00",
         },
     )
@@ -697,7 +839,7 @@ def _clear_process_rows() -> list[dict[str, object]]:
             "command": (
                 "python -m "
                 "dungeon_apprentice.v03_action_effect_dashboard "
-                "--run-root /fixture --port 8790"
+                "--run-root /fixture --port 8791"
             ),
         },
     ]
@@ -718,16 +860,67 @@ def _seal_process_closeout(
     )
 
 
+@pytest.mark.parametrize(
+    ("command", "expected"),
+    [
+        (
+            "/bin/zsh -lc echo "
+            "dungeon_apprentice.v03_action_effect_train "
+            "scripts/u2_trainer_supervisor.py /usr/bin/caffeinate",
+            "unrelated",
+        ),
+        (
+            "python unrelated.py --message "
+            "dungeon_apprentice.v03_action_effect_dashboard",
+            "unrelated",
+        ),
+        (
+            "python scripts/u2_trainer_supervisor.py --state fixture -- "
+            "python -m dungeon_apprentice.v03_action_effect_train train-arm",
+            "supervisor",
+        ),
+        (
+            "/opt/python3.14 -m "
+            "dungeon_apprentice.v03_action_effect_train train-arm",
+            "trainer",
+        ),
+        (
+            "/project/.venv/bin/python /project/.venv/bin/dungeon-train",
+            "trainer",
+        ),
+        (
+            "/project/.venv/bin/dungeon-train --config fixture.json",
+            "trainer",
+        ),
+        (
+            "/usr/bin/caffeinate -ims",
+            "caffeinate",
+        ),
+        (
+            "Python -m dungeon_apprentice.v03_action_effect_dashboard "
+            "--run-root /fixture",
+            "dashboard",
+        ),
+    ],
+)
+def test_terminal_process_roles_use_only_leading_argv(
+    command: str,
+    expected: str,
+) -> None:
+    helper = _load_helper()
+    assert helper._process_role(command) == expected
+
+
 def test_manifest_identity_is_v03_fresh_only_and_has_no_resume() -> None:
     helper = _load_helper()
     assert helper.PROTOCOL == (
         "dungeon-apprentice-v0.3-action-effect-architecture"
     )
-    assert helper.COHORT_ID == "v0.3-action-effect-stage-a-r2-20260724"
+    assert helper.COHORT_ID == "v0.3-action-effect-stage-a-r3-20260724"
     assert helper.TAG_NAME == (
-        "action-effect-architecture-v0.3-stage-a-r2-20260724"
+        "action-effect-architecture-v0.3-stage-a-r3-20260724"
     )
-    assert helper.DEFAULT_DASHBOARD_PORT == 8790
+    assert helper.DEFAULT_DASHBOARD_PORT == 8791
     assert helper.ARM_ORDER == ("sham", "action-effect")
     parser = helper.build_parser()
     parsed = parser.parse_args(
@@ -766,6 +959,11 @@ def test_manifest_consumes_real_qualifier_public_api_shape(
         "resume_authorized": False,
         "reuse_authorized": False,
     }
+    failed_r2_attempt = {
+        "disposition": "integrity_failed",
+        "resume_authorized": False,
+        "reuse_authorized": False,
+    }
     public = {
         "report": str(report),
         "report_sha256": hashlib.sha256(report.read_bytes()).hexdigest(),
@@ -784,6 +982,9 @@ def test_manifest_consumes_real_qualifier_public_api_shape(
         "failed_stage_a_attempt_sha256": helper._canonical_sha256(
             failed_attempt
         ),
+        "failed_stage_a_r2_attempt_sha256": helper._canonical_sha256(
+            failed_r2_attempt
+        ),
         "storage_caps": {
             "per_arm_bytes": helper.LINEAGE_CAP_BYTES,
             "scientific_cohort_bytes": (
@@ -799,11 +1000,14 @@ def test_manifest_consumes_real_qualifier_public_api_shape(
         "verdict": "qualified",
         "smoke_evidence": {"_full_report": {"verdict": "passed"}},
         "failed_stage_a_attempt": failed_attempt,
+        "failed_stage_a_r2_attempt": failed_r2_attempt,
         "restrictions": {
             "arms_run_sequentially": True,
             "stage_a_resume_supported": False,
             "failed_attempt_resume_authorized": False,
             "failed_attempt_root_reuse_authorized": False,
+            "failed_r2_attempt_resume_authorized": False,
+            "failed_r2_attempt_root_reuse_authorized": False,
             "replacement_restarts_both_arms_from_confirmed_u1": True,
             "development_checkpoint_reuse_authorized": False,
             "u3_authorized": False,
@@ -1111,6 +1315,63 @@ def test_qualification_byte_drift_blocks_every_later_operation(
         )
 
 
+@pytest.mark.parametrize(
+    ("target", "field"),
+    (
+        ("first-rollout.json", "digest_profile"),
+        ("first-rollout.json", "captured_before_first_optimizer"),
+        ("status.json", "first_rollout_identity"),
+        ("report.integrity.json", "first_rollout_envelope_sha256"),
+    ),
+)
+def test_manifest_rejects_first_rollout_envelope_contract_tamper(
+    tmp_path: Path,
+    target: str,
+    field: str,
+) -> None:
+    helper, root, _media, source, tag_object = _cohort(tmp_path)
+    helper.start_arm(
+        root,
+        source_commit=source,
+        tag_object=tag_object,
+        arm_id="sham",
+    )
+    _arm_terminal(
+        helper,
+        root=root,
+        source=source,
+        arm="sham",
+        eligible=True,
+    )
+    path = root / "sham" / target
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if field == "digest_profile":
+        value[field] = "legacy-no-lf"
+    elif field == "captured_before_first_optimizer":
+        value[field] = False
+    elif field == "first_rollout_identity":
+        value[field] = {
+            **value[field],
+            "policy_output_sha256": "0" * 64,
+        }
+    else:
+        value[field] = "0" * 64
+    _write_json(path, value)
+
+    with pytest.raises(
+        helper.V03ManifestError,
+        match="terminal evidence failed closed",
+    ):
+        helper.finish_arm(
+            root,
+            source_commit=source,
+            tag_object=tag_object,
+            arm_id="sham",
+            outcome="completed",
+            trainer_exit_code=0,
+        )
+
+
 def test_first_rollout_mismatch_fails_terminal_closeout(
     tmp_path: Path,
 ) -> None:
@@ -1122,39 +1383,27 @@ def test_first_rollout_mismatch_fails_terminal_closeout(
             tag_object=tag_object,
             arm_id=arm,
         )
+        first_rollout_override = None
+        if arm == "action-effect":
+            first_rollout_override = _first_rollout_identity(helper)
+            first_rollout_override["policy_output_sha256"] = "9" * 64
+            first_rollout_override["aggregate_sha256"] = (
+                trainer._qualification_canonical_sha256(
+                    {
+                        key: value
+                        for key, value in first_rollout_override.items()
+                        if key != "aggregate_sha256"
+                    }
+                )
+            )
         _arm_terminal(
             helper,
             root=root,
             source=source,
             arm=arm,
             eligible=True,
+            first_rollout_override=first_rollout_override,
         )
-        if arm == "action-effect":
-            path = root / arm / "report.json"
-            report = json.loads(path.read_text(encoding="utf-8"))
-            identity = report["first_rollout_identity"]
-            identity["policy_output_sha256"] = "9" * 64
-            identity["aggregate_sha256"] = helper._canonical_sha256(
-                {
-                    key: value
-                    for key, value in identity.items()
-                    if key != "aggregate_sha256"
-                }
-            )
-            _write_json(path, report)
-            digest = hashlib.sha256(path.read_bytes()).hexdigest()
-            integrity = json.loads(
-                (root / arm / "report.integrity.json").read_text(
-                    encoding="utf-8"
-                )
-            )
-            integrity["report_sha256"] = digest
-            _write_json(root / arm / "report.integrity.json", integrity)
-            status = json.loads(
-                (root / arm / "status.json").read_text(encoding="utf-8")
-            )
-            status["report_sha256"] = digest
-            _write_json(root / arm / "status.json", status)
         helper.finish_arm(
             root,
             source_commit=source,

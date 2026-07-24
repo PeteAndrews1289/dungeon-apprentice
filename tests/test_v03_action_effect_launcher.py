@@ -13,7 +13,7 @@ from pathlib import Path
 import pytest
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-LAUNCHER = REPOSITORY / "scripts" / "run_v03_action_effect_stage_a_r2.sh"
+LAUNCHER = REPOSITORY / "scripts" / "run_v03_action_effect_stage_a_r3.sh"
 TRAINER_SUPERVISOR = REPOSITORY / "scripts" / "u2_trainer_supervisor.py"
 
 
@@ -66,21 +66,63 @@ def test_v03_launcher_has_valid_zsh_syntax_without_running() -> None:
     assert os.access(LAUNCHER, os.X_OK)
 
 
+@pytest.mark.parametrize("planner_output", ("", "not-json", "[]"))
+def test_inactive_terminalizer_ignores_empty_or_malformed_plans(
+    planner_output: str,
+) -> None:
+    zsh = shutil.which("zsh")
+    if zsh is None:
+        pytest.skip("zsh is unavailable")
+    terminalizer = _function_block(
+        "terminalize_inactive_cohort",
+        "stop_caffeine",
+    )
+    harness = (
+        "set -euo pipefail\n"
+        f"repository={shlex.quote(str(REPOSITORY))}\n"
+        'run_root="/unused/cohort"\n'
+        'source_commit="source"\n'
+        'tag_object="tag"\n'
+        "cohort_created=true\n"
+        "launcher_finalized=false\n"
+        "manifest_command() {\n"
+        '  [[ "$1" == next ]] || {\n'
+        '    print -u2 "unexpected manifest mutation: $1"\n'
+        "    return 99\n"
+        "  }\n"
+        f"  print -r -- {shlex.quote(planner_output)}\n"
+        "}\n"
+        f"{terminalizer}\n"
+        "terminalize_inactive_cohort 1\n"
+    )
+    result = subprocess.run(
+        [zsh, "-c", harness],
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=10,
+        cwd=REPOSITORY,
+    )
+    assert result.returncode == 0
+    assert result.stdout == ""
+    assert result.stderr == ""
+
+
 def test_v03_launcher_freezes_release_and_storage_identity() -> None:
     source = LAUNCHER.read_text(encoding="utf-8")
     for text in (
         "set -euo pipefail",
-        'run_root="$dungeon_root/v03-action-effect-stage-a-r2-20260724"',
-        'media_root="$dungeon_root/v03-action-effect-stage-a-r2-media-20260724"',
-        "qualifications/v0.3-action-effect-stage-a-r2-20260724/report.json",
+        'run_root="$dungeon_root/v03-action-effect-stage-a-r3-20260724"',
+        'media_root="$dungeon_root/v03-action-effect-stage-a-r3-media-20260724"',
+        "qualifications/v0.3-action-effect-stage-a-r3-20260724/report.json",
         'training_protocol="dungeon-apprentice-v0.3-action-effect-architecture"',
-        'cohort_id="v0.3-action-effect-stage-a-r2-20260724"',
-        'training_tag="action-effect-architecture-v0.3-stage-a-r2-20260724"',
+        'cohort_id="v0.3-action-effect-stage-a-r3-20260724"',
+        'training_tag="action-effect-architecture-v0.3-stage-a-r3-20260724"',
         'expected_origin="https://github.com/PeteAndrews1289/dungeon-apprentice.git"',
         'trainer_module="dungeon_apprentice.v03_action_effect_train"',
         'dashboard_module="dungeon_apprentice.v03_action_effect_dashboard"',
         'manifest_helper="$repository/scripts/v03_action_effect_manifest.py"',
-        "dashboard_port=8790",
+        "dashboard_port=8791",
         "minimum_free_gib=25",
         "git status --porcelain=v1 --untracked-files=all",
         "git cat-file -t",

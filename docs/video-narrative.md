@@ -383,10 +383,22 @@ later episode ledger, but only 38,912 trained and checkpointed. It completed 19 
 The latest-observed checkpoint is authentic but not safe. The conclusion is again operational,
 not scientific: no matched comparison occurred.
 
-Then introduce r2 as the same preregistered scientific question with both operational lessons
-applied. It keeps r1's deep-auth-once dashboard design, classifies roles by leading executable
-arguments, and explicitly cleans up on every assertion failure. Port `8790` and all r2 identities
-are fresh; both arms restart from confirmed U1.
+Then show why r2 is different from the first two incidents: this time the learner finishes. Sham
+reaches exactly 1,048,576 child actions and all 32 exams, climbing from 24/80 U2 at baseline to 77,
+78, and 78/80 in its terminal three. The middle exam still contains one 85-action loop, so do not
+portray the calibration arm as stable or selectable.
+
+At handoff, the experiment refuses to believe its own authentic first-rollout record. Put the two
+canonical byte strings on screen. Qualification and training add one final `\n`, producing
+`fa4c7bda…`; the manifest omits it and produces `3b9ecf3a…`. One invisible byte stops the cohort
+before action-effect begins. The framing is not “the AI failed again.” The learner completed; the
+evidence system failed closed because two components disagreed.
+
+Introduce r3 as the same preregistered scientific question with all three operational lessons
+applied. It keeps the deep-auth-once dashboard, leading-argument role classification, and explicit
+cleanup, then gives first-rollout evidence one named LF-terminated digest profile shared across
+qualification, training, and closeout. Port `8791` and all r3 identities are fresh; both arms
+restart from confirmed U1 with no r2 checkpoint or optimizer state.
 
 If Stage A eventually succeeds, frame it as permission to replicate the **idea**, not promotion of
 the attractive model on screen. Both Stage-A checkpoints are discarded. Three fresh policies from
@@ -457,7 +469,7 @@ frozen protocol, and untouched no-update confirmation must still pass before U3 
 - overlapping first-rollout traces through all 2,048 pre-update transitions, followed by a clear
   “learning may diverge here” marker at the first optimizer phase;
 - the non-circular v0.3 evidence chain: source tag → qualification report → cohort manifest →
-  fixed launcher, with the prospective r2 dashboard at 8790 labeled read-only;
+  fixed launcher, with the prospective r3 dashboard at 8791 labeled read-only;
 - the attempt-0 zero-action card: three broken client pipes, no arm directory, no trainer, no
   action, and the trap's synthetic sham crash clearly labeled operational closeout;
 - the r1 partial-sham card: status `40,004 collected / 38,912 trained`, episode ledger `40,960
@@ -465,6 +477,10 @@ frozen protocol, and untouched no-update confirmation must still pass before U3 
   cases, no safe checkpoint, and an empty action-effect column;
 - the r1 process reveal: supervisor plus embedded child argv causing a false second-trainer match,
   followed by the missed shell cleanup and explicit later stop;
+- the r2 full-sham card: `1,048,576` child actions, `2,048` new updates, 32 exams, terminal U2
+  `77/78/78`, one 85-action tail, and an empty action-effect column;
+- the r2 one-byte reveal: the qualified LF-terminated `fa4c7bda…` identity beside the manifest's
+  no-LF `3b9ecf3a…` recomputation, followed by the fail-closed handoff;
 - the v0.3 Stage-A end card, whatever its eventual outcome, explicitly stating that no Stage-A
   checkpoint advances and U3 remains closed;
 - one example of curiosity encouraging exploration without task knowledge;

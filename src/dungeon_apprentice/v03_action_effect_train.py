@@ -556,7 +556,7 @@ def _observation_sha256(value: Any) -> str:
 def _qualification_canonical_sha256(value: Any) -> str:
     """Hash first-rollout evidence with the frozen smoke primitive."""
 
-    return frozen_smoke._canonical_sha256(value)
+    return v03.first_rollout_identity_sha256(value)
 
 
 def _qualification_episode_ledger_sha256(path: Path) -> str:
@@ -1008,6 +1008,101 @@ def normalized_first_rollout_identity(
     return identity
 
 
+def _validated_first_rollout_identity(
+    value: Any,
+    *,
+    label: str,
+) -> dict[str, Any]:
+    fields = {
+        "trajectory_identity",
+        "policy_output_sha256",
+        "post_rollout_rng_identity",
+        "episode_ledger_normalized_sha256",
+        "aggregate_sha256",
+    }
+    if not isinstance(value, Mapping) or set(value) != fields:
+        raise ActionEffectTrainingError(f"{label} has a noncanonical identity")
+    trajectory = value.get("trajectory_identity")
+    post_rng = value.get("post_rollout_rng_identity")
+    if (
+        not isinstance(trajectory, list)
+        or len(trajectory) != WORKERS
+        or not all(isinstance(item, Mapping) for item in trajectory)
+        or not isinstance(post_rng, Mapping)
+    ):
+        raise ActionEffectTrainingError(f"{label} has incomplete identity evidence")
+    _require_sha256(value.get("policy_output_sha256"), f"{label} policy output")
+    _require_sha256(
+        value.get("episode_ledger_normalized_sha256"),
+        f"{label} episode ledger",
+    )
+    _require_sha256(post_rng.get("aggregate_sha256"), f"{label} post-rollout RNG")
+    aggregate = _require_sha256(value.get("aggregate_sha256"), f"{label} aggregate")
+    core = {key: item for key, item in value.items() if key != "aggregate_sha256"}
+    if v03.first_rollout_identity_sha256(core) != aggregate:
+        raise ActionEffectTrainingError(f"{label} aggregate does not authenticate")
+    return json.loads(json.dumps(value))
+
+
+def verify_first_rollout_envelope(
+    path: Path,
+    *,
+    expected_arm: ActionEffectMode | str,
+    expected_cohort_id: str,
+    expected_contract_sha256: str,
+    expected_qualification_sha256: str,
+    expected_identity: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Authenticate the immutable pre-optimizer envelope and its named profile."""
+
+    arm = ActionEffectMode(expected_arm)
+    if path.is_symlink() or not path.is_file():
+        raise ActionEffectTrainingError("v0.3 first-rollout envelope is missing or unsafe")
+    value = _read_json(path, "v0.3 first-rollout envelope")
+    fields = {
+        "schema_version",
+        "protocol",
+        "cohort_id",
+        "cohort_contract_sha256",
+        "arm",
+        "digest_profile",
+        "captured_before_first_optimizer",
+        "identity",
+        "qualification_report_sha256",
+        "qualification_identity_sha256",
+        "checkpoint_reuse_authorized",
+    }
+    identity = _validated_first_rollout_identity(
+        value.get("identity"),
+        label="v0.3 first-rollout envelope",
+    )
+    if (
+        set(value) != fields
+        or value.get("schema_version") != FIRST_ROLLOUT_SCHEMA_VERSION
+        or value.get("protocol") != PROTOCOL
+        or value.get("cohort_id") != expected_cohort_id
+        or value.get("cohort_contract_sha256") != expected_contract_sha256
+        or value.get("arm") != arm.value
+        or value.get("digest_profile") != v03.FIRST_ROLLOUT_DIGEST_PROFILE
+        or value.get("captured_before_first_optimizer") is not True
+        or value.get("qualification_report_sha256")
+        != expected_qualification_sha256
+        or value.get("qualification_identity_sha256")
+        != identity["aggregate_sha256"]
+        or value.get("checkpoint_reuse_authorized") is not False
+        or (
+            expected_identity is not None
+            and identity != json.loads(json.dumps(expected_identity))
+        )
+    ):
+        raise ActionEffectTrainingError("v0.3 first-rollout envelope contract changed")
+    return {
+        "digest_profile": v03.FIRST_ROLLOUT_DIGEST_PROFILE,
+        "identity": identity,
+        "envelope_sha256": file_sha256(path),
+    }
+
+
 def _qualification_smoke_arm(
     qualification_report: Mapping[str, Any],
     arm: ActionEffectMode,
@@ -1322,12 +1417,26 @@ class _CallbackFactory:
                     {
                         "schema_version": FIRST_ROLLOUT_SCHEMA_VERSION,
                         "protocol": PROTOCOL,
+                        "cohort_id": self.cohort_id,
+                        "cohort_contract_sha256": self.cohort_contract_sha256,
                         "arm": self.arm.value,
+                        "digest_profile": v03.FIRST_ROLLOUT_DIGEST_PROFILE,
                         "captured_before_first_optimizer": True,
                         "identity": identity,
+                        "qualification_report_sha256": (
+                            self.qualification.report_sha256
+                        ),
                         "qualification_identity_sha256": (identity["aggregate_sha256"]),
                         "checkpoint_reuse_authorized": False,
                     },
+                )
+                verify_first_rollout_envelope(
+                    self.run_directory / "first-rollout.json",
+                    expected_arm=self.arm,
+                    expected_cohort_id=self.cohort_id,
+                    expected_contract_sha256=self.cohort_contract_sha256,
+                    expected_qualification_sha256=self.qualification.report_sha256,
+                    expected_identity=identity,
                 )
                 self._first_rollout_closed = True
 
@@ -1366,7 +1475,15 @@ class _CallbackFactory:
                     "transplant": self.transplant,
                     "initial_rng_identity": self.initial_rng_identity,
                     "extended_initial_rng_identity": (self.extended_initial_rng_identity),
+                    "first_rollout_digest_profile": (
+                        v03.FIRST_ROLLOUT_DIGEST_PROFILE
+                    ),
                     "first_rollout_identity": self.first_rollout_identity,
+                    "first_rollout_envelope_sha256": (
+                        file_sha256(self.run_directory / "first-rollout.json")
+                        if self.first_rollout_identity is not None
+                        else None
+                    ),
                     "model_state": model_state,
                     "curriculum": self.state.public_dict(),
                     "controller": self.controller.public_dict(),
@@ -1763,9 +1880,18 @@ class _CallbackFactory:
                             if self.initial_rng_identity
                             else None
                         ),
+                        "first_rollout_digest_profile": (
+                            v03.FIRST_ROLLOUT_DIGEST_PROFILE
+                        ),
+                        "first_rollout_identity": self.first_rollout_identity,
                         "first_rollout_identity_sha256": (
                             self.first_rollout_identity["aggregate_sha256"]
                             if self.first_rollout_identity
+                            else None
+                        ),
+                        "first_rollout_envelope_sha256": (
+                            file_sha256(self.run_directory / "first-rollout.json")
+                            if self.first_rollout_identity is not None
                             else None
                         ),
                         "first_rollout_verified": (self.first_rollout_identity is not None),
@@ -1914,6 +2040,14 @@ class _CallbackFactory:
                     raise ActionEffectTrainingError(
                         "v0.3 arm did not finish its exact trained ceiling"
                     )
+                first_rollout_binding = verify_first_rollout_envelope(
+                    self.run_directory / "first-rollout.json",
+                    expected_arm=self.arm,
+                    expected_cohort_id=self.cohort_id,
+                    expected_contract_sha256=self.cohort_contract_sha256,
+                    expected_qualification_sha256=self.qualification.report_sha256,
+                    expected_identity=self.first_rollout_identity,
+                )
                 grade = v03.grade_terminal(
                     self.arm,
                     self.controller.exam_records,
@@ -1936,6 +2070,17 @@ class _CallbackFactory:
                     terminal.with_suffix(".json"),
                     "v0.3 terminal checkpoint sidecar",
                 )
+                if (
+                    terminal_sidecar.get("first_rollout_digest_profile")
+                    != first_rollout_binding["digest_profile"]
+                    or terminal_sidecar.get("first_rollout_identity")
+                    != first_rollout_binding["identity"]
+                    or terminal_sidecar.get("first_rollout_envelope_sha256")
+                    != first_rollout_binding["envelope_sha256"]
+                ):
+                    raise ActionEffectTrainingError(
+                        "v0.3 terminal sidecar lost first-rollout evidence"
+                    )
                 case_evidence = self._case_inventory()
                 context_public = self.context_metrics.public_dict()
                 context_summary = {
@@ -2029,7 +2174,15 @@ class _CallbackFactory:
                     "transplant": self.transplant,
                     "initial_rng_identity": self.initial_rng_identity,
                     "extended_initial_rng_identity": (self.extended_initial_rng_identity),
-                    "first_rollout_identity": (self.first_rollout_identity),
+                    "first_rollout_digest_profile": (
+                        first_rollout_binding["digest_profile"]
+                    ),
+                    "first_rollout_identity": (
+                        first_rollout_binding["identity"]
+                    ),
+                    "first_rollout_envelope_sha256": (
+                        first_rollout_binding["envelope_sha256"]
+                    ),
                     "first_rollout": first_rollout,
                     "controller": self.controller.public_dict(),
                     "exam_records": self.controller.exam_records,
@@ -2065,6 +2218,15 @@ class _CallbackFactory:
                     "cohort_contract_sha256": (self.cohort_contract_sha256),
                     "report": report_path.name,
                     "report_sha256": file_sha256(report_path),
+                    "first_rollout_digest_profile": (
+                        first_rollout_binding["digest_profile"]
+                    ),
+                    "first_rollout_identity_sha256": (
+                        first_rollout_binding["identity"]["aggregate_sha256"]
+                    ),
+                    "first_rollout_envelope_sha256": (
+                        first_rollout_binding["envelope_sha256"]
+                    ),
                     "terminal_checkpoint_sha256": file_sha256(terminal),
                     "terminal_sidecar_sha256": file_sha256(terminal.with_suffix(".json")),
                     "terminal_integrity_sha256": file_sha256(_integrity_path(terminal)),
@@ -2272,6 +2434,7 @@ def verify_arm_terminal_report(
     expected_cohort_id: str | None = None,
     expected_contract_sha256: str | None = None,
     expected_qualification_sha256: str | None = None,
+    authenticate_frozen_r2_legacy_envelope: bool = False,
 ) -> dict[str, Any]:
     """Authenticate one terminal arm report without making it promotable."""
 
@@ -2349,6 +2512,84 @@ def verify_arm_terminal_report(
         or (expected_source_commit is not None and source.get("commit") != expected_source_commit)
     ):
         raise ActionEffectTrainingError("v0.3 terminal arm source identity changed")
+    cohort_id = report.get("cohort_id")
+    if not isinstance(cohort_id, str) or not cohort_id:
+        raise ActionEffectTrainingError("v0.3 terminal arm cohort identity changed")
+    contract_sha256 = _require_sha256(
+        report.get("cohort_contract_sha256"),
+        "v0.3 terminal arm cohort contract",
+    )
+    qualification_sha256 = _require_sha256(
+        report.get("qualification_sha256"),
+        "v0.3 terminal arm qualification",
+    )
+    first_rollout_path = run / "first-rollout.json"
+    if authenticate_frozen_r2_legacy_envelope:
+        if expected_cohort_id != "v0.3-action-effect-stage-a-r2-20260724":
+            raise ActionEffectTrainingError(
+                "legacy first-rollout verification is reserved for frozen r2"
+            )
+        legacy_envelope = _read_json(
+            first_rollout_path,
+            "frozen r2 first-rollout envelope",
+        )
+        first_identity = _validated_first_rollout_identity(
+            report.get("first_rollout_identity"),
+            label="frozen r2 first-rollout report",
+        )
+        if (
+            legacy_envelope.get("schema_version") != FIRST_ROLLOUT_SCHEMA_VERSION
+            or legacy_envelope.get("protocol") != PROTOCOL
+            or legacy_envelope.get("arm") != arm.value
+            or legacy_envelope.get("captured_before_first_optimizer") is not True
+            or legacy_envelope.get("identity") != first_identity
+            or legacy_envelope.get("qualification_identity_sha256")
+            != first_identity["aggregate_sha256"]
+            or legacy_envelope.get("checkpoint_reuse_authorized") is not False
+        ):
+            raise ActionEffectTrainingError(
+                "frozen r2 first-rollout envelope changed"
+            )
+        first_rollout = {
+            "digest_profile": v03.FIRST_ROLLOUT_DIGEST_PROFILE,
+            "identity": first_identity,
+            "envelope_sha256": file_sha256(first_rollout_path),
+        }
+    else:
+        first_rollout = verify_first_rollout_envelope(
+            first_rollout_path,
+            expected_arm=arm,
+            expected_cohort_id=cohort_id,
+            expected_contract_sha256=contract_sha256,
+            expected_qualification_sha256=qualification_sha256,
+            expected_identity=report.get("first_rollout_identity"),
+        )
+        first_identity = first_rollout["identity"]
+        first_aggregate = first_identity["aggregate_sha256"]
+        first_envelope_sha256 = first_rollout["envelope_sha256"]
+        if (
+            report.get("first_rollout_digest_profile")
+            != v03.FIRST_ROLLOUT_DIGEST_PROFILE
+            or report.get("first_rollout_identity") != first_identity
+            or report.get("first_rollout_envelope_sha256") != first_envelope_sha256
+            or status.get("first_rollout_digest_profile")
+            != v03.FIRST_ROLLOUT_DIGEST_PROFILE
+            or status.get("first_rollout_identity") != first_identity
+            or status.get("first_rollout_identity_sha256") != first_aggregate
+            or status.get("first_rollout_envelope_sha256")
+            != first_envelope_sha256
+            or status.get("first_rollout_verified") is not True
+            or integrity.get("first_rollout_digest_profile")
+            != v03.FIRST_ROLLOUT_DIGEST_PROFILE
+            or integrity.get("first_rollout_identity_sha256") != first_aggregate
+            or integrity.get("first_rollout_envelope_sha256")
+            != first_envelope_sha256
+        ):
+            raise ActionEffectTrainingError(
+                "v0.3 terminal first-rollout copies disagree"
+            )
+    first_identity = first_rollout["identity"]
+    first_envelope_sha256 = first_rollout["envelope_sha256"]
     terminal = (run / str(terminal_record.get("path", ""))).resolve()
     try:
         terminal.relative_to(run)
@@ -2366,6 +2607,16 @@ def verify_arm_terminal_report(
         or sidecar_value.get("promotable") is not False
         or sidecar_value.get("arm") != arm.value
         or sidecar_value.get("progress", {}).get("child_trained_actions") != CHILD_ACTION_BUDGET
+        or sidecar_value.get("first_rollout_identity") != first_identity
+        or (
+            not authenticate_frozen_r2_legacy_envelope
+            and (
+                sidecar_value.get("first_rollout_digest_profile")
+                != v03.FIRST_ROLLOUT_DIGEST_PROFILE
+                or sidecar_value.get("first_rollout_envelope_sha256")
+                != first_envelope_sha256
+            )
+        )
     ):
         raise ActionEffectTrainingError("v0.3 terminal checkpoint binding changed")
     if (
@@ -2405,7 +2656,9 @@ def verify_arm_terminal_report(
         "eligible": grade.eligible,
         "grade": grade.public_dict(),
         "exam_records": records,
-        "first_rollout_identity": report.get("first_rollout_identity"),
+        "first_rollout_digest_profile": first_rollout["digest_profile"],
+        "first_rollout_identity": first_identity,
+        "first_rollout_envelope_sha256": first_envelope_sha256,
         "context_metrics": report.get("context_metrics"),
         "terminal_encoder": report.get("terminal_encoder"),
         "case_count": case_evidence["record_count"],
@@ -2455,6 +2708,7 @@ def verify_cohort_contract(
     arms = contract.get("arms")
     matched = contract.get("matched_design")
     parent = contract.get("parent")
+    replacement = contract.get("replacement")
     qualification_public = _qualification_public(qualification)
     qualification_binding = contract.get("qualification")
     contract_source = contract.get("source")
@@ -2473,7 +2727,7 @@ def verify_cohort_contract(
     if (
         contract.get("schema_version") != 1
         or contract.get("protocol") != PROTOCOL
-        or contract.get("cohort_id") != "v0.3-action-effect-stage-a-r2-20260724"
+        or contract.get("cohort_id") != "v0.3-action-effect-stage-a-r3-20260724"
         or not isinstance(contract_source, Mapping)
         or contract_source.get("commit") != source.get("commit")
         or contract_source.get("dirty") is not False
@@ -2492,9 +2746,18 @@ def verify_cohort_contract(
         != expected_arm_directories
         or not isinstance(matched, Mapping)
         or not isinstance(parent, Mapping)
+        or not isinstance(replacement, Mapping)
         or not isinstance(qualification_binding, Mapping)
-        or qualification_binding.get("report_sha256") != qualification_public.get("report_sha256")
-        or qualification_binding.get("tag_object") != qualification_public.get("tag_object")
+        or dict(qualification_binding) != qualification_public
+        or replacement.get("failed_attempt_evidence_sha256")
+        != qualification_public.get("failed_stage_a_attempt_sha256")
+        or replacement.get("failed_r2_attempt_evidence_sha256")
+        != qualification_public.get("failed_stage_a_r2_attempt_sha256")
+        or replacement.get("failed_attempt_resume_authorized") is not False
+        or replacement.get("failed_attempt_root_reuse_authorized") is not False
+        or replacement.get("failed_r2_attempt_resume_authorized") is not False
+        or replacement.get("failed_r2_attempt_root_reuse_authorized") is not False
+        or replacement.get("restarts_both_arms_from_confirmed_u1") is not True
         or parent.get("checkpoint_sha256") != v03.PARENT_CHECKPOINT_SHA256
         or parent.get("policy_tensor_sha256") != v03.PARENT_POLICY_TENSOR_SHA256
         or parent.get("optimizer_state_sha256") != v03.PARENT_OPTIMIZER_STATE_SHA256

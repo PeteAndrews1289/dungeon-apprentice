@@ -18,6 +18,8 @@ development checkpoints are never promotable.
 
 from __future__ import annotations
 
+import hashlib
+import json
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -78,7 +80,8 @@ LINEAGE_CAP_BYTES = 2 * 1024**3
 COHORT_SCIENTIFIC_CAP_BYTES = 4 * 1024**3
 MEDIA_CAP_BYTES = 6 * 1024**3
 COMBINED_PLANNED_CAP_BYTES = 10 * 1024**3
-PROTOCOL_DOCUMENT = "docs/protocol-v0.3-action-effect-architecture-r2.md"
+PROTOCOL_DOCUMENT = "docs/protocol-v0.3-action-effect-architecture-r3.md"
+FIRST_ROLLOUT_DIGEST_PROFILE = "u2s-canonical-json-v1-lf"
 
 ARM_ORDER = (
     ActionEffectMode.SHAM,
@@ -88,6 +91,22 @@ ARM_ORDER = (
 
 class ActionEffectProtocolError(RuntimeError):
     """Raised when the v0.3 study changes or loses its frozen boundary."""
+
+
+def first_rollout_identity_sha256(value: Any) -> str:
+    """Hash first-rollout identity evidence with its frozen LF profile."""
+
+    encoded = (
+        json.dumps(
+            value,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        )
+        + "\n"
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
 
 
 @dataclass(frozen=True)

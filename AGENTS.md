@@ -115,17 +115,24 @@
   `eb529df93a43be803d47ba73069ac428bdf953065aa7258d34c2d1dd333bbdc2`; the canonical returned
   failed-r1 evidence-object SHA-256 is
   `5d8038681355264b51c51fd4b5c2b93d3e49804286bc78c8d89a1efd21265110`.
-- The current v0.3 boundary is the prospective r2 replacement in
-  `docs/protocol-v0.3-action-effect-architecture-r2.md`. Its assigned annotated tag is
-  `action-effect-architecture-v0.3-stage-a-r2-20260724`; assigned qualification, cohort, and media
+- v0.3 Stage-A r2 is immutable terminal `integrity_failed` evidence. Its sham arm completed exactly
+  1,048,576 child actions and all 32 exams, but arm closeout rejected its authentic first-rollout
+  identity because the manifest omitted the qualified canonical JSON line-feed byte. The
+  action-effect arm never started, so r2 produced no matched comparison or architecture verdict.
+  Never resume, rename, reuse, prune, overwrite, or train from the r2 cohort, media, qualification,
+  report, or terminal checkpoint. See
+  `docs/results/v0.3-action-effect-stage-a-r2-operational-failure.md`.
+- The current v0.3 boundary is the prospective r3 replacement in
+  `docs/protocol-v0.3-action-effect-architecture-r3.md`. Its assigned annotated tag is
+  `action-effect-architecture-v0.3-stage-a-r3-20260724`; assigned qualification, cohort, and media
   roots are respectively
-  `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r2-20260724`,
-  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-20260724`, and
-  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-media-20260724`; dashboard
-  is `http://127.0.0.1:8790/`; the sole canonical launcher is
-  `scripts/run_v03_action_effect_stage_a_r2.sh`. These are prospective assignments: no r2 source
+  `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r3-20260724`,
+  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-20260724`, and
+  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-media-20260724`; dashboard
+  is `http://127.0.0.1:8791/`; the sole canonical launcher is
+  `scripts/run_v03_action_effect_stage_a_r3.sh`. These are prospective assignments: no r3 source
   hash, tag object, qualification digest, cohort, policy action, or result exists before the clean
-  release sequence. r2 must authenticate both failed predecessors and restart both arms fresh from
+  release sequence. r3 must authenticate every failed predecessor and restart both arms fresh from
   confirmed U1.
 - Preserve the v0.3 non-circular release order: the published annotated tag preregisters
   source/protocol/roots/contracts; the durable qualification claim/report binds that exact tag

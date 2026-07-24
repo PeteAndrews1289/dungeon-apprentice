@@ -324,9 +324,16 @@ def test_first_rollout_matches_frozen_smoke_at_terminal_boundary(
 
     observation = np.arange(12, dtype=np.uint8).reshape(2, 2, 3)
     assert trainer._observation_sha256(observation) == frozen_smoke._observation_sha256(observation)
+    qualification_digest = frozen_smoke._canonical_sha256(
+        qualification.resets
+    )
     assert trainer._qualification_canonical_sha256(
         production.resets
-    ) == frozen_smoke._canonical_sha256(qualification.resets)
+    ) == qualification_digest
+    assert (
+        v03.first_rollout_identity_sha256(production.resets)
+        == qualification_digest
+    )
     assert trainer._normalized_trajectory_identity(
         [production_evidence]
     ) == v03_smoke._trajectory_identity([qualification_evidence])
@@ -352,6 +359,16 @@ def test_first_rollout_matches_frozen_smoke_at_terminal_boundary(
     assert trainer._qualification_episode_ledger_sha256(ledger) == frozen_smoke._canonical_sha256(
         normalized
     )
+
+
+def test_shared_first_rollout_digest_is_frozen_smoke_byte_exact() -> None:
+    value = {"unicode": "Pokémon", "nested": [3, {"matched": True}]}
+    assert v03.FIRST_ROLLOUT_DIGEST_PROFILE == "u2s-canonical-json-v1-lf"
+    assert v03.first_rollout_identity_sha256(value) == frozen_smoke._canonical_sha256(
+        value
+    )
+    with pytest.raises(ValueError):
+        v03.first_rollout_identity_sha256({"invalid": float("nan")})
 
 
 def test_context_metrics_separates_activation_effect_and_action() -> None:
@@ -532,6 +549,37 @@ def test_normalized_first_rollout_excludes_arm_specific_fields() -> None:
     assert "arm" not in identity
     assert "arm_only" not in identity["trajectory_identity"][0]
     assert len(identity["aggregate_sha256"]) == 64
+    core = {
+        key: value
+        for key, value in identity.items()
+        if key != "aggregate_sha256"
+    }
+    assert identity["aggregate_sha256"] == v03.first_rollout_identity_sha256(
+        core
+    )
+
+
+def _terminal_first_rollout_identity() -> dict:
+    core = {
+        "trajectory_identity": [
+            {
+                "worker_index": index,
+                "transitions": v03.ROLLOUT_STEPS,
+                "trajectory_sha256": f"{index + 10:064x}",
+            }
+            for index in range(v03.WORKERS)
+        ],
+        "policy_output_sha256": "c" * 64,
+        "post_rollout_rng_identity": {
+            "phase": "post_rollout_pre_optimizer",
+            "aggregate_sha256": "d" * 64,
+        },
+        "episode_ledger_normalized_sha256": "e" * 64,
+    }
+    return {
+        **core,
+        "aggregate_sha256": v03.first_rollout_identity_sha256(core),
+    }
 
 
 def _write_terminal_arm(
@@ -543,10 +591,31 @@ def _write_terminal_arm(
     run = root / arm.value
     checkpoints = run / "checkpoints" / "rolling"
     checkpoints.mkdir(parents=True)
-    cohort_id = "v0.3-action-effect-stage-a-r2-20260724"
+    cohort_id = "v0.3-action-effect-stage-a-r3-20260724"
     contract_sha256 = "a" * 64
     source = {"commit": source_commit, "dirty": False}
     qualification = {"report_sha256": "b" * 64}
+    first_rollout_identity = _terminal_first_rollout_identity()
+    first_rollout_path = run / "first-rollout.json"
+    atomic_write_json(
+        first_rollout_path,
+        {
+            "schema_version": trainer.FIRST_ROLLOUT_SCHEMA_VERSION,
+            "protocol": trainer.PROTOCOL,
+            "cohort_id": cohort_id,
+            "cohort_contract_sha256": contract_sha256,
+            "arm": arm.value,
+            "digest_profile": v03.FIRST_ROLLOUT_DIGEST_PROFILE,
+            "captured_before_first_optimizer": True,
+            "identity": first_rollout_identity,
+            "qualification_report_sha256": qualification["report_sha256"],
+            "qualification_identity_sha256": (
+                first_rollout_identity["aggregate_sha256"]
+            ),
+            "checkpoint_reuse_authorized": False,
+        },
+    )
+    first_rollout_sha256 = file_sha256(first_rollout_path)
     evaluations, cases = _valid_exam_case_evidence()
     records: list[dict] = []
     case_files: list[dict] = []
@@ -641,6 +710,9 @@ def _write_terminal_arm(
         "promotable": False,
         "development_checkpoint_reuse_authorized": False,
         "checkpoint_sha256": file_sha256(terminal),
+        "first_rollout_digest_profile": v03.FIRST_ROLLOUT_DIGEST_PROFILE,
+        "first_rollout_identity": first_rollout_identity,
+        "first_rollout_envelope_sha256": first_rollout_sha256,
         "progress": {
             "child_trained_actions": v03.CHILD_ACTION_BUDGET,
         },
@@ -662,6 +734,9 @@ def _write_terminal_arm(
         "source": source,
         "qualification": qualification,
         "qualification_sha256": qualification["report_sha256"],
+        "first_rollout_digest_profile": v03.FIRST_ROLLOUT_DIGEST_PROFILE,
+        "first_rollout_identity": first_rollout_identity,
+        "first_rollout_envelope_sha256": first_rollout_sha256,
         "progress": {
             "child_trained_actions": v03.CHILD_ACTION_BUDGET,
             "lifetime_trained_actions": (v03.PARENT_LIFETIME_ACTIONS + v03.CHILD_ACTION_BUDGET),
@@ -705,6 +780,13 @@ def _write_terminal_arm(
             "optimizer_updates": 3_584,
             "exam_count": v03.EXAM_COUNT,
             "report_sha256": file_sha256(report_path),
+            "first_rollout_digest_profile": v03.FIRST_ROLLOUT_DIGEST_PROFILE,
+            "first_rollout_identity": first_rollout_identity,
+            "first_rollout_identity_sha256": (
+                first_rollout_identity["aggregate_sha256"]
+            ),
+            "first_rollout_envelope_sha256": first_rollout_sha256,
+            "first_rollout_verified": True,
         },
     )
     atomic_write_json(
@@ -717,6 +799,11 @@ def _write_terminal_arm(
             "arm": arm.value,
             "report": report_path.name,
             "report_sha256": file_sha256(report_path),
+            "first_rollout_digest_profile": v03.FIRST_ROLLOUT_DIGEST_PROFILE,
+            "first_rollout_identity_sha256": (
+                first_rollout_identity["aggregate_sha256"]
+            ),
+            "first_rollout_envelope_sha256": first_rollout_sha256,
             "terminal_checkpoint_sha256": file_sha256(terminal),
             "terminal_sidecar_sha256": file_sha256(terminal.with_suffix(".json")),
             "terminal_integrity_sha256": file_sha256(trainer._integrity_path(terminal)),
@@ -744,6 +831,93 @@ def test_terminal_arm_reports_are_authenticated_and_nonpromotable(
         assert verified["case_count"] == 10_240
         assert len(verified["case_evidence_files"]) == v03.EXAM_COUNT
         assert len(verified["exam_bundles"]) == v03.EXAM_COUNT
+
+
+def test_terminal_arm_rejects_first_rollout_profile_tamper(
+    tmp_path: Path,
+) -> None:
+    arm = ActionEffectMode.SHAM
+    _write_terminal_arm(tmp_path, arm=arm, source_commit="1" * 40)
+    envelope_path = tmp_path / arm.value / "first-rollout.json"
+    envelope = json.loads(envelope_path.read_text(encoding="utf-8"))
+    envelope["digest_profile"] = "legacy-no-lf"
+    atomic_write_json(envelope_path, envelope)
+
+    with pytest.raises(
+        trainer.ActionEffectTrainingError,
+        match="envelope contract changed",
+    ):
+        trainer.verify_arm_terminal_report(
+            tmp_path / arm.value,
+            expected_arm=arm,
+            expected_source_commit="1" * 40,
+        )
+
+
+def test_terminal_arm_rejects_first_rollout_envelope_tamper(
+    tmp_path: Path,
+) -> None:
+    arm = ActionEffectMode.SHAM
+    _write_terminal_arm(tmp_path, arm=arm, source_commit="1" * 40)
+    envelope_path = tmp_path / arm.value / "first-rollout.json"
+    envelope = json.loads(envelope_path.read_text(encoding="utf-8"))
+    envelope["identity"]["policy_output_sha256"] = "0" * 64
+    atomic_write_json(envelope_path, envelope)
+
+    with pytest.raises(
+        trainer.ActionEffectTrainingError,
+        match="aggregate does not authenticate",
+    ):
+        trainer.verify_arm_terminal_report(
+            tmp_path / arm.value,
+            expected_arm=arm,
+            expected_source_commit="1" * 40,
+        )
+
+
+def test_terminal_arm_rejects_first_rollout_cross_copy_tamper(
+    tmp_path: Path,
+) -> None:
+    arm = ActionEffectMode.SHAM
+    _write_terminal_arm(tmp_path, arm=arm, source_commit="1" * 40)
+    status_path = tmp_path / arm.value / "status.json"
+    status = json.loads(status_path.read_text(encoding="utf-8"))
+    status["first_rollout_identity"] = {
+        **status["first_rollout_identity"],
+        "policy_output_sha256": "0" * 64,
+    }
+    atomic_write_json(status_path, status)
+
+    with pytest.raises(
+        trainer.ActionEffectTrainingError,
+        match="first-rollout copies disagree",
+    ):
+        trainer.verify_arm_terminal_report(
+            tmp_path / arm.value,
+            expected_arm=arm,
+            expected_source_commit="1" * 40,
+        )
+
+
+def test_terminal_arm_rejects_first_rollout_integrity_tamper(
+    tmp_path: Path,
+) -> None:
+    arm = ActionEffectMode.SHAM
+    _write_terminal_arm(tmp_path, arm=arm, source_commit="1" * 40)
+    integrity_path = tmp_path / arm.value / "report.integrity.json"
+    integrity = json.loads(integrity_path.read_text(encoding="utf-8"))
+    integrity["first_rollout_envelope_sha256"] = "0" * 64
+    atomic_write_json(integrity_path, integrity)
+
+    with pytest.raises(
+        trainer.ActionEffectTrainingError,
+        match="first-rollout copies disagree",
+    ):
+        trainer.verify_arm_terminal_report(
+            tmp_path / arm.value,
+            expected_arm=arm,
+            expected_source_commit="1" * 40,
+        )
 
 
 def test_terminal_arm_rejects_missing_exam_archive(
@@ -885,12 +1059,14 @@ def test_trainer_consumes_launcher_owned_paths_without_mutating_them(
         public_dict=lambda: {
             "report_sha256": "2" * 64,
             "tag_object": "3" * 40,
+            "failed_stage_a_attempt_sha256": "4" * 64,
+            "failed_stage_a_r2_attempt_sha256": "5" * 64,
         }
     )
     contract = {
         "schema_version": 1,
         "protocol": trainer.PROTOCOL,
-        "cohort_id": "v0.3-action-effect-stage-a-r2-20260724",
+        "cohort_id": "v0.3-action-effect-stage-a-r3-20260724",
         "source": {
             "commit": source["commit"],
             "dirty": False,
@@ -898,6 +1074,17 @@ def test_trainer_consumes_launcher_owned_paths_without_mutating_them(
         "qualification": {
             "report_sha256": "2" * 64,
             "tag_object": "3" * 40,
+            "failed_stage_a_attempt_sha256": "4" * 64,
+            "failed_stage_a_r2_attempt_sha256": "5" * 64,
+        },
+        "replacement": {
+            "failed_attempt_evidence_sha256": "4" * 64,
+            "failed_r2_attempt_evidence_sha256": "5" * 64,
+            "failed_attempt_resume_authorized": False,
+            "failed_attempt_root_reuse_authorized": False,
+            "failed_r2_attempt_resume_authorized": False,
+            "failed_r2_attempt_root_reuse_authorized": False,
+            "restarts_both_arms_from_confirmed_u1": True,
         },
         "parent": {
             "checkpoint_sha256": v03.PARENT_CHECKPOINT_SHA256,
@@ -971,7 +1158,7 @@ def test_trainer_rejects_noncanonical_roots_and_arm_directories(
     contract = {
         "schema_version": 1,
         "protocol": trainer.PROTOCOL,
-        "cohort_id": "v0.3-action-effect-stage-a-r2-20260724",
+        "cohort_id": "v0.3-action-effect-stage-a-r3-20260724",
         "source": source,
         "qualification": {
             "report_sha256": "2" * 64,

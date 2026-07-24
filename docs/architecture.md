@@ -255,27 +255,37 @@ updates, and one scheduled exam. No safe checkpoint exists and action-effect nev
 is [terminal operational evidence](results/v0.3-action-effect-stage-a-r1-operational-failure.md),
 not an architecture comparison.
 
+The
+[r2 protocol](protocol-v0.3-action-effect-architecture-r2.md) kept r1's dashboard correction and
+added leading-argument process classification plus explicit abnormal-exit cleanup. It completed
+the full sham budget, but the terminal manifest hashed first-rollout evidence without the final
+line-feed byte used by qualification and training. The cohort stopped before action-effect began;
+the [r2 result](results/v0.3-action-effect-stage-a-r2-operational-failure.md) is operational
+evidence, not an architecture comparison.
+
 The prospective
-[r2 protocol](protocol-v0.3-action-effect-architecture-r2.md) keeps r1's dashboard correction and
-adds leading-argument process classification plus explicit abnormal-exit cleanup:
+[r3 protocol](protocol-v0.3-action-effect-architecture-r3.md) retains every learner boundary and
+names one shared LF-terminated digest profile:
 
 ```mermaid
 flowchart LR
-    F0["Frozen zero-action attempt 0"] --> C["Clean published r2 source"]
+    F0["Frozen zero-action attempt 0"] --> C["Clean prospective r3 source"]
     F1["Frozen partial-sham r1"] --> C
-    C --> T["Annotated r2 preregistration tag"]
+    F2["Frozen full-sham r2 closeout failure"] --> C
+    C --> T["Annotated r3 preregistration tag"]
     T --> Q["Durable qualification + matched smoke"]
     Q --> M["Cohort contract binds report SHA-256"]
-    M --> L["Fixed r2 launcher"]
-    L --> D["Read-only dashboard :8790"]
+    M --> L["Fixed r3 launcher"]
+    L --> D["Read-only dashboard :8791"]
     L --> R["Leading argv role classification"]
     L --> X["Explicit cleanup on every failure"]
+    L --> H["One shared first-rollout LF digest profile"]
     D --> A["Deep-auth once before socket bind"]
 ```
 
-The prospective r2 tag is `action-effect-architecture-v0.3-stage-a-r2-20260724`; its qualification,
-cohort, and media roots share the `stage-a-r2-20260724` identity. The dashboard is assigned port
-`8790`, and the sole launcher is `scripts/run_v03_action_effect_stage_a_r2.sh`. These names are not
-release evidence. No final r2 source hash, tag object, qualification digest, cohort, action, or
-result exists before the clean non-circular release sequence. Both arms restart from confirmed U1;
-no r1 state crosses the boundary.
+The prospective r3 tag is `action-effect-architecture-v0.3-stage-a-r3-20260724`; its qualification,
+cohort, and media roots share the `stage-a-r3-20260724` identity. The dashboard is assigned port
+`8791`, and the prospective sole launcher is `scripts/run_v03_action_effect_stage_a_r3.sh`. These
+names are not release evidence. Source hash, tag object, qualification digests, cohort contract,
+actions, and result remain **TBD**. Both arms restart from confirmed U1; no r2 state crosses the
+boundary.

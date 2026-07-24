@@ -4,22 +4,22 @@ set -euo pipefail
 repository=${0:A:h:h}
 volume="/Volumes/T7 Developer"
 dungeon_root="$volume/DungeonApprentice"
-run_root="$dungeon_root/v03-action-effect-stage-a-r2-20260724"
-media_root="$dungeon_root/v03-action-effect-stage-a-r2-media-20260724"
-qualification_report="$dungeon_root/qualifications/v0.3-action-effect-stage-a-r2-20260724/report.json"
+run_root="$dungeon_root/v03-action-effect-stage-a-r3-20260724"
+media_root="$dungeon_root/v03-action-effect-stage-a-r3-media-20260724"
+qualification_report="$dungeon_root/qualifications/v0.3-action-effect-stage-a-r3-20260724/report.json"
 contract="$run_root/cohort-contract.json"
 parent="$dungeon_root/u1-local-replication-20260722/v02-u1-replication-seed-20260733/checkpoints/mastered-local-unlock.zip"
 parent_sha256="3d2950e63491d07d3e483660469b8bec869fa137fa61d6b4d22b3d9f0ded2104"
 training_protocol="dungeon-apprentice-v0.3-action-effect-architecture"
-cohort_id="v0.3-action-effect-stage-a-r2-20260724"
-training_tag="action-effect-architecture-v0.3-stage-a-r2-20260724"
+cohort_id="v0.3-action-effect-stage-a-r3-20260724"
+training_tag="action-effect-architecture-v0.3-stage-a-r3-20260724"
 expected_origin="https://github.com/PeteAndrews1289/dungeon-apprentice.git"
 trainer_module="dungeon_apprentice.v03_action_effect_train"
 dashboard_module="dungeon_apprentice.v03_action_effect_dashboard"
 qualifier_module="dungeon_apprentice.v03_action_effect_qualify"
 manifest_helper="$repository/scripts/v03_action_effect_manifest.py"
 trainer_supervisor="$repository/scripts/u2_trainer_supervisor.py"
-dashboard_port=8790
+dashboard_port=8791
 minimum_free_gib=25
 shutdown_grace_polls=150
 shutdown_escalation_polls=100
@@ -190,11 +190,11 @@ repository, report, source_commit, tag_object = sys.argv[1:]
 report_path = Path(report)
 if (
     report_path != CANONICAL_REPORT
-    or Path("/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-20260724")
+    or Path("/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-20260724")
     != CANONICAL_COHORT_ROOT
-    or Path("/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-media-20260724")
+    or Path("/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-media-20260724")
     != CANONICAL_MEDIA_ROOT
-    or QUALIFIED_TAG != "action-effect-architecture-v0.3-stage-a-r2-20260724"
+    or QUALIFIED_TAG != "action-effect-architecture-v0.3-stage-a-r3-20260724"
 ):
     raise SystemExit("v0.3 canonical identities differ from the launcher")
 evidence = verify_action_effect_qualification(
@@ -322,12 +322,12 @@ with urllib.request.urlopen(
     payload = json.load(response)
 if (
     payload.get("cohort_id")
-    != "v0.3-action-effect-stage-a-r2-20260724"
+    != "v0.3-action-effect-stage-a-r3-20260724"
     or payload.get("protocol")
     != "dungeon-apprentice-v0.3-action-effect-architecture"
     or payload.get("source_commit") != source
     or payload.get("tag")
-    != "action-effect-architecture-v0.3-stage-a-r2-20260724"
+    != "action-effect-architecture-v0.3-stage-a-r3-20260724"
     or payload.get("tag_object") != tag_object
     or payload.get("checkpoint_promotable") is not False
     or payload.get("u3_authorized") is not False
@@ -699,12 +699,18 @@ terminalize_inactive_cohort() {
       --source-commit "$source_commit" \
       --tag-object "$tag_object" 2>/dev/null
   ) || return 0
+  [[ -n "$plan_json" ]] || return 0
   disposition=$(
     "$repository/.venv/bin/python" - "$plan_json" <<'PY'
 import json
 import sys
 
-plan = json.loads(sys.argv[1])
+try:
+    plan = json.loads(sys.argv[1])
+except (TypeError, ValueError):
+    raise SystemExit(2) from None
+if not isinstance(plan, dict):
+    raise SystemExit(2)
 if plan.get("done") is True and plan.get("closeout_required") is True:
     print("closeout")
 elif plan.get("done") is False and plan.get("arm") in {"sham", "action-effect"}:
@@ -908,12 +914,20 @@ while true; do
       --source-commit "$source_commit" \
       --tag-object "$tag_object"
   ) || abort_launcher 1 "v0.3 next-arm planning failed"
+  [[ -n "$plan_json" ]] || {
+    abort_launcher 1 "v0.3 next-arm planner returned no JSON"
+  }
   plan_fields=("${(@f)$(
     "$repository/.venv/bin/python" - "$plan_json" <<'PY'
 import json
 import sys
 
-plan = json.loads(sys.argv[1])
+try:
+    plan = json.loads(sys.argv[1])
+except (TypeError, ValueError):
+    raise SystemExit(2) from None
+if not isinstance(plan, dict):
+    raise SystemExit(2)
 if plan.get("done") is True:
     print("done")
     print("true" if plan.get("closeout_required") is True else "false")

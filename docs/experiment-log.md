@@ -1121,3 +1121,61 @@ This is a preparation entry, not a release or launch claim. No final r2 source c
 tag payload, qualification digest, cohort contract, policy action, or result exists yet. The
 governing prospective document is the
 [v0.3 Stage-A r2 protocol](protocol-v0.3-action-effect-architecture-r2.md).
+
+### July 24, 2026 — v0.3 Stage-A r2 completes sham, then fails terminal authentication
+
+r2 froze clean source `01b1b910edbb676f5de7375fa55d1b6e3bc6a54c`, published annotated
+tag object `87d4ce7d24bd13d3a5e3e182c29889c36db35d87`, passed one-shot qualification
+`148bb469cf66753b3ab998299e5f595c94d4fb868c5c38d93c8ec0e9cd097a9e`, and created
+cohort contract
+`4114f1d03e5d7e84eab9106676b6dcb9a8b2b0f2b8376a765f599dc61b1b49fa`.
+
+Sham started at `05:50:42Z` and its trainer completed at `07:49:41Z`:
+
+| Counter | Terminal value |
+|---|---:|
+| Child actions collected/trained | 1,048,576 / 1,048,576 |
+| New / lifetime optimizer updates | 2,048 / 3,584 |
+| Frozen exams | 32 / 32 |
+| Terminal U2 scores | 77, 78, 78 / 80 |
+| Terminal U2 panel splits | 39/38, 39/39, 38/40 |
+| Terminal global maximum ineffective/repeated run | 3, 85, 9 / 3, 85, 8 |
+
+The middle terminal exam's one 85-action pathological case made sham terminal-ineligible. Sham is
+calibration only, so it could not select the architecture in any outcome.
+
+At `07:50:00Z`, terminal manifest closeout rejected the first-rollout boundary. Qualification and
+training hash compact sorted JSON followed by `\n`; the manifest's generic helper omitted that
+byte. The intended profile reproduces the recorded `fa4c7bda…` aggregate, while the manifest
+recomputed `3b9ecf3a…`. The cohort stopped `integrity_failed`. Action-effect remained pending with
+zero attempts and no directory.
+
+r2 is an operational failure, not an architecture result. Its report, checkpoint, and every root
+are non-resumable, non-promotable, and unusable as parents. The
+[exact r2 result](results/v0.3-action-effect-stage-a-r2-operational-failure.md) records the full
+timeline, hashes, and terminal-three evidence.
+
+### July 24, 2026 — v0.3 Stage-A r3 canonical-evidence replacement designed
+
+r3 keeps the scientific design and every training variable fixed. It gives the first-rollout
+identity one named byte profile, `u2s-canonical-json-v1-lf`, shared by qualification, trainer, and
+manifest. Terminal closeout must authenticate the early envelope and require exact equality across
+all later copies.
+
+Both arms restart from confirmed U1 child `20260733` in fixed sham-then-action-effect order. r2
+layouts are not added to the history guard, and no r2 checkpoint, optimizer, RNG, recurrent,
+scheduler, or environment state may cross the boundary.
+
+| Boundary | Prospective r3 identity |
+|---|---|
+| Cohort ID | `v0.3-action-effect-stage-a-r3-20260724` |
+| Annotated tag | `action-effect-architecture-v0.3-stage-a-r3-20260724` |
+| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r3-20260724` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-20260724` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-media-20260724` |
+| Dashboard | `http://127.0.0.1:8791/` |
+| Prospective launcher | `scripts/run_v03_action_effect_stage_a_r3.sh` |
+
+This is a documentation and design entry. The r3 source hash, tag object, qualification, checksums,
+roots, actions, and result remain **TBD**. The governing prospective document is the
+[v0.3 Stage-A r3 protocol](protocol-v0.3-action-effect-architecture-r3.md).

@@ -29,17 +29,17 @@ from dungeon_apprentice import v03_action_effect as v03
 PROTOCOL = v03.PROTOCOL
 QUALIFICATION_PROTOCOL = PROTOCOL
 SMOKE_PROTOCOL = "dungeon-apprentice-v0.3-action-effect-disposable-smoke"
-COHORT_ID = "v0.3-action-effect-stage-a-r2-20260724"
-TAG_NAME = "action-effect-architecture-v0.3-stage-a-r2-20260724"
-DEFAULT_ROOT = Path("/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-20260724")
+COHORT_ID = "v0.3-action-effect-stage-a-r3-20260724"
+TAG_NAME = "action-effect-architecture-v0.3-stage-a-r3-20260724"
+DEFAULT_ROOT = Path("/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-20260724")
 DEFAULT_MEDIA_ROOT = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-media-20260724"
+    "/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-media-20260724"
 )
 QUALIFICATION_REPORT = Path(
     "/Volumes/T7 Developer/DungeonApprentice/qualifications/"
-    "v0.3-action-effect-stage-a-r2-20260724/report.json"
+    "v0.3-action-effect-stage-a-r3-20260724/report.json"
 )
-DEFAULT_DASHBOARD_PORT = 8790
+DEFAULT_DASHBOARD_PORT = 8791
 
 ACTION_CAP = v03.CHILD_ACTION_BUDGET
 TOTAL_ACTION_CAP = 2 * ACTION_CAP
@@ -77,17 +77,22 @@ PROCESS_SCAN_TIMEOUT_SECONDS = 10
 PROCESS_SCAN_COMMAND = ("/bin/ps", "-axo", "pid=,ppid=,command=")
 PROCESS_ROLES = frozenset({"unrelated", "dashboard", "trainer", "supervisor", "caffeinate"})
 PROHIBITED_PROCESS_ROLES = frozenset({"trainer", "supervisor", "caffeinate"})
-TRAINER_PROCESS_PATTERN = re.compile(
-    r"(?:^|[\s/])(?:dungeon-train|"
-    r"dungeon_apprentice\.(?:train|v02_sentinel|v02_u1|v02_u2|"
-    r"v02_u2r|v02_u2s|v03_action_effect_train))(?=\s|$)"
+PYTHON_EXECUTABLE_PATTERN = re.compile(
+    r"^python(?:[0-9]+(?:\.[0-9]+)*)?$",
+    re.IGNORECASE,
 )
-SUPERVISOR_PROCESS_PATTERN = re.compile(r"(?:^|[\s/])u2_trainer_supervisor\.py(?=\s|$)")
-DASHBOARD_PROCESS_PATTERN = re.compile(
-    r"(?:^|[\s/])dungeon_apprentice\.v03_action_effect_dashboard"
-    r"(?=\s|$)"
+TRAINER_MODULES = frozenset(
+    {
+        "dungeon_apprentice.train",
+        "dungeon_apprentice.v02_sentinel",
+        "dungeon_apprentice.v02_u1",
+        "dungeon_apprentice.v02_u2",
+        "dungeon_apprentice.v02_u2r",
+        "dungeon_apprentice.v02_u2s",
+        "dungeon_apprentice.v03_action_effect_train",
+    }
 )
-CAFFEINATE_PROCESS_PATTERN = re.compile(r"(?:^|\s)(?:/usr/bin/)?caffeinate(?=\s|$)")
+DASHBOARD_MODULE = "dungeon_apprentice.v03_action_effect_dashboard"
 COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40,64}$")
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 ARM_STATES = frozenset(
@@ -272,6 +277,7 @@ def _verified_qualification_binding(
     restrictions = report.get("restrictions")
     smoke = report.get("smoke_evidence")
     failed_attempt = report.get("failed_stage_a_attempt")
+    failed_r2_attempt = report.get("failed_stage_a_r2_attempt")
     expected_storage_caps = {
         "per_arm_bytes": LINEAGE_CAP_BYTES,
         "scientific_cohort_bytes": COHORT_SCIENTIFIC_CAP_BYTES,
@@ -288,21 +294,33 @@ def _verified_qualification_binding(
         or _sha256(qualifier.CANONICAL_REPORT) != public.get("report_sha256")
         or public.get("storage_caps") != expected_storage_caps
         or SHA256_PATTERN.fullmatch(str(public.get("failed_stage_a_attempt_sha256", ""))) is None
+        or SHA256_PATTERN.fullmatch(
+            str(public.get("failed_stage_a_r2_attempt_sha256", ""))
+        )
+        is None
         or report.get("protocol") != PROTOCOL
         or report.get("kind") != qualifier.KIND
         or report.get("verdict") != "qualified"
         or not isinstance(smoke, Mapping)
         or not isinstance(smoke.get("_full_report"), Mapping)
         or not isinstance(failed_attempt, Mapping)
+        or not isinstance(failed_r2_attempt, Mapping)
         or _canonical_sha256(failed_attempt) != public.get("failed_stage_a_attempt_sha256")
+        or _canonical_sha256(failed_r2_attempt)
+        != public.get("failed_stage_a_r2_attempt_sha256")
         or failed_attempt.get("disposition") != "operationally_incomplete"
         or failed_attempt.get("resume_authorized") is not False
         or failed_attempt.get("reuse_authorized") is not False
+        or failed_r2_attempt.get("disposition") != "integrity_failed"
+        or failed_r2_attempt.get("resume_authorized") is not False
+        or failed_r2_attempt.get("reuse_authorized") is not False
         or not isinstance(restrictions, Mapping)
         or restrictions.get("arms_run_sequentially") is not True
         or restrictions.get("stage_a_resume_supported") is not False
         or restrictions.get("failed_attempt_resume_authorized") is not False
         or restrictions.get("failed_attempt_root_reuse_authorized") is not False
+        or restrictions.get("failed_r2_attempt_resume_authorized") is not False
+        or restrictions.get("failed_r2_attempt_root_reuse_authorized") is not False
         or restrictions.get("replacement_restarts_both_arms_from_confirmed_u1") is not True
         or restrictions.get("development_checkpoint_reuse_authorized") is not False
         or restrictions.get("u3_authorized") is not False
@@ -332,8 +350,13 @@ def _expected_contract(
         "qualification": dict(qualification),
         "replacement": {
             "failed_attempt_evidence_sha256": qualification["failed_stage_a_attempt_sha256"],
+            "failed_r2_attempt_evidence_sha256": qualification[
+                "failed_stage_a_r2_attempt_sha256"
+            ],
             "failed_attempt_resume_authorized": False,
             "failed_attempt_root_reuse_authorized": False,
+            "failed_r2_attempt_resume_authorized": False,
+            "failed_r2_attempt_root_reuse_authorized": False,
             "restarts_both_arms_from_confirmed_u1": True,
         },
         "parent": {
@@ -472,8 +495,12 @@ def _validate_contract(contract: Mapping[str, Any]) -> None:
         or not isinstance(replacement, Mapping)
         or replacement.get("failed_attempt_evidence_sha256")
         != qualification.get("failed_stage_a_attempt_sha256")
+        or replacement.get("failed_r2_attempt_evidence_sha256")
+        != qualification.get("failed_stage_a_r2_attempt_sha256")
         or replacement.get("failed_attempt_resume_authorized") is not False
         or replacement.get("failed_attempt_root_reuse_authorized") is not False
+        or replacement.get("failed_r2_attempt_resume_authorized") is not False
+        or replacement.get("failed_r2_attempt_root_reuse_authorized") is not False
         or replacement.get("restarts_both_arms_from_confirmed_u1") is not True
         or not isinstance(matched, Mapping)
         or matched.get("arm_order") != list(ARM_ORDER)
@@ -682,7 +709,7 @@ def _first_rollout_evidence(
         not isinstance(trajectory, list)
         or len(trajectory) != v03.WORKERS
         or not isinstance(post_rng, Mapping)
-        or _canonical_sha256(
+        or v03.first_rollout_identity_sha256(
             {key: item for key, item in value.items() if key != "aggregate_sha256"}
         )
         != aggregate
@@ -695,6 +722,53 @@ def _first_rollout_evidence(
     )
     _digest(aggregate, label=f"{arm_id} first-rollout aggregate")
     return dict(value)
+
+
+def _first_rollout_envelope(
+    path: Path,
+    *,
+    arm_id: str,
+    contract: Mapping[str, Any],
+    contract_sha256: str,
+) -> dict[str, Any]:
+    if path.is_symlink() or not path.is_file():
+        raise V03ManifestError(f"{arm_id} first-rollout envelope is missing or unsafe")
+    value = _read_json(path, label=f"{arm_id} first-rollout envelope")
+    fields = {
+        "schema_version",
+        "protocol",
+        "cohort_id",
+        "cohort_contract_sha256",
+        "arm",
+        "digest_profile",
+        "captured_before_first_optimizer",
+        "identity",
+        "qualification_report_sha256",
+        "qualification_identity_sha256",
+        "checkpoint_reuse_authorized",
+    }
+    identity = _first_rollout_evidence(value.get("identity"), arm_id=arm_id)
+    if (
+        set(value) != fields
+        or value.get("schema_version") != 1
+        or value.get("protocol") != PROTOCOL
+        or value.get("cohort_id") != COHORT_ID
+        or value.get("cohort_contract_sha256") != contract_sha256
+        or value.get("arm") != arm_id
+        or value.get("digest_profile") != v03.FIRST_ROLLOUT_DIGEST_PROFILE
+        or value.get("captured_before_first_optimizer") is not True
+        or value.get("qualification_report_sha256")
+        != contract["qualification"]["report_sha256"]
+        or value.get("qualification_identity_sha256")
+        != identity["aggregate_sha256"]
+        or value.get("checkpoint_reuse_authorized") is not False
+    ):
+        raise V03ManifestError(f"{arm_id} first-rollout envelope contract changed")
+    return {
+        "digest_profile": v03.FIRST_ROLLOUT_DIGEST_PROFILE,
+        "identity": identity,
+        "envelope_sha256": _sha256(path),
+    }
 
 
 def _context_encoder_evidence(
@@ -823,6 +897,15 @@ def _verified_arm_terminal(
         integrity_path,
         label=f"{arm_id} terminal report integrity",
     )
+    first_rollout = _first_rollout_envelope(
+        directory / "first-rollout.json",
+        arm_id=arm_id,
+        contract=contract,
+        contract_sha256=contract_sha256,
+    )
+    first_identity = first_rollout["identity"]
+    first_aggregate = first_identity["aggregate_sha256"]
+    first_envelope_sha256 = first_rollout["envelope_sha256"]
     _validate_status_identity(
         status,
         arm_id=arm_id,
@@ -866,12 +949,34 @@ def _verified_arm_terminal(
         or integrity.get("report") != "report.json"
         or integrity.get("report_sha256") != report_sha256
         or integrity.get("cohort_contract_sha256") != contract_sha256
+        or integrity.get("first_rollout_digest_profile")
+        != v03.FIRST_ROLLOUT_DIGEST_PROFILE
+        or integrity.get("first_rollout_identity_sha256") != first_aggregate
+        or integrity.get("first_rollout_envelope_sha256")
+        != first_envelope_sha256
         or status.get("report_sha256") != report_sha256
+        or status.get("first_rollout_digest_profile")
+        != v03.FIRST_ROLLOUT_DIGEST_PROFILE
+        or status.get("first_rollout_identity") != first_identity
+        or status.get("first_rollout_identity_sha256") != first_aggregate
+        or status.get("first_rollout_envelope_sha256")
+        != first_envelope_sha256
+        or status.get("first_rollout_verified") is not True
+        or report.get("first_rollout_digest_profile")
+        != v03.FIRST_ROLLOUT_DIGEST_PROFILE
+        or report.get("first_rollout_identity") != first_identity
+        or report.get("first_rollout_envelope_sha256")
+        != first_envelope_sha256
         or verified.get("report_sha256") != report_sha256
         or verified.get("report_integrity_sha256") != _sha256(integrity_path)
         or verified.get("cohort_id") != COHORT_ID
         or verified.get("cohort_contract_sha256") != contract_sha256
         or verified.get("qualification_sha256") != contract["qualification"]["report_sha256"]
+        or verified.get("first_rollout_digest_profile")
+        != v03.FIRST_ROLLOUT_DIGEST_PROFILE
+        or verified.get("first_rollout_identity") != first_identity
+        or verified.get("first_rollout_envelope_sha256")
+        != first_envelope_sha256
         or not isinstance(progress, Mapping)
     ):
         raise V03ManifestError(f"{arm_id} terminal report is not authentic")
@@ -885,10 +990,32 @@ def _verified_arm_terminal(
         grade = v03.grade_terminal(arm_id, raw_exams)
     except (RuntimeError, TypeError, ValueError) as error:
         raise V03ManifestError(f"{arm_id} terminal grade cannot be reproduced") from error
-    first_rollout = _first_rollout_evidence(
-        report.get("first_rollout_identity"),
-        arm_id=arm_id,
+    terminal_record = report.get("terminal_checkpoint")
+    terminal_relative = (
+        terminal_record.get("path") if isinstance(terminal_record, Mapping) else None
     )
+    if not isinstance(terminal_relative, str):
+        raise V03ManifestError(f"{arm_id} terminal checkpoint identity is missing")
+    terminal = (directory / terminal_relative).resolve()
+    try:
+        terminal.relative_to(directory.resolve())
+    except ValueError as error:
+        raise V03ManifestError(f"{arm_id} terminal checkpoint escapes its arm") from error
+    terminal_sidecar_path = terminal.with_suffix(".json")
+    if terminal_sidecar_path.is_symlink() or not terminal_sidecar_path.is_file():
+        raise V03ManifestError(f"{arm_id} terminal sidecar is missing or unsafe")
+    terminal_sidecar = _read_json(
+        terminal_sidecar_path,
+        label=f"{arm_id} terminal sidecar",
+    )
+    if (
+        terminal_sidecar.get("first_rollout_digest_profile")
+        != v03.FIRST_ROLLOUT_DIGEST_PROFILE
+        or terminal_sidecar.get("first_rollout_identity") != first_identity
+        or terminal_sidecar.get("first_rollout_envelope_sha256")
+        != first_envelope_sha256
+    ):
+        raise V03ManifestError(f"{arm_id} terminal first-rollout copies disagree")
     context_encoder = _context_encoder_evidence(
         report.get("encoder_history"),
         report.get("terminal_encoder"),
@@ -912,7 +1039,7 @@ def _verified_arm_terminal(
         or verified.get("eligible") is not grade.eligible
         or verified.get("exam_records") != raw_exams
         or verified.get("case_count") != case_count
-        or verified.get("first_rollout_identity") != first_rollout
+        or verified.get("first_rollout_identity") != first_identity
         or verified.get("context_metrics") != report.get("context_metrics")
         or verified.get("terminal_encoder") != report.get("terminal_encoder")
     ):
@@ -930,7 +1057,7 @@ def _verified_arm_terminal(
             "case_count": case_count,
             "eligible": grade.eligible,
             "grade": grade.public_dict(),
-            "first_rollout": first_rollout,
+            "first_rollout": first_identity,
             "context_encoder": context_encoder,
             "context_summary": context,
         },
@@ -1006,13 +1133,40 @@ def _gather_process_rows() -> list[dict[str, Any]]:
 
 
 def _process_role(command: str) -> str:
-    if SUPERVISOR_PROCESS_PATTERN.search(command):
+    """Classify only the executable and its leading dispatch arguments.
+
+    The supervisor carries its complete child command after ``--``. Searching
+    the whole process string therefore misclassifies the supervisor as a
+    second trainer, and unrelated shells can likewise contain module names in
+    later text. This mirrors the launcher's leading-argv classifier.
+    """
+
+    argv = command.split()
+    if not argv:
+        return "unrelated"
+    executable = argv[0].rsplit("/", 1)[-1]
+    first_argument = argv[1].rsplit("/", 1)[-1] if len(argv) > 1 else ""
+    is_python = PYTHON_EXECUTABLE_PATTERN.fullmatch(executable) is not None
+    if executable == "u2_trainer_supervisor.py" or (
+        is_python and first_argument == "u2_trainer_supervisor.py"
+    ):
         return "supervisor"
-    if TRAINER_PROCESS_PATTERN.search(command):
+    if executable == "dungeon-train" or (
+        is_python
+        and (
+            first_argument == "dungeon-train"
+            or (len(argv) > 2 and argv[1] == "-m" and argv[2] in TRAINER_MODULES)
+        )
+    ):
         return "trainer"
-    if CAFFEINATE_PROCESS_PATTERN.search(command):
+    if executable == "caffeinate":
         return "caffeinate"
-    if DASHBOARD_PROCESS_PATTERN.search(command):
+    if (
+        is_python
+        and len(argv) > 2
+        and argv[1] == "-m"
+        and argv[2] == DASHBOARD_MODULE
+    ):
         return "dashboard"
     return "unrelated"
 

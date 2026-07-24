@@ -538,6 +538,71 @@ def test_failed_stage_a_attempt_authenticates_partial_sham_inventory(
         qualify.authenticate_failed_stage_a_attempt()
 
 
+def test_compact_tree_seal_binds_files_directories_and_bytes(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "sealed"
+    nested = root / "nested"
+    nested.mkdir(parents=True)
+    (root / "alpha.bin").write_bytes(b"alpha")
+    (nested / "beta.bin").write_bytes(b"beta")
+
+    file_map, seal = qualify._sealed_tree_inventory(root, "fixture")
+
+    assert file_map == {
+        "alpha.bin": hashlib.sha256(b"alpha").hexdigest(),
+        "nested/beta.bin": hashlib.sha256(b"beta").hexdigest(),
+    }
+    assert seal == {
+        "regular_file_count": 2,
+        "regular_file_bytes": 9,
+        "directory_count_including_root": 2,
+        "directory_list_sha256": qualify._canonical_sha256([".", "nested"]),
+        "regular_file_map_sha256": qualify._canonical_sha256(file_map),
+    }
+
+    (nested / "beta.bin").write_bytes(b"changed")
+    changed_map, changed_seal = qualify._sealed_tree_inventory(root, "fixture")
+    assert changed_map != file_map
+    assert changed_seal != seal
+
+
+def test_r2_failure_contract_has_compact_complete_seals() -> None:
+    seals = qualify.FAILED_STAGE_A_R2_ATTEMPT_TREE_SEALS
+    critical = qualify.FAILED_STAGE_A_R2_ATTEMPT_CRITICAL_SHA256
+
+    assert sum(
+        int(seal["regular_file_count"]) for seal in seals.values()
+    ) == qualify.FAILED_STAGE_A_R2_ATTEMPT_COMBINED_FILE_COUNT
+    assert sum(
+        int(seal["regular_file_bytes"]) for seal in seals.values()
+    ) == qualify.FAILED_STAGE_A_R2_ATTEMPT_COMBINED_FILE_BYTES
+    assert {
+        "cohort/cohort-contract.json",
+        "cohort/cohort.json",
+        "cohort/sham/status.json",
+        "cohort/sham/first-rollout.json",
+        "cohort/sham/report.json",
+        "cohort/sham/report.integrity.json",
+        "cohort/sham/checkpoints/terminal.zip",
+        "qualification/report.json",
+        "qualification/report.json.sha256",
+        "launch-recovery/v03-action-effect-stage-a-r2-20260724-screen.log",
+    } <= set(critical)
+    assert (
+        qualify.FAILED_STAGE_A_R2_ATTEMPT_FIRST_ROLLOUT_SHA256
+        != qualify.FAILED_STAGE_A_R2_ATTEMPT_FIRST_ROLLOUT_NO_LF_SHA256
+    )
+    assert set(qualify.TAG_FIELDS) >= {
+        "failed_stage_a_attempt",
+        "failed_stage_a_r2_attempt",
+    }
+    assert set(qualify._REPORT_FIELDS) >= {
+        "failed_stage_a_attempt",
+        "failed_stage_a_r2_attempt",
+    }
+
+
 def test_terminal_u2s_authentication_requires_no_selection_or_reuse(
     tmp_path: Path,
 ) -> None:
@@ -827,6 +892,10 @@ def test_disposable_smoke_binds_first_rollout_and_rng_identity() -> None:
     assert evidence["matched_through_first_rollout"] is True
     assert evidence["candidate_context_projection_updated"] is True
     assert evidence["sham_context_projection_remained_zero"] is True
+    assert (
+        evidence["first_rollout_digest_profile"]
+        == v03.FIRST_ROLLOUT_DIGEST_PROFILE
+    )
     assert (
         evidence["first_rollout_policy_output_sha256"]
         == _digest("c")
@@ -1156,6 +1225,16 @@ def test_tag_payload_binds_runtime_and_cpu_device_contract(
         "authenticate_failed_stage_a_attempt",
         lambda **_kwargs: failed_attempt,
     )
+    failed_r2_attempt = {
+        "disposition": "integrity_failed",
+        "resume_authorized": False,
+        "reuse_authorized": False,
+    }
+    monkeypatch.setattr(
+        qualify,
+        "authenticate_failed_stage_a_r2_attempt",
+        lambda **_kwargs: failed_r2_attempt,
+    )
     snapshot = {
         "python": "3.12-test",
         "platform": "macOS-test",
@@ -1176,6 +1255,14 @@ def test_tag_payload_binds_runtime_and_cpu_device_contract(
     }
     assert "runtime_contract" in qualify.TAG_FIELDS
     assert payload["failed_stage_a_attempt"] == failed_attempt
+    assert payload["failed_stage_a_r2_attempt"] == failed_r2_attempt
+    assert payload["resume_rule"]["failed_attempts"] == [
+        "v0.3-action-effect-stage-a-r1-20260724-attempt-0",
+        "v0.3-action-effect-stage-a-r2-20260724-attempt-0",
+    ]
+    assert payload["resume_rule"]["replacement_attempt"] == (
+        "v0.3-action-effect-stage-a-r3-20260724"
+    )
 
 
 def test_architecture_and_protected_partition_contracts_are_exact() -> None:
@@ -1186,6 +1273,9 @@ def test_architecture_and_protected_partition_contracts_are_exact() -> None:
     assert contract["transplant"]["sole_new_parameter_shape"] == [512, 9]
     assert contract["transplant"]["sole_new_parameter_initialization"] == (
         "exact_zero"
+    )
+    assert contract["equivalence"]["first_rollout_digest_profile"] == (
+        v03.FIRST_ROLLOUT_DIGEST_PROFILE
     )
     assert contract["randomness"]["worker_streams"] == [
         20260757,
@@ -1233,6 +1323,7 @@ def test_evidence_exposes_verified_report_seed_access_and_copy_of_guards() -> No
         smoke_evidence_sha256=_digest("1"),
         protected_partitions_sha256=_digest("2"),
         failed_stage_a_attempt_sha256=_digest("3"),
+        failed_stage_a_r2_attempt_sha256=_digest("4"),
         storage_caps=MappingProxyType(qualify._storage_caps()),
         _report_bytes=report_bytes,
         _base_qualification=_BaseQualification(token),
@@ -1243,3 +1334,4 @@ def test_evidence_exposes_verified_report_seed_access_and_copy_of_guards() -> No
     assert evidence.seed_access() is token
     assert evidence.forbidden_layout_hashes() == mapping
     assert isinstance(evidence.forbidden_layout_hashes(), MappingProxyType)
+    assert evidence.public_dict()["failed_stage_a_r2_attempt_sha256"] == _digest("4")

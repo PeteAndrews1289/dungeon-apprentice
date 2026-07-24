@@ -22,11 +22,11 @@ from urllib.parse import parse_qs, urlparse
 from dungeon_apprentice import v03_action_effect as v03
 
 DEFAULT_HOST = "127.0.0.1"
-DEFAULT_PORT = 8790
+DEFAULT_PORT = 8791
 PROTOCOL = v03.PROTOCOL
 QUALIFICATION_PROTOCOL = PROTOCOL
-COHORT_ID = "v0.3-action-effect-stage-a-r2-20260724"
-TAG_NAME = "action-effect-architecture-v0.3-stage-a-r2-20260724"
+COHORT_ID = "v0.3-action-effect-stage-a-r3-20260724"
+TAG_NAME = "action-effect-architecture-v0.3-stage-a-r3-20260724"
 ACTION_CAP = v03.CHILD_ACTION_BUDGET
 ARM_ORDER = ("sham", "action-effect")
 LESSONS = (
@@ -557,8 +557,12 @@ def _validate_contract(
         or not isinstance(replacement, Mapping)
         or replacement.get("failed_attempt_evidence_sha256")
         != qualification.get("failed_stage_a_attempt_sha256")
+        or replacement.get("failed_r2_attempt_evidence_sha256")
+        != qualification.get("failed_stage_a_r2_attempt_sha256")
         or replacement.get("failed_attempt_resume_authorized") is not False
         or replacement.get("failed_attempt_root_reuse_authorized") is not False
+        or replacement.get("failed_r2_attempt_resume_authorized") is not False
+        or replacement.get("failed_r2_attempt_root_reuse_authorized") is not False
         or replacement.get("restarts_both_arms_from_confirmed_u1") is not True
         or not isinstance(parent, Mapping)
         or parent.get("checkpoint_sha256") != v03.PARENT_CHECKPOINT_SHA256

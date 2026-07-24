@@ -106,6 +106,7 @@ def _qualification(
         "smoke_evidence_sha256": "6" * 64,
         "protected_partitions_sha256": "7" * 64,
         "failed_stage_a_attempt_sha256": "8" * 64,
+        "failed_stage_a_r2_attempt_sha256": "9" * 64,
         "storage_caps": {
             "per_arm_bytes": helper.LINEAGE_CAP_BYTES,
             "scientific_cohort_bytes": (

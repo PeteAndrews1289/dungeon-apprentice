@@ -24,7 +24,7 @@ encoder turns a 56 × 56 pixel view into features. The LSTM can retain evidence 
 location leaves view. The action head chooses among seven buttons. PPO changes all of these weights
 using trajectories produced by the policy itself.
 
-The prospective v0.3 Stage-A r2 release adds a small fourth pathway without replacing those learned
+The prospective v0.3 Stage-A r3 release adds a small fourth pathway without replacing those learned
 components.
 It tells the same recurrent policy which primitive it selected one transition ago and whether the
 next visible RGB frame changed or remained identical. This is not a key label, success flag, route,
@@ -131,10 +131,12 @@ hundred identical toggles can therefore look like a generic unchanged scene rath
 failed cause-and-effect experiment.
 
 The prospective
-[v0.3 Stage-A r2 protocol](protocol-v0.3-action-effect-architecture-r2.md) supplies that missing
+[v0.3 Stage-A r3 protocol](protocol-v0.3-action-effect-architecture-r3.md) supplies that missing
 sensorimotor link while keeping the task signal untouched. Attempt 0 never reached action one; r1
-reached only a partial sham arm before an operational process-control failure. Neither failure
-tested the matched architecture question:
+reached only a partial sham arm before an operational process-control failure; r2 completed sham
+but stopped at terminal authentication because two evidence components disagreed about one final
+line-feed byte. Action-effect never began in any of them, so none tested the matched architecture
+question:
 
 1. At episode start, context is all zero.
 2. The policy selects one of the same seven actions.

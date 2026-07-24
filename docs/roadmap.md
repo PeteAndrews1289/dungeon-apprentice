@@ -43,7 +43,9 @@
 - [x] Freeze, qualify, tag, and externally anchor the non-resumable v0.3 Stage-A r1 study
 - [x] Preserve r1 as a partial-sham operational failure; never resume its 38,912-action checkpoint
 - [x] Implement explicit process-role and abnormal-exit corrections under fresh r2 identities
-- [ ] Freeze, qualify, tag, and externally anchor the non-resumable v0.3 Stage-A r2 study
+- [x] Freeze, qualify, tag, launch, and preserve r2 as a full-sham closeout-authentication failure
+- [x] Implement the shared LF-terminated first-rollout digest verifier under fresh r3 identities
+- [ ] Freeze, qualify, tag, and externally anchor the non-resumable v0.3 Stage-A r3 study
 - [ ] Run sham and action-effect through the full matched budget and terminal-three gate
 - [ ] If and only if action-effect qualifies, preregister three fresh independent U1-parent replications
 - [ ] Confirm all three replicated v0.3 policies with a fresh no-update instrument before opening U3
@@ -167,12 +169,17 @@ before action-effect began. Its [incident record](results/v0.3-action-effect-sta
 preserves one scheduled exam, 76 new optimizer updates, and the absence of any safe checkpoint or
 matched result.
 
-The fresh [r2 boundary](protocol-v0.3-action-effect-architecture-r2.md) creates two new twins from
-the same confirmed U1 parent. Both retain the original reward, optimizer settings, curriculum, and
-512→256 recurrent topology. Both add the same zero-initialized context projection. Sham always
-receives zero; the candidate receives only its own preceding action and a visible
-changed/unchanged outcome. r2 changes only process classification and explicit abnormal-exit
-cleanup.
+The fresh [r2 boundary](protocol-v0.3-action-effect-architecture-r2.md) created two new twins from
+the same confirmed U1 parent. Sham completed its full budget, but terminal closeout used a no-LF
+digest helper against first-rollout evidence created with the qualified LF-terminated helper. The
+manifest stopped before action-effect began; the exact record is the
+[r2 operational failure](results/v0.3-action-effect-stage-a-r2-operational-failure.md).
+
+The prospective [r3 boundary](protocol-v0.3-action-effect-architecture-r3.md) again creates two
+fresh twins from confirmed U1. Both retain the original reward, optimizer settings, curriculum,
+guards, and 512→256 recurrent topology. Both add the same zero-initialized context projection.
+Sham always receives zero; the candidate receives only its own preceding action and a visible
+changed/unchanged outcome. r3 changes only the named first-rollout verification profile.
 
 Stage A must prove that the transplant is exactly parent-equivalent at zero context and that the two
 arms produce the same first 2,048-transition trajectory before their first update. They then run
