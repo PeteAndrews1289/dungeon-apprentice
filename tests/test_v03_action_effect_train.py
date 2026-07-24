@@ -543,7 +543,7 @@ def _write_terminal_arm(
     run = root / arm.value
     checkpoints = run / "checkpoints" / "rolling"
     checkpoints.mkdir(parents=True)
-    cohort_id = "v0.3-action-effect-stage-a-20260724"
+    cohort_id = "v0.3-action-effect-stage-a-r1-20260724"
     contract_sha256 = "a" * 64
     source = {"commit": source_commit, "dirty": False}
     qualification = {"report_sha256": "b" * 64}
@@ -890,7 +890,7 @@ def test_trainer_consumes_launcher_owned_paths_without_mutating_them(
     contract = {
         "schema_version": 1,
         "protocol": trainer.PROTOCOL,
-        "cohort_id": "v0.3-action-effect-stage-a-20260724",
+        "cohort_id": "v0.3-action-effect-stage-a-r1-20260724",
         "source": {
             "commit": source["commit"],
             "dirty": False,

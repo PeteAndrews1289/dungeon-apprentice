@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 REPOSITORY = Path(__file__).resolve().parents[1]
-LAUNCHER = REPOSITORY / "scripts" / "run_v03_action_effect_stage_a.sh"
+LAUNCHER = REPOSITORY / "scripts" / "run_v03_action_effect_stage_a_r1.sh"
 
 
 def test_v03_launcher_has_valid_zsh_syntax_without_running() -> None:
@@ -28,17 +28,17 @@ def test_v03_launcher_freezes_release_and_storage_identity() -> None:
     source = LAUNCHER.read_text(encoding="utf-8")
     for text in (
         "set -euo pipefail",
-        'run_root="$dungeon_root/v03-action-effect-stage-a-20260724"',
-        'media_root="$dungeon_root/v03-action-effect-stage-a-media-20260724"',
-        "qualifications/v0.3-action-effect-stage-a-20260724/report.json",
+        'run_root="$dungeon_root/v03-action-effect-stage-a-r1-20260724"',
+        'media_root="$dungeon_root/v03-action-effect-stage-a-r1-media-20260724"',
+        "qualifications/v0.3-action-effect-stage-a-r1-20260724/report.json",
         'training_protocol="dungeon-apprentice-v0.3-action-effect-architecture"',
-        'cohort_id="v0.3-action-effect-stage-a-20260724"',
-        'training_tag="action-effect-architecture-v0.3-stage-a-20260724"',
+        'cohort_id="v0.3-action-effect-stage-a-r1-20260724"',
+        'training_tag="action-effect-architecture-v0.3-stage-a-r1-20260724"',
         'expected_origin="https://github.com/PeteAndrews1289/dungeon-apprentice.git"',
         'trainer_module="dungeon_apprentice.v03_action_effect_train"',
         'dashboard_module="dungeon_apprentice.v03_action_effect_dashboard"',
         'manifest_helper="$repository/scripts/v03_action_effect_manifest.py"',
-        "dashboard_port=8788",
+        "dashboard_port=8789",
         "minimum_free_gib=25",
         "git status --porcelain=v1 --untracked-files=all",
         "git cat-file -t",

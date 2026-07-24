@@ -2452,7 +2452,8 @@ def verify_cohort_contract(
     if (
         contract.get("schema_version") != 1
         or contract.get("protocol") != PROTOCOL
-        or contract.get("cohort_id") != "v0.3-action-effect-stage-a-20260724"
+        or contract.get("cohort_id")
+        != "v0.3-action-effect-stage-a-r1-20260724"
         or not isinstance(contract_source, Mapping)
         or contract_source.get("commit") != source.get("commit")
         or contract_source.get("dirty") is not False

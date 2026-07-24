@@ -37,8 +37,10 @@
 - [x] Run all four full-budget arms and preserve the fixed `ablation_failed` terminal decision
 - [x] Stop the U2-S reward/PPO mechanism family because no configuration qualified
 - [x] Implement the fail-closed v0.3 action-effect Stage-A release candidate
-- [ ] Pass the disposable matched first-rollout gate for the v0.3 action-effect architecture
-- [ ] Freeze, qualify, tag, and externally anchor the non-resumable v0.3 Stage-A study
+- [x] Pass attempt 0's disposable matched first-rollout gate and one-shot qualification
+- [x] Preserve v0.3 attempt 0 as a zero-action operational failure under its original tag/root
+- [x] Implement the dashboard-authentication correction and assign fresh r1 identities
+- [ ] Freeze, qualify, tag, and externally anchor the non-resumable v0.3 Stage-A r1 study
 - [ ] Run sham and action-effect through the full matched budget and terminal-three gate
 - [ ] If and only if action-effect qualifies, preregister three fresh independent U1-parent replications
 - [ ] Confirm all three replicated v0.3 policies with a fresh no-update instrument before opening U3
@@ -155,7 +157,7 @@ eliminated the tail but scored 70, 69, and 71 against the 72/80 terminal floor. 
 selected. The [authenticated result](results/v0.2-u2s-r1-stability-ablation.md) closes that branch.
 
 The next bounded question is therefore a new
-[v0.3 action-effect architecture study](protocol-v0.3-action-effect-architecture.md), not another
+[v0.3 Stage-A r1 action-effect architecture study](protocol-v0.3-action-effect-architecture-r1.md), not another
 reward or PPO rescue. It creates two fresh twins from the same confirmed U1 parent. Both retain the
 original reward, optimizer settings, curriculum, and 512→256 recurrent topology. Both add the same
 zero-initialized context projection. Sham always receives zero; the candidate receives only its own

@@ -462,8 +462,8 @@ or a successor. A positive result permits writing a separate multi-lineage proto
 fresh from confirmed U1 parents; it does not itself confirm U2.
 
 The actual all-arm result was negative, so that conditional successor did not open. U3 remains
-closed. The next prospective boundary is the
-[v0.3 matched action-effect architecture study](protocol-v0.3-action-effect-architecture.md).
+closed. The current prospective boundary is the
+[v0.3 Stage-A r1 action-effect architecture study](protocol-v0.3-action-effect-architecture-r1.md).
 
 ## Prepare the implemented v0.3 action-effect architecture study
 
@@ -481,22 +481,28 @@ zero-initialized `512 × 9` context weight, and use the original U2 reward, PPO,
 `20260757` and worker streams `20260757`–`20260760`. Their complete first 2,048-transition
 pre-update rollout must be identical; the first optimizer update is the earliest valid divergence.
 
-The Stage-A implementation is complete, but implementation alone is still **unfrozen and
-unqualified**. The operational identities are assigned; at this preregistration checkpoint they
-have not been created:
+The original Stage-A attempt froze and qualified successfully but failed operationally before
+action one: its dashboard repeated the complete predecessor authentication on each request and
+could not answer within the launcher's ten-second deadline. The fail-closed exit trap sealed that
+root as `operationally_incomplete`; its synthetic sham crash does not represent a trainer. Preserve
+the [attempt-0 closeout](results/v0.3-action-effect-launch-attempt-0.md) and never reuse its tag,
+qualification, cohort, or media root.
+
+The separately committed r1 replacement changes only dashboard authentication timing. Its fresh
+operational identities are assigned but have not been created:
 
 | Boundary | Assigned identity |
 | --- | --- |
-| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-20260724` |
-| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-20260724` |
-| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-20260724` |
-| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-media-20260724` |
-| Dashboard | `http://127.0.0.1:8788/` |
-| Sole launcher | `scripts/run_v03_action_effect_stage_a.sh` |
+| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-r1-20260724` |
+| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r1-20260724` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-20260724` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-media-20260724` |
+| Dashboard | `http://127.0.0.1:8789/` |
+| Sole launcher | `scripts/run_v03_action_effect_stage_a_r1.sh` |
 
-No canonical tag, qualification claim/report, cohort, media root, policy action, or result exists at
-this source entry. Do not improvise a root, adapt a U2-S script, or call the lower-level trainer
-directly. Scientific training remains blocked until one clean release:
+No r1 tag, qualification claim/report, cohort, media root, policy action, or result exists at this
+source entry. Do not improvise a root, adapt the attempt-0 launcher, or call the lower-level trainer
+directly. Scientific training remains blocked until one clean r1 release:
 
 1. freezes and pushes the exact source and protocol;
 2. publishes the assigned annotated tag and its one-line source-preregistration payload;
@@ -523,7 +529,7 @@ fresh lineages from confirmed U1 children `20260725`, `20260729`, and `20260733`
 streams and no Stage A state. Even a successful Stage B would still require a separate,
 prospectively frozen no-update confirmation before U3 could open.
 
-### Release, qualify, and launch v0.3 Stage A
+### Release, qualify, and launch v0.3 Stage A r1
 
 The release chain is intentionally non-circular:
 
@@ -558,10 +564,10 @@ V03_TAG_PAYLOAD="$(
   .venv/bin/python -m dungeon_apprentice.v03_action_effect_qualify \
     --tag-payload-only
 )"
-git tag -a action-effect-architecture-v0.3-stage-a-20260724 \
+git tag -a action-effect-architecture-v0.3-stage-a-r1-20260724 \
   -m "$V03_TAG_PAYLOAD"
 git push origin HEAD
-git push origin refs/tags/action-effect-architecture-v0.3-stage-a-20260724
+git push origin refs/tags/action-effect-architecture-v0.3-stage-a-r1-20260724
 ```
 
 Do not hand-edit the payload. The tag preregisters inputs; it does **not** contain a qualification
@@ -582,12 +588,15 @@ do not delete the claim or retry it under the same tag and roots.
 Only after the qualification report verifies may the fixed launcher be invoked once:
 
 ```bash
-./scripts/run_v03_action_effect_stage_a.sh
+./scripts/run_v03_action_effect_stage_a_r1.sh
 ```
 
 The launcher owns cohort/media creation, contract sealing, fixed arm order (`sham`, then
 `action-effect`), trainer supervision, sleep prevention, the read-only dashboard at
-`http://127.0.0.1:8788/`, and terminal closeout. After both trainers exit it stops sleep prevention,
+`http://127.0.0.1:8789/`, and terminal closeout. The dashboard performs its expensive full evidence
+authentication once before binding. Each poll rereads live status and rehashes the immutable
+contract, qualification report, and checksum. The launcher validates the payload identities; the
+API does not return a literal `healthy: true` field. After both trainers exit it stops sleep prevention,
 asks the manifest to gather and seal a command-redacted process inventory, and rescans immediately
 before finalization. Any remaining trainer, supervisor, or `caffeinate` process blocks the terminal
 report; the read-only dashboard may remain. The launcher accepts no arm, seed, parent, checkpoint,
@@ -608,7 +617,7 @@ They are refreshed by the repository's editable-install command. The canonical i
 use the equivalent module entry point so their availability does not depend on a stale generated
 shell wrapper.
 
-The sole scientific start command remains `scripts/run_v03_action_effect_stage_a.sh`.
+The sole scientific start command is `scripts/run_v03_action_effect_stage_a_r1.sh`.
 
 ## Resume a legacy v0/v0.1 run after interruption
 

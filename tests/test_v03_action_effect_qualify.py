@@ -144,6 +144,150 @@ def _terminal_fixture(
     return report, report_sha256, integrity_sha256
 
 
+def test_failed_stage_a_attempt_authenticates_zero_action_inventory(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = tmp_path / "attempt-0"
+    media = tmp_path / "attempt-0-media"
+    qualification = tmp_path / "attempt-0-qualification"
+    root.mkdir()
+    media.mkdir()
+    qualification.mkdir()
+    source = "a" * 40
+    tag = "attempt-0-tag"
+    tag_object = "b" * 40
+
+    claim = {
+        "schema_version": 1,
+        "protocol": qualify.PROTOCOL,
+        "kind": "qualification_attempt_claim",
+        "source_commit": source,
+        "tag": tag,
+        "tag_object": tag_object,
+    }
+    claim_sha256 = _write_json(qualification / "claim.json", claim)
+    report = {
+        "schema_version": 1,
+        "protocol": qualify.PROTOCOL,
+        "kind": qualify.KIND,
+        "verdict": "qualified",
+        "claim": claim,
+        "source": {
+            "commit": source,
+            "dirty": False,
+            "tag": tag,
+            "tag_object": tag_object,
+        },
+    }
+    report_sha256 = _write_json(qualification / "report.json", report)
+    checksum = qualification / "report.json.sha256"
+    checksum.write_text(
+        f"{report_sha256}  report.json\n",
+        encoding="ascii",
+    )
+    contract = {
+        "schema_version": 1,
+        "protocol": qualify.PROTOCOL,
+        "cohort_id": "v0.3-action-effect-stage-a-20260724",
+        "source": {"commit": source, "dirty": False},
+        "preregistration": {
+            "tag": tag,
+            "tag_object": tag_object,
+            "peeled_commit": source,
+        },
+        "qualification": {"report_sha256": report_sha256},
+        "roots": {"cohort": str(root), "media": str(media)},
+    }
+    contract_sha256 = _write_json(root / "cohort-contract.json", contract)
+    cohort = {
+        "schema_version": 1,
+        "protocol": qualify.PROTOCOL,
+        "cohort_id": "v0.3-action-effect-stage-a-20260724",
+        "contract_sha256": contract_sha256,
+        "source_commit": source,
+        "tag": tag,
+        "tag_object": tag_object,
+        "qualification_sha256": report_sha256,
+        "phase": "operationally_incomplete",
+        "active_arm": None,
+        "terminal_report": None,
+        "process_closeout": None,
+        "arms": [
+            {
+                "id": "sham",
+                "state": "crashed",
+                "attempts": [
+                    {
+                        "index": 0,
+                        "state": "crashed",
+                        "trainer_exit_code": 130,
+                    }
+                ],
+                "terminal": None,
+            },
+            {
+                "id": "action-effect",
+                "state": "pending",
+                "attempts": [],
+                "terminal": None,
+            },
+        ],
+    }
+    cohort_sha256 = _write_json(root / "cohort.json", cohort)
+    dashboard_log = root / "dashboard.log"
+    dashboard_log.write_text("health check failed\n", encoding="utf-8")
+    launcher_log = tmp_path / "launcher.log"
+    launcher_log.write_bytes(b"")
+
+    replacements = {
+        "FAILED_STAGE_A_ATTEMPT_ROOT": root,
+        "FAILED_STAGE_A_ATTEMPT_MEDIA_ROOT": media,
+        "FAILED_STAGE_A_ATTEMPT_QUALIFICATION_DIRECTORY": qualification,
+        "FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG": launcher_log,
+        "FAILED_STAGE_A_ATTEMPT_TAG": tag,
+        "FAILED_STAGE_A_ATTEMPT_TAG_OBJECT": tag_object,
+        "FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT": source,
+        "FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256": (
+            report_sha256
+        ),
+        "FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CLAIM_SHA256": (
+            claim_sha256
+        ),
+        "FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CHECKSUM_SHA256": (
+            hashlib.sha256(checksum.read_bytes()).hexdigest()
+        ),
+        "FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256": contract_sha256,
+        "FAILED_STAGE_A_ATTEMPT_COHORT_SHA256": cohort_sha256,
+        "FAILED_STAGE_A_ATTEMPT_DASHBOARD_LOG_SHA256": (
+            hashlib.sha256(dashboard_log.read_bytes()).hexdigest()
+        ),
+        "FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG_SHA256": hashlib.sha256(
+            b""
+        ).hexdigest(),
+    }
+    for name, value in replacements.items():
+        monkeypatch.setattr(qualify, name, value)
+
+    evidence = qualify.authenticate_failed_stage_a_attempt()
+
+    assert evidence["disposition"] == "operationally_incomplete"
+    assert evidence["cohort"]["classification"] == (
+        "pre_arm_dashboard_health_failure"
+    )
+    assert evidence["recorded_training_evidence"]["recorded_child_actions"] == 0
+    assert evidence["recorded_training_evidence"]["trainer_started"] is False
+    assert evidence["resume_authorized"] is False
+    assert evidence["reuse_authorized"] is False
+
+    (root / "sham").mkdir()
+    with pytest.raises(
+        qualify.ActionEffectQualificationError,
+        match="inventory changed",
+    ):
+        qualify.authenticate_failed_stage_a_attempt()
+
+
 def test_terminal_u2s_authentication_requires_no_selection_or_reuse(
     tmp_path: Path,
 ) -> None:
@@ -669,6 +813,45 @@ def test_source_tag_requires_clean_published_annotated_tag(
     )
 
 
+def test_failed_attempt_tag_remains_exact_on_origin(tmp_path: Path) -> None:
+    reference = f"refs/tags/{qualify.FAILED_STAGE_A_ATTEMPT_TAG}"
+
+    def runner(
+        command: list[str],
+        **_kwargs: object,
+    ) -> subprocess.CompletedProcess[str]:
+        arguments = command[1:]
+        outputs = {
+            ("cat-file", "-t", reference): "tag",
+            ("rev-parse", "--verify", reference): (
+                qualify.FAILED_STAGE_A_ATTEMPT_TAG_OBJECT
+            ),
+            ("rev-list", "-n", "1", reference): (
+                qualify.FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
+            ),
+            ("remote", "get-url", qualify.QUALIFIED_REMOTE): (
+                qualify.EXPECTED_ORIGIN_URL
+            ),
+            (
+                "ls-remote",
+                "--tags",
+                qualify.QUALIFIED_REMOTE,
+                reference,
+            ): (
+                f"{qualify.FAILED_STAGE_A_ATTEMPT_TAG_OBJECT}"
+                f"\t{reference}"
+            ),
+        }
+        return subprocess.CompletedProcess(
+            command,
+            0,
+            stdout=outputs[tuple(arguments)] + "\n",
+            stderr="",
+        )
+
+    qualify._verify_failed_stage_a_tag(tmp_path, runner=runner)
+
+
 def test_tag_payload_binds_runtime_and_cpu_device_contract(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -713,6 +896,16 @@ def test_tag_payload_binds_runtime_and_cpu_device_contract(
     )
     monkeypatch.setattr(qualify, "_protected_seed_partitions", lambda: [])
     monkeypatch.setattr(qualify, "_architecture_contract", lambda: {})
+    failed_attempt = {
+        "disposition": "operationally_incomplete",
+        "resume_authorized": False,
+        "reuse_authorized": False,
+    }
+    monkeypatch.setattr(
+        qualify,
+        "authenticate_failed_stage_a_attempt",
+        lambda **_kwargs: failed_attempt,
+    )
     snapshot = {
         "python": "3.12-test",
         "platform": "macOS-test",
@@ -732,6 +925,7 @@ def test_tag_payload_binds_runtime_and_cpu_device_contract(
         "qualification_smoke_device": "cpu",
     }
     assert "runtime_contract" in qualify.TAG_FIELDS
+    assert payload["failed_stage_a_attempt"] == failed_attempt
 
 
 def test_architecture_and_protected_partition_contracts_are_exact() -> None:
@@ -788,6 +982,7 @@ def test_evidence_exposes_verified_report_seed_access_and_copy_of_guards() -> No
         architecture_contract_sha256=_digest("0"),
         smoke_evidence_sha256=_digest("1"),
         protected_partitions_sha256=_digest("2"),
+        failed_stage_a_attempt_sha256=_digest("3"),
         storage_caps=MappingProxyType(qualify._storage_caps()),
         _report_bytes=report_bytes,
         _base_qualification=_BaseQualification(token),

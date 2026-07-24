@@ -92,15 +92,26 @@
   replication protocol; it does not itself authorize confirmation, U3, Retrieve, or a game claim.
   Stage A is non-resumable and must be separately committed, tagged, qualified, and externally
   anchored before canonical action one.
-- The v0.3 release candidate is implemented but remains unfrozen and unqualified. Its assigned
-  annotated tag is `action-effect-architecture-v0.3-stage-a-20260724`; assigned qualification,
-  cohort, and media roots are respectively
-  `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-20260724`,
-  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-20260724`, and
-  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-media-20260724`; dashboard is
-  `http://127.0.0.1:8788/`; the sole canonical launcher is
-  `scripts/run_v03_action_effect_stage_a.sh`. None exists or is authorized while the source is
-  dirty.
+- v0.3 Stage-A attempt 0 is immutable zero-recorded-action operational-failure evidence. Its
+  launcher failed its dashboard health contract before creating an arm directory or starting a
+  trainer. The manifest's synthetic sham attempt 0 is `crashed` with exit 130 and the cohort is
+  terminal `operationally_incomplete`; no trainer status, supervisor state, checkpoint, media
+  entry, child action, or optimizer update exists. Never resume, rename, reuse, prune, overwrite,
+  or train from `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-20260724`, its
+  matching media root, or its qualification root. The cohort contract and state SHA-256 values are
+  respectively `15a180d7a38af6dbc459870b0e4f06a565b291399971fc2165774bce91c6e72c` and
+  `c35441207060ab9a5c55e82289924ab0530effc7f0e5e50fb11b2a0ab83f68eb`.
+- The current v0.3 boundary is the separately committed r1 replacement in
+  `docs/protocol-v0.3-action-effect-architecture-r1.md`. Its assigned annotated tag is
+  `action-effect-architecture-v0.3-stage-a-r1-20260724`; assigned qualification, cohort, and media
+  roots are respectively
+  `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r1-20260724`,
+  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-20260724`, and
+  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-media-20260724`; dashboard
+  is `http://127.0.0.1:8789/`; the sole canonical launcher is
+  `scripts/run_v03_action_effect_stage_a_r1.sh`. The new tag, qualification, and managed roots do
+  not exist and are not authorized while the source is dirty. r1 must reauthenticate attempt 0
+  and restart both arms fresh from confirmed U1.
 - Preserve the v0.3 non-circular release order: the published annotated tag preregisters
   source/protocol/roots/contracts; the durable qualification claim/report binds that exact tag
   object; the cohort manifest binds the exact qualification-report SHA-256. Never claim that the

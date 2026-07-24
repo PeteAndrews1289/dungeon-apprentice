@@ -989,3 +989,51 @@ rollout must prove that the new pathway initially changes nothing. Only after th
 may the candidate learn to use its own action/outcome memory. If it passes all three fixed terminal
 exams, Stage A selects only the architecture definition for a separate three-lineage replication.
 It never promotes a checkpoint and never opens U3 by itself.
+
+### July 24, 2026 — v0.3 launch attempt 0 closes before action one
+
+Attempt 0 subsequently froze source commit
+`5b135a4e2953db9f14e83cdaba77fe219fecb160`, published annotated tag
+`action-effect-architecture-v0.3-stage-a-20260724`, and completed its one-shot qualification with
+verdict `qualified`. The report SHA-256 is
+`a3a50ecf91411a27a70e2c6d3e03b93183aa3b078f2f1104b5dd6884f2c3fc85`.
+
+The launcher created and sealed the fresh cohort contract, but its dashboard startup check exposed
+an operational defect. The server repeated the full source, qualification, parent, and predecessor
+authentication on every request. That work exceeded the launcher's ten-second HTTP deadline.
+Three clients disconnected before their payload writes completed, leaving three
+`BrokenPipeError` traces in the authenticated dashboard log.
+
+No arm directory, supervisor, trainer, status, action, optimizer update, checkpoint, evaluation, or
+media artifact was created. On exit, the launcher's fail-closed trap claimed the pending `sham`
+transition only long enough to record a synthetic crash with exit code `130`; it sealed the whole
+root as `operationally_incomplete`. The manifest's apparent sham attempt is therefore operational
+closeout, not a model run. The scientific action and update counts are both zero.
+
+The exact chronology, frozen digests, and negative inventory are in the
+[attempt-0 closeout](results/v0.3-action-effect-launch-attempt-0.md). Its tag, qualification,
+cohort, and media roots are immutable historical evidence and may never be resumed or reused.
+
+### July 24, 2026 — v0.3 Stage-A r1 replacement prepared
+
+r1 keeps the complete Stage-A scientific contract fixed and changes only the dashboard boundary.
+The process now performs the expensive full authentication once at startup, before binding its
+socket. Each live poll still rereads mutable cohort/status evidence and rehashes the immutable
+cohort contract, qualification report, and checksum. The launcher determines health by
+authenticating expected identity fields; the API does not return a literal `healthy: true` field.
+
+The fresh r1 assignments are:
+
+| Boundary | Assigned r1 identity |
+| --- | --- |
+| Annotated tag | `action-effect-architecture-v0.3-stage-a-r1-20260724` |
+| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r1-20260724` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-20260724` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-media-20260724` |
+| Dashboard | `http://127.0.0.1:8789/` |
+| Launcher | `scripts/run_v03_action_effect_stage_a_r1.sh` |
+
+This entry records the implemented replacement boundary, not a launch. At this point no r1 tag,
+qualification claim/report, cohort, media root, dashboard, trainer, policy action, or learning
+result exists. The governing prospective document is the
+[v0.3 Stage-A r1 protocol](protocol-v0.3-action-effect-architecture-r1.md).

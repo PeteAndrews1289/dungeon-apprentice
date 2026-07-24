@@ -6,10 +6,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import stat
 import threading
 from collections.abc import Iterable, Mapping
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -20,11 +22,11 @@ from urllib.parse import parse_qs, urlparse
 from dungeon_apprentice import v03_action_effect as v03
 
 DEFAULT_HOST = "127.0.0.1"
-DEFAULT_PORT = 8788
+DEFAULT_PORT = 8789
 PROTOCOL = v03.PROTOCOL
 QUALIFICATION_PROTOCOL = PROTOCOL
-COHORT_ID = "v0.3-action-effect-stage-a-20260724"
-TAG_NAME = "action-effect-architecture-v0.3-stage-a-20260724"
+COHORT_ID = "v0.3-action-effect-stage-a-r1-20260724"
+TAG_NAME = "action-effect-architecture-v0.3-stage-a-r1-20260724"
 ACTION_CAP = v03.CHILD_ACTION_BUDGET
 ARM_ORDER = ("sham", "action-effect")
 LESSONS = (
@@ -135,6 +137,21 @@ class V03DashboardServer(ThreadingHTTPServer):
     allow_reuse_address = False
     run_root: Path
     snapshot_lock: threading.Lock
+    authentication: V03DashboardAuthentication
+
+
+@dataclass(frozen=True)
+class V03DashboardAuthentication:
+    """Immutable evidence authenticated once before the server binds."""
+
+    root: Path
+    contract_sha256: str
+    qualification_binding_sha256: str
+    qualification_report: Path
+    qualification_report_sha256: str
+    qualification_checksum: Path
+    source_commit: str
+    tag_object: str
 
 
 def _sha256(path: Path) -> str:
@@ -143,6 +160,42 @@ def _sha256(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _bounded_regular_bytes(
+    path: Path,
+    *,
+    maximum: int,
+    label: str,
+) -> bytes:
+    flags = os.O_RDONLY
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    try:
+        descriptor = os.open(path, flags)
+    except OSError as error:
+        raise V03DashboardError(f"{label} is missing or unsafe") from error
+    try:
+        metadata = os.fstat(descriptor)
+        if (
+            not stat.S_ISREG(metadata.st_mode)
+            or metadata.st_size <= 0
+            or metadata.st_size > maximum
+        ):
+            raise V03DashboardError(f"{label} has an invalid file bound")
+        chunks: list[bytes] = []
+        remaining = metadata.st_size
+        while remaining:
+            chunk = os.read(descriptor, min(remaining, 1024 * 1024))
+            if not chunk:
+                raise V03DashboardError(f"{label} changed while read")
+            chunks.append(chunk)
+            remaining -= len(chunk)
+        if os.read(descriptor, 1):
+            raise V03DashboardError(f"{label} grew while read")
+        return b"".join(chunks)
+    finally:
+        os.close(descriptor)
 
 
 def _canonical_sha256(payload: Any) -> str:
@@ -536,6 +589,7 @@ def _validate_contract(
     source = contract.get("source")
     preregistration = contract.get("preregistration")
     qualification = contract.get("qualification")
+    replacement = contract.get("replacement")
     parent = contract.get("parent")
     roots = contract.get("roots")
     matched = contract.get("matched_design")
@@ -556,6 +610,14 @@ def _validate_contract(
         or qualification.get("tag") != TAG_NAME
         or qualification.get("tag_object")
         != preregistration.get("tag_object")
+        or not isinstance(replacement, Mapping)
+        or replacement.get("failed_attempt_evidence_sha256")
+        != qualification.get("failed_stage_a_attempt_sha256")
+        or replacement.get("failed_attempt_resume_authorized") is not False
+        or replacement.get("failed_attempt_root_reuse_authorized")
+        is not False
+        or replacement.get("restarts_both_arms_from_confirmed_u1")
+        is not True
         or not isinstance(parent, Mapping)
         or parent.get("checkpoint_sha256")
         != v03.PARENT_CHECKPOINT_SHA256
@@ -590,6 +652,101 @@ def _validate_contract(
     )
     if live != dict(qualification):
         raise V03DashboardError("live v0.3 qualification binding changed")
+
+
+def _startup_authentication(root: Path) -> V03DashboardAuthentication:
+    """Deep-authenticate immutable source evidence before serving."""
+
+    contract_path = root / "cohort-contract.json"
+    contract = _read_json(contract_path)
+    _validate_contract(contract, root=root)
+    qualification = contract["qualification"]
+    authentication = V03DashboardAuthentication(
+        root=root,
+        contract_sha256=_sha256(contract_path),
+        qualification_binding_sha256=_canonical_sha256(qualification),
+        qualification_report=Path(str(qualification["report"])),
+        qualification_report_sha256=str(
+            qualification["report_sha256"]
+        ),
+        qualification_checksum=Path(str(qualification["checksum"])),
+        source_commit=str(contract["source"]["commit"]),
+        tag_object=str(contract["preregistration"]["tag_object"]),
+    )
+    _verify_cached_authentication(
+        contract,
+        root=root,
+        contract_sha256=authentication.contract_sha256,
+        authentication=authentication,
+    )
+    return authentication
+
+
+def _verify_cached_authentication(
+    contract: Mapping[str, Any],
+    *,
+    root: Path,
+    contract_sha256: str,
+    authentication: V03DashboardAuthentication,
+) -> None:
+    """Recheck immutable bytes without repeating the deep verifier."""
+
+    qualification = contract.get("qualification")
+    source = contract.get("source")
+    preregistration = contract.get("preregistration")
+    if (
+        root != authentication.root
+        or contract_sha256 != authentication.contract_sha256
+        or not isinstance(qualification, Mapping)
+        or _canonical_sha256(qualification)
+        != authentication.qualification_binding_sha256
+        or Path(str(qualification.get("report")))
+        != authentication.qualification_report
+        or qualification.get("report_sha256")
+        != authentication.qualification_report_sha256
+        or Path(str(qualification.get("checksum")))
+        != authentication.qualification_checksum
+        or not isinstance(source, Mapping)
+        or source.get("commit") != authentication.source_commit
+        or not isinstance(preregistration, Mapping)
+        or preregistration.get("tag_object")
+        != authentication.tag_object
+    ):
+        raise V03DashboardError(
+            "cached v0.3 qualification contract binding changed"
+        )
+    report_bytes = _bounded_regular_bytes(
+        authentication.qualification_report,
+        maximum=STATUS_MAX_BYTES,
+        label="v0.3 qualification report",
+    )
+    digest = hashlib.sha256(report_bytes).hexdigest()
+    if digest != authentication.qualification_report_sha256:
+        raise V03DashboardError(
+            "cached v0.3 qualification report checksum changed"
+        )
+    try:
+        checksum_fields = (
+            _bounded_regular_bytes(
+                authentication.qualification_checksum,
+                maximum=256,
+                label="v0.3 qualification checksum",
+            )
+            .decode("ascii")
+            .strip()
+            .split()
+        )
+    except UnicodeDecodeError as error:
+        raise V03DashboardError(
+            "cached v0.3 qualification checksum is not ASCII"
+        ) from error
+    if checksum_fields != [
+        digest,
+        authentication.qualification_report.name,
+    ]:
+        raise V03DashboardError(
+            "cached v0.3 qualification checksum changed"
+        )
 
 
 def _verified_process_closeout(
@@ -787,15 +944,27 @@ def _verified_closeout(
     return report
 
 
-def load_v03_snapshot(run_root: Path) -> dict[str, Any]:
+def load_v03_snapshot(
+    run_root: Path,
+    *,
+    authentication: V03DashboardAuthentication | None = None,
+) -> dict[str, Any]:
     """Load one bounded public v0.3 view and reject provenance drift."""
 
     root = _absolute_directory(run_root)
     contract_path = root / "cohort-contract.json"
     contract = _read_json(contract_path)
     state = _read_json(root / "cohort.json")
-    _validate_contract(contract, root=root)
     contract_sha256 = _sha256(contract_path)
+    if authentication is None:
+        _validate_contract(contract, root=root)
+    else:
+        _verify_cached_authentication(
+            contract,
+            root=root,
+            contract_sha256=contract_sha256,
+            authentication=authentication,
+        )
     arms = state.get("arms")
     process_binding = state.get("process_closeout")
     if (
@@ -1130,7 +1299,10 @@ class V03DashboardHandler(BaseHTTPRequestHandler):
         if parsed.path == "/api/v03.json":
             try:
                 with self.server.snapshot_lock:
-                    payload = load_v03_snapshot(self.server.run_root)
+                    payload = load_v03_snapshot(
+                        self.server.run_root,
+                        authentication=self.server.authentication,
+                    )
             except (OSError, RuntimeError, TypeError, ValueError) as error:
                 self._error(
                     HTTPStatus.CONFLICT,
@@ -1195,13 +1367,15 @@ def start_v03_dashboard(
     """Build a read-only dashboard server after one authenticated load."""
 
     root = _absolute_directory(run_root)
-    load_v03_snapshot(root)
+    authentication = _startup_authentication(root)
+    load_v03_snapshot(root, authentication=authentication)
     server = V03DashboardServer(
         (host, int(port)),
         V03DashboardHandler,
     )
     server.run_root = root
     server.snapshot_lock = threading.Lock()
+    server.authentication = authentication
     return server
 
 

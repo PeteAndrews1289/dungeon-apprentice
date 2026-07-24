@@ -48,26 +48,73 @@ SCHEMA_VERSION = 1
 KIND = "sealed_stage_a_preflight_qualification"
 VERDICT = "qualified"
 
-QUALIFIED_TAG = "action-effect-architecture-v0.3-stage-a-20260724"
+QUALIFIED_TAG = "action-effect-architecture-v0.3-stage-a-r1-20260724"
 QUALIFIED_REMOTE = "origin"
 EXPECTED_ORIGIN_URL = "https://github.com/PeteAndrews1289/dungeon-apprentice.git"
 PROTOCOL_DOCUMENT = Path(v03.PROTOCOL_DOCUMENT)
-DASHBOARD_PORT = 8788
+DASHBOARD_PORT = 8789
 
 CANONICAL_QUALIFICATION_DIRECTORY = Path(
     "/Volumes/T7 Developer/DungeonApprentice/qualifications/"
-    "v0.3-action-effect-stage-a-20260724"
+    "v0.3-action-effect-stage-a-r1-20260724"
 )
 CANONICAL_REPORT = CANONICAL_QUALIFICATION_DIRECTORY / "report.json"
 CANONICAL_CHECKSUM = CANONICAL_QUALIFICATION_DIRECTORY / "report.json.sha256"
 CANONICAL_CLAIM = CANONICAL_QUALIFICATION_DIRECTORY / "claim.json"
 CANONICAL_COHORT_ROOT = Path(
     "/Volumes/T7 Developer/DungeonApprentice/"
-    "v03-action-effect-stage-a-20260724"
+    "v03-action-effect-stage-a-r1-20260724"
 )
 CANONICAL_MEDIA_ROOT = Path(
     "/Volumes/T7 Developer/DungeonApprentice/"
+    "v03-action-effect-stage-a-r1-media-20260724"
+)
+
+FAILED_STAGE_A_ATTEMPT_ROOT = Path(
+    "/Volumes/T7 Developer/DungeonApprentice/"
+    "v03-action-effect-stage-a-20260724"
+)
+FAILED_STAGE_A_ATTEMPT_MEDIA_ROOT = Path(
+    "/Volumes/T7 Developer/DungeonApprentice/"
     "v03-action-effect-stage-a-media-20260724"
+)
+FAILED_STAGE_A_ATTEMPT_QUALIFICATION_DIRECTORY = Path(
+    "/Volumes/T7 Developer/DungeonApprentice/qualifications/"
+    "v0.3-action-effect-stage-a-20260724"
+)
+FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG = Path(
+    "/Volumes/T7 Developer/DungeonApprentice/launch-recovery/"
+    "v03-action-effect-stage-a-20260724-launcher.log"
+)
+FAILED_STAGE_A_ATTEMPT_TAG = (
+    "action-effect-architecture-v0.3-stage-a-20260724"
+)
+FAILED_STAGE_A_ATTEMPT_TAG_OBJECT = (
+    "9bd59e367b0ccb9890e4ddb5ad0144dfd4897c7c"
+)
+FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT = (
+    "5b135a4e2953db9f14e83cdaba77fe219fecb160"
+)
+FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256 = (
+    "a3a50ecf91411a27a70e2c6d3e03b93183aa3b078f2f1104b5dd6884f2c3fc85"
+)
+FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CLAIM_SHA256 = (
+    "1ab64150f7db79735cdd4bb3192cfad2b9ad244a0944d76fae275a05d1e1c39b"
+)
+FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CHECKSUM_SHA256 = (
+    "f96599d4d813ff92897a70077f41a1de16a60ec2860e441eb70ab4af4bb25a4e"
+)
+FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256 = (
+    "15a180d7a38af6dbc459870b0e4f06a565b291399971fc2165774bce91c6e72c"
+)
+FAILED_STAGE_A_ATTEMPT_COHORT_SHA256 = (
+    "c35441207060ab9a5c55e82289924ab0530effc7f0e5e50fb11b2a0ab83f68eb"
+)
+FAILED_STAGE_A_ATTEMPT_DASHBOARD_LOG_SHA256 = (
+    "8806979b29d3778f8730546c6bb2f577548844cf891cb06220cd935a18bd95f2"
+)
+FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG_SHA256 = (
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 )
 
 U2S_TERMINAL_ROOT = Path(
@@ -101,6 +148,7 @@ TAG_FIELDS = frozenset(
         "protocol_document_sha256",
         "parent",
         "u2s_terminal",
+        "failed_stage_a_attempt",
         "guard_mapping_sha256",
         "sampler_preflight_sha256",
         "architecture_contract_sha256",
@@ -125,6 +173,7 @@ _REPORT_FIELDS = frozenset(
         "protocol_document",
         "parent",
         "predecessors",
+        "failed_stage_a_attempt",
         "guards",
         "sampler_preflight",
         "architecture_contract",
@@ -284,6 +333,12 @@ def _resume_rule() -> dict[str, Any]:
         "resume_supported": False,
         "interruption_disposition": "whole_stage_a_operationally_incomplete",
         "single_arm_continuation": False,
+        "failed_attempt": (
+            "v0.3-action-effect-stage-a-20260724-attempt-0"
+        ),
+        "replacement_attempt": (
+            "v0.3-action-effect-stage-a-r1-20260724"
+        ),
         "replacement_requires_new_commit_tag_qualification_and_roots": True,
         "replacement_restarts_both_arms_from_confirmed_u1": True,
     }
@@ -409,6 +464,310 @@ def _safe_child(root: Path, relative: Any, label: str) -> Path:
     if not resolved.is_file():
         raise ActionEffectQualificationError(f"{label} is missing or unsafe")
     return resolved
+
+
+def _regular_tree_inventory(root: Path, label: str) -> tuple[set[str], set[str]]:
+    """Return regular relative files/directories without following links."""
+
+    if root.is_symlink() or not root.is_dir():
+        raise ActionEffectQualificationError(f"{label} is missing or unsafe")
+    files: set[str] = set()
+    directories: set[str] = set()
+    for current, child_directories, child_files in os.walk(
+        root,
+        followlinks=False,
+    ):
+        current_path = Path(current)
+        for name in child_directories:
+            path = current_path / name
+            if path.is_symlink() or not path.is_dir():
+                raise ActionEffectQualificationError(
+                    f"{label} contains an unsafe directory"
+                )
+            directories.add(path.relative_to(root).as_posix())
+        for name in child_files:
+            path = current_path / name
+            if path.is_symlink() or not path.is_file():
+                raise ActionEffectQualificationError(
+                    f"{label} contains an unsafe file"
+                )
+            files.add(path.relative_to(root).as_posix())
+    return files, directories
+
+
+def _verify_failed_stage_a_tag(
+    repository: Path,
+    *,
+    runner: Runner = subprocess.run,
+) -> None:
+    """Require the superseded attempt-0 tag to remain exact on origin."""
+
+    root = repository.expanduser().resolve()
+    reference = f"refs/tags/{FAILED_STAGE_A_ATTEMPT_TAG}"
+    if (
+        _git(root, ["cat-file", "-t", reference], runner=runner) != "tag"
+        or _git(root, ["rev-parse", "--verify", reference], runner=runner)
+        != FAILED_STAGE_A_ATTEMPT_TAG_OBJECT
+        or _git(root, ["rev-list", "-n", "1", reference], runner=runner)
+        != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
+        or _git(
+            root,
+            ["remote", "get-url", QUALIFIED_REMOTE],
+            runner=runner,
+        )
+        != EXPECTED_ORIGIN_URL
+    ):
+        raise ActionEffectQualificationError(
+            "failed Stage-A attempt annotated tag identity changed"
+        )
+    remote = _git(
+        root,
+        [
+            "ls-remote",
+            "--tags",
+            QUALIFIED_REMOTE,
+            reference,
+        ],
+        runner=runner,
+    ).split()
+    if remote != [FAILED_STAGE_A_ATTEMPT_TAG_OBJECT, reference]:
+        raise ActionEffectQualificationError(
+            "failed Stage-A attempt annotated tag is not exact on origin"
+        )
+
+
+def authenticate_failed_stage_a_attempt(
+    *,
+    repository: Path | None = None,
+    runner: Runner = subprocess.run,
+) -> dict[str, Any]:
+    """Authenticate the immutable, zero-recorded-action Stage-A attempt 0."""
+
+    if repository is not None:
+        _verify_failed_stage_a_tag(repository, runner=runner)
+
+    root = FAILED_STAGE_A_ATTEMPT_ROOT
+    media_root = FAILED_STAGE_A_ATTEMPT_MEDIA_ROOT
+    qualification_root = FAILED_STAGE_A_ATTEMPT_QUALIFICATION_DIRECTORY
+    contract_path = root / "cohort-contract.json"
+    cohort_path = root / "cohort.json"
+    report_path = qualification_root / "report.json"
+    claim_path = qualification_root / "claim.json"
+    checksum_path = qualification_root / "report.json.sha256"
+
+    root_files, root_directories = _regular_tree_inventory(
+        root,
+        "failed Stage-A attempt root",
+    )
+    media_files, media_directories = _regular_tree_inventory(
+        media_root,
+        "failed Stage-A attempt media root",
+    )
+    qualification_files, qualification_directories = _regular_tree_inventory(
+        qualification_root,
+        "failed Stage-A attempt qualification root",
+    )
+    _reject_symlink_chain(FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG)
+    if (
+        root_files
+        != {"cohort-contract.json", "cohort.json", "dashboard.log"}
+        or root_directories
+        or media_files
+        or media_directories
+        or qualification_files
+        != {"claim.json", "report.json", "report.json.sha256"}
+        or qualification_directories
+        or not FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG.is_file()
+        or FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG.stat().st_size != 0
+    ):
+        raise ActionEffectQualificationError(
+            "failed Stage-A attempt artifact inventory changed"
+        )
+    measured = {
+        "contract": file_sha256(contract_path),
+        "cohort": file_sha256(cohort_path),
+        "qualification_report": file_sha256(report_path),
+        "qualification_claim": file_sha256(claim_path),
+        "qualification_checksum": file_sha256(checksum_path),
+        "dashboard_log": file_sha256(root / "dashboard.log"),
+        "launcher_log": file_sha256(FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG),
+    }
+    expected = {
+        "contract": FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256,
+        "cohort": FAILED_STAGE_A_ATTEMPT_COHORT_SHA256,
+        "qualification_report": (
+            FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256
+        ),
+        "qualification_claim": (
+            FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CLAIM_SHA256
+        ),
+        "qualification_checksum": (
+            FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CHECKSUM_SHA256
+        ),
+        "dashboard_log": FAILED_STAGE_A_ATTEMPT_DASHBOARD_LOG_SHA256,
+        "launcher_log": FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG_SHA256,
+    }
+    if measured != expected:
+        raise ActionEffectQualificationError(
+            "failed Stage-A attempt checksum changed"
+        )
+
+    contract = _read_json(contract_path, "failed Stage-A cohort contract")
+    cohort = _read_json(cohort_path, "failed Stage-A cohort state")
+    report = _read_json(report_path, "failed Stage-A qualification report")
+    claim = _read_json(claim_path, "failed Stage-A qualification claim")
+    try:
+        checksum_fields = checksum_path.read_text(encoding="ascii").split()
+    except (OSError, UnicodeDecodeError) as error:
+        raise ActionEffectQualificationError(
+            "failed Stage-A qualification checksum is unreadable"
+        ) from error
+
+    arms = cohort.get("arms")
+    sham = arms[0] if isinstance(arms, list) and len(arms) == 2 else None
+    candidate = arms[1] if isinstance(arms, list) and len(arms) == 2 else None
+    sham_attempts = sham.get("attempts") if isinstance(sham, Mapping) else None
+    sham_attempt = (
+        sham_attempts[0]
+        if isinstance(sham_attempts, list) and len(sham_attempts) == 1
+        else None
+    )
+    roots = contract.get("roots")
+    preregistration = contract.get("preregistration")
+    qualification = contract.get("qualification")
+    report_source = report.get("source")
+    if (
+        checksum_fields
+        != [
+            FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256,
+            "report.json",
+        ]
+        or report.get("protocol") != PROTOCOL
+        or report.get("verdict") != VERDICT
+        or report.get("claim") != claim
+        or not isinstance(report_source, Mapping)
+        or report_source.get("commit")
+        != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
+        or report_source.get("tag") != FAILED_STAGE_A_ATTEMPT_TAG
+        or report_source.get("tag_object")
+        != FAILED_STAGE_A_ATTEMPT_TAG_OBJECT
+        or claim.get("source_commit")
+        != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
+        or claim.get("tag") != FAILED_STAGE_A_ATTEMPT_TAG
+        or claim.get("tag_object") != FAILED_STAGE_A_ATTEMPT_TAG_OBJECT
+        or contract.get("protocol") != PROTOCOL
+        or contract.get("cohort_id")
+        != "v0.3-action-effect-stage-a-20260724"
+        or contract.get("source")
+        != {"commit": FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT, "dirty": False}
+        or not isinstance(preregistration, Mapping)
+        or preregistration.get("tag") != FAILED_STAGE_A_ATTEMPT_TAG
+        or preregistration.get("tag_object")
+        != FAILED_STAGE_A_ATTEMPT_TAG_OBJECT
+        or preregistration.get("peeled_commit")
+        != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
+        or not isinstance(qualification, Mapping)
+        or qualification.get("report_sha256")
+        != FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256
+        or not isinstance(roots, Mapping)
+        or roots.get("cohort") != str(root)
+        or roots.get("media") != str(media_root)
+        or cohort.get("protocol") != PROTOCOL
+        or cohort.get("cohort_id")
+        != "v0.3-action-effect-stage-a-20260724"
+        or cohort.get("contract_sha256")
+        != FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256
+        or cohort.get("source_commit")
+        != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
+        or cohort.get("tag") != FAILED_STAGE_A_ATTEMPT_TAG
+        or cohort.get("tag_object") != FAILED_STAGE_A_ATTEMPT_TAG_OBJECT
+        or cohort.get("qualification_sha256")
+        != FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256
+        or cohort.get("phase") != "operationally_incomplete"
+        or cohort.get("active_arm") is not None
+        or cohort.get("terminal_report") is not None
+        or cohort.get("process_closeout") is not None
+        or not isinstance(sham, Mapping)
+        or sham.get("id") != "sham"
+        or sham.get("state") != "crashed"
+        or sham.get("terminal") is not None
+        or not isinstance(sham_attempt, Mapping)
+        or sham_attempt.get("index") != 0
+        or sham_attempt.get("state") != "crashed"
+        or sham_attempt.get("trainer_exit_code") != 130
+        or not isinstance(candidate, Mapping)
+        or candidate.get("id") != "action-effect"
+        or candidate.get("state") != "pending"
+        or candidate.get("attempts") != []
+        or candidate.get("terminal") is not None
+    ):
+        raise ActionEffectQualificationError(
+            "failed Stage-A attempt disposition changed"
+        )
+
+    return {
+        "attempt_id": "v0.3-action-effect-stage-a-20260724-attempt-0",
+        "protocol": PROTOCOL,
+        "disposition": "operationally_incomplete",
+        "source_commit": FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT,
+        "tag": FAILED_STAGE_A_ATTEMPT_TAG,
+        "tag_object": FAILED_STAGE_A_ATTEMPT_TAG_OBJECT,
+        "qualification": {
+            "root": str(qualification_root),
+            "report_sha256": (
+                FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256
+            ),
+            "claim_sha256": (
+                FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CLAIM_SHA256
+            ),
+            "checksum_sha256": (
+                FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CHECKSUM_SHA256
+            ),
+            "verdict": "qualified",
+        },
+        "cohort": {
+            "root": str(root),
+            "media_root": str(media_root),
+            "contract_sha256": FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256,
+            "state_sha256": FAILED_STAGE_A_ATTEMPT_COHORT_SHA256,
+            "phase": "operationally_incomplete",
+            "classification": "pre_arm_dashboard_health_failure",
+            "manifest_synthetic_arm_claim": {
+                "arm": "sham",
+                "attempt": 0,
+                "state": "crashed",
+                "exit_code": 130,
+            },
+            "dashboard_log_sha256": (
+                FAILED_STAGE_A_ATTEMPT_DASHBOARD_LOG_SHA256
+            ),
+        },
+        "recorded_training_evidence": {
+            "arm_directories": 0,
+            "media_entries": 0,
+            "trainer_started": False,
+            "trainer_status_files": 0,
+            "trainer_supervisor_files": 0,
+            "checkpoint_files": 0,
+            "recorded_child_actions": 0,
+            "action_one_reached": False,
+        },
+        "launcher_log": {
+            "path": str(FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG),
+            "sha256": FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG_SHA256,
+            "bytes": 0,
+        },
+        "resume_authorized": False,
+        "reuse_authorized": False,
+        "replacement": {
+            "tag": QUALIFIED_TAG,
+            "qualification_root": str(CANONICAL_QUALIFICATION_DIRECTORY),
+            "cohort_root": str(CANONICAL_COHORT_ROOT),
+            "media_root": str(CANONICAL_MEDIA_ROOT),
+            "dashboard_port": DASHBOARD_PORT,
+            "restarts_both_arms_from_confirmed_u1": True,
+        },
+    }
 
 
 def authenticate_u2s_terminal(
@@ -1394,6 +1753,9 @@ def _storage_preflight(
         frozen_u2.CANONICAL_U1_CONFIRMATION,
         U2S_TERMINAL_ROOT,
         u2s_qualify.U2R_RUN_DIRECTORY,
+        FAILED_STAGE_A_ATTEMPT_QUALIFICATION_DIRECTORY,
+        FAILED_STAGE_A_ATTEMPT_ROOT,
+        FAILED_STAGE_A_ATTEMPT_MEDIA_ROOT,
     )
     managed = (
         CANONICAL_QUALIFICATION_DIRECTORY,
@@ -1502,6 +1864,9 @@ def build_action_effect_tag_payload(
     )
     protected = _protected_seed_partitions()
     contract = _architecture_contract()
+    failed_attempt = authenticate_failed_stage_a_attempt(
+        repository=repository,
+    )
     payload = {
         "schema_version": TAG_SCHEMA_VERSION,
         "kind": TAG_KIND,
@@ -1535,6 +1900,7 @@ def build_action_effect_tag_payload(
                 "checkpoint_reuse_authorized",
             )
         },
+        "failed_stage_a_attempt": failed_attempt,
         "guard_mapping_sha256": guards["applied_mapping_sha256"],
         "sampler_preflight_sha256": _canonical_sha256(sampler),
         "architecture_contract_sha256": _canonical_sha256(contract),
@@ -1691,6 +2057,9 @@ def _expected_report(
         sampler_preflight_sha256=sampler_digest,
     )
     protocol_path = repository / PROTOCOL_DOCUMENT
+    failed_attempt = authenticate_failed_stage_a_attempt(
+        repository=repository,
+    )
     return (
         {
             "schema_version": SCHEMA_VERSION,
@@ -1705,6 +2074,7 @@ def _expected_report(
             },
             "parent": parent,
             "predecessors": predecessors,
+            "failed_stage_a_attempt": failed_attempt,
             "guards": guards,
             "sampler_preflight": sampler,
             "architecture_contract": _architecture_contract(),
@@ -1716,6 +2086,9 @@ def _expected_report(
                 "each_arm_starts_from_exact_confirmed_u1": True,
                 "u2_u2r_u2s_checkpoint_loading_authorized": False,
                 "stage_a_resume_supported": False,
+                "failed_attempt_resume_authorized": False,
+                "failed_attempt_root_reuse_authorized": False,
+                "replacement_restarts_both_arms_from_confirmed_u1": True,
                 "confirmation_or_final_seed_issuer_opened": False,
                 "canonical_or_claim_policy_updates_during_qualification": False,
                 "disposable_smoke_policies_destroyed": True,
@@ -1747,6 +2120,7 @@ class ActionEffectQualificationEvidence:
     architecture_contract_sha256: str
     smoke_evidence_sha256: str
     protected_partitions_sha256: str
+    failed_stage_a_attempt_sha256: str
     storage_caps: Mapping[str, int]
     _report_bytes: bytes = field(repr=False, compare=False)
     _base_qualification: Any = field(repr=False, compare=False)
@@ -1772,6 +2146,9 @@ class ActionEffectQualificationEvidence:
             "smoke_evidence_sha256": self.smoke_evidence_sha256,
             "protected_partitions_sha256": (
                 self.protected_partitions_sha256
+            ),
+            "failed_stage_a_attempt_sha256": (
+                self.failed_stage_a_attempt_sha256
             ),
             "storage_caps": dict(self.storage_caps),
         }
@@ -1922,6 +2299,9 @@ def verify_action_effect_qualification(
         ),
         protected_partitions_sha256=_canonical_sha256(
             report["protected_partitions"]
+        ),
+        failed_stage_a_attempt_sha256=_canonical_sha256(
+            report["failed_stage_a_attempt"]
         ),
         storage_caps=MappingProxyType(dict(report["storage_caps"])),
         _report_bytes=report_bytes,

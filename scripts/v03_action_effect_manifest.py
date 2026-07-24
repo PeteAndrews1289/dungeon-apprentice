@@ -29,21 +29,21 @@ from dungeon_apprentice import v03_action_effect as v03
 PROTOCOL = v03.PROTOCOL
 QUALIFICATION_PROTOCOL = PROTOCOL
 SMOKE_PROTOCOL = "dungeon-apprentice-v0.3-action-effect-disposable-smoke"
-COHORT_ID = "v0.3-action-effect-stage-a-20260724"
-TAG_NAME = "action-effect-architecture-v0.3-stage-a-20260724"
+COHORT_ID = "v0.3-action-effect-stage-a-r1-20260724"
+TAG_NAME = "action-effect-architecture-v0.3-stage-a-r1-20260724"
 DEFAULT_ROOT = Path(
     "/Volumes/T7 Developer/DungeonApprentice/"
-    "v03-action-effect-stage-a-20260724"
+    "v03-action-effect-stage-a-r1-20260724"
 )
 DEFAULT_MEDIA_ROOT = Path(
     "/Volumes/T7 Developer/DungeonApprentice/"
-    "v03-action-effect-stage-a-media-20260724"
+    "v03-action-effect-stage-a-r1-media-20260724"
 )
 QUALIFICATION_REPORT = Path(
     "/Volumes/T7 Developer/DungeonApprentice/qualifications/"
-    "v0.3-action-effect-stage-a-20260724/report.json"
+    "v0.3-action-effect-stage-a-r1-20260724/report.json"
 )
-DEFAULT_DASHBOARD_PORT = 8788
+DEFAULT_DASHBOARD_PORT = 8789
 
 ACTION_CAP = v03.CHILD_ACTION_BUDGET
 TOTAL_ACTION_CAP = 2 * ACTION_CAP
@@ -290,6 +290,7 @@ def _verified_qualification_binding(
         ) from error
     restrictions = report.get("restrictions")
     smoke = report.get("smoke_evidence")
+    failed_attempt = report.get("failed_stage_a_attempt")
     expected_storage_caps = {
         "per_arm_bytes": LINEAGE_CAP_BYTES,
         "scientific_cohort_bytes": COHORT_SCIENTIFIC_CAP_BYTES,
@@ -306,14 +307,30 @@ def _verified_qualification_binding(
         or _sha256(qualifier.CANONICAL_REPORT)
         != public.get("report_sha256")
         or public.get("storage_caps") != expected_storage_caps
+        or SHA256_PATTERN.fullmatch(
+            str(public.get("failed_stage_a_attempt_sha256", ""))
+        )
+        is None
         or report.get("protocol") != PROTOCOL
         or report.get("kind") != qualifier.KIND
         or report.get("verdict") != "qualified"
         or not isinstance(smoke, Mapping)
         or not isinstance(smoke.get("_full_report"), Mapping)
+        or not isinstance(failed_attempt, Mapping)
+        or _canonical_sha256(failed_attempt)
+        != public.get("failed_stage_a_attempt_sha256")
+        or failed_attempt.get("disposition") != "operationally_incomplete"
+        or failed_attempt.get("resume_authorized") is not False
+        or failed_attempt.get("reuse_authorized") is not False
         or not isinstance(restrictions, Mapping)
         or restrictions.get("arms_run_sequentially") is not True
         or restrictions.get("stage_a_resume_supported") is not False
+        or restrictions.get("failed_attempt_resume_authorized") is not False
+        or restrictions.get("failed_attempt_root_reuse_authorized") is not False
+        or restrictions.get(
+            "replacement_restarts_both_arms_from_confirmed_u1"
+        )
+        is not True
         or restrictions.get(
             "development_checkpoint_reuse_authorized"
         )
@@ -345,6 +362,14 @@ def _expected_contract(
             "peeled_commit": source_commit,
         },
         "qualification": dict(qualification),
+        "replacement": {
+            "failed_attempt_evidence_sha256": qualification[
+                "failed_stage_a_attempt_sha256"
+            ],
+            "failed_attempt_resume_authorized": False,
+            "failed_attempt_root_reuse_authorized": False,
+            "restarts_both_arms_from_confirmed_u1": True,
+        },
         "parent": {
             "protocol": "dungeon-apprentice-v0.2-u1",
             "u1_child_seed": v03.PARENT_U1_SEED,
@@ -457,7 +482,9 @@ def _expected_state(contract: Mapping[str, Any]) -> dict[str, Any]:
 def _validate_contract(contract: Mapping[str, Any]) -> None:
     source = contract.get("source")
     preregistration = contract.get("preregistration")
+    qualification = contract.get("qualification")
     parent = contract.get("parent")
+    replacement = contract.get("replacement")
     matched = contract.get("matched_design")
     process_closeout = contract.get("process_closeout")
     observation = contract.get("observation")
@@ -476,6 +503,7 @@ def _validate_contract(contract: Mapping[str, Any]) -> None:
             str(preregistration.get("tag_object", ""))
         )
         is None
+        or not isinstance(qualification, Mapping)
         or not isinstance(parent, Mapping)
         or parent.get("checkpoint_sha256")
         != v03.PARENT_CHECKPOINT_SHA256
@@ -486,6 +514,12 @@ def _validate_contract(contract: Mapping[str, Any]) -> None:
         or parent.get("lifetime_actions") != PARENT_LIFETIME_ACTIONS
         or parent.get("optimizer_updates")
         != v03.PARENT_OPTIMIZER_UPDATES
+        or not isinstance(replacement, Mapping)
+        or replacement.get("failed_attempt_evidence_sha256")
+        != qualification.get("failed_stage_a_attempt_sha256")
+        or replacement.get("failed_attempt_resume_authorized") is not False
+        or replacement.get("failed_attempt_root_reuse_authorized") is not False
+        or replacement.get("restarts_both_arms_from_confirmed_u1") is not True
         or not isinstance(matched, Mapping)
         or matched.get("arm_order") != list(ARM_ORDER)
         or matched.get("action_cap_per_arm") != ACTION_CAP

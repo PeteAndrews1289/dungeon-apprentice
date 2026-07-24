@@ -242,21 +242,29 @@ responded. Because the context is per-agent and contains no class or objective s
 weights can later be evaluated independently for several party members while their equipment,
 class, local view, and higher-level tactics remain explicit future mechanics.
 
-The release machinery for that boundary is now implemented but not yet exercised canonically:
+Attempt 0 exercised the original release chain and qualified, but its dashboard repeated the full
+predecessor walk on every request and exceeded the launcher's ten-second health deadline. It
+closed at zero actions; the exact negative inventory is in the
+[attempt-0 result](results/v0.3-action-effect-launch-attempt-0.md). The separately committed
+[r1 protocol](protocol-v0.3-action-effect-architecture-r1.md) preserves the architecture experiment
+and corrects only this operational boundary:
 
 ```mermaid
 flowchart LR
-    C["Clean published source commit"] --> T["Annotated preregistration tag"]
+    C["Clean published r1 source"] --> T["Annotated r1 preregistration tag"]
     T --> Q["Durable qualification claim + matched smoke report"]
     Q --> M["Cohort contract binds report SHA-256"]
     M --> L["Fixed launcher"]
-    L --> D["Read-only dashboard :8788"]
+    L --> D["Read-only dashboard :8789"]
+    D --> A["Deep-auth once before socket bind"]
+    D --> P["Every poll: reread live state + rehash immutable bindings"]
 ```
 
-The tag `action-effect-architecture-v0.3-stage-a-20260724` binds the source, protocol, roots,
-architecture and runtime contracts; it cannot contain a report generated later. The qualification
-root then binds that tag object, and the cohort manifest binds the qualification report. The only
-launcher is `scripts/run_v03_action_effect_stage_a.sh`; its assigned cohort and media roots are
-`/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-20260724` and
-`/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-media-20260724`. None of those
-canonical artifacts exists while the current source remains unfrozen.
+The assigned r1 tag is `action-effect-architecture-v0.3-stage-a-r1-20260724`; its qualification,
+cohort, and media roots end in the same `stage-a-r1-20260724` identity. The sole launcher is
+`scripts/run_v03_action_effect_stage_a_r1.sh`. Full source, tag, qualification, and predecessor
+authentication happens once at dashboard startup before the listening socket binds. Every request
+then rereads mutable status and rehashes the immutable cohort contract, qualification report, and
+checksum. “Healthy” is the launcher's validated conclusion from the returned identities, not a
+literal API field. No r1 tag, qualification, root, process, action, or result exists at this
+preparation boundary.

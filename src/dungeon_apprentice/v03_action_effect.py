@@ -84,7 +84,7 @@ LINEAGE_CAP_BYTES = 2 * 1024**3
 COHORT_SCIENTIFIC_CAP_BYTES = 4 * 1024**3
 MEDIA_CAP_BYTES = 6 * 1024**3
 COMBINED_PLANNED_CAP_BYTES = 10 * 1024**3
-PROTOCOL_DOCUMENT = "docs/protocol-v0.3-action-effect-architecture.md"
+PROTOCOL_DOCUMENT = "docs/protocol-v0.3-action-effect-architecture-r1.md"
 
 ARM_ORDER = (
     ActionEffectMode.SHAM,

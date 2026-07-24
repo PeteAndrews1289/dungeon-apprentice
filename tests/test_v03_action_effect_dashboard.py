@@ -86,6 +86,10 @@ def _qualification(
         },
     )
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    path.with_name("report.json.sha256").write_text(
+        f"{digest}  {path.name}\n",
+        encoding="ascii",
+    )
     public: dict[str, object] = {
         "report": str(path),
         "report_sha256": digest,
@@ -101,6 +105,7 @@ def _qualification(
         "architecture_contract_sha256": "5" * 64,
         "smoke_evidence_sha256": "6" * 64,
         "protected_partitions_sha256": "7" * 64,
+        "failed_stage_a_attempt_sha256": "8" * 64,
         "storage_caps": {
             "per_arm_bytes": helper.LINEAGE_CAP_BYTES,
             "scientific_cohort_bytes": (
@@ -427,6 +432,83 @@ def test_http_server_exposes_only_dashboard_snapshot_and_safe_frame(
         thread.join(timeout=2)
 
 
+def test_server_deep_authenticates_once_then_polls_with_cached_bytes(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _helper_module, root, _media, _source, _tag = _cohort(tmp_path)
+    contract = json.loads(
+        (root / "cohort-contract.json").read_text(encoding="utf-8")
+    )
+    deep_auth_calls = 0
+
+    def authenticate(*_args: object, **_kwargs: object) -> dict:
+        nonlocal deep_auth_calls
+        deep_auth_calls += 1
+        return dict(contract["qualification"])
+
+    monkeypatch.setattr(
+        dashboard,
+        "_authenticate_live_qualification",
+        authenticate,
+    )
+    server = dashboard.start_v03_dashboard(root, port=0)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    host, port = server.server_address
+    try:
+        assert deep_auth_calls == 1
+        for _ in range(2):
+            with urllib.request.urlopen(
+                f"http://{host}:{port}/api/v03.json",
+                timeout=2,
+            ) as response:
+                assert response.status == 200
+        assert deep_auth_calls == 1
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)
+
+
+@pytest.mark.parametrize("target", ["report", "checksum"])
+def test_cached_poll_rejects_qualification_file_tampering(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    target: str,
+) -> None:
+    _helper_module, root, _media, _source, _tag = _cohort(tmp_path)
+    contract = json.loads(
+        (root / "cohort-contract.json").read_text(encoding="utf-8")
+    )
+    monkeypatch.setattr(
+        dashboard,
+        "_authenticate_live_qualification",
+        lambda *_args, **_kwargs: dict(contract["qualification"]),
+    )
+    server = dashboard.start_v03_dashboard(root, port=0)
+    try:
+        qualification = contract["qualification"]
+        path = Path(
+            str(
+                qualification[
+                    "report" if target == "report" else "checksum"
+                ]
+            )
+        )
+        path.write_bytes(path.read_bytes() + b"tampered\n")
+        with pytest.raises(
+            dashboard.V03DashboardError,
+            match=r"qualification .*changed",
+        ):
+            dashboard.load_v03_snapshot(
+                root,
+                authentication=server.authentication,
+            )
+    finally:
+        server.server_close()
+
+
 def test_dashboard_rejects_nonabsolute_or_symlinked_root(
     tmp_path: Path,
 ) -> None:
@@ -443,7 +525,7 @@ def test_terminal_dashboard_recomputes_candidate_only_selection(
     tmp_path: Path,
 ) -> None:
     fixtures = _operational_fixtures()
-    helper, root, _media, source, tag_object = fixtures._cohort(tmp_path)
+    helper, root, _media, source, tag_object = _cohort(tmp_path)
     contract = json.loads(
         (root / "cohort-contract.json").read_text(encoding="utf-8")
     )

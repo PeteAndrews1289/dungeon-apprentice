@@ -129,7 +129,7 @@ hundred identical toggles can therefore look like a generic unchanged scene rath
 failed cause-and-effect experiment.
 
 The implemented, qualification-pending
-[v0.3 protocol](protocol-v0.3-action-effect-architecture.md) supplies that missing
+[v0.3 Stage-A r1 protocol](protocol-v0.3-action-effect-architecture-r1.md) supplies that missing
 sensorimotor link while keeping the task signal untouched:
 
 1. At episode start, context is all zero.

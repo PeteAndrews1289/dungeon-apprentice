@@ -45,6 +45,11 @@ def _qualification(
 ) -> tuple[Path, dict[str, object]]:
     directory.mkdir()
     report = directory / "report.json"
+    failed_attempt = {
+        "disposition": "operationally_incomplete",
+        "resume_authorized": False,
+        "reuse_authorized": False,
+    }
     _write_json(
         report,
         {
@@ -70,6 +75,7 @@ def _qualification(
             },
             "parent": {},
             "predecessors": {},
+            "failed_stage_a_attempt": failed_attempt,
             "guards": {},
             "sampler_preflight": [],
             "architecture_contract": {},
@@ -101,6 +107,9 @@ def _qualification(
             "restrictions": {
                 "arms_run_sequentially": True,
                 "stage_a_resume_supported": False,
+                "failed_attempt_resume_authorized": False,
+                "failed_attempt_root_reuse_authorized": False,
+                "replacement_restarts_both_arms_from_confirmed_u1": True,
                 "development_checkpoint_reuse_authorized": False,
                 "u3_authorized": False,
             },
@@ -127,6 +136,9 @@ def _qualification(
         "architecture_contract_sha256": "5" * 64,
         "smoke_evidence_sha256": "6" * 64,
         "protected_partitions_sha256": "7" * 64,
+        "failed_stage_a_attempt_sha256": helper._canonical_sha256(
+            failed_attempt
+        ),
         "storage_caps": {
             "per_arm_bytes": helper.LINEAGE_CAP_BYTES,
             "scientific_cohort_bytes": (
@@ -685,7 +697,7 @@ def _clear_process_rows() -> list[dict[str, object]]:
             "command": (
                 "python -m "
                 "dungeon_apprentice.v03_action_effect_dashboard "
-                "--run-root /fixture --port 8788"
+                "--run-root /fixture --port 8789"
             ),
         },
     ]
@@ -711,11 +723,11 @@ def test_manifest_identity_is_v03_fresh_only_and_has_no_resume() -> None:
     assert helper.PROTOCOL == (
         "dungeon-apprentice-v0.3-action-effect-architecture"
     )
-    assert helper.COHORT_ID == "v0.3-action-effect-stage-a-20260724"
+    assert helper.COHORT_ID == "v0.3-action-effect-stage-a-r1-20260724"
     assert helper.TAG_NAME == (
-        "action-effect-architecture-v0.3-stage-a-20260724"
+        "action-effect-architecture-v0.3-stage-a-r1-20260724"
     )
-    assert helper.DEFAULT_DASHBOARD_PORT == 8788
+    assert helper.DEFAULT_DASHBOARD_PORT == 8789
     assert helper.ARM_ORDER == ("sham", "action-effect")
     parser = helper.build_parser()
     parsed = parser.parse_args(
@@ -749,6 +761,11 @@ def test_manifest_consumes_real_qualifier_public_api_shape(
     report.write_text('{"fixture":true}\n', encoding="utf-8")
     source = "a" * 40
     tag_object = "b" * 40
+    failed_attempt = {
+        "disposition": "operationally_incomplete",
+        "resume_authorized": False,
+        "reuse_authorized": False,
+    }
     public = {
         "report": str(report),
         "report_sha256": hashlib.sha256(report.read_bytes()).hexdigest(),
@@ -764,6 +781,9 @@ def test_manifest_consumes_real_qualifier_public_api_shape(
         "architecture_contract_sha256": "5" * 64,
         "smoke_evidence_sha256": "6" * 64,
         "protected_partitions_sha256": "7" * 64,
+        "failed_stage_a_attempt_sha256": helper._canonical_sha256(
+            failed_attempt
+        ),
         "storage_caps": {
             "per_arm_bytes": helper.LINEAGE_CAP_BYTES,
             "scientific_cohort_bytes": (
@@ -778,9 +798,13 @@ def test_manifest_consumes_real_qualifier_public_api_shape(
         "kind": qualifier.KIND,
         "verdict": "qualified",
         "smoke_evidence": {"_full_report": {"verdict": "passed"}},
+        "failed_stage_a_attempt": failed_attempt,
         "restrictions": {
             "arms_run_sequentially": True,
             "stage_a_resume_supported": False,
+            "failed_attempt_resume_authorized": False,
+            "failed_attempt_root_reuse_authorized": False,
+            "replacement_restarts_both_arms_from_confirmed_u1": True,
             "development_checkpoint_reuse_authorized": False,
             "u3_authorized": False,
         },
