@@ -326,7 +326,7 @@ activation was selected. The full
 [U2-S result](docs/results/v0.2-u2s-r1-stability-ablation.md) preserves the exact evidence and
 claim limits.
 
-### v0.3 — three operational lessons; r3 replacement designed
+### v0.3 — the action-effect pathway learned, but did not solve the tail
 
 The ablation resolved the next design decision: another reward amount or gentler PPO schedule is
 not enough. The original
@@ -337,9 +337,9 @@ question unchanged and fixed the dashboard boundary. Its launcher then exposed a
 independent process-control defect.
 [r2](docs/protocol-v0.3-action-effect-architecture-r2.md) preserved the same question while
 correcting process classification and abnormal-exit cleanup. It completed the entire sham arm,
-then exposed a third operational defect in terminal evidence authentication. The current
-[r3 replacement](docs/protocol-v0.3-action-effect-architecture-r3.md) changes only that byte-level
-verification contract.
+then exposed a third operational defect in terminal evidence authentication. The frozen
+[r3 protocol](docs/protocol-v0.3-action-effect-architecture-r3.md) changed only that byte-level
+verification contract, then finally completed the matched scientific test.
 
 Both fresh twins inherit the exact confirmed U1 `20260733` CNN, actor/critic LSTMs, action/value
 heads, and Adam moments by parameter name. Both have the same new nine-value input and a
@@ -354,10 +354,9 @@ produce the same first real 2,048-transition trajectory; learning may make them 
 the first optimizer phase. Reward, curiosity, PPO, curriculum, horizons, full action budget, and
 the complete U2-S terminal-three gate remain fixed.
 
-This first stage can select only the architecture definition. Its checkpoints are development
-artifacts and cannot be promoted. A genuine candidate pass would authorize a separately frozen
-three-parent replication; only a later successful independent replication and untouched no-update
-confirmation could reopen U3.
+This first stage could select only the architecture definition. Its checkpoints were development
+artifacts and could not be promoted. A genuine candidate pass would have authorized a separately
+frozen three-parent replication; r3 did not pass, so that Stage B replication did not open.
 
 Attempt 0 froze source commit `5b135a4e2953db9f14e83cdaba77fe219fecb160`, published its
 annotated tag, and passed the one-shot qualification. Its dashboard then repeated the complete
@@ -394,23 +393,42 @@ instead of the recorded `fa4c7bda…` and stopped fail-closed. Action-effect nev
 attempt, so r2 produced no matched architecture verdict. Its exact evidence is preserved in the
 [r2 operational-failure result](docs/results/v0.3-action-effect-stage-a-r2-operational-failure.md).
 
-r3 retains r2's dashboard, process classification, cleanup, confirmed-U1 parent, seeds, reward,
-PPO, curriculum, budget, guard, exam cases, and terminal-three rule. It names and shares the
-qualified line-feed-terminated digest profile across qualification, training, and closeout. Both
-arms must restart fresh; no r2 policy or optimizer state may cross the boundary.
+r3 retained r2's dashboard, process classification, cleanup, confirmed-U1 parent, seeds, reward,
+PPO, curriculum, budget, guard, exam cases, and terminal-three rule. It shared the qualified
+line-feed-terminated digest profile across qualification, training, and closeout. Both arms
+restarted fresh; no r2 policy or optimizer state crossed the boundary.
 
-| Boundary | Prospective r3 identity |
-| --- | --- |
-| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-r3-20260724` |
-| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r3-20260724` |
-| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-20260724` |
-| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-media-20260724` |
-| Dashboard | `http://127.0.0.1:8791/` |
-| Prospective sole launcher | `scripts/run_v03_action_effect_stage_a_r3.sh` |
+| Boundary | Sham | Action-effect |
+| --- | ---: | ---: |
+| Child actions / new updates / frozen exams | 1,048,576 / 2,048 / 32 | 1,048,576 / 2,048 / 32 |
+| First 32,768-action U2 exam | 25/80 | 27/80 |
+| Terminal-three U2 | 77, 78, 78 | 70, 72, 75 |
+| Terminal-three 10+ ineffective cases | 0, 1, 0 | 6, 2, 1 |
+| Worst terminal ineffective/repeat run | 3/3, 85/85, 9/8 | 160/160, 124/124, 152/149 |
+| Eligible | No; calibration only | No |
 
-These are protocol assignments only. Exact source, tag, qualification, and cohort identities are
-not embedded recursively in this prospective text; they must be read from the later external
-release evidence. No action or result is claimed here.
+The complete 2,048-transition pre-update rollout matched at
+`fa4c7bda99a261f8fa49741a49360cd1bfc6ab3081db51aeffc64266a109ce72`.
+The candidate encoder then became nonzero exactly at the first optimizer boundary and ended with all
+4,608 weights nonzero. This matters: the candidate learned, improved U2 from the inherited 24/80
+baseline to 75/80, and demonstrably used the new pathway. It still failed the frozen rule because
+its first deciding exam scored 70/80 and every deciding exam contained a forbidden long
+ineffective/repeated-action tail.
+
+The authenticated result is **`architecture_failed`**, with no selected architecture and no
+checkpoint reuse. Sham is not a winner; it is calibration evidence. Stage B was not authorized,
+and U3 remains closed. The
+[r3 result](docs/results/v0.3-action-effect-stage-a-r3.md) records the exact timeline, hashes,
+terminal cases, clean process closeout, and claim limits.
+
+That negative result now has one deliberately small, prospective successor:
+[v0.4's matched ineffective-trace study](docs/protocol-v0.4-ineffective-trace-architecture.md).
+Both arms reconstruct independently from confirmed U1; both add the same zero-initialized
+one-scalar residual pathway; sham always receives zero while the candidate receives
+`min(consecutive same-action unchanged frames, 9) / 9`. The action ID itself is not exposed.
+Reward, PPO, curriculum, action budget, evaluation cases, and the terminal-three-exam rule remain
+fixed. The implementation is not permission to train: a clean source release, annotated tag,
+one-shot qualification, absent canonical roots, and both independent audits must still pass.
 
 ## Evidence standard
 
@@ -434,9 +452,11 @@ See [the experiment contract](docs/experiment-contract.md),
 [experiment log](docs/experiment-log.md), [video notebook](docs/video-narrative.md),
 [architecture](docs/architecture.md), [audit and remediation record](docs/audit.md), and
 [roadmap](docs/roadmap.md). The completed v0.1 capability result is preserved in the
-[Navigate canary report](docs/results/v0.1-navigate-canaries.md), and the next proposed protocol is
-specified in [the v0.2 design](docs/protocol-v0.2-design.md). The current controlled decision point
-is the prospective
-[v0.3 Stage-A r3 action-effect architecture study](docs/protocol-v0.3-action-effect-architecture-r3.md).
-U2r-r1 ended in a valid terminal stability failure, U2-S r1 completed with no eligible mechanism,
-and U3 remains blocked.
+[Navigate canary report](docs/results/v0.1-navigate-canaries.md), and the v0.2 staircase is
+specified in [the v0.2 design](docs/protocol-v0.2-design.md). U2r-r1 ended in a valid terminal
+stability failure, U2-S r1 completed with no eligible mechanism, and v0.3 Stage-A r3 completed with
+`architecture_failed`. No development checkpoint advances, Stage B did not open, and U3 remains
+blocked. The next controlled question—a fresh confirmed-U1 matched study of policy-visible
+ineffective-action persistence—is now frozen in the
+[v0.4 matched ineffective-trace protocol](docs/protocol-v0.4-ineffective-trace-architecture.md).
+It remains unlaunched until every release and qualification gate passes.

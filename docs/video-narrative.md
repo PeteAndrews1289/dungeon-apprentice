@@ -400,10 +400,29 @@ cleanup, then gives first-rollout evidence one named LF-terminated digest profil
 qualification, training, and closeout. Port `8791` and all r3 identities are fresh; both arms
 restart from confirmed U1 with no r2 checkpoint or optimizer state.
 
-If Stage A eventually succeeds, frame it as permission to replicate the **idea**, not promotion of
-the attractive model on screen. Both Stage-A checkpoints are discarded. Three fresh policies from
-three independently confirmed U1 parents must learn the same architecture under a separately
-frozen protocol, and untouched no-update confirmation must still pass before U3 can open.
+This time, let both clocks finish. Each arm reaches exactly 1,048,576 actions, 2,048 new updates,
+32 exams, and 10,240 deterministic cases. Overlay the first 2,048 transitions and show the single
+aggregate `fa4c7bda…`: the comparison is genuinely matched before learning. Then reveal that the
+candidate encoder becomes active exactly at that first optimizer boundary and ends with all 4,608
+weights nonzero. The feature was not decorative; the model used it.
+
+The ending is the important reversal. The candidate rises from 24/80 U2 at inheritance to 75/80 at
+the final exam, yet still loses the frozen decision. Its terminal-three scores are 70, 72, and
+75/80, with 6, 2, and 1 forbidden ten-plus interaction tails. Sham reaches 77, 78, and 78, but its
+middle exam contains an 85-action tail and sham was never selectable. Put the exact end card on
+screen:
+
+> `architecture_failed — selected_architecture: null — no checkpoint reuse — Stage B/U3 closed`
+
+The narrative conclusion is not “the model failed to learn.” It learned capability and it learned
+to use the new pathway. What it did not learn reliably was when to stop repeating a failed
+experiment over time. That observation earns one bounded next question, frozen prospectively as
+[v0.4's matched ineffective-trace study](protocol-v0.4-ineffective-trace-architecture.md). Its
+visual hook is simple: replace nine one-step values with one rising gauge, capped at nine, that
+answers “how long has this exact unchanged experiment continued?” The action ID disappears. A
+zero-valued sham and truthful candidate otherwise train under the same rules from the same
+confirmed-U1 parent. Keep the release gates on screen: implementation alone is not a launch, and
+no v0.4 outcome exists until the qualified cohort runs.
 
 ### Ending options
 
@@ -469,7 +488,7 @@ frozen protocol, and untouched no-update confirmation must still pass before U3 
 - overlapping first-rollout traces through all 2,048 pre-update transitions, followed by a clear
   “learning may diverge here” marker at the first optimizer phase;
 - the non-circular v0.3 evidence chain: source tag → qualification report → cohort manifest →
-  fixed launcher, with the prospective r3 dashboard at 8791 labeled read-only;
+  fixed launcher, with the r3 dashboard at 8791 labeled read-only;
 - the attempt-0 zero-action card: three broken client pipes, no arm directory, no trainer, no
   action, and the trap's synthetic sham crash clearly labeled operational closeout;
 - the r1 partial-sham card: status `40,004 collected / 38,912 trained`, episode ledger `40,960
@@ -481,8 +500,14 @@ frozen protocol, and untouched no-update confirmation must still pass before U3 
   `77/78/78`, one 85-action tail, and an empty action-effect column;
 - the r2 one-byte reveal: the qualified LF-terminated `fa4c7bda…` identity beside the manifest's
   no-LF `3b9ecf3a…` recomputation, followed by the fail-closed handoff;
-- the v0.3 Stage-A end card, whatever its eventual outcome, explicitly stating that no Stage-A
-  checkpoint advances and U3 remains closed;
+- the r3 matched-run card: two complete 1,048,576-action arms, 64 exams, 20,480 cases, and the
+  identical `fa4c7bda…` pre-update rollout;
+- the candidate-encoder card: first nonzero at 2,048 actions, all 4,608 weights nonzero at terminal,
+  beside U2 rising from 24/80 to 75/80;
+- the r3 terminal split screen: sham `77/78/78` with one 85-action tail, action-effect `70/72/75`
+  with `6/2/1` ten-plus cases;
+- the exact v0.3 Stage-A end card: `architecture_failed`, `selected_architecture: null`, no
+  checkpoint reuse, Stage B/U3 closed;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
 - the v0 audit, reward inversion, and stale-policy evaluation timeline;
@@ -503,4 +528,7 @@ a total learning collapse. Do not present U2r as a rerun of the failed exam, hid
 criteria were designed after observing the failure, select an intermediate checkpoint, or describe
 a future U2r pass as retroactive 3/3 confirmation. Do not call no-effect an U2-S winner because its
 averages were attractive, call combined eligible because it removed the measured tails, reuse an
-ablation checkpoint, or imply that the failed mechanism study authorized U3.
+ablation checkpoint, or imply that the failed mechanism study authorized U3. Do not call sham the
+v0.3 winner, claim that action-effect did not learn, use the candidate's attractive final 75/80 to
+override its three-exam tail failures, promote either Stage-A checkpoint, or imply that r3
+authorized Stage B or U3.

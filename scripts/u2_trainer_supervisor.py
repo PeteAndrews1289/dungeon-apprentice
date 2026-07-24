@@ -14,6 +14,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+CHILD_SHUTDOWN_TIMEOUT_SECONDS = 5.0
+
 
 def _utc_now() -> str:
     return datetime.now(UTC).isoformat(timespec="seconds")
@@ -38,6 +40,24 @@ def _atomic_write(path: Path, payload: dict[str, Any]) -> None:
         os.close(descriptor)
         with suppress(FileNotFoundError):
             temporary.unlink()
+
+
+def _terminate_unpublished_child(child: subprocess.Popen[Any]) -> None:
+    """Reap a child whose ownership state could not be published."""
+
+    if child.poll() is not None:
+        child.wait()
+        return
+    with suppress(ProcessLookupError):
+        os.killpg(child.pid, signal.SIGTERM)
+    try:
+        child.wait(timeout=CHILD_SHUTDOWN_TIMEOUT_SECONDS)
+        return
+    except subprocess.TimeoutExpired:
+        pass
+    with suppress(ProcessLookupError):
+        os.killpg(child.pid, signal.SIGKILL)
+    child.wait(timeout=CHILD_SHUTDOWN_TIMEOUT_SECONDS)
 
 
 def run_supervised(command: list[str], *, state_path: Path) -> int:
@@ -67,7 +87,14 @@ def run_supervised(command: list[str], *, state_path: Path) -> int:
         "forwarded_signal": None,
         "exit_status": None,
     }
-    _atomic_write(state_file, state)
+    try:
+        _atomic_write(state_file, state)
+    except BaseException:
+        # The launcher cannot safely own or signal a trainer until this
+        # authenticated PID record is durable. Never leave the just-created
+        # process group alive when publication fails.
+        _terminate_unpublished_child(child)
+        raise
     forwarded = False
 
     def request_stop(received: int, _frame: Any) -> None:

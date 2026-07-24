@@ -263,29 +263,48 @@ line-feed byte used by qualification and training. The cohort stopped before act
 the [r2 result](results/v0.3-action-effect-stage-a-r2-operational-failure.md) is operational
 evidence, not an architecture comparison.
 
-The prospective
-[r3 protocol](protocol-v0.3-action-effect-architecture-r3.md) retains every learner boundary and
-names one shared LF-terminated digest profile:
+The frozen
+[r3 protocol](protocol-v0.3-action-effect-architecture-r3.md) retained every learner boundary and
+named one shared LF-terminated digest profile. r3 then completed the matched experiment:
 
 ```mermaid
 flowchart LR
-    F0["Frozen zero-action attempt 0"] --> C["Clean prospective r3 source"]
+    F0["Frozen zero-action attempt 0"] --> C["Clean r3 source"]
     F1["Frozen partial-sham r1"] --> C
     F2["Frozen full-sham r2 closeout failure"] --> C
     C --> T["Annotated r3 preregistration tag"]
     T --> Q["Durable qualification + matched smoke"]
     Q --> M["Cohort contract binds report SHA-256"]
     M --> L["Fixed r3 launcher"]
-    L --> D["Read-only dashboard :8791"]
-    L --> R["Leading argv role classification"]
-    L --> X["Explicit cleanup on every failure"]
-    L --> H["One shared first-rollout LF digest profile"]
-    D --> A["Deep-auth once before socket bind"]
+    L --> S["Full sham arm"]
+    S --> E["Full action-effect arm"]
+    E --> G["Fixed terminal-three grade"]
+    G --> X["architecture_failed"]
+    X --> N["No checkpoint reuse; Stage B and U3 closed"]
 ```
 
-The prospective r3 tag is `action-effect-architecture-v0.3-stage-a-r3-20260724`; its qualification,
-cohort, and media roots share the `stage-a-r3-20260724` identity. The dashboard is assigned port
-`8791`, and the prospective sole launcher is `scripts/run_v03_action_effect_stage_a_r3.sh`. These
-names are not release evidence. Source hash, tag object, qualification digests, cohort contract,
-actions, and result remain **TBD**. Both arms restart from confirmed U1; no r2 state crosses the
-boundary.
+The r3 source was `c4834b73dfed7d875c6f59887d3077319a305910`, the annotated tag object
+was `fc5eb2f82896b7f6d41030f2776a0028a70ea4c2`, the qualification report SHA-256 was
+`07151fecea179dfaedabe56dcadc009d3750798987973c17cb67b1888909c499`, and the
+cohort-contract SHA-256 was
+`fea7b7eb10accec2395105630ad790d550993996c5bd35a2a937fdb8837d5ade`.
+Both arms restarted from confirmed U1 and completed 1,048,576 actions, 2,048 new updates, and 32
+exams. Their complete pre-update rollout matched at `fa4c7bda…`, with no divergence before the first
+optimizer phase.
+
+The sham projection remained exact zero. The candidate projection first became nonzero at 2,048
+actions and ended with all 4,608 weights nonzero, weight L2 norm 2.826899, and update L2 norm
+0.080078. The pathway was therefore live and learned. Yet the candidate's terminal U2 scores were
+70, 72, and 75/80, with 6, 2, and 1 forbidden ten-plus interaction tails. The architecture supplied
+one-step causal context but did not reliably suppress persistence across time. The exact
+[r3 result](results/v0.3-action-effect-stage-a-r3.md) is `architecture_failed`; no architecture or
+checkpoint was selected, Stage B was not authorized, and U3 remains closed.
+
+The smallest evidence-supported successor is now defined prospectively in the
+[v0.4 matched ineffective-trace protocol](protocol-v0.4-ineffective-trace-architecture.md). It
+replaces the failed nine-value action-effect pathway with a bias-free `Linear(1, 512)` residual.
+The sole input is `min(consecutive same-action unchanged frames, 9) / 9`; the action ID is never
+returned. Both fresh confirmed-U1 twins have identical topology and compute the same counter.
+`trace-sham` exposes zero, while `ineffective-trace` exposes the truthful scalar. Every other
+learner, curriculum, budget, and grading boundary stays fixed. The architecture remains
+prospective until the separate source, tag, qualification, audit, and launch gates pass.

@@ -56,6 +56,17 @@ jobs:
             tests/test_v03_action_effect_dashboard.py \
             tests/test_v03_action_effect_operational.py \
             tests/test_v03_action_effect_launcher.py
+      - name: Test v0.4 ineffective-trace architecture paths
+        run: |
+          pytest -q \
+            tests/test_action_streak.py \
+            tests/test_v04_ineffective_trace.py \
+            tests/test_v04_ineffective_trace_smoke.py \
+            tests/test_v04_ineffective_trace_qualify.py \
+            tests/test_v04_ineffective_trace_train.py \
+            tests/test_v04_ineffective_trace_dashboard.py \
+            tests/test_v04_ineffective_trace_operational.py \
+            tests/test_v04_ineffective_trace_launcher.py
       - name: Train, save, resume, and evaluate
         run: |
           dungeon-train \

@@ -45,10 +45,12 @@
 - [x] Implement explicit process-role and abnormal-exit corrections under fresh r2 identities
 - [x] Freeze, qualify, tag, launch, and preserve r2 as a full-sham closeout-authentication failure
 - [x] Implement the shared LF-terminated first-rollout digest verifier under fresh r3 identities
-- [ ] Freeze, qualify, tag, and externally anchor the non-resumable v0.3 Stage-A r3 study
-- [ ] Run sham and action-effect through the full matched budget and terminal-three gate
-- [ ] If and only if action-effect qualifies, preregister three fresh independent U1-parent replications
-- [ ] Confirm all three replicated v0.3 policies with a fresh no-update instrument before opening U3
+- [x] Freeze, qualify, tag, and externally anchor the non-resumable v0.3 Stage-A r3 study
+- [x] Run sham and action-effect through the full matched budget and terminal-three gate
+- [x] Preserve r3's valid `architecture_failed` verdict and prohibit every Stage-A checkpoint reuse
+- [x] Close the conditional Stage B replication and U3 path because action-effect did not qualify
+- [x] Prospectively define a fresh confirmed-U1 matched study of policy-visible ineffective-action persistence
+- [ ] Release, qualify, and launch the v0.4 matched ineffective-trace architecture study
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
 - [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
 
@@ -161,13 +163,13 @@ eliminated the tail but scored 70, 69, and 71 against the 72/80 terminal floor. 
 `ablation_failed`. No mechanism, checkpoint, successor cohort, confirmation, or U3 activation was
 selected. The [authenticated result](results/v0.2-u2s-r1-stability-ablation.md) closes that branch.
 
-The next bounded question remains the
+The next bounded question became the
 [v0.3 Stage-A action-effect architecture study](protocol-v0.3-action-effect-architecture.md), not
 another reward or PPO rescue. Attempt 0 failed at zero actions. r1 fixed that dashboard boundary and
 reached 38,912 trained sham actions, but a false process count and missed exit cleanup closed it
-before action-effect began. Its [incident record](results/v0.3-action-effect-stage-a-r1-operational-failure.md)
-preserves one scheduled exam, 76 new optimizer updates, and the absence of any safe checkpoint or
-matched result.
+before action-effect began. Its
+[incident record](results/v0.3-action-effect-stage-a-r1-operational-failure.md) preserves one
+scheduled exam, 76 new optimizer updates, and the absence of any safe checkpoint or matched result.
 
 The fresh [r2 boundary](protocol-v0.3-action-effect-architecture-r2.md) created two new twins from
 the same confirmed U1 parent. Sham completed its full budget, but terminal closeout used a no-LF
@@ -175,18 +177,28 @@ digest helper against first-rollout evidence created with the qualified LF-termi
 manifest stopped before action-effect began; the exact record is the
 [r2 operational failure](results/v0.3-action-effect-stage-a-r2-operational-failure.md).
 
-The prospective [r3 boundary](protocol-v0.3-action-effect-architecture-r3.md) again creates two
-fresh twins from confirmed U1. Both retain the original reward, optimizer settings, curriculum,
-guards, and 512→256 recurrent topology. Both add the same zero-initialized context projection.
-Sham always receives zero; the candidate receives only its own preceding action and a visible
-changed/unchanged outcome. r3 changes only the named first-rollout verification profile.
+The frozen [r3 boundary](protocol-v0.3-action-effect-architecture-r3.md) created two fresh twins from
+confirmed U1. Both retained the original reward, optimizer settings, curriculum, guards, and
+512→256 recurrent topology. Both added the same zero-initialized context projection. Sham always
+received zero; the candidate received only its own preceding action and a visible
+changed/unchanged outcome.
 
-Stage A must prove that the transplant is exactly parent-equivalent at zero context and that the two
-arms produce the same first 2,048-transition trajectory before their first update. They then run
-the same fixed full budget and U2-S terminal-three gate. Sham is calibration only, and neither
-checkpoint can be reused. A candidate pass opens only a separately preregistered three-lineage
-replication from all three confirmed U1 parents. U3 remains closed until those independent children
-also pass a fresh no-update confirmation.
+r3 completed both 1,048,576-action arms and all 64 exams. The transplant was parent-equivalent, and
+the complete 2,048-transition pre-update rollout matched at `fa4c7bda…`. The candidate encoder
+became active exactly at the first update boundary and ended with all 4,608 weights nonzero. Yet
+action-effect's deciding U2 scores were 70, 72, and 75/80, and every deciding exam retained a
+forbidden long interaction tail. The authenticated
+[result](results/v0.3-action-effect-stage-a-r3.md) is `architecture_failed`; no architecture or
+checkpoint was selected, Stage B did not open, and U3 remains closed.
+
+The next bounded question is now prospectively frozen as the
+[v0.4 matched ineffective-trace architecture study](protocol-v0.4-ineffective-trace-architecture.md).
+It replaces the failed nine-value action-effect input with one scalar:
+`min(consecutive same-action unchanged frames, 9) / 9`. Both fresh confirmed-U1 twins compute the
+same trace; sham exposes zero and the candidate exposes the truthful value. The action identity,
+reward, PPO, curriculum, 1,048,576-action budget, frozen exams, and terminal-three decision rule do
+not change. Source publication, annotated tagging, qualification, two independent audits, and an
+absent canonical root remain mandatory before launch.
 
 ## Scalability gates
 

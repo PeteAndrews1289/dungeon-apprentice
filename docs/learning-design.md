@@ -24,17 +24,18 @@ encoder turns a 56 × 56 pixel view into features. The LSTM can retain evidence 
 location leaves view. The action head chooses among seven buttons. PPO changes all of these weights
 using trajectories produced by the policy itself.
 
-The prospective v0.3 Stage-A r3 release adds a small fourth pathway without replacing those learned
-components.
-It tells the same recurrent policy which primitive it selected one transition ago and whether the
-next visible RGB frame changed or remained identical. This is not a key label, success flag, route,
-or object detector. It is the digital equivalent of remembering “I just tried this, and I saw
-nothing happen.” A matched sham has the same parameters and input shape but receives zeros.
+The completed v0.3 Stage-A r3 study added a small fourth pathway without replacing those learned
+components. It told the same recurrent policy which primitive it selected one transition ago and
+whether the next visible RGB frame changed or remained identical. This was not a key label, success
+flag, route, or object detector. It was the digital equivalent of remembering “I just tried this,
+and I saw nothing happen.” A matched sham had the same parameters and input shape but received
+zeros. The pathway learned, but its one-transition memory did not satisfy the fixed reliability
+gate.
 
 At the beginning of the overall project, the model starts with random parameters and is not reset
-when a new tier unlocks. v0.3 itself is a later architecture study: both matched arms restart from
-the exact confirmed U1 policy and optimizer, then add the new zero-initialized pathway. The point is
-still whether one growing policy can acquire and retain a repertoire.
+when a new tier unlocks. v0.3 was a later architecture study: both matched arms restarted from the
+exact confirmed U1 policy and optimizer, then added the new zero-initialized pathway. The point
+remains whether one growing policy can acquire and retain a repertoire.
 
 ## Exploration without a walkthrough
 
@@ -112,7 +113,7 @@ collision-aware, no-update confirmation. Thus:
 
 This is what prevents “keep testing until it passes” from masquerading as learning.
 
-## Why action-effect context is the next learning question
+## What action-effect context taught us
 
 The terminal U2-S ablation tested whether ordinary optimization, conservative optimization, a
 bounded pixels-only penalty, or both could make Separated Unlock simultaneously capable and
@@ -130,13 +131,12 @@ selection means its hidden state was never explicitly told which action actually
 hundred identical toggles can therefore look like a generic unchanged scene rather than a specific
 failed cause-and-effect experiment.
 
-The prospective
-[v0.3 Stage-A r3 protocol](protocol-v0.3-action-effect-architecture-r3.md) supplies that missing
+The frozen
+[v0.3 Stage-A r3 protocol](protocol-v0.3-action-effect-architecture-r3.md) supplied that missing
 sensorimotor link while keeping the task signal untouched. Attempt 0 never reached action one; r1
 reached only a partial sham arm before an operational process-control failure; r2 completed sham
 but stopped at terminal authentication because two evidence components disagreed about one final
-line-feed byte. Action-effect never began in any of them, so none tested the matched architecture
-question:
+line-feed byte. r3 then tested the matched architecture question:
 
 1. At episode start, context is all zero.
 2. The policy selects one of the same seven actions.
@@ -150,17 +150,31 @@ There is no hand-coded action ban. An unchanged pickup may be useless in one sta
 failed probe in another; the policy must learn that distinction from later returns. Evaluation uses
 the same context derivation but disables all parameter updates, just as it disables curiosity.
 
-The migration is designed not to erase what U1 already proved. The NatureCNN, actor and critic
-LSTMs, action head, value head, and every associated Adam moment transfer by exact parameter name.
-The one new projection starts at zero, so the candidate initially behaves exactly like its parent.
-That supports a particularly clean comparison: sham and action-effect must generate the same first
-real rollout, and only learning after that rollout may make them diverge.
+The migration did not erase what U1 had proved. The NatureCNN, actor and critic LSTMs, action head,
+value head, and every associated Adam moment transferred by exact parameter name. The one new
+projection started at zero. Sham and action-effect generated the same complete 2,048-transition
+rollout, with aggregate SHA-256 `fa4c7bda99a261f8fa49741a49360cd1bfc6ab3081db51aeffc64266a109ce72`,
+and did not diverge before the first optimizer phase.
 
-One successful development twin would still be insufficient. Stage A can select only the
-architecture definition. A later protocol must train three fresh children from all three confirmed
-U1 parents, and all three must pass independent development and untouched confirmation gates before
-U3 opens. This retains the project's central standard: an architectural idea counts only when it
-reliably creates learned behavior, not when one attractive checkpoint appears.
+The candidate encoder became nonzero exactly at 2,048 actions and ended with all 4,608 weights
+nonzero. It learned U2 from 24/80 at inheritance to 75/80 at the final exam. This rules out the easy
+explanations that the feature was dead, the transplant failed, or the model learned nothing.
+
+The frozen terminal-three rule nevertheless rejected the architecture. Sham finished at 77, 78,
+and 78/80 U2 but was calibration-only and contained one 85-action tail. Action-effect finished at
+70, 72, and 75/80, and all three deciding exams contained forbidden ten-plus ineffective or
+repeated-action tails. The exact result is
+[**`architecture_failed`**](results/v0.3-action-effect-stage-a-r3.md): no architecture selected,
+no Stage-A checkpoint reuse, no Stage B replication, and no U3 activation.
+
+The lesson is sharper than “action-effect did not work.” A one-step action/outcome pair is useful
+enough to train on, but it does not explicitly represent persistence: how long the same ineffective
+experiment has continued. The next bounded direction is therefore the prospectively frozen
+[v0.4 matched ineffective-trace study](protocol-v0.4-ineffective-trace-architecture.md). It exposes
+only `min(consecutive same-action unchanged frames, 9) / 9`, never the action ID, through one
+zero-initialized 1→512 residual. A zero-valued sham and truthful candidate start independently
+from the same confirmed-U1 parent under unchanged reward, PPO, curriculum, budget, and frozen
+terminal-three gate. It is still a release candidate, not a training authorization.
 
 ## Why timing matters
 

@@ -1179,3 +1179,96 @@ scheduler, or environment state may cross the boundary.
 This is a documentation and design entry. The r3 source hash, tag object, qualification, checksums,
 roots, actions, and result remain **TBD**. The governing prospective document is the
 [v0.3 Stage-A r3 protocol](protocol-v0.3-action-effect-architecture-r3.md).
+
+### July 24, 2026 — v0.3 Stage-A r3 completes with `architecture_failed`
+
+r3 froze clean source `c4834b73dfed7d875c6f59887d3077319a305910`, published annotated tag
+`action-effect-architecture-v0.3-stage-a-r3-20260724` at tag object
+`fc5eb2f82896b7f6d41030f2776a0028a70ea4c2`, and passed its one-shot qualification. The
+qualification report SHA-256 is
+`07151fecea179dfaedabe56dcadc009d3750798987973c17cb67b1888909c499`; the architecture
+and cohort contract SHA-256 values are
+`4059eba189bee3cdb13d9ea29c9befc908209b937c2f21715cf9cd6b8dcbeb11` and
+`fea7b7eb10accec2395105630ad790d550993996c5bd35a2a937fdb8837d5ade`.
+
+The fresh cohort was created at `09:08:14Z`. Sham ran from `09:09:27Z` to `11:07:45Z`;
+action-effect ran from `11:08:34Z` to `13:10:41Z`. Each arm completed exactly 1,048,576 child
+actions, 2,048 new optimizer updates, 32 exams, and 10,240 deterministic cases. The full cohort
+therefore produced 2,097,152 child actions, 64 exams, and 20,480 cases.
+
+The complete pre-update 2,048-transition rollouts were identical at aggregate SHA-256
+`fa4c7bda99a261f8fa49741a49360cd1bfc6ab3081db51aeffc64266a109ce72`, with no
+divergence before the first optimizer phase. Sham's projection remained exact zero. The candidate
+projection first became nonzero at 2,048 actions and ended with all 4,608 weights nonzero, weight
+L2 norm 2.826899, update L2 norm 0.080078, and maximum absolute weight 0.177197.
+
+| Boundary | Sham U2 | Sham tails | Action-effect U2 | Action-effect tails |
+|---|---:|---:|---:|---:|
+| Inherited baseline | 24/80 | 51 ten-plus cases; worst 160/160 | 24/80 | 51 ten-plus cases; worst 160/160 |
+| 32,768 actions | 25/80 | 60; worst 160/160 | 27/80 | 58; worst 160/160 |
+| 983,040 actions | 77/80 | 0; worst 3/3 | 70/80 | 6; worst 160/160 |
+| 1,015,808 actions | 78/80 | 1; worst 85/85 | 72/80 | 2; worst 124/124 |
+| 1,048,576 actions | 78/80 | 0; worst 9/8 | 75/80 | 1; worst 152/149 |
+
+Sham was terminal-ineligible because its middle deciding exam contained the 85-action tail; it was
+also calibration-only. Action-effect learned substantial capability and used the new pathway, but
+its first deciding exam missed the 72/80 U2 floor and the mean-ineffective ceiling, and all three
+deciding exams contained forbidden ten-plus ineffective/repeated-action tails. The sealed verdict
+is `architecture_failed`, `selected_architecture` is null, checkpoint reuse is false, Stage B is
+not authorized, and U3 remains closed.
+
+Process closeout sealed at `13:11:35Z`; finalization completed at `13:12:08Z`. The sealed process
+inventory and immediate final scan found zero trainer, supervisor, or `caffeinate` process. The
+cohort report and integrity SHA-256 values are
+`05f23509652e48a127be3728fb4ccb052b8285035792db9aaec7a956e021dcdb` and
+`0e42c78e7a1b541d55c4286ccf606f1477a453914427cd74ebe59af8568b81a4`. Every
+storage cap passed.
+
+The immutable [r3 result](results/v0.3-action-effect-stage-a-r3.md) contains the complete
+authentication table and claim limits. The evidence supported one smallest prospective successor,
+now frozen as the
+[v0.4 matched ineffective-trace architecture study](protocol-v0.4-ineffective-trace-architecture.md).
+It replaces the action identity plus one-step outcome with one bounded duration scalar, computed
+identically in both arms and exposed truthfully only to the candidate. Both arms restart from
+confirmed U1; reward, PPO, curriculum, action budget, frozen cases, and selection rule remain
+unchanged. The source/tag/qualification/audit gates still precede any canonical action.
+
+### July 24, 2026 — v0.4 ineffective-trace release candidate built
+
+The bounded root-cause analysis localized all nine action-effect terminal tails to near-pure
+same-action/no-visible-change loops. The failed nine-value input stayed constant inside each loop
+and returned the action identity itself, creating a plausible repetition shortcut. v0.4 therefore
+replaces—not extends—that pathway with one scalar:
+`min(consecutive same-action byte-identical RGB transitions, 9) / 9`.
+
+Both fresh twins compute the same capped counter. `trace-sham` always exposes `0.0`;
+`ineffective-trace` exposes the truthful scalar. Neither arm sees the action ID. Both reconstruct
+independently from confirmed U1 child `20260733`, copy every legacy policy tensor and Adam moment
+by parameter name, and add exactly one zero-initialized bias-free 1→512 residual. Reward, PPO,
+curriculum, worker count, random streams, 1,048,576-action budget, 32 exams, terminal-three rule,
+and non-promotable checkpoint boundary remain fixed.
+
+The release candidate now includes the wrapper and evaluation adapter, matched trainer and real
+four-worker smoke, fail-closed one-shot qualifier, full r3-tree authentication, fresh-only cohort
+manifest, read-only dashboard on port 8792, one-shot sequential launcher, tests, protocol,
+architecture visual, runbook, and video narrative.
+
+The first audit cycle found real pre-release defects:
+
+- the raw diagnostic counter was initially unbounded even though its encoded value was capped;
+- the qualifier did not reject three important transplant-evidence mutations;
+- process classifiers missed versioned trainer executables;
+- an abnormal exit after both arms could leave an unintended closeout-resume path;
+- the shared supervisor could orphan a just-created trainer if its first ownership-state write
+  failed; and
+- one table misstated the exact r3 pickup tail lengths.
+
+Each issue was corrected prospectively with regression tests. In particular, the raw counter now
+itself caps at nine; the qualifier requires all 20 inherited U1 parameter names and Adam states,
+the sole new trace weight, exact parent counters, and every zero-context equivalence field; the
+manifest has a durable `abort-closeout` transition; and the supervisor kills and reaps an
+unpublished child process group.
+
+This entry records a release candidate, not a launched experiment. The source commit, tag object,
+qualification report SHA-256, cohort contract, action counts, and outcome remain unknown until the
+non-circular release chain completes.

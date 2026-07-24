@@ -70,11 +70,11 @@
   four arms; do not add an earlier arm's layouts to a later arm's hard guard. The trainer may never
   load old evidence images, scores, roles, seeds, or action traces, and within-arm layouts need not
   be globally unique. Persist every episode-start and active-worker layout identity.
-- The next prospective question is the separately versioned
-  `dungeon-apprentice-v0.3-action-effect-architecture`. It is a matched architecture study, not a
-  U2-S successor cohort and not a reward/PPO retune. Both `sham` and `action-effect` restart from
-  exact confirmed U1 child `20260733`, including every legacy Adam moment by parameter name. They
-  may not load a U2, U2r, or U2-S checkpoint.
+- The separately versioned `dungeon-apprentice-v0.3-action-effect-architecture` Stage-A r3 study is
+  now terminal. It was a matched architecture study, not a U2-S successor cohort and not a
+  reward/PPO retune. Both `sham` and `action-effect` restarted from exact confirmed U1 child
+  `20260733`, including every legacy Adam moment by parameter name. Neither loaded a U2, U2r, or
+  U2-S checkpoint.
 - Both v0.3 arms have identical Dict observation spaces, parameter sets, initialization, original
   U2 control reward/PPO, algorithm seed `20260757`, worker streams `20260757`–`20260760`, and
   exactly 1,048,576 new actions. `image` is the unchanged partial RGB view. `action_effect` is nine
@@ -86,12 +86,10 @@
   exactly equal under zero context. The matched twins' first complete 2,048-transition trajectory
   must be identical; behavioral divergence may begin only after the declared first optimizer
   phase. Orthogonal reinitialization and positional optimizer-state loading are prohibited.
-- v0.3 uses the complete U2-S final-three capability-and-stability gate without change. Sham is
-  calibration only. Only the `action-effect` architecture definition can qualify, and neither
-  development checkpoint may be reused. A pass authorizes writing a separate three-lineage
-  replication protocol; it does not itself authorize confirmation, U3, Retrieve, or a game claim.
-  Stage A is non-resumable and must be separately committed, tagged, qualified, and externally
-  anchored before canonical action one.
+- v0.3 used the complete U2-S final-three capability-and-stability gate without change. Sham was
+  calibration only. Only the `action-effect` architecture definition could qualify, and neither
+  development checkpoint could be reused. Stage A was non-resumable and was separately committed,
+  tagged, qualified, and externally anchored before canonical action one.
 - v0.3 Stage-A attempt 0 is immutable zero-recorded-action operational-failure evidence. Its
   launcher failed its dashboard health contract before creating an arm directory or starting a
   trainer. The manifest's synthetic sham attempt 0 is `crashed` with exit 130 and the cohort is
@@ -122,27 +120,50 @@
   Never resume, rename, reuse, prune, overwrite, or train from the r2 cohort, media, qualification,
   report, or terminal checkpoint. See
   `docs/results/v0.3-action-effect-stage-a-r2-operational-failure.md`.
-- The current v0.3 boundary is the prospective r3 replacement in
-  `docs/protocol-v0.3-action-effect-architecture-r3.md`. Its assigned annotated tag is
-  `action-effect-architecture-v0.3-stage-a-r3-20260724`; assigned qualification, cohort, and media
-  roots are respectively
+- v0.3 Stage-A r3 is immutable terminal `architecture_failed` evidence. The frozen prospective
+  protocol remains in `docs/protocol-v0.3-action-effect-architecture-r3.md`; the terminal result is
+  `docs/results/v0.3-action-effect-stage-a-r3.md`. Its source commit is
+  `c4834b73dfed7d875c6f59887d3077319a305910`; annotated tag and tag object are
+  `action-effect-architecture-v0.3-stage-a-r3-20260724` and
+  `fc5eb2f82896b7f6d41030f2776a0028a70ea4c2`. Qualification, cohort, and media roots are
+  respectively
   `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r3-20260724`,
   `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-20260724`, and
   `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-media-20260724`; dashboard
-  is `http://127.0.0.1:8791/`; the sole canonical launcher is
-  `scripts/run_v03_action_effect_stage_a_r3.sh`. These are prospective assignments: no r3 source
-  hash, tag object, qualification digest, cohort, policy action, or result exists before the clean
-  release sequence. r3 must authenticate every failed predecessor and restart both arms fresh from
-  confirmed U1.
+  was `http://127.0.0.1:8791/`; the consumed canonical launcher was
+  `scripts/run_v03_action_effect_stage_a_r3.sh`.
+- Both r3 arms completed exactly 1,048,576 child actions, 2,048 new optimizer updates, 32 frozen
+  exams, and 10,240 deterministic cases. Their complete pre-update 2,048-transition identity was
+  `fa4c7bda99a261f8fa49741a49360cd1bfc6ab3081db51aeffc64266a109ce72`,
+  with no divergence before the first optimizer phase. The candidate encoder first became nonzero
+  exactly at 2,048 actions and ended with all 4,608 weights nonzero.
+- r3 sham finished with U2 `77/78/78` and one forbidden 85-action terminal tail. It was
+  calibration-only. Action-effect finished with U2 `70/72/75`; all three deciding exams contained
+  forbidden ten-plus ineffective or repeated-interaction tails. The authenticated cohort verdict
+  is `architecture_failed`, `selected_architecture` is null, development-checkpoint reuse is false,
+  no Stage B replication is authorized, and U3 remains closed.
+- The r3 qualification report, cohort contract, cohort report, and process-closeout SHA-256 values
+  are respectively `07151fecea179dfaedabe56dcadc009d3750798987973c17cb67b1888909c499`,
+  `fea7b7eb10accec2395105630ad790d550993996c5bd35a2a937fdb8837d5ade`,
+  `05f23509652e48a127be3728fb4ccb052b8285035792db9aaec7a956e021dcdb`,
+  and `1e8512fd2a20c3371d8c6207ee9ef6f10955fa1e14a8556d3d46f25ea79d2641`.
+  Never resume, rename, reuse, prune, overwrite, or train from any r3 qualification, cohort, media,
+  report, checkpoint, optimizer, RNG, recurrent, scheduler, or environment artifact.
+- The next direction is prospectively frozen in
+  `docs/protocol-v0.4-ineffective-trace-architecture.md`: two fresh confirmed-U1 twins with the
+  same one-scalar residual, where `trace-sham` receives zero and `ineffective-trace` receives
+  `min(consecutive same-action unchanged frames, 9) / 9`. The action ID is not exposed. Reward,
+  PPO, curriculum, budget, and terminal-three gate remain fixed. Implementation alone is not
+  training authority; source publication, annotated tag, one-shot qualification, both independent
+  audits, absent canonical roots, and the storage/process gates must all pass first.
 - Preserve the v0.3 non-circular release order: the published annotated tag preregisters
   source/protocol/roots/contracts; the durable qualification claim/report binds that exact tag
   object; the cohort manifest binds the exact qualification-report SHA-256. Never claim that the
   earlier tag contains or anchors the later qualification report digest.
-- v0.3 terminal finalization requires `process-closeout.json`, gathered and sealed by the manifest
-  after both trainers and sleep prevention stop. It must contain no trainer, supervisor, or
-  `caffeinate` match, its digest must be bound into the cohort report and integrity record, and a
-  second clean live scan must occur immediately before finalization. The read-only dashboard may
-  remain.
+- v0.3 terminal finalization required `process-closeout.json`, gathered and sealed by the manifest
+  after both trainers and sleep prevention stopped. r3 satisfied that contract: the sealed inventory
+  and immediate final scan contained no trainer, supervisor, or `caffeinate` process. The read-only
+  dashboard may remain.
 - The v0.2 learning agent received pixels and its own recurrent state only. v0.3 deliberately
   broadens that declared boundary only to pixels, its own preceding primitive action, and a
   changed/unchanged comparison of its own consecutive visible frames. Do not add coordinates, map

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 import shutil
 import subprocess
@@ -525,3 +526,37 @@ def test_trainer_supervisor_persists_child_pid_and_terminal_status(
     assert type(payload["trainer_pid"]) is int
     assert payload["trainer_pid"] > 0
     assert payload["exit_status"] == 7
+
+
+def test_trainer_supervisor_reaps_child_if_initial_state_write_fails(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    spec = importlib.util.spec_from_file_location(
+        "u2_trainer_supervisor_fixture",
+        TRAINER_SUPERVISOR,
+    )
+    assert spec is not None and spec.loader is not None
+    supervisor = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(supervisor)
+    real_popen = supervisor.subprocess.Popen
+    children = []
+
+    def capture_child(*args: object, **kwargs: object) -> subprocess.Popen:
+        child = real_popen(*args, **kwargs)
+        children.append(child)
+        return child
+
+    def fail_initial_state(*_args: object, **_kwargs: object) -> None:
+        raise OSError("simulated supervisor-state I/O failure")
+
+    monkeypatch.setattr(supervisor.subprocess, "Popen", capture_child)
+    monkeypatch.setattr(supervisor, "_atomic_write", fail_initial_state)
+    with pytest.raises(OSError, match="simulated"):
+        supervisor.run_supervised(
+            [sys.executable, "-c", "import time; time.sleep(60)"],
+            state_path=tmp_path / "supervisor.json",
+        )
+
+    assert len(children) == 1
+    assert children[0].poll() is not None

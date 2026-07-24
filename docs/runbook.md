@@ -462,10 +462,11 @@ or a successor. A positive result permits writing a separate multi-lineage proto
 fresh from confirmed U1 parents; it does not itself confirm U2.
 
 The actual all-arm result was negative, so that conditional successor did not open. U3 remains
-closed. The current prospective boundary is the
-[v0.3 Stage-A r3 action-effect architecture study](protocol-v0.3-action-effect-architecture-r3.md).
+closed. The subsequent
+[v0.3 Stage-A r3 action-effect architecture study](protocol-v0.3-action-effect-architecture-r3.md)
+also completed negatively.
 
-## Prepare the prospective v0.3 action-effect architecture study
+## Historical v0.3 action-effect architecture study
 
 v0.3 is not a continuation of U2-S and does not reuse an ablation checkpoint. It is a two-arm,
 matched architecture study from the exact confirmed U1 child `20260733`:
@@ -515,76 +516,64 @@ action-effect began. Preserve the
 [r2 incident record](results/v0.3-action-effect-stage-a-r2-operational-failure.md) and never resume,
 reuse, rename, prune, overwrite, or use its terminal sham checkpoint as a parent.
 
-The prospective r3 replacement keeps every scientific variable fixed and changes only that
-evidence-verification boundary:
+r3 kept every scientific variable fixed and changed only that evidence-verification boundary. It
+then completed normally:
 
-| Boundary | Prospective r3 identity |
+| Boundary | Frozen r3 evidence |
 | --- | --- |
 | Cohort ID | `v0.3-action-effect-stage-a-r3-20260724` |
-| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-r3-20260724` |
+| Source commit | `c4834b73dfed7d875c6f59887d3077319a305910` |
+| Annotated tag | `action-effect-architecture-v0.3-stage-a-r3-20260724` |
+| Tag object | `fc5eb2f82896b7f6d41030f2776a0028a70ea4c2` |
+| Tag payload SHA-256 | `f92f934a84348969356ba840391410ba900b06ad6af9b3119c2b35138411c33d` |
+| Qualification report SHA-256 | `07151fecea179dfaedabe56dcadc009d3750798987973c17cb67b1888909c499` |
+| Cohort contract SHA-256 | `fea7b7eb10accec2395105630ad790d550993996c5bd35a2a937fdb8837d5ade` |
+| Cohort report SHA-256 | `05f23509652e48a127be3728fb4ccb052b8285035792db9aaec7a956e021dcdb` |
+| Process closeout SHA-256 | `1e8512fd2a20c3371d8c6207ee9ef6f10955fa1e14a8556d3d46f25ea79d2641` |
 | Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r3-20260724` |
 | Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-20260724` |
 | Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r3-media-20260724` |
-| Dashboard | `http://127.0.0.1:8791/` |
-| Prospective sole launcher | `scripts/run_v03_action_effect_stage_a_r3.sh` |
+| Historical dashboard | `http://127.0.0.1:8791/` |
+| Consumed launcher | `scripts/run_v03_action_effect_stage_a_r3.sh` |
 
-r3 source commit, tag object, tag payload, qualification claim/report, checksum files, and cohort
-contract remain **TBD** until their ordered release steps create them. Scientific training remains
-blocked until one clean r3 release:
+Both arms completed exactly 1,048,576 child actions, 2,048 new updates, 32 exams, and 10,240
+deterministic cases. Their complete first-rollout aggregate matched at `fa4c7bda…`; candidate
+encoder activity began exactly at 2,048 actions. The fixed terminal grade was:
 
-1. freezes and pushes the exact source and protocol;
-2. publishes the assigned annotated tag and its one-line source-preregistration payload;
-3. authenticates the confirmed U1 parent, attempt 0, r1, r2, and every immutable predecessor;
-4. proves the Dict observation and exact named tensor/Adam transplant;
-5. proves bit-exact zero-context equivalence and matched first-rollout identity in a disposable
-   four-worker smoke;
-6. recomputes r2's preserved first-rollout identity as `fa4c7bda…` with the named
-   `u2s-canonical-json-v1-lf` profile and reproduces the legacy no-LF `3b9ecf3a…` mismatch;
-7. verifies unchanged reward/PPO/curriculum, seeds, partitions, and static layout guards;
-8. passes cross-component trainer-to-manifest round-trip and tamper tests;
-9. proves explicit cleanup leaves no trainer, supervisor, or `caffeinate` process after every
-   post-spawn failure;
-10. proves zero confirmation/final seed access, a mounted T7 with the declared reserve, and no
-    competing trainer; and
-11. emits one claim-bearing qualification report bound to that exact tag object before action one.
+| Arm | Terminal U2 | Ten-plus cases | Worst ineffective/repeat | Disposition |
+| --- | --- | --- | --- | --- |
+| Sham | 77, 78, 78 | 0, 1, 0 | 3/3, 85/85, 9/8 | Ineligible; calibration only |
+| Action-effect | 70, 72, 75 | 6, 2, 1 | 160/160, 124/124, 152/149 | Ineligible |
 
-The old sealed U2 qualification range may not be reopened. The v0.3 engineering smoke must use only
-disposable engineering layouts, leave canonical and predecessor evidence unchanged, and destroy
-its updated policy copies.
+The exact [r3 result](results/v0.3-action-effect-stage-a-r3.md) is `architecture_failed`.
+`selected_architecture` is null, every development checkpoint is non-promotable and non-reusable,
+Stage B was not authorized, and U3 remains closed.
 
-Stage A is non-resumable. An interruption closes the entire matched root as
-`operationally_incomplete`; neither twin may continue or be reused. A valid full-budget result
-selects the architecture definition only when the `action-effect` arm passes all three fixed
-terminal exams. It never selects a Stage A checkpoint and never opens U3.
+### Historical r3 release and launch — do not run
 
-If the candidate passes, the only next action is to author a separate Stage B protocol for three
-fresh lineages from confirmed U1 children `20260725`, `20260729`, and `20260733`, with fresh random
-streams and no Stage A state. Even a successful Stage B would still require a separate,
-prospectively frozen no-update confirmation before U3 could open.
+The r3 release order remains valuable evidence, but it is now history:
 
-### Prepare release, qualification, and launch for v0.3 Stage A r3
+1. clean source and the prospective protocol were committed and pushed;
+2. the annotated tag preregistered that exact source;
+3. one-shot qualification authenticated the tag, confirmed-U1 parent, all failed predecessors,
+   transplant, matched smoke, static guards, protected partitions, cleanup, and storage;
+4. the cohort contract bound the qualification-report SHA-256;
+5. the consumed launcher opened sham and action-effect sequentially;
+6. both arms completed, the process inventory and final rescan found zero trainer, supervisor, or
+   `caffeinate` process, and the terminal report sealed.
 
-This section is prospective. Do not run an r3 qualifier or launcher until implementation, tests,
-science-diff audit, clean source commit, and annotated tag are complete. The exact sequence is:
+Do not invoke the consumed r3 launcher, rerun qualification, resume either arm, reconstruct a
+checkpoint, or adapt the root in place. Preserve all r3 qualification, cohort, media, report,
+checkpoint, optimizer, RNG, recurrent, scheduler, and environment evidence exactly as written.
 
-1. run the ordinary repository, link, digest-profile, cross-component closeout, launcher, and
-   tamper tests;
-2. review the complete diff and prove that learner observations, architecture, transplant, reward,
-   PPO, curriculum, seeds, guards, budgets, exams, and selection are unchanged;
-3. commit and push one clean source, then replace no `TBD` value by hand;
-4. generate the canonical one-line payload from that clean source;
-5. create and push annotated tag
-   `action-effect-architecture-v0.3-stage-a-r3-20260724`;
-6. run one-shot qualification into the absent assigned r3 qualification root;
-7. verify the qualification checksum, source/tag binding, r2 predecessor evidence, mounted T7,
-   storage reserve, absent r3 cohort/media roots, port `8791`, and process inventory;
-8. invoke `scripts/run_v03_action_effect_stage_a_r3.sh` exactly once;
-9. audit sham terminal closeout and handoff before action-effect records action one; and
-10. after both arms finish, seal process closeout and the matched terminal report.
-
-The qualifier and launcher commands are intentionally not presented as runnable instructions while
-their implementation and release identities remain prospective. Once released, the r3 protocol
-and exact tagged source become authoritative.
+The old sealed U2 qualification and confirmation ranges remain closed. The successor is now
+prospectively specified by the
+[v0.4 matched ineffective-trace protocol](protocol-v0.4-ineffective-trace-architecture.md), with
+fresh identities, seeds, roots, budget, and decision rule. That declaration is not permission to
+run it. The implementation must pass the complete repository suite, mechanical qualification,
+real four-worker smoke, two independent read-only audits, source publication, annotated tagging,
+and one-shot qualification. The canonical cohort and media roots must still be absent and T7 must
+still have at least 25 GiB free before the prospective one-shot launcher may act.
 
 ### Historical r2 release procedure — do not run
 
@@ -647,9 +636,100 @@ They are refreshed by the repository's editable-install command. The canonical i
 use the equivalent module entry point so their availability does not depend on a stale generated
 shell wrapper.
 
-There is currently no authorized Stage-A start command. After r3 implementation, release,
-qualification, and prelaunch verification, the sole prospective scientific start command is
-`scripts/run_v03_action_effect_stage_a_r3.sh`.
+There is no authorized **v0.3** Stage-A start command. The r3 launcher is consumed historical
+evidence and must not be invoked again. The separately versioned v0.4 launcher below is the only
+prospective successor start command; it remains unauthorized until its own source, tag,
+qualification, audits, roots, storage, and process gates pass.
+
+## Release and launch v0.4 ineffective-trace Stage A
+
+The [v0.4 protocol](protocol-v0.4-ineffective-trace-architecture.md) defines a new, non-resumable
+matched study. It does not continue v0.3. Both arms reconstruct independently from exact confirmed
+U1 child `20260733`; `trace-sham` must finish before `ineffective-trace` records action one.
+
+The fixed identities are:
+
+| Item | v0.4 identity |
+| --- | --- |
+| Tag | `ineffective-trace-architecture-v0.4-stage-a-20260724` |
+| Qualification | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.4-ineffective-trace-stage-a-20260724` |
+| Cohort | `/Volumes/T7 Developer/DungeonApprentice/v04-ineffective-trace-stage-a-20260724` |
+| Media | `/Volumes/T7 Developer/DungeonApprentice/v04-ineffective-trace-stage-a-media-20260724` |
+| Dashboard | `http://127.0.0.1:8792/` |
+| Screen session | `dungeon_v04_ineffective_trace_20260724` |
+| Screen log | `/Volumes/T7 Developer/DungeonApprentice/launch-recovery/v04-ineffective-trace-stage-a-20260724-screen.log` |
+
+Before committing, run all local gates from the repository root:
+
+```bash
+.venv/bin/ruff check .
+.venv/bin/pytest -q
+.venv/bin/dungeon-qualify --seeds 100
+.venv/bin/python -m dungeon_apprentice.v04_ineffective_trace_smoke \
+  --repository . \
+  --allow-dirty
+zsh -n scripts/run_v04_ineffective_trace_stage_a.sh
+```
+
+Two independent read-only audits must also pass: one for the matched scientific contrast and one
+for qualification/manifest/launcher/process closeout. Fixing an audit finding invalidates the old
+audit; rerun the affected audit on the final tree.
+
+`--allow-dirty` is an explicitly labeled local engineering check. After the commit, rerun the same
+smoke without that flag and require its source record to say `dirty: false`.
+
+The release order is deliberately non-circular:
+
+1. commit and push one clean source;
+2. generate the canonical one-line tag payload from that exact clean source;
+3. create and push the annotated tag;
+4. wait for GitHub CI on the pushed commit;
+5. consume the one-shot qualification identity; and
+6. only then create the detached screen session.
+
+Generate the tag payload without creating qualification evidence:
+
+```bash
+tag_payload=$(
+  .venv/bin/python -m dungeon_apprentice.v04_ineffective_trace_qualify \
+    --repository . \
+    --tag-payload-only
+)
+git tag -a ineffective-trace-architecture-v0.4-stage-a-20260724 \
+  -m "$tag_payload"
+git push origin ineffective-trace-architecture-v0.4-stage-a-20260724
+```
+
+Qualification is one shot. A failed attempt preserves its claim and requires a separately
+versioned replacement; never delete or rerun it:
+
+```bash
+.venv/bin/python -m dungeon_apprentice.v04_ineffective_trace_qualify \
+  --repository .
+```
+
+Reauthenticate the resulting `report.json` and checksum, confirm both canonical scientific roots
+and the screen log are still absent, confirm port 8792 is free, and confirm T7 has at least 25 GiB
+free. Then launch exactly once from a user-context detached `screen`:
+
+```bash
+screen -dmS dungeon_v04_ineffective_trace_20260724 \
+  -L \
+  -Logfile "/Volumes/T7 Developer/DungeonApprentice/launch-recovery/v04-ineffective-trace-stage-a-20260724-screen.log" \
+  zsh -lc 'cd "/Users/peterandrews/.codex/.chatgpt-projects/g-p-6a5c438a364c8191b4c85ae374791810/dungeon-apprentice" && exec ./scripts/run_v04_ineffective_trace_stage_a.sh'
+```
+
+The launcher accepts no options and has no resume path. Any stop, crash, machine restart, storage
+loss, trainer failure, or abnormal exit after the arms but before finalization makes the complete
+matched root `operationally_incomplete`. Preserve it and assign a fresh source, tag, qualification,
+roots, seeds, and two fresh twins. Never continue only one arm.
+
+While active, do not edit, commit, checkout, switch, signal, restart, or reuse the repository or
+scientific roots. A healthy process inventory contains one screen launcher, one active-arm
+supervisor, one trainer, and one `caffeinate` process; the read-only dashboard may remain after
+terminal closeout. Terminal evidence requires both exact 1,048,576-action arms, 32 exams per arm,
+all case/checkpoint/report checksums, matched first-rollout identity, the frozen terminal-three
+decision, storage caps, and a sealed plus immediately rechecked zero-orphan process closeout.
 
 ## Resume a legacy v0/v0.1 run after interruption
 
