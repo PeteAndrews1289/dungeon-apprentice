@@ -636,16 +636,23 @@ They are refreshed by the repository's editable-install command. The canonical i
 use the equivalent module entry point so their availability does not depend on a stale generated
 shell wrapper.
 
-There is no authorized **v0.3** Stage-A start command. The r3 launcher is consumed historical
-evidence and must not be invoked again. The separately versioned v0.4 launcher below is the only
-prospective successor start command; it remains unauthorized until its own source, tag,
-qualification, audits, roots, storage, and process gates pass.
+There is no authorized **v0.3 or v0.4** Stage-A start command. Both launchers are consumed
+historical evidence and must not be invoked again. The v0.4 section below records the completed
+procedure and its terminal identities; it grants no present launch or resume authority.
 
-## Release and launch v0.4 ineffective-trace Stage A
+## Terminal v0.4 ineffective-trace Stage A — do not run
 
 The [v0.4 protocol](protocol-v0.4-ineffective-trace-architecture.md) defines a new, non-resumable
 matched study. It does not continue v0.3. Both arms reconstruct independently from exact confirmed
 U1 child `20260733`; `trace-sham` must finish before `ineffective-trace` records action one.
+
+> **Consumed terminal evidence:** source release, annotated tag, one-shot qualification, canonical
+> roots, screen identity, and launcher authority have all been consumed. The cohort completed at
+> `2026-07-24T19:17:02+00:00` with the authenticated verdict `architecture_failed`. Do not run the
+> qualifier or launcher again, do not pass either root to another command, and do not attempt a
+> start, resume, continuation, checkpoint selection, or one-arm replacement. Preserve the complete
+> evidence and use the
+> [v0.4 terminal result](results/v0.4-ineffective-trace-stage-a.md) as the authoritative summary.
 
 The fixed identities are:
 
@@ -659,7 +666,48 @@ The fixed identities are:
 | Screen session | `dungeon_v04_ineffective_trace_20260724` |
 | Screen log | `/Volumes/T7 Developer/DungeonApprentice/launch-recovery/v04-ineffective-trace-stage-a-20260724-screen.log` |
 
-Before committing, run all local gates from the repository root:
+Both arms reached the exact terminal boundary:
+
+| Arm | Child actions | Lifetime actions | Optimizer updates | Frozen exams | Frozen exam cases | Gate |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `trace-sham` | 1,048,576 | 1,835,008 | 3,584 | 32 | 10,240 | Calibration passed; never selectable |
+| `ineffective-trace` | 1,048,576 | 1,835,008 | 3,584 | 32 | 10,240 | Candidate failed |
+
+The twins matched their initial RNG at `2b343c0d3454edc5a74354ed20bc6f69110e2ceace9083de9a18eed22043e846`
+and their complete pre-update first rollout at
+`e90a548764bc2bb490176a0e8d166d629f97f8e5a1dc008f3e90fae04a3f92d7`.
+The candidate encoder first became nonzero at 2,048 child actions, so the comparison did not diverge
+before its first optimizer phase. Nevertheless, its three deciding exams retained maximum
+ineffective runs of 153, 157, and 121. No architecture, successor checkpoint, replication protocol,
+or U3 authority was selected.
+
+The terminal checksum anchors are:
+
+| Evidence | SHA-256 |
+| --- | --- |
+| Source commit | `0d417255a0b344f4863045862adf0617c49f51bf` |
+| Annotated tag object | `754278095226c324e3191e39c70d2297730f8573` |
+| Qualification report | `6d23e925b3b0fdaaf9e621c69ceb8bf8afd57c96ed33262958885bf9bd33beb4` |
+| Cohort contract | `756eab356d962e0ca12beb23d47092dfd8c53e7cb314121dd1b394e35ca27393` |
+| Trace-sham report / integrity | `a6fa82ab5d0c891798990e703bcf5f87450002164b6167ed7f43a3947057ce4a` / `5c451201c36e48b2224f069fca406c3ac68984a18ea2aa9c45a320cfcc2699e3` |
+| Ineffective-trace report / integrity | `157ebc6c85af22ed41426a03e817b4252b7f69e2aa3ce1bd44569c9e942a5da2` / `f915fd007e4493728bc4ba7df4276189d4b0e4ac15bff1e6301dd474b017e540` |
+| Cohort report / integrity | `da966107e0c846c5b797ea0153805a159c0a59adced8ddf8f8affe07c47406f6` / `dfbbdd7a4b50466c4f24de24682e6d084decd47e43b4c230180f13bb86436fa8` |
+| Process closeout / inventory | `c1d9f70bf0fde48db8617213da604e9af74a200a88a8d34aee75566083195c86` / `26ccdcf6018b554359d9860dbbac5ec25b56e06bf8d0061b78d88e3bdf0781d2` |
+| Finalization process recheck | `4e3ee43aa3144e0508892ec4ffb754467ec5ec59c8c886e77163cbaf2ce3619f` |
+
+The sealed closeout at `2026-07-24T19:16:29+00:00` contained 460 command-redacted process rows and
+zero trainer, supervisor, or `caffeinate` matches. The immediate finalization recheck at
+`2026-07-24T19:16:56+00:00` was also clear. The later terminal audit authenticated every current
+checkpoint triplet, case file, report, sidecar, and integrity record; confirmed storage remained
+within every frozen cap; and found no trainer, supervisor, `caffeinate`, launcher, or screen-session
+orphan. The intentionally detached read-only dashboard may remain available on port 8792.
+
+### Historical v0.4 release and launch procedure — do not run
+
+The commands below document the already consumed release. They are not current operating
+instructions and must not be invoked against these identities.
+
+Historical pre-release gates run from the repository root were:
 
 ```bash
 .venv/bin/ruff check .
@@ -671,14 +719,14 @@ Before committing, run all local gates from the repository root:
 zsh -n scripts/run_v04_ineffective_trace_stage_a.sh
 ```
 
-Two independent read-only audits must also pass: one for the matched scientific contrast and one
-for qualification/manifest/launcher/process closeout. Fixing an audit finding invalidates the old
-audit; rerun the affected audit on the final tree.
+Two independent read-only audits were required: one for the matched scientific contrast and one
+for qualification/manifest/launcher/process closeout. Fixing an audit finding invalidated the old
+audit and required another audit on the final tree.
 
 `--allow-dirty` is an explicitly labeled local engineering check. After the commit, rerun the same
 smoke without that flag and require its source record to say `dirty: false`.
 
-The release order is deliberately non-circular:
+The historical release order was deliberately non-circular:
 
 1. commit and push one clean source;
 2. generate the canonical one-line tag payload from that exact clean source;
@@ -687,7 +735,7 @@ The release order is deliberately non-circular:
 5. consume the one-shot qualification identity; and
 6. only then create the detached screen session.
 
-Generate the tag payload without creating qualification evidence:
+Historical tag-payload generation was:
 
 ```bash
 tag_payload=$(
@@ -700,17 +748,16 @@ git tag -a ineffective-trace-architecture-v0.4-stage-a-20260724 \
 git push origin ineffective-trace-architecture-v0.4-stage-a-20260724
 ```
 
-Qualification is one shot. A failed attempt preserves its claim and requires a separately
-versioned replacement; never delete or rerun it:
+Qualification was one shot and is now consumed. Never delete or rerun it:
 
 ```bash
 .venv/bin/python -m dungeon_apprentice.v04_ineffective_trace_qualify \
   --repository .
 ```
 
-Reauthenticate the resulting `report.json` and checksum, confirm both canonical scientific roots
-and the screen log are still absent, confirm port 8792 is free, and confirm T7 has at least 25 GiB
-free. Then launch exactly once from a user-context detached `screen`:
+The historical procedure reauthenticated `report.json` and its checksum, required both canonical
+scientific roots and the screen log to remain absent, required port 8792 to be free, and required at
+least 25 GiB on T7. It then launched exactly once from a user-context detached `screen`:
 
 ```bash
 screen -dmS dungeon_v04_ineffective_trace_20260724 \
@@ -719,13 +766,14 @@ screen -dmS dungeon_v04_ineffective_trace_20260724 \
   zsh -lc 'cd "/Users/peterandrews/.codex/.chatgpt-projects/g-p-6a5c438a364c8191b4c85ae374791810/dungeon-apprentice" && exec ./scripts/run_v04_ineffective_trace_stage_a.sh'
 ```
 
-The launcher accepts no options and has no resume path. Any stop, crash, machine restart, storage
+The launcher accepted no options and had no resume path. Any stop, crash, machine restart, storage
 loss, trainer failure, or abnormal exit after the arms but before finalization makes the complete
 matched root `operationally_incomplete`. Preserve it and assign a fresh source, tag, qualification,
 roots, seeds, and two fresh twins. Never continue only one arm.
 
-While active, do not edit, commit, checkout, switch, signal, restart, or reuse the repository or
-scientific roots. A healthy process inventory contains one screen launcher, one active-arm
+While it was active, the repository and scientific roots could not be edited, committed, checked
+out, switched, signaled, restarted, or reused. A healthy process inventory contained one screen
+launcher, one active-arm
 supervisor, one trainer, and one `caffeinate` process; the read-only dashboard may remain after
 terminal closeout. Terminal evidence requires both exact 1,048,576-action arms, 32 exams per arm,
 all case/checkpoint/report checksums, matched first-rollout identity, the frozen terminal-three
@@ -733,9 +781,9 @@ decision, storage caps, and a sealed plus immediately rechecked zero-orphan proc
 
 ## Resume a legacy v0/v0.1 run after interruption
 
-This older generic procedure does not apply to U2r, U2-S, or v0.3 Stage A. U2r and
-U2-S are terminal/non-resumable under their current records, and v0.3 Stage A is declared
-non-resumable; never adapt this generic command to any of those protocols.
+This older generic procedure does not apply to U2r, U2-S, v0.3 Stage A, or v0.4 Stage A. U2r,
+U2-S, v0.3, and v0.4 are terminal/non-resumable under their current records; never adapt this
+generic command to any of those protocols.
 
 Resume from an archive only when its matching state sidecar is present and passes digest/protocol
 validation. A resume creates a new child run rather than rewriting the parent:

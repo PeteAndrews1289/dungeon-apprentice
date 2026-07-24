@@ -419,10 +419,42 @@ to use the new pathway. What it did not learn reliably was when to stop repeatin
 experiment over time. That observation earns one bounded next question, frozen prospectively as
 [v0.4's matched ineffective-trace study](protocol-v0.4-ineffective-trace-architecture.md). Its
 visual hook is simple: replace nine one-step values with one rising gauge, capped at nine, that
-answers “how long has this exact unchanged experiment continued?” The action ID disappears. A
-zero-valued sham and truthful candidate otherwise train under the same rules from the same
-confirmed-U1 parent. Keep the release gates on screen: implementation alone is not a launch, and
-no v0.4 outcome exists until the qualified cohort runs.
+answers “how long has this exact unchanged experiment continued?” The action ID disappears.
+
+### Act XII — The stronger score that still lost
+
+Now pay off that question with the authenticated
+[v0.4 result](results/v0.4-ineffective-trace-stage-a.md). Establish the matched start first:
+both fresh confirmed-U1 twins produce the same complete 2,048-transition pre-update rollout,
+`e90a5487…`, before either can learn through the new scalar. Sham's encoder stays exactly zero.
+The candidate encoder becomes nonzero at the first optimizer boundary and ends with all 512
+weights nonzero. The rising gauge was real, exercised, and learned.
+
+Put the capability lines on screen without revealing the verdict. Sham's final three U2 scores
+are 77, 78, and 76/80. The candidate scores 79, 78, and 79/80. The candidate's average is
+**78.67**, higher than sham's **77.0**. For a moment, this looks like the cleanest win in the
+project.
+
+Then change the chart from averages to tails. Sham's worst ineffective runs are 5, 1, and 7.
+The candidate's are 153, 157, and 121; its worst repeated-interaction runs are 152, 156, and 121.
+It has 4, 1, and 4 ten-plus cases across the three exams. Each exam therefore fails the same three
+frozen reliability checks, nine failures in total. Most cases became excellent. A few remained
+catastrophic.
+
+This is the central reversal:
+
+> The candidate was better on average—and still was not reliable enough to select.
+
+Sham passed the behavioral gate, but it was deliberately calibration-only and could never win.
+The candidate was the sole selectable definition, and rare loops disqualified it. End the act
+with the exact sealed decision:
+
+> `architecture_failed — selected_architecture: null — no checkpoint reuse — no U3`
+
+Do not immediately promise another architecture. The honest close is that v0.4 answered its
+question: duration context alone did not guarantee dependable self-correction. No v0.5 study has
+been authorized or defined. The project stops at a sharper boundary between capability and
+reliability, not at an invented next success.
 
 ### Ending options
 
@@ -508,6 +540,13 @@ no v0.4 outcome exists until the qualified cohort runs.
   with `6/2/1` ten-plus cases;
 - the exact v0.3 Stage-A end card: `architecture_failed`, `selected_architecture: null`, no
   checkpoint reuse, Stage B/U3 closed;
+- the v0.4 matched-start card: identical `e90a5487…` pre-update rollouts and candidate encoder
+  first nonzero at 2,048 actions;
+- the v0.4 capability reveal: candidate `79/78/79` above sham `77/78/76`, with terminal averages
+  `78.67` versus `77.0`;
+- the v0.4 reliability reversal: sham worst tails `5/1/7` beside candidate `153/157/121`;
+- the exact v0.4 end card: `architecture_failed`, no selected architecture, no checkpoint reuse,
+  no v0.5 authorization, and U3 closed;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
 - the v0 audit, reward inversion, and stale-policy evaluation timeline;
@@ -531,4 +570,7 @@ averages were attractive, call combined eligible because it removed the measured
 ablation checkpoint, or imply that the failed mechanism study authorized U3. Do not call sham the
 v0.3 winner, claim that action-effect did not learn, use the candidate's attractive final 75/80 to
 override its three-exam tail failures, promote either Stage-A checkpoint, or imply that r3
-authorized Stage B or U3.
+authorized Stage B or U3. Do not call v0.4 a success merely because its candidate had the higher
+average, hide the nine frozen tail-check failures, describe sham as a selected winner, claim the
+trace feature was inactive, promote either v0.4 checkpoint, invent an authorized v0.5, or imply
+that v0.4 opened U3.

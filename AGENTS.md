@@ -149,13 +149,35 @@
   and `1e8512fd2a20c3371d8c6207ee9ef6f10955fa1e14a8556d3d46f25ea79d2641`.
   Never resume, rename, reuse, prune, overwrite, or train from any r3 qualification, cohort, media,
   report, checkpoint, optimizer, RNG, recurrent, scheduler, or environment artifact.
-- The next direction is prospectively frozen in
-  `docs/protocol-v0.4-ineffective-trace-architecture.md`: two fresh confirmed-U1 twins with the
-  same one-scalar residual, where `trace-sham` receives zero and `ineffective-trace` receives
-  `min(consecutive same-action unchanged frames, 9) / 9`. The action ID is not exposed. Reward,
-  PPO, curriculum, budget, and terminal-three gate remain fixed. Implementation alone is not
-  training authority; source publication, annotated tag, one-shot qualification, both independent
-  audits, absent canonical roots, and the storage/process gates must all pass first.
+- The separately versioned
+  `dungeon-apprentice-v0.4-ineffective-trace-architecture` Stage-A study is terminal
+  `architecture_failed`. Its frozen protocol remains in
+  `docs/protocol-v0.4-ineffective-trace-architecture.md`; the terminal result is
+  `docs/results/v0.4-ineffective-trace-stage-a.md`. Source commit
+  `0d417255a0b344f4863045862adf0617c49f51bf`, annotated tag
+  `ineffective-trace-architecture-v0.4-stage-a-20260724`, and tag object
+  `754278095226c324e3191e39c70d2297730f8573` bind the immutable cohort.
+- Both v0.4 arms completed exactly 1,048,576 child actions, 2,048 new optimizer updates, 32 frozen
+  exams, and 10,240 deterministic cases from the same confirmed-U1 parent. Their initial RNG
+  aggregate was `2b343c0d3454edc5a74354ed20bc6f69110e2ceace9083de9a18eed22043e846`;
+  their complete pre-update 2,048-transition identity was
+  `e90a548764bc2bb490176a0e8d166d629f97f8e5a1dc008f3e90fae04a3f92d7`, with no
+  divergence before the first optimizer phase.
+- The v0.4 sham's final U2 exams were `77/78/76`, with maximum ineffective/repeated runs of
+  `5/1/7`; it passed the frozen terminal grade but remained calibration-only. The
+  ineffective-trace candidate scored `79/78/79`, but its deciding exams retained maximum
+  ineffective runs of `153/157/121` and repeated-action runs of `152/156/121`. It therefore
+  failed all nine terminal tail checks despite the higher average capability score.
+- The authenticated v0.4 cohort report, report-integrity record, and process-closeout SHA-256
+  values are respectively
+  `da966107e0c846c5b797ea0153805a159c0a59adced8ddf8f8affe07c47406f6`,
+  `dfbbdd7a4b50466c4f24de24682e6d084decd47e43b4c230180f13bb86436fa8`, and
+  `c1d9f70bf0fde48db8617213da604e9af74a200a88a8d34aee75566083195c86`.
+  No architecture was selected; neither Stage-A checkpoint may be reused; no replication protocol
+  or U3 transition is authorized. Never resume, rename, reuse, prune, overwrite, or train from the
+  v0.4 qualification, cohort, media, report, checkpoint, optimizer, RNG, recurrent, scheduler, or
+  environment artifacts. A successor requires a separately committed, prospectively frozen
+  protocol and fresh confirmed-U1 children.
 - Preserve the v0.3 non-circular release order: the published annotated tag preregisters
   source/protocol/roots/contracts; the durable qualification claim/report binds that exact tag
   object; the cohort manifest binds the exact qualification-report SHA-256. Never claim that the

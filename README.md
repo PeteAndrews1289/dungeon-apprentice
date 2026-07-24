@@ -35,11 +35,13 @@ declared protocol versions rather than mid-run patches.
 
 ## Information boundary
 
-The established v0.2 policy receives a `56 × 56 × 3` partial RGB image. The implemented v0.3
-architecture study keeps that image and adds only two facts an embodied agent has from its own
-experience: its immediately preceding primitive action and whether the next visible pixels changed
-or stayed identical. The matched sham receives the same new network and observation shape but an
-all-zero context. Neither version receives:
+The established v0.2 policy receives a `56 × 56 × 3` partial RGB image. The completed v0.3 study
+tested the agent's immediately preceding primitive action plus whether the next visible pixels
+changed. The completed v0.4 study replaced that input with one bounded persistence scalar:
+`min(consecutive same-action unchanged frames, 9) / 9`. Its matched sham computed the same
+counter but exposed zero, while the candidate exposed the truthful scalar; neither v0.4 arm
+received the action identity. These are facts available from the agent's own sensorimotor
+experience. No tested version receives:
 
 - its coordinates or facing direction as numbers;
 - the full map or a visited-cell map;
@@ -421,14 +423,38 @@ and U3 remains closed. The
 [r3 result](docs/results/v0.3-action-effect-stage-a-r3.md) records the exact timeline, hashes,
 terminal cases, clean process closeout, and claim limits.
 
-That negative result now has one deliberately small, prospective successor:
-[v0.4's matched ineffective-trace study](docs/protocol-v0.4-ineffective-trace-architecture.md).
-Both arms reconstruct independently from confirmed U1; both add the same zero-initialized
-one-scalar residual pathway; sham always receives zero while the candidate receives
-`min(consecutive same-action unchanged frames, 9) / 9`. The action ID itself is not exposed.
-Reward, PPO, curriculum, action budget, evaluation cases, and the terminal-three-exam rule remain
-fixed. The implementation is not permission to train: a clean source release, annotated tag,
-one-shot qualification, absent canonical roots, and both independent audits must still pass.
+v0.4 then ran that deliberately smaller question as a fresh matched experiment from the same
+confirmed-U1 parent. Both arms completed 1,048,576 child actions, 2,048 new optimizer updates,
+32 frozen exams, and 10,240 deterministic cases. Their complete 2,048-transition pre-update
+rollouts were identical at
+`e90a548764bc2bb490176a0e8d166d629f97f8e5a1dc008f3e90fae04a3f92d7`.
+
+| Boundary | Trace sham | Ineffective-trace candidate |
+| --- | ---: | ---: |
+| First 32,768-action U2 exam | 28/80 | 27/80 |
+| Terminal-three U2 | 77, 78, 76 | 79, 78, 79 |
+| Terminal-three 10+ ineffective cases | 0, 0, 0 | 4, 1, 4 |
+| Worst terminal ineffective/repeat run | 5/5, 1/1, 7/7 | 153/152, 157/156, 121/121 |
+| Frozen terminal gate | Passed; calibration only | Failed |
+
+This is the experiment's sharpest reversal so far. The candidate averaged 78.67/80 U2, above
+sham's 77.0/80, and its one-scalar encoder became nonzero at the first optimizer boundary and
+ended with all 512 weights nonzero. The feature was active and the candidate learned high average
+capability. It nevertheless failed all nine prospectively frozen tail checks: at each deciding
+exam it had at least one ten-plus ineffective case, a maximum ineffective run above the
+`< 10` limit, and a repeated-interaction run above the same limit. Rare catastrophic loops
+survived even as ordinary performance improved.
+
+Sham passed the behavioral gate but was preregistered as calibration-only and could never be
+selected. The authenticated cohort verdict is **`architecture_failed`**:
+`selected_architecture: null`, no checkpoint reuse, no replication authorization, and no U3.
+The cohort finalized at `2026-07-24T19:17:02Z` from source
+`0d417255a0b344f4863045862adf0617c49f51bf`; its qualification and terminal-report SHA-256
+values are `6d23e925b3b0fdaaf9e621c69ceb8bf8afd57c96ed33262958885bf9bd33beb4`
+and `da966107e0c846c5b797ea0153805a159c0a59adced8ddf8f8affe07c47406f6`.
+See the frozen [v0.4 protocol](docs/protocol-v0.4-ineffective-trace-architecture.md) and
+[terminal result](docs/results/v0.4-ineffective-trace-stage-a.md). No v0.5 experiment has been
+authorized or defined.
 
 ## Evidence standard
 
@@ -454,9 +480,10 @@ See [the experiment contract](docs/experiment-contract.md),
 [roadmap](docs/roadmap.md). The completed v0.1 capability result is preserved in the
 [Navigate canary report](docs/results/v0.1-navigate-canaries.md), and the v0.2 staircase is
 specified in [the v0.2 design](docs/protocol-v0.2-design.md). U2r-r1 ended in a valid terminal
-stability failure, U2-S r1 completed with no eligible mechanism, and v0.3 Stage-A r3 completed with
-`architecture_failed`. No development checkpoint advances, Stage B did not open, and U3 remains
-blocked. The next controlled question—a fresh confirmed-U1 matched study of policy-visible
-ineffective-action persistence—is now frozen in the
-[v0.4 matched ineffective-trace protocol](docs/protocol-v0.4-ineffective-trace-architecture.md).
-It remains unlaunched until every release and qualification gate passes.
+stability failure, U2-S r1 completed with no eligible mechanism, v0.3 Stage-A r3 completed with
+`architecture_failed`, and the fresh
+[v0.4 matched ineffective-trace study](docs/results/v0.4-ineffective-trace-stage-a.md) also
+completed with `architecture_failed`. The v0.4 candidate achieved higher average terminal U2
+capability than its sham but retained rare 121–157-action ineffective loops, so reliability—not
+ordinary-case capability—blocked selection. No development checkpoint advances, no v0.5 is
+authorized, and U3 remains closed.

@@ -1269,6 +1269,76 @@ the sole new trace weight, exact parent counters, and every zero-context equival
 manifest has a durable `abort-closeout` transition; and the supervisor kills and reaps an
 unpublished child process group.
 
-This entry records a release candidate, not a launched experiment. The source commit, tag object,
-qualification report SHA-256, cohort contract, action counts, and outcome remain unknown until the
-non-circular release chain completes.
+At that point this entry recorded a release candidate, not a launched experiment. The source
+commit, tag object, qualification report SHA-256, cohort contract, action counts, and outcome were
+still unknown pending the non-circular release chain recorded immediately below.
+
+### July 24, 2026 — v0.4 ineffective-trace Stage A completed
+
+The non-circular release chain completed from clean source
+`0d417255a0b344f4863045862adf0617c49f51bf`. The annotated tag
+`ineffective-trace-architecture-v0.4-stage-a-20260724` resolved to tag object
+`754278095226c324e3191e39c70d2297730f8573`; one-shot qualification passed with report SHA-256
+`6d23e925b3b0fdaaf9e621c69ceb8bf8afd57c96ed33262958885bf9bd33beb4`, and the canonical cohort
+contract was `756eab356d962e0ca12beb23d47092dfd8c53e7cb314121dd1b394e35ca27393`.
+
+The user-context detached Screen session started `trace-sham` at `14:48:55Z`, completed it at
+`17:01:06Z`, started `ineffective-trace` at `17:01:59Z`, and completed it at `19:15:35Z`.
+The cohort sealed a zero-orphan process closeout at `19:16:29Z` and finalized
+`architecture_failed` at `19:17:02Z`. Each arm reached exactly 1,048,576 child actions,
+1,835,008 lifetime actions, 2,048 new optimizer updates, 3,584 lifetime updates, 32 frozen exams,
+and 10,240 deterministic cases. All 64 scheduled checkpoint, sidecar, integrity, and case bundles
+authenticated.
+
+The twins had the same initial RNG aggregate
+`2b343c0d3454edc5a74354ed20bc6f69110e2ceace9083de9a18eed22043e846`
+and the same complete 2,048-transition pre-update rollout:
+
+| Matched-start evidence | SHA-256 |
+| --- | --- |
+| First-rollout aggregate | `e90a548764bc2bb490176a0e8d166d629f97f8e5a1dc008f3e90fae04a3f92d7` |
+| Policy output | `60def45030935347f6527539a68cdab763073752415e0980d0a432415ba3de68` |
+| Normalized episode ledger | `51a6cfe24f1869d8b832000f5826a2c99d98f369512e198f177a155efb4fe079` |
+| Post-rollout RNG aggregate | `dbc2b81ed917fa6810463615817c0449e8b61e287387bf2a36479e739a7f0a6c` |
+
+There was no divergence before the first optimizer phase. Sham's encoder remained exactly zero.
+The candidate encoder first became nonzero at 2,048 actions and ended with all 512 weights nonzero,
+weight L2 norm `1.078283`, and update L2 norm `0.023001`. Its trace was nonzero on 123,552 of
+1,048,576 transitions (11.7828%). The intervention was exercised and learned; this was not a dead
+input or failed transplant.
+
+| Boundary | Trace sham U2 | Sham 10+ / worst ineffective-repeat | Candidate U2 | Candidate 10+ / worst ineffective-repeat |
+| --- | ---: | ---: | ---: | ---: |
+| Inherited baseline | 24/80 | 51 / 160-160 | 24/80 | 51 / 160-160 |
+| 32,768 actions | 28/80 | 46 / 160-160 | 27/80 | 43 / 160-160 |
+| 983,040 actions | 77/80 | 0 / 5-5 | 79/80 | 4 / 153-152 |
+| 1,015,808 actions | 78/80 | 0 / 1-1 | 78/80 | 1 / 157-156 |
+| 1,048,576 actions | 76/80 | 0 / 7-7 | 79/80 | 4 / 121-121 |
+
+Sham passed every terminal behavioral check, but the protocol defined it as calibration-only and
+nonselectable. The candidate averaged 78.67/80 U2, higher than sham's 77.0/80, and passed the
+capability, panel, prerequisite-retention, and mean-ineffective checks. It failed the reliability
+conjunction at all three deciding exams. Each boundary violated all three tail requirements:
+no ten-plus ineffective case, maximum ineffective interactions below ten, and maximum repeated
+identical interaction run below ten. Those are the nine frozen failed checks. The duration signal
+improved ordinary behavior without eliminating rare catastrophic loops.
+
+The sealed verdict is:
+
+```text
+architecture_failed
+selected_architecture: null
+development_checkpoint_reuse_authorized: false
+replication_protocol_authorized: false
+u3_authorized: false
+```
+
+The cohort report and integrity SHA-256 values are
+`da966107e0c846c5b797ea0153805a159c0a59adced8ddf8f8affe07c47406f6` and
+`dfbbdd7a4b50466c4f24de24682e6d084decd47e43b4c230180f13bb86436fa8`.
+The exact [terminal result](results/v0.4-ineffective-trace-stage-a.md) is read alongside the
+prospectively frozen [v0.4 protocol](protocol-v0.4-ineffective-trace-architecture.md). The macOS
+operational lesson is distinct from the science: detached user-context Screen preserved T7 access
+and launcher continuity through application restarts, while `caffeinate` prevented sleep. The
+Screen launcher ended normally after closeout. No v0.5 protocol or cohort is authorized, and U3
+remains closed.

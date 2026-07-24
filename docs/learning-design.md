@@ -169,12 +169,20 @@ no Stage-A checkpoint reuse, no Stage B replication, and no U3 activation.
 
 The lesson is sharper than “action-effect did not work.” A one-step action/outcome pair is useful
 enough to train on, but it does not explicitly represent persistence: how long the same ineffective
-experiment has continued. The next bounded direction is therefore the prospectively frozen
-[v0.4 matched ineffective-trace study](protocol-v0.4-ineffective-trace-architecture.md). It exposes
-only `min(consecutive same-action unchanged frames, 9) / 9`, never the action ID, through one
-zero-initialized 1→512 residual. A zero-valued sham and truthful candidate start independently
-from the same confirmed-U1 parent under unchanged reward, PPO, curriculum, budget, and frozen
-terminal-three gate. It is still a release candidate, not a training authorization.
+experiment has continued. The frozen
+[v0.4 matched ineffective-trace study](protocol-v0.4-ineffective-trace-architecture.md) tested that
+specific missing signal with a zero-initialized 1→512 residual and no action ID. Both fresh
+confirmed-U1 arms completed 1,048,576 child actions and 32 frozen exams each, and their complete
+first 2,048-transition rollout matched before optimization.
+
+The feature was genuinely used: the candidate trace was active on 11.7828% of training transitions
+and all 512 encoder weights were nonzero at closeout. It also produced the better terminal U2
+scores—79, 78, and 79/80 versus sham's 77, 78, and 76/80. But capability averages hid rare
+catastrophic behavior. Sham's worst terminal tails were 5, 1, and 7 actions; the candidate's were
+153, 157, and 121. The candidate consequently failed exactly nine preregistered tail checks, three
+in every deciding exam. The authenticated
+[v0.4 result](results/v0.4-ineffective-trace-stage-a.md) is `architecture_failed`: no architecture
+selected, no Stage-A checkpoint reuse, and no U3 activation.
 
 ## Why timing matters
 

@@ -50,7 +50,9 @@
 - [x] Preserve r3's valid `architecture_failed` verdict and prohibit every Stage-A checkpoint reuse
 - [x] Close the conditional Stage B replication and U3 path because action-effect did not qualify
 - [x] Prospectively define a fresh confirmed-U1 matched study of policy-visible ineffective-action persistence
-- [ ] Release, qualify, and launch the v0.4 matched ineffective-trace architecture study
+- [x] Release, qualify, and launch the v0.4 matched ineffective-trace architecture study
+- [x] Run both v0.4 arms through 1,048,576 actions, 3,584 lifetime optimizer updates, and 32 frozen exams each
+- [x] Authenticate v0.4's terminal `architecture_failed` verdict and prohibit checkpoint reuse, replication, and U3
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
 - [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
 
@@ -191,14 +193,21 @@ forbidden long interaction tail. The authenticated
 [result](results/v0.3-action-effect-stage-a-r3.md) is `architecture_failed`; no architecture or
 checkpoint was selected, Stage B did not open, and U3 remains closed.
 
-The next bounded question is now prospectively frozen as the
-[v0.4 matched ineffective-trace architecture study](protocol-v0.4-ineffective-trace-architecture.md).
-It replaces the failed nine-value action-effect input with one scalar:
-`min(consecutive same-action unchanged frames, 9) / 9`. Both fresh confirmed-U1 twins compute the
-same trace; sham exposes zero and the candidate exposes the truthful value. The action identity,
-reward, PPO, curriculum, 1,048,576-action budget, frozen exams, and terminal-three decision rule do
-not change. Source publication, annotated tagging, qualification, two independent audits, and an
-absent canonical root remain mandatory before launch.
+The
+[v0.4 matched ineffective-trace architecture study](protocol-v0.4-ineffective-trace-architecture.md)
+is now complete. It replaced the failed nine-value action-effect input with one scalar:
+`min(consecutive same-action unchanged frames, 9) / 9`. Both fresh confirmed-U1 twins completed
+exactly 1,048,576 child actions, 3,584 lifetime optimizer updates, 32 frozen exams, and 10,240
+frozen exam cases. Their initial RNG identity matched at `2b343c0d…`, and their complete
+2,048-transition pre-update rollout matched at `e90a5487…`. The candidate encoder first became
+nonzero exactly at that first optimizer boundary.
+
+The new input did not solve the targeted failure. Sham's maximum ineffective runs in the three
+deciding exams were 5, 1, and 7; the candidate's were 153, 157, and 121, with 4, 1, and 4 cases at
+or above the forbidden threshold. The authenticated
+[terminal result](results/v0.4-ineffective-trace-stage-a.md) is `architecture_failed`. No
+architecture or checkpoint was selected, every Stage-A checkpoint remains non-promotable, no
+replication protocol opened, and U3 remains closed.
 
 ## Scalability gates
 

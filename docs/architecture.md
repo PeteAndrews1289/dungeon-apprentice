@@ -300,11 +300,20 @@ one-step causal context but did not reliably suppress persistence across time. T
 [r3 result](results/v0.3-action-effect-stage-a-r3.md) is `architecture_failed`; no architecture or
 checkpoint was selected, Stage B was not authorized, and U3 remains closed.
 
-The smallest evidence-supported successor is now defined prospectively in the
-[v0.4 matched ineffective-trace protocol](protocol-v0.4-ineffective-trace-architecture.md). It
-replaces the failed nine-value action-effect pathway with a bias-free `Linear(1, 512)` residual.
-The sole input is `min(consecutive same-action unchanged frames, 9) / 9`; the action ID is never
-returned. Both fresh confirmed-U1 twins have identical topology and compute the same counter.
-`trace-sham` exposes zero, while `ineffective-trace` exposes the truthful scalar. Every other
-learner, curriculum, budget, and grading boundary stays fixed. The architecture remains
-prospective until the separate source, tag, qualification, audit, and launch gates pass.
+The separately frozen
+[v0.4 matched ineffective-trace protocol](protocol-v0.4-ineffective-trace-architecture.md)
+tested the smallest evidence-supported successor: a bias-free `Linear(1, 512)` residual whose sole
+input was `min(consecutive same-action unchanged frames, 9) / 9`, without returning the action ID.
+Both fresh confirmed-U1 twins completed 1,048,576 child actions and 32 frozen exams each. Their
+complete 2,048-transition pre-update rollout matched exactly, so the comparison began without
+behavioral or RNG divergence. The candidate feature was active on 11.7828% of training
+transitions, became nonzero at the first optimizer boundary, and ended with all 512 encoder weights
+nonzero.
+
+Average capability improved, but terminal reliability did not. Sham scored 77, 78, and 76/80 U2
+with worst ineffective tails of 5, 1, and 7 actions. The candidate scored a higher 79, 78, and
+79/80, yet retained tails of 153, 157, and 121 actions and failed exactly nine frozen tail checks:
+three checks in each deciding exam. The authenticated
+[v0.4 result](results/v0.4-ineffective-trace-stage-a.md) is `architecture_failed`. Sham remained
+calibration-only, no architecture or checkpoint was selected, checkpoint reuse was not authorized,
+and U3 remains closed.
