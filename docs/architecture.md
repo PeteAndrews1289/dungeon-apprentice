@@ -246,25 +246,36 @@ Attempt 0 exercised the original release chain and qualified, but its dashboard 
 predecessor walk on every request and exceeded the launcher's ten-second health deadline. It
 closed at zero actions; the exact negative inventory is in the
 [attempt-0 result](results/v0.3-action-effect-launch-attempt-0.md). The separately committed
-[r1 protocol](protocol-v0.3-action-effect-architecture-r1.md) preserves the architecture experiment
-and corrects only this operational boundary:
+[r1 protocol](protocol-v0.3-action-effect-architecture-r1.md) preserved the architecture experiment
+and corrected that dashboard boundary. It reached sham training, but whole-command-line process
+matching counted the supervisor's embedded child command as a second trainer. The failed assertion
+also bypassed the zsh exit-cleanup path. Sham reached 38,912 trained actions; status recorded 40,004
+collected while the later episode ledger reached 40,960. It completed 19 optimizer phases, 76 new
+updates, and one scheduled exam. No safe checkpoint exists and action-effect never started, so r1
+is [terminal operational evidence](results/v0.3-action-effect-stage-a-r1-operational-failure.md),
+not an architecture comparison.
+
+The prospective
+[r2 protocol](protocol-v0.3-action-effect-architecture-r2.md) keeps r1's dashboard correction and
+adds leading-argument process classification plus explicit abnormal-exit cleanup:
 
 ```mermaid
 flowchart LR
-    C["Clean published r1 source"] --> T["Annotated r1 preregistration tag"]
-    T --> Q["Durable qualification claim + matched smoke report"]
+    F0["Frozen zero-action attempt 0"] --> C["Clean published r2 source"]
+    F1["Frozen partial-sham r1"] --> C
+    C --> T["Annotated r2 preregistration tag"]
+    T --> Q["Durable qualification + matched smoke"]
     Q --> M["Cohort contract binds report SHA-256"]
-    M --> L["Fixed launcher"]
-    L --> D["Read-only dashboard :8789"]
+    M --> L["Fixed r2 launcher"]
+    L --> D["Read-only dashboard :8790"]
+    L --> R["Leading argv role classification"]
+    L --> X["Explicit cleanup on every failure"]
     D --> A["Deep-auth once before socket bind"]
-    D --> P["Every poll: reread live state + rehash immutable bindings"]
 ```
 
-The assigned r1 tag is `action-effect-architecture-v0.3-stage-a-r1-20260724`; its qualification,
-cohort, and media roots end in the same `stage-a-r1-20260724` identity. The sole launcher is
-`scripts/run_v03_action_effect_stage_a_r1.sh`. Full source, tag, qualification, and predecessor
-authentication happens once at dashboard startup before the listening socket binds. Every request
-then rereads mutable status and rehashes the immutable cohort contract, qualification report, and
-checksum. “Healthy” is the launcher's validated conclusion from the returned identities, not a
-literal API field. No r1 tag, qualification, root, process, action, or result exists at this
-preparation boundary.
+The prospective r2 tag is `action-effect-architecture-v0.3-stage-a-r2-20260724`; its qualification,
+cohort, and media roots share the `stage-a-r2-20260724` identity. The dashboard is assigned port
+`8790`, and the sole launcher is `scripts/run_v03_action_effect_stage_a_r2.sh`. These names are not
+release evidence. No final r2 source hash, tag object, qualification digest, cohort, action, or
+result exists before the clean non-circular release sequence. Both arms restart from confirmed U1;
+no r1 state crosses the boundary.

@@ -1016,6 +1016,9 @@ cohort, and media roots are immutable historical evidence and may never be resum
 
 ### July 24, 2026 — v0.3 Stage-A r1 replacement prepared
 
+> Historical preparation entry: this section records the boundary before r1 was released. The next
+> entry records its later partial-sham operational failure and superseding r2 decision.
+
 r1 keeps the complete Stage-A scientific contract fixed and changes only the dashboard boundary.
 The process now performs the expensive full authentication once at startup, before binding its
 socket. Each live poll still rereads mutable cohort/status evidence and rehashes the immutable
@@ -1033,7 +1036,88 @@ The fresh r1 assignments are:
 | Dashboard | `http://127.0.0.1:8789/` |
 | Launcher | `scripts/run_v03_action_effect_stage_a_r1.sh` |
 
-This entry records the implemented replacement boundary, not a launch. At this point no r1 tag,
-qualification claim/report, cohort, media root, dashboard, trainer, policy action, or learning
-result exists. The governing prospective document is the
+This entry records the implemented replacement boundary, not a launch. At that historical point no
+r1 tag, qualification claim/report, cohort, media root, dashboard, trainer, policy action, or
+learning result existed. The then-governing prospective document was the
 [v0.3 Stage-A r1 protocol](protocol-v0.3-action-effect-architecture-r1.md).
+
+### July 24, 2026 — v0.3 Stage-A r1 reaches sham, then closes operationally incomplete
+
+r1 subsequently froze clean source
+`b9dc80b4c5f95b4b0a8bf7a681b9431764c6f0ec`, published annotated tag object
+`1f11b98fae6691dc9282682c44cdaa33ea55e5ab`, and passed its one-shot qualification. The
+qualification report SHA-256 is
+`c59c3033a892bb05fea437bc525090c4f958110c960494fc2366444526d2dcb7`; the cohort contract
+SHA-256 is `647f8237c2dfcb8451a6ccb644e2b6b10f1087bd9a5b5d7a3dcc0b23426fe22d`.
+The corrected dashboard opened normally on port `8789`, sham transplanted the confirmed U1 policy,
+and the first complete 2,048-transition rollout was captured before optimization.
+
+The launch then exposed a new operational defect. The launcher used whole-command-line `pgrep -f`
+matching to count trainers. Its supervisor command embeds the complete child trainer command after
+`--`, so the supervisor and actual child both matched as neural trainers. At
+`2026-07-24T04:56:53+00:00` the launcher logged
+`v0.3 does not have exactly one neural trainer` even though the owned chain contained one
+supervisor and one trainer.
+
+The failed assertion returned from a shell function under zsh `set -e`. That error path bypassed
+the intended `EXIT` cleanup, so the background chain continued after the error. Explicit
+`SIGTERM` was forwarded at `05:02:58`; the manifest sealed the cohort
+`operationally_incomplete` at `05:03:39`.
+
+The exact surviving counters are:
+
+| Evidence | r1 terminal value |
+|---|---:|
+| Sham trained child actions | `38,912` |
+| Sham collected actions in final status | `40,004` |
+| Sham collected actions in episode ledger | `40,960` |
+| New optimizer updates / phases | `76 / 19` |
+| Scheduled exam boundaries | `1 / 32` |
+| Evaluation rows / deterministic cases | `8 / 640` |
+| Latest safe checkpoint | none |
+| Action-effect actions | `0` |
+
+The final status preceded the last four-worker collection completion, which is why its collected
+counter is 40,004 while the append-only episode ledger reaches 40,960. Only 38,912 transitions
+were optimized and checkpointed. The one scheduled boundary was at 32,768 child actions; together
+with the inherited baseline it produced four lesson rows and 320 cases per boundary.
+
+The latest-observed checkpoint SHA-256 is
+`0124df33809e0b81ccef181a98060617130ae12ba7eff116c8675fb3a27ac943`, but
+`latest_safe_checkpoint` is null. No r1 checkpoint is resumable, promotable, reusable, or
+selectable. The action-effect arm has no directory or attempt. Therefore r1 did not perform the
+matched comparison and supplies no scientific evidence for or against the architecture.
+
+The exact timeline, inventories, and hashes are preserved in the
+[r1 operational-failure result](results/v0.3-action-effect-stage-a-r1-operational-failure.md).
+
+### July 24, 2026 — v0.3 Stage-A r2 process-safe replacement prepared
+
+r2 keeps the entire scientific contract fixed. It changes only the operational mechanism that
+misclassified the supervisor and failed to clean up:
+
+- process roles are classified from leading executable arguments rather than arbitrary text later
+  in the command line;
+- the supervisor's child command no longer makes the supervisor a trainer;
+- critical assertions use explicit cleanup-and-terminalization branches instead of relying on
+  implicit zsh `errexit`; and
+- operational tests must exercise a real supervisor-plus-child chain and prove that abnormal exit
+  leaves no trainer, supervisor, or `caffeinate` process.
+
+Both r2 arms restart fresh from confirmed U1 child `20260733`; no r1 checkpoint, optimizer,
+rollout, recurrent, environment, or scheduler state may be loaded.
+
+| Boundary | Prospective r2 identity |
+|---|---|
+| Cohort ID | `v0.3-action-effect-stage-a-r2-20260724` |
+| Annotated tag | `action-effect-architecture-v0.3-stage-a-r2-20260724` |
+| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r2-20260724` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-20260724` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-media-20260724` |
+| Dashboard | `http://127.0.0.1:8790/` |
+| Launcher | `scripts/run_v03_action_effect_stage_a_r2.sh` |
+
+This is a preparation entry, not a release or launch claim. No final r2 source commit, tag object,
+tag payload, qualification digest, cohort contract, policy action, or result exists yet. The
+governing prospective document is the
+[v0.3 Stage-A r2 protocol](protocol-v0.3-action-effect-architecture-r2.md).

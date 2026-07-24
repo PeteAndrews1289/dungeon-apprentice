@@ -369,9 +369,24 @@ Attempt 0 supplies a useful short operational beat. Qualification passed, but th
 to reauthenticate the entire history on every poll. Its answer took longer than the ten-second
 client deadline, three sockets closed, and the launcher correctly refused to start a trainer. Show
 the empty arm/media inventory beside the synthetic manifest “sham crash”: the important reveal is
-that this is **zero-action fail-closed evidence**, not a model failure. Then introduce r1 as the
-same preregistered scientific question with a corrected evidence reader—one deep authentication
-before port 8789 binds, followed by live-state rereads and immutable-file rehashes per poll.
+that this is **zero-action fail-closed evidence**, not a model failure.
+
+r1 supplies a second, different operational beat. Its corrected evidence reader worked, sham
+started, and the dashboard showed real learning activity. Then the launcher searched complete
+command lines and counted the supervisor's embedded child command as another trainer. Put the two
+process rows on screen and reveal that there is still only one neural child. A shell cleanup path
+also failed to run, so sham continued until it was explicitly stopped.
+
+Show the counters together without merging them: 40,004 collected in final status, 40,960 in the
+later episode ledger, but only 38,912 trained and checkpointed. It completed 19 optimizer phases,
+76 new updates, and one scheduled exam. The action-effect side of the split screen remains empty.
+The latest-observed checkpoint is authentic but not safe. The conclusion is again operational,
+not scientific: no matched comparison occurred.
+
+Then introduce r2 as the same preregistered scientific question with both operational lessons
+applied. It keeps r1's deep-auth-once dashboard design, classifies roles by leading executable
+arguments, and explicitly cleans up on every assertion failure. Port `8790` and all r2 identities
+are fresh; both arms restart from confirmed U1.
 
 If Stage A eventually succeeds, frame it as permission to replicate the **idea**, not promotion of
 the attractive model on screen. Both Stage-A checkpoints are discarded. Three fresh policies from
@@ -442,9 +457,14 @@ frozen protocol, and untouched no-update confirmation must still pass before U3 
 - overlapping first-rollout traces through all 2,048 pre-update transitions, followed by a clear
   “learning may diverge here” marker at the first optimizer phase;
 - the non-circular v0.3 evidence chain: source tag → qualification report → cohort manifest →
-  fixed launcher, with the r1 dashboard at 8789 labeled read-only;
+  fixed launcher, with the prospective r2 dashboard at 8790 labeled read-only;
 - the attempt-0 zero-action card: three broken client pipes, no arm directory, no trainer, no
   action, and the trap's synthetic sham crash clearly labeled operational closeout;
+- the r1 partial-sham card: status `40,004 collected / 38,912 trained`, episode ledger `40,960
+  collected`, `19` optimizer phases, `76` new updates, one scheduled boundary, eight rows, 640
+  cases, no safe checkpoint, and an empty action-effect column;
+- the r1 process reveal: supervisor plus embedded child argv causing a false second-trainer match,
+  followed by the missed shell cleanup and explicit later stop;
 - the v0.3 Stage-A end card, whatever its eventual outcome, explicitly stating that no Stage-A
   checkpoint advances and U3 remains closed;
 - one example of curiosity encouraging exploration without task knowledge;

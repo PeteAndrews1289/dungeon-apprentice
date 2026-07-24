@@ -48,88 +48,157 @@ SCHEMA_VERSION = 1
 KIND = "sealed_stage_a_preflight_qualification"
 VERDICT = "qualified"
 
-QUALIFIED_TAG = "action-effect-architecture-v0.3-stage-a-r1-20260724"
+QUALIFIED_TAG = "action-effect-architecture-v0.3-stage-a-r2-20260724"
 QUALIFIED_REMOTE = "origin"
 EXPECTED_ORIGIN_URL = "https://github.com/PeteAndrews1289/dungeon-apprentice.git"
 PROTOCOL_DOCUMENT = Path(v03.PROTOCOL_DOCUMENT)
-DASHBOARD_PORT = 8789
+DASHBOARD_PORT = 8790
 
 CANONICAL_QUALIFICATION_DIRECTORY = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/qualifications/"
-    "v0.3-action-effect-stage-a-r1-20260724"
+    "/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r2-20260724"
 )
 CANONICAL_REPORT = CANONICAL_QUALIFICATION_DIRECTORY / "report.json"
 CANONICAL_CHECKSUM = CANONICAL_QUALIFICATION_DIRECTORY / "report.json.sha256"
 CANONICAL_CLAIM = CANONICAL_QUALIFICATION_DIRECTORY / "claim.json"
 CANONICAL_COHORT_ROOT = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/"
-    "v03-action-effect-stage-a-r1-20260724"
+    "/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-20260724"
 )
 CANONICAL_MEDIA_ROOT = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/"
-    "v03-action-effect-stage-a-r1-media-20260724"
+    "/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-media-20260724"
 )
 
 FAILED_STAGE_A_ATTEMPT_ROOT = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/"
-    "v03-action-effect-stage-a-20260724"
+    "/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-20260724"
 )
 FAILED_STAGE_A_ATTEMPT_MEDIA_ROOT = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/"
-    "v03-action-effect-stage-a-media-20260724"
+    "/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-media-20260724"
 )
 FAILED_STAGE_A_ATTEMPT_QUALIFICATION_DIRECTORY = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/qualifications/"
-    "v0.3-action-effect-stage-a-20260724"
+    "/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r1-20260724"
 )
 FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG = Path(
     "/Volumes/T7 Developer/DungeonApprentice/launch-recovery/"
-    "v03-action-effect-stage-a-20260724-launcher.log"
+    "v03-action-effect-stage-a-r1-20260724-launcher.log"
 )
-FAILED_STAGE_A_ATTEMPT_TAG = (
-    "action-effect-architecture-v0.3-stage-a-20260724"
-)
-FAILED_STAGE_A_ATTEMPT_TAG_OBJECT = (
-    "9bd59e367b0ccb9890e4ddb5ad0144dfd4897c7c"
-)
-FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT = (
-    "5b135a4e2953db9f14e83cdaba77fe219fecb160"
-)
+FAILED_STAGE_A_ATTEMPT_TAG = "action-effect-architecture-v0.3-stage-a-r1-20260724"
+FAILED_STAGE_A_ATTEMPT_TAG_OBJECT = "1f11b98fae6691dc9282682c44cdaa33ea55e5ab"
+FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT = "b9dc80b4c5f95b4b0a8bf7a681b9431764c6f0ec"
 FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256 = (
-    "a3a50ecf91411a27a70e2c6d3e03b93183aa3b078f2f1104b5dd6884f2c3fc85"
+    "c59c3033a892bb05fea437bc525090c4f958110c960494fc2366444526d2dcb7"
 )
 FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CLAIM_SHA256 = (
-    "1ab64150f7db79735cdd4bb3192cfad2b9ad244a0944d76fae275a05d1e1c39b"
+    "86f6473d5610bbc80e5487db039cc99dc92a7a9558c0b7a7237315b306519e9e"
 )
 FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CHECKSUM_SHA256 = (
-    "f96599d4d813ff92897a70077f41a1de16a60ec2860e441eb70ab4af4bb25a4e"
+    "3b12be77dee66a7cafdf8bfb86cbfc380c2688eeb9b33d057d559634004c35a2"
 )
 FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256 = (
-    "15a180d7a38af6dbc459870b0e4f06a565b291399971fc2165774bce91c6e72c"
+    "647f8237c2dfcb8451a6ccb644e2b6b10f1087bd9a5b5d7a3dcc0b23426fe22d"
 )
 FAILED_STAGE_A_ATTEMPT_COHORT_SHA256 = (
-    "c35441207060ab9a5c55e82289924ab0530effc7f0e5e50fb11b2a0ab83f68eb"
+    "d989b884d1ff63ed87194b196f87e4396673200762167fa1f9de0c735727b83b"
 )
 FAILED_STAGE_A_ATTEMPT_DASHBOARD_LOG_SHA256 = (
-    "8806979b29d3778f8730546c6bb2f577548844cf891cb06220cd935a18bd95f2"
+    "3686976b942556d2ba83947da71e33f62021fa85322bf46ad759f7ebf9c81d68"
 )
 FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG_SHA256 = (
-    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    "598df636ad3f08538636f25311b20933849dc51386335e8dbc65ae76f5a95d7e"
 )
+FAILED_STAGE_A_ATTEMPT_PREDECESSOR_SHA256 = (
+    "0caffd0f2084a1dd2c50744fe9a60876e77fa8ca7302c9f802ca0089e84b9cd9"
+)
+FAILED_STAGE_A_ATTEMPT_TAG_PAYLOAD_SHA256 = (
+    "02531149bcac991fd4255897a6ea2729f751dc499ca8e7576b5221983f385a64"
+)
+FAILED_STAGE_A_ATTEMPT_FIRST_ROLLOUT_SHA256 = (
+    "fa4c7bda99a261f8fa49741a49360cd1bfc6ab3081db51aeffc64266a109ce72"
+)
+FAILED_STAGE_A_ATTEMPT_INITIAL_RNG_SHA256 = (
+    "91e1c8cd5473452a8e6d91614009582b0cd43f6bfa058a8477714dc2e4508d8d"
+)
+FAILED_STAGE_A_ATTEMPT_LATEST_OBSERVED_SHA256 = (
+    "0124df33809e0b81ccef181a98060617130ae12ba7eff116c8675fb3a27ac943"
+)
+FAILED_STAGE_A_ATTEMPT_FIRST_EXAM_SHA256 = (
+    "bcc9342942c672f60e00d547899f6a4cfe1a87a58df01527a6e70f9f38948eb8"
+)
+FAILED_STAGE_A_ATTEMPT_ARTIFACT_MAP_SHA256 = (
+    "eb529df93a43be803d47ba73069ac428bdf953065aa7258d34c2d1dd333bbdc2"
+)
+FAILED_STAGE_A_ATTEMPT_ROOT_FILE_SHA256 = {
+    "cohort-contract.json": FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256,
+    "cohort.json": FAILED_STAGE_A_ATTEMPT_COHORT_SHA256,
+    "dashboard.log": FAILED_STAGE_A_ATTEMPT_DASHBOARD_LOG_SHA256,
+    "dashboard.pid": "5ab8c06c972454b388a27186f5ab1283f67a955a4ca90a01c8819280560277d4",
+    "launcher-sham-attempt-0.json": (
+        "7a670bc04611027d4e56f9c85817723ce6ca6f17e72edff24084f04c29c77f31"
+    ),
+    "sham/checkpoints/initial.cases.json": (
+        "8d3134f0a6a440520112c3337d057bade276a9e83cc7078e112cb398f0c15694"
+    ),
+    "sham/checkpoints/initial.integrity.json": (
+        "eddedb71fbdae8b70a567ea4ab979f4602d3a166cf4fec2aef52686f32d94635"
+    ),
+    "sham/checkpoints/initial.json": (
+        "d4ac77ccca104a10babaac1c8a4c780398dc973953177509f85e0392ed410342"
+    ),
+    "sham/checkpoints/initial.zip": (
+        "17672c9b233fedc7b5f7d2563cc42dee1f4c367ebea25b338bc3caf62136852c"
+    ),
+    "sham/checkpoints/latest-observed.integrity.json": (
+        "59aa23fe84f7821375a6d2ad7da83cb4a846a8a8b80c6dffdfd8e8c2287dba99"
+    ),
+    "sham/checkpoints/latest-observed.json": (
+        "720b4f2b9318ec62941ece4272f7134f05f51023f17059495bffc8b4ee7ae237"
+    ),
+    "sham/checkpoints/latest-observed.zip": (FAILED_STAGE_A_ATTEMPT_LATEST_OBSERVED_SHA256),
+    "sham/checkpoints/rolling/exam-0032768.cases.json": (
+        "56c46f1ecb91082dc4d3ccd404ccbaea82a0b8065fb6fe393e830656d1a82c58"
+    ),
+    "sham/checkpoints/rolling/exam-0032768.integrity.json": (
+        "759f94f6ff8a10e7b12b24e90c39dc475c9006f99699cdc3accbc28fdd3e57d8"
+    ),
+    "sham/checkpoints/rolling/exam-0032768.json": (
+        "e42cef3787805895adb63e0a9b220b4367dc3678f66729d22d1961c82a24b6d9"
+    ),
+    "sham/checkpoints/rolling/exam-0032768.zip": (FAILED_STAGE_A_ATTEMPT_FIRST_EXAM_SHA256),
+    "sham/episode-starts.jsonl": (
+        "80b638f861701357d57ba98c18d9db3437271e7748ab99875f755bb7f035d56f"
+    ),
+    "sham/episodes.jsonl": ("6a7150325de144b7f66eb82b0edd1f35cebc186564ca72645150083284a80011"),
+    "sham/evaluations.jsonl": ("0d29f92084d52934c9c4f25e40a32b8c948aa9ee6356fcbca6514802c59ad5aa"),
+    "sham/events.jsonl": ("b0473dfaae5100964fad85106346752ca9459c668334f43ebf77b1a4a610fd82"),
+    "sham/first-rollout.json": ("8cf663b50973e608a049be40f0217597af9d20a5f5e8fdd76b61df92cf037f2f"),
+    "sham/frames/exam-navigate-full.png": (
+        "347ef72bfcdb37005396e23e118d5a2551d04e2c05364b57c58c2516cfec4e02"
+    ),
+    "sham/frames/exam-unlock-u0-visible.png": (
+        "535d02397c25922983bc38fb0ad88ba31b8e9a395937fdc5aa23c28a0bde5af8"
+    ),
+    "sham/frames/exam-unlock-u1-local.png": (
+        "abd5bc409ce68d381a5273d28ee21c435ba9ff40b7eabc7643e3601aa51afb96"
+    ),
+    "sham/frames/exam-unlock-u2-separated.png": (
+        "0721499dfd0a5c4b33c2f1253515e00452f0b2155a4d2d52b6be69fad5aaf74c"
+    ),
+    "sham/frames/latest.png": ("55144ddfb7a7c5817d03406f99621edd9ed0d32c339fb880c99c652495e4288c"),
+    "sham/manifest.json": ("8909ef7d12ca8a69be08d88fae060e995f919f33f32958c2eaed7feaa65502e9"),
+    "sham/optimizer.jsonl": ("fb4a7a08316582a6be26485a2090a3cbab726d867bc7d07c6ca67ea94b3b1a25"),
+    "sham/status.json": ("8cdd9133ce72d14e79d105bf63e88dc9cb9951f788f22eb517f6e72fe8e33be9"),
+}
+FAILED_STAGE_A_ATTEMPT_ROOT_DIRECTORIES = {
+    ".v03-staging",
+    "sham",
+    "sham/checkpoints",
+    "sham/checkpoints/rolling",
+    "sham/frames",
+}
 
-U2S_TERMINAL_ROOT = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-r1-20260723"
-)
-U2S_TERMINAL_REPORT_SHA256 = (
-    "dfd288955bd2f8367ba3818e7242ff29c4a6e8e5a03d248df45e85f43b562e44"
-)
-U2S_TERMINAL_INTEGRITY_SHA256 = (
-    "a9468a504f48911943c43a5a6165917c3dd05697c21abfd784efe9f882b7faa2"
-)
+U2S_TERMINAL_ROOT = Path("/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-r1-20260723")
+U2S_TERMINAL_REPORT_SHA256 = "dfd288955bd2f8367ba3818e7242ff29c4a6e8e5a03d248df45e85f43b562e44"
+U2S_TERMINAL_INTEGRITY_SHA256 = "a9468a504f48911943c43a5a6165917c3dd05697c21abfd784efe9f882b7faa2"
 U2S_TERMINAL_SOURCE_COMMIT = "2e2a91c9864720326a5fa8ba82212f116d9ead04"
-U2S_QUALIFICATION_REPORT_SHA256 = (
-    "7fd8fa009191c35ef608767a93e41dfc2c91aca20ae43493a5d1c32624cb467a"
-)
+U2S_QUALIFICATION_REPORT_SHA256 = "7fd8fa009191c35ef608767a93e41dfc2c91aca20ae43493a5d1c32624cb467a"
 
 PARENT_SIDECAR_SHA256 = u2s_qualify.PARENT_SIDECAR_SHA256
 PARENT_MANIFEST_SHA256 = u2s_qualify.PARENT_MANIFEST_SHA256
@@ -197,8 +266,7 @@ class ActionEffectQualificationError(RuntimeError):
 
 def _canonical_json_bytes(value: Any) -> bytes:
     return (
-        json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
-        + "\n"
+        json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n"
     ).encode("utf-8")
 
 
@@ -223,17 +291,14 @@ def _hash_set_sha256(values: Sequence[str] | set[str] | frozenset[str]) -> str:
 def _require_sha256(value: Any, label: str) -> str:
     result = str(value)
     if len(result) != 64 or any(character not in _SHA256 for character in result):
-        raise ActionEffectQualificationError(
-            f"{label} is not a lowercase SHA-256 digest"
-        )
+        raise ActionEffectQualificationError(f"{label} is not a lowercase SHA-256 digest")
     return result
 
 
 def _require_git_object(value: Any, label: str) -> str:
     result = str(value)
-    if (
-        len(result) not in _GIT_OBJECT_LENGTHS
-        or any(character not in _SHA256 for character in result)
+    if len(result) not in _GIT_OBJECT_LENGTHS or any(
+        character not in _SHA256 for character in result
     ):
         raise ActionEffectQualificationError(f"{label} is not a Git object ID")
     return result
@@ -261,11 +326,7 @@ def _regular_file_bytes(path: Path, label: str, *, maximum: int) -> bytes:
         raise ActionEffectQualificationError(f"{label} is missing or unsafe") from error
     try:
         metadata = os.fstat(descriptor)
-        if (
-            not stat.S_ISREG(metadata.st_mode)
-            or metadata.st_size < 1
-            or metadata.st_size > maximum
-        ):
+        if not stat.S_ISREG(metadata.st_mode) or metadata.st_size < 1 or metadata.st_size > maximum:
             raise ActionEffectQualificationError(f"{label} has an invalid file bound")
         chunks: list[bytes] = []
         remaining = metadata.st_size
@@ -286,9 +347,7 @@ def _reject_symlink_chain(path: Path) -> None:
     current = path.expanduser().absolute()
     while True:
         if current.is_symlink():
-            raise ActionEffectQualificationError(
-                f"qualification path contains a symlink: {path}"
-            )
+            raise ActionEffectQualificationError(f"qualification path contains a symlink: {path}")
         parent = current.parent
         if parent == current:
             return
@@ -333,12 +392,8 @@ def _resume_rule() -> dict[str, Any]:
         "resume_supported": False,
         "interruption_disposition": "whole_stage_a_operationally_incomplete",
         "single_arm_continuation": False,
-        "failed_attempt": (
-            "v0.3-action-effect-stage-a-20260724-attempt-0"
-        ),
-        "replacement_attempt": (
-            "v0.3-action-effect-stage-a-r1-20260724"
-        ),
+        "failed_attempt": ("v0.3-action-effect-stage-a-r1-20260724-attempt-0"),
+        "replacement_attempt": ("v0.3-action-effect-stage-a-r2-20260724"),
         "replacement_requires_new_commit_tag_qualification_and_roots": True,
         "replacement_restarts_both_arms_from_confirmed_u1": True,
     }
@@ -355,9 +410,7 @@ def _protected_seed_partitions() -> list[dict[str, Any]]:
         )
     ]
     if len(protected) != 10:
-        raise ActionEffectQualificationError(
-            "v0.3 protected seed inventory changed"
-        )
+        raise ActionEffectQualificationError("v0.3 protected seed inventory changed")
     return protected
 
 
@@ -366,21 +419,14 @@ def _architecture_contract() -> dict[str, Any]:
     candidate = v03.effective_config(ActionEffectMode.ACTION_EFFECT)
     for config in (sham, candidate):
         if (
-            config["parent"]["checkpoint_sha256"]
-            != v03.PARENT_CHECKPOINT_SHA256
-            or config["parent"]["policy_tensor_sha256"]
-            != v03.PARENT_POLICY_TENSOR_SHA256
-            or config["parent"]["optimizer_state_sha256"]
-            != v03.PARENT_OPTIMIZER_STATE_SHA256
-            or config["optimization"]["changed_from_original_u2_control"]
-            is not False
+            config["parent"]["checkpoint_sha256"] != v03.PARENT_CHECKPOINT_SHA256
+            or config["parent"]["policy_tensor_sha256"] != v03.PARENT_POLICY_TENSOR_SHA256
+            or config["parent"]["optimizer_state_sha256"] != v03.PARENT_OPTIMIZER_STATE_SHA256
+            or config["optimization"]["changed_from_original_u2_control"] is not False
             or config["reward"]["changed_from_original_u2_control"] is not False
-            or config["selection"]["development_checkpoint_reuse_authorized"]
-            is not False
+            or config["selection"]["development_checkpoint_reuse_authorized"] is not False
         ):
-            raise ActionEffectQualificationError(
-                "v0.3 effective configuration changed"
-            )
+            raise ActionEffectQualificationError("v0.3 effective configuration changed")
     return {
         "arms": list(_ARMS),
         "same_dict_observation_space": True,
@@ -405,9 +451,7 @@ def _architecture_contract() -> dict[str, Any]:
             "legacy_adam_moments_by_exact_parameter_name": True,
             "positional_optimizer_loading": False,
             "orthogonal_reinitialization": False,
-            "sole_new_parameter": (
-                "features_extractor.action_effect_encoder.weight"
-            ),
+            "sole_new_parameter": ("features_extractor.action_effect_encoder.weight"),
             "sole_new_parameter_shape": [512, ACTION_EFFECT_DIM],
             "sole_new_parameter_initialization": "exact_zero",
         },
@@ -419,9 +463,7 @@ def _architecture_contract() -> dict[str, Any]:
             "behavioral_divergence_before_first_optimizer_phase": False,
         },
         "randomness": {
-            "architecture_initialization_seed": (
-                v03.ARCHITECTURE_INITIALIZATION_SEED
-            ),
+            "architecture_initialization_seed": (v03.ARCHITECTURE_INITIALIZATION_SEED),
             "algorithm_seed": v03.ALGORITHM_SEED,
             "worker_streams": list(v03.WORKER_STREAMS),
         },
@@ -429,13 +471,10 @@ def _architecture_contract() -> dict[str, Any]:
             "child_actions_per_arm": v03.CHILD_ACTION_BUDGET,
             "evaluation_interval": v03.EVALUATION_INTERVAL,
             "exam_count_per_arm": v03.EXAM_COUNT,
-            "terminal_lifetime_actions": (
-                v03.PARENT_LIFETIME_ACTIONS + v03.CHILD_ACTION_BUDGET
-            ),
+            "terminal_lifetime_actions": (v03.PARENT_LIFETIME_ACTIONS + v03.CHILD_ACTION_BUDGET),
             "terminal_optimizer_updates": (
                 v03.PARENT_OPTIMIZER_UPDATES
-                + (v03.CHILD_ACTION_BUDGET // v03.ROLLOUT_TRANSITIONS)
-                * v03.PPO_EPOCHS
+                + (v03.CHILD_ACTION_BUDGET // v03.ROLLOUT_TRANSITIONS) * v03.PPO_EPOCHS
             ),
         },
         "selection": {
@@ -481,16 +520,12 @@ def _regular_tree_inventory(root: Path, label: str) -> tuple[set[str], set[str]]
         for name in child_directories:
             path = current_path / name
             if path.is_symlink() or not path.is_dir():
-                raise ActionEffectQualificationError(
-                    f"{label} contains an unsafe directory"
-                )
+                raise ActionEffectQualificationError(f"{label} contains an unsafe directory")
             directories.add(path.relative_to(root).as_posix())
         for name in child_files:
             path = current_path / name
             if path.is_symlink() or not path.is_file():
-                raise ActionEffectQualificationError(
-                    f"{label} contains an unsafe file"
-                )
+                raise ActionEffectQualificationError(f"{label} contains an unsafe file")
             files.add(path.relative_to(root).as_posix())
     return files, directories
 
@@ -500,7 +535,7 @@ def _verify_failed_stage_a_tag(
     *,
     runner: Runner = subprocess.run,
 ) -> None:
-    """Require the superseded attempt-0 tag to remain exact on origin."""
+    """Require the superseded r1 tag to remain exact on origin."""
 
     root = repository.expanduser().resolve()
     reference = f"refs/tags/{FAILED_STAGE_A_ATTEMPT_TAG}"
@@ -541,7 +576,7 @@ def authenticate_failed_stage_a_attempt(
     repository: Path | None = None,
     runner: Runner = subprocess.run,
 ) -> dict[str, Any]:
-    """Authenticate the immutable, zero-recorded-action Stage-A attempt 0."""
+    """Authenticate the immutable, partial-sham Stage-A r1 attempt."""
 
     if repository is not None:
         _verify_failed_stage_a_tag(repository, runner=runner)
@@ -569,58 +604,71 @@ def authenticate_failed_stage_a_attempt(
     )
     _reject_symlink_chain(FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG)
     if (
-        root_files
-        != {"cohort-contract.json", "cohort.json", "dashboard.log"}
-        or root_directories
+        root_files != set(FAILED_STAGE_A_ATTEMPT_ROOT_FILE_SHA256)
+        or root_directories != FAILED_STAGE_A_ATTEMPT_ROOT_DIRECTORIES
         or media_files
-        or media_directories
-        or qualification_files
-        != {"claim.json", "report.json", "report.json.sha256"}
+        or media_directories != {"sham"}
+        or qualification_files != {"claim.json", "report.json", "report.json.sha256"}
         or qualification_directories
         or not FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG.is_file()
-        or FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG.stat().st_size != 0
+        or FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG.stat().st_size != 250
     ):
-        raise ActionEffectQualificationError(
-            "failed Stage-A attempt artifact inventory changed"
-        )
-    measured = {
-        "contract": file_sha256(contract_path),
-        "cohort": file_sha256(cohort_path),
-        "qualification_report": file_sha256(report_path),
-        "qualification_claim": file_sha256(claim_path),
-        "qualification_checksum": file_sha256(checksum_path),
-        "dashboard_log": file_sha256(root / "dashboard.log"),
-        "launcher_log": file_sha256(FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG),
+        raise ActionEffectQualificationError("failed Stage-A attempt artifact inventory changed")
+    measured_root = {relative: file_sha256(root / relative) for relative in sorted(root_files)}
+    measured_qualification = {
+        "report.json": file_sha256(report_path),
+        "claim.json": file_sha256(claim_path),
+        "report.json.sha256": file_sha256(checksum_path),
     }
-    expected = {
-        "contract": FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256,
-        "cohort": FAILED_STAGE_A_ATTEMPT_COHORT_SHA256,
-        "qualification_report": (
-            FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256
-        ),
-        "qualification_claim": (
-            FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CLAIM_SHA256
-        ),
-        "qualification_checksum": (
-            FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CHECKSUM_SHA256
-        ),
-        "dashboard_log": FAILED_STAGE_A_ATTEMPT_DASHBOARD_LOG_SHA256,
-        "launcher_log": FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG_SHA256,
+    expected_qualification = {
+        "report.json": (FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256),
+        "claim.json": (FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CLAIM_SHA256),
+        "report.json.sha256": (FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CHECKSUM_SHA256),
     }
-    if measured != expected:
-        raise ActionEffectQualificationError(
-            "failed Stage-A attempt checksum changed"
-        )
+    if (
+        measured_root != FAILED_STAGE_A_ATTEMPT_ROOT_FILE_SHA256
+        or measured_qualification != expected_qualification
+        or file_sha256(FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG)
+        != FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG_SHA256
+    ):
+        raise ActionEffectQualificationError("failed Stage-A attempt checksum changed")
 
     contract = _read_json(contract_path, "failed Stage-A cohort contract")
     cohort = _read_json(cohort_path, "failed Stage-A cohort state")
     report = _read_json(report_path, "failed Stage-A qualification report")
     claim = _read_json(claim_path, "failed Stage-A qualification claim")
+    status = _read_json(root / "sham/status.json", "failed Stage-A status")
+    supervisor = _read_json(
+        root / "launcher-sham-attempt-0.json",
+        "failed Stage-A supervisor state",
+    )
+    first_rollout = _read_json(
+        root / "sham/first-rollout.json",
+        "failed Stage-A first rollout",
+    )
+    first_exam_integrity = _read_json(
+        root / "sham/checkpoints/rolling/exam-0032768.integrity.json",
+        "failed Stage-A first exam integrity",
+    )
     try:
         checksum_fields = checksum_path.read_text(encoding="ascii").split()
-    except (OSError, UnicodeDecodeError) as error:
+        launcher_lines = FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG.read_text(
+            encoding="utf-8"
+        ).splitlines()
+        episode_lines = (root / "sham/episodes.jsonl").read_text(encoding="utf-8").splitlines()
+        evaluation_lines = (
+            (root / "sham/evaluations.jsonl").read_text(encoding="utf-8").splitlines()
+        )
+        optimizer_lines = (root / "sham/optimizer.jsonl").read_text(encoding="utf-8").splitlines()
+        last_episode = json.loads(episode_lines[-1])
+    except (
+        IndexError,
+        OSError,
+        UnicodeDecodeError,
+        json.JSONDecodeError,
+    ) as error:
         raise ActionEffectQualificationError(
-            "failed Stage-A qualification checksum is unreadable"
+            "failed Stage-A text evidence is unreadable"
         ) from error
 
     arms = cohort.get("arms")
@@ -628,14 +676,15 @@ def authenticate_failed_stage_a_attempt(
     candidate = arms[1] if isinstance(arms, list) and len(arms) == 2 else None
     sham_attempts = sham.get("attempts") if isinstance(sham, Mapping) else None
     sham_attempt = (
-        sham_attempts[0]
-        if isinstance(sham_attempts, list) and len(sham_attempts) == 1
-        else None
+        sham_attempts[0] if isinstance(sham_attempts, list) and len(sham_attempts) == 1 else None
     )
     roots = contract.get("roots")
     preregistration = contract.get("preregistration")
     qualification = contract.get("qualification")
+    replacement = contract.get("replacement")
     report_source = report.get("source")
+    report_predecessor = report.get("failed_stage_a_attempt")
+    latest_evaluated = status.get("latest_evaluated_checkpoint")
     if (
         checksum_fields
         != [
@@ -646,43 +695,47 @@ def authenticate_failed_stage_a_attempt(
         or report.get("verdict") != VERDICT
         or report.get("claim") != claim
         or not isinstance(report_source, Mapping)
-        or report_source.get("commit")
-        != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
+        or report_source.get("commit") != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
         or report_source.get("tag") != FAILED_STAGE_A_ATTEMPT_TAG
-        or report_source.get("tag_object")
-        != FAILED_STAGE_A_ATTEMPT_TAG_OBJECT
-        or claim.get("source_commit")
-        != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
+        or report_source.get("tag_object") != FAILED_STAGE_A_ATTEMPT_TAG_OBJECT
+        or report_source.get("tag_payload_sha256") != FAILED_STAGE_A_ATTEMPT_TAG_PAYLOAD_SHA256
+        or not isinstance(report_predecessor, Mapping)
+        or _canonical_sha256(report_predecessor) != FAILED_STAGE_A_ATTEMPT_PREDECESSOR_SHA256
+        or report_predecessor.get("disposition") != "operationally_incomplete"
+        or report_predecessor.get("resume_authorized") is not False
+        or report_predecessor.get("reuse_authorized") is not False
+        or claim.get("source_commit") != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
         or claim.get("tag") != FAILED_STAGE_A_ATTEMPT_TAG
         or claim.get("tag_object") != FAILED_STAGE_A_ATTEMPT_TAG_OBJECT
         or contract.get("protocol") != PROTOCOL
-        or contract.get("cohort_id")
-        != "v0.3-action-effect-stage-a-20260724"
+        or contract.get("cohort_id") != "v0.3-action-effect-stage-a-r1-20260724"
         or contract.get("source")
         != {"commit": FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT, "dirty": False}
         or not isinstance(preregistration, Mapping)
         or preregistration.get("tag") != FAILED_STAGE_A_ATTEMPT_TAG
-        or preregistration.get("tag_object")
-        != FAILED_STAGE_A_ATTEMPT_TAG_OBJECT
-        or preregistration.get("peeled_commit")
-        != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
+        or preregistration.get("tag_object") != FAILED_STAGE_A_ATTEMPT_TAG_OBJECT
+        or preregistration.get("peeled_commit") != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
         or not isinstance(qualification, Mapping)
-        or qualification.get("report_sha256")
-        != FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256
+        or qualification.get("report_sha256") != FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256
+        or qualification.get("tag_payload_sha256") != FAILED_STAGE_A_ATTEMPT_TAG_PAYLOAD_SHA256
+        or qualification.get("failed_stage_a_attempt_sha256")
+        != FAILED_STAGE_A_ATTEMPT_PREDECESSOR_SHA256
         or not isinstance(roots, Mapping)
         or roots.get("cohort") != str(root)
         or roots.get("media") != str(media_root)
+        or not isinstance(replacement, Mapping)
+        or replacement.get("failed_attempt_evidence_sha256")
+        != FAILED_STAGE_A_ATTEMPT_PREDECESSOR_SHA256
+        or replacement.get("failed_attempt_resume_authorized") is not False
+        or replacement.get("failed_attempt_root_reuse_authorized") is not False
+        or replacement.get("restarts_both_arms_from_confirmed_u1") is not True
         or cohort.get("protocol") != PROTOCOL
-        or cohort.get("cohort_id")
-        != "v0.3-action-effect-stage-a-20260724"
-        or cohort.get("contract_sha256")
-        != FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256
-        or cohort.get("source_commit")
-        != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
+        or cohort.get("cohort_id") != "v0.3-action-effect-stage-a-r1-20260724"
+        or cohort.get("contract_sha256") != FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256
+        or cohort.get("source_commit") != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
         or cohort.get("tag") != FAILED_STAGE_A_ATTEMPT_TAG
         or cohort.get("tag_object") != FAILED_STAGE_A_ATTEMPT_TAG_OBJECT
-        or cohort.get("qualification_sha256")
-        != FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256
+        or cohort.get("qualification_sha256") != FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256
         or cohort.get("phase") != "operationally_incomplete"
         or cohort.get("active_arm") is not None
         or cohort.get("terminal_report") is not None
@@ -694,36 +747,117 @@ def authenticate_failed_stage_a_attempt(
         or not isinstance(sham_attempt, Mapping)
         or sham_attempt.get("index") != 0
         or sham_attempt.get("state") != "crashed"
-        or sham_attempt.get("trainer_exit_code") != 130
+        or sham_attempt.get("trainer_exit_code") != 1
         or not isinstance(candidate, Mapping)
         or candidate.get("id") != "action-effect"
         or candidate.get("state") != "pending"
         or candidate.get("attempts") != []
         or candidate.get("terminal") is not None
-    ):
-        raise ActionEffectQualificationError(
-            "failed Stage-A attempt disposition changed"
+        or status.get("protocol") != PROTOCOL
+        or status.get("cohort_id") != "v0.3-action-effect-stage-a-r1-20260724"
+        or status.get("cohort_contract_sha256") != FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256
+        or status.get("qualification_sha256") != FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256
+        or status.get("arm") != "sham"
+        or status.get("source", {}).get("commit") != FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT
+        or status.get("source", {}).get("dirty") is not False
+        or status.get("phase") != "training"
+        or status.get("child_collected_actions") != 40_004
+        or status.get("child_trained_actions") != 38_912
+        or status.get("lifetime_collected_actions") != 826_436
+        or status.get("lifetime_trained_actions") != 825_344
+        or status.get("optimizer_updates") != 1_612
+        or status.get("exam_count") != 1
+        or status.get("exams_completed") != 1
+        or status.get("initial_rng_identity_sha256") != FAILED_STAGE_A_ATTEMPT_INITIAL_RNG_SHA256
+        or status.get("first_rollout_identity_sha256")
+        != FAILED_STAGE_A_ATTEMPT_FIRST_ROLLOUT_SHA256
+        or status.get("first_rollout_verified") is not True
+        or status.get("latest_observed_checkpoint_sha256")
+        != FAILED_STAGE_A_ATTEMPT_LATEST_OBSERVED_SHA256
+        or status.get("latest_safe_checkpoint") is not None
+        or status.get("latest_safe_checkpoint_sha256") is not None
+        or status.get("report_sha256") is not None
+        or status.get("resume_authorized") is not False
+        or status.get("replacement_requires_both_fresh_arms") is not True
+        or len(episode_lines) != 1_920
+        or len(evaluation_lines) != 8
+        or len(optimizer_lines) != 19
+        or not isinstance(last_episode, Mapping)
+        or last_episode.get("child_collected_actions") != 40_960
+        or last_episode.get("child_trained_actions") != 38_912
+        or not isinstance(latest_evaluated, Mapping)
+        or latest_evaluated.get("child_trained_actions") != 32_768
+        or latest_evaluated.get("checkpoint_sha256") != FAILED_STAGE_A_ATTEMPT_FIRST_EXAM_SHA256
+        or latest_evaluated.get("counts_toward_architecture_gate") is not True
+        or supervisor.get("state") != "exited"
+        or supervisor.get("forwarded_signal") != "SIGTERM"
+        or supervisor.get("exit_status") != -15
+        or not isinstance(supervisor.get("supervisor_pid"), int)
+        or not isinstance(supervisor.get("trainer_pid"), int)
+        or first_rollout.get("arm") != "sham"
+        or first_rollout.get("captured_before_first_optimizer") is not True
+        or first_rollout.get("checkpoint_reuse_authorized") is not False
+        or first_rollout.get("identity", {}).get("aggregate_sha256")
+        != FAILED_STAGE_A_ATTEMPT_FIRST_ROLLOUT_SHA256
+        or sum(
+            int(item.get("transitions", -1))
+            for item in first_rollout.get("identity", {}).get("trajectory_identity", [])
+            if isinstance(item, Mapping)
         )
+        != v03.ROLLOUT_TRANSITIONS
+        or first_exam_integrity.get("protocol") != PROTOCOL
+        or first_exam_integrity.get("checkpoint_sha256") != FAILED_STAGE_A_ATTEMPT_FIRST_EXAM_SHA256
+        or first_exam_integrity.get("sidecar_sha256")
+        != FAILED_STAGE_A_ATTEMPT_ROOT_FILE_SHA256["sham/checkpoints/rolling/exam-0032768.json"]
+        or launcher_lines
+        != [
+            "v0.3 Stage-A dashboard: http://127.0.0.1:8789/",
+            "Starting v0.3 Stage-A arm sham (fresh matched twin).",
+            (
+                "v0.3 sham artifacts: /Volumes/T7 Developer/"
+                "DungeonApprentice/v03-action-effect-stage-a-r1-20260724/sham"
+            ),
+            "v0.3 does not have exactly one neural trainer",
+        ]
+    ):
+        raise ActionEffectQualificationError("failed Stage-A attempt disposition changed")
 
+    artifact_map_sha256 = _canonical_sha256(
+        {
+            "cohort": FAILED_STAGE_A_ATTEMPT_ROOT_FILE_SHA256,
+            "qualification": expected_qualification,
+            "launcher_log": {
+                str(FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG): (
+                    FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG_SHA256
+                )
+            },
+        }
+    )
+    if artifact_map_sha256 != FAILED_STAGE_A_ATTEMPT_ARTIFACT_MAP_SHA256:
+        raise ActionEffectQualificationError(
+            "failed Stage-A attempt artifact-map identity changed"
+        )
     return {
-        "attempt_id": "v0.3-action-effect-stage-a-20260724-attempt-0",
+        "attempt_id": "v0.3-action-effect-stage-a-r1-20260724-attempt-0",
         "protocol": PROTOCOL,
         "disposition": "operationally_incomplete",
+        "artifact_map": {
+            "files": (
+                len(FAILED_STAGE_A_ATTEMPT_ROOT_FILE_SHA256) + len(expected_qualification) + 1
+            ),
+            "sha256": artifact_map_sha256,
+        },
         "source_commit": FAILED_STAGE_A_ATTEMPT_SOURCE_COMMIT,
         "tag": FAILED_STAGE_A_ATTEMPT_TAG,
         "tag_object": FAILED_STAGE_A_ATTEMPT_TAG_OBJECT,
         "qualification": {
             "root": str(qualification_root),
-            "report_sha256": (
-                FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256
-            ),
-            "claim_sha256": (
-                FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CLAIM_SHA256
-            ),
-            "checksum_sha256": (
-                FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CHECKSUM_SHA256
-            ),
+            "report_sha256": (FAILED_STAGE_A_ATTEMPT_QUALIFICATION_REPORT_SHA256),
+            "claim_sha256": (FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CLAIM_SHA256),
+            "checksum_sha256": (FAILED_STAGE_A_ATTEMPT_QUALIFICATION_CHECKSUM_SHA256),
             "verdict": "qualified",
+            "tag_payload_sha256": (FAILED_STAGE_A_ATTEMPT_TAG_PAYLOAD_SHA256),
+            "predecessor_attempt_sha256": (FAILED_STAGE_A_ATTEMPT_PREDECESSOR_SHA256),
         },
         "cohort": {
             "root": str(root),
@@ -731,31 +865,55 @@ def authenticate_failed_stage_a_attempt(
             "contract_sha256": FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256,
             "state_sha256": FAILED_STAGE_A_ATTEMPT_COHORT_SHA256,
             "phase": "operationally_incomplete",
-            "classification": "pre_arm_dashboard_health_failure",
-            "manifest_synthetic_arm_claim": {
+            "classification": "launcher_process_cardinality_false_positive",
+            "manifest_arm_outcome": {
                 "arm": "sham",
                 "attempt": 0,
                 "state": "crashed",
-                "exit_code": 130,
+                "exit_code": 1,
             },
-            "dashboard_log_sha256": (
-                FAILED_STAGE_A_ATTEMPT_DASHBOARD_LOG_SHA256
-            ),
+            "dashboard_log_sha256": (FAILED_STAGE_A_ATTEMPT_DASHBOARD_LOG_SHA256),
         },
         "recorded_training_evidence": {
-            "arm_directories": 0,
+            "arm_directories": 1,
             "media_entries": 0,
-            "trainer_started": False,
-            "trainer_status_files": 0,
-            "trainer_supervisor_files": 0,
-            "checkpoint_files": 0,
-            "recorded_child_actions": 0,
-            "action_one_reached": False,
+            "trainer_started": True,
+            "trainer_status_files": 1,
+            "trainer_supervisor_files": 1,
+            "checkpoint_files": 11,
+            "status_collected_actions": 40_004,
+            "episode_ledger_collected_actions": 40_960,
+            "recorded_child_actions": 38_912,
+            "optimizer_updates_total": 1_612,
+            "optimizer_updates_inherited": 1_536,
+            "optimizer_updates_new": 76,
+            "rollout_boundaries": 19,
+            "frozen_exams": 1,
+            "evaluation_rows": 8,
+            "evaluation_cases": 640,
+            "first_rollout_sha256": (FAILED_STAGE_A_ATTEMPT_FIRST_ROLLOUT_SHA256),
+            "initial_rng_sha256": (FAILED_STAGE_A_ATTEMPT_INITIAL_RNG_SHA256),
+            "first_exam_checkpoint_sha256": (FAILED_STAGE_A_ATTEMPT_FIRST_EXAM_SHA256),
+            "latest_observed_checkpoint_sha256": (FAILED_STAGE_A_ATTEMPT_LATEST_OBSERVED_SHA256),
+            "safe_checkpoint_exists": False,
+            "action_effect_arm_started": False,
+            "scientific_comparison_reached": False,
+            "checkpoint_reuse_authorized": False,
+        },
+        "operational_failure": {
+            "launcher_error": ("v0.3 does not have exactly one neural trainer"),
+            "trainer_count_false_positive": ("supervisor argv embedded the child trainer command"),
+            "launcher_exit_cleanup_ran": False,
+            "worker_stop": {
+                "supervisor_forwarded_signal": "SIGTERM",
+                "worker_exit_status": -15,
+                "status_remained_phase": "training",
+            },
         },
         "launcher_log": {
             "path": str(FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG),
             "sha256": FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG_SHA256,
-            "bytes": 0,
+            "bytes": 250,
         },
         "resume_authorized": False,
         "reuse_authorized": False,
@@ -809,21 +967,16 @@ def authenticate_u2s_terminal(
         or integrity.get("report") != report_path.name
         or integrity.get("report_sha256") != expected_report_sha256
     ):
-        raise ActionEffectQualificationError(
-            "terminal U2-S no-selection verdict changed"
-        )
+        raise ActionEffectQualificationError("terminal U2-S no-selection verdict changed")
     qualification = report.get("qualification")
     arm_evidence = report.get("arm_evidence")
     if (
         not isinstance(qualification, Mapping)
-        or qualification.get("report_sha256")
-        != U2S_QUALIFICATION_REPORT_SHA256
+        or qualification.get("report_sha256") != U2S_QUALIFICATION_REPORT_SHA256
         or not isinstance(arm_evidence, Mapping)
         or set(arm_evidence) != set(frozen_u2s.ARM_PRIORITY)
     ):
-        raise ActionEffectQualificationError(
-            "terminal U2-S qualification or arm inventory changed"
-        )
+        raise ActionEffectQualificationError("terminal U2-S qualification or arm inventory changed")
     arms: dict[str, Any] = {}
     for arm in frozen_u2s.ARM_PRIORITY:
         name = arm.value
@@ -842,17 +995,13 @@ def authenticate_u2s_terminal(
         )
         if (
             file_sha256(arm_report_path) != binding.get("report_sha256")
-            or file_sha256(arm_integrity_path)
-            != binding.get("report_integrity_sha256")
-            or int(binding.get("child_trained_actions", -1))
-            != frozen_u2s.CHILD_ACTION_BUDGET
+            or file_sha256(arm_integrity_path) != binding.get("report_integrity_sha256")
+            or int(binding.get("child_trained_actions", -1)) != frozen_u2s.CHILD_ACTION_BUDGET
             or int(binding.get("exam_count", -1)) != frozen_u2s.EXAM_COUNT
             or binding.get("mechanism_selection_eligible") is not False
             or binding.get("verdict") != "arm_failed"
         ):
-            raise ActionEffectQualificationError(
-                f"terminal U2-S arm binding changed: {name}"
-            )
+            raise ActionEffectQualificationError(f"terminal U2-S arm binding changed: {name}")
         arm_report = _read_json(arm_report_path, f"U2-S {name} report")
         arm_integrity = _read_json(
             arm_integrity_path,
@@ -864,20 +1013,15 @@ def authenticate_u2s_terminal(
             or arm_report.get("resume_authorized") is not False
             or arm_report.get("progress", {}).get("child_trained_actions")
             != frozen_u2s.CHILD_ACTION_BUDGET
-            or arm_report.get("progress", {}).get("exam_count")
-            != frozen_u2s.EXAM_COUNT
+            or arm_report.get("progress", {}).get("exam_count") != frozen_u2s.EXAM_COUNT
             or arm_integrity.get("report_sha256") != binding.get("report_sha256")
         ):
-            raise ActionEffectQualificationError(
-                f"terminal U2-S arm report changed: {name}"
-            )
+            raise ActionEffectQualificationError(f"terminal U2-S arm report changed: {name}")
         arms[name] = {
             "report": str(arm_report_path),
             "report_sha256": str(binding["report_sha256"]),
             "report_integrity": str(arm_integrity_path),
-            "report_integrity_sha256": str(
-                binding["report_integrity_sha256"]
-            ),
+            "report_integrity_sha256": str(binding["report_integrity_sha256"]),
             "child_trained_actions": frozen_u2s.CHILD_ACTION_BUDGET,
             "exam_count": frozen_u2s.EXAM_COUNT,
         }
@@ -909,13 +1053,9 @@ def extend_action_effect_forbidden_layout_hashes(
     if set(base_mapping) != set(lessons.LessonId):
         raise ActionEffectQualificationError("base guard inventory is incomplete")
     arm_evidence = terminal_report.get("arm_evidence")
-    if not isinstance(arm_evidence, Mapping) or set(arm_evidence) != set(
-        frozen_u2s.ARM_PRIORITY
-    ):
+    if not isinstance(arm_evidence, Mapping) or set(arm_evidence) != set(frozen_u2s.ARM_PRIORITY):
         raise ActionEffectQualificationError("U2-S arm inventory is incomplete")
-    by_lesson: dict[lessons.LessonId, set[str]] = {
-        lesson: set() for lesson in lessons.LessonId
-    }
+    by_lesson: dict[lessons.LessonId, set[str]] = {lesson: set() for lesson in lessons.LessonId}
     arm_records: dict[str, dict[str, Any]] = {}
     for arm in frozen_u2s.ARM_PRIORITY:
         name = arm.value
@@ -925,11 +1065,7 @@ def extend_action_effect_forbidden_layout_hashes(
             raise ActionEffectQualificationError(f"{name} report digest changed")
         arm_report = _read_json(arm_report_path, f"{name} report")
         training = arm_report.get("training_episode_evidence")
-        ledger_binding = (
-            training.get("episode_starts")
-            if isinstance(training, Mapping)
-            else None
-        )
+        ledger_binding = training.get("episode_starts") if isinstance(training, Mapping) else None
         if not isinstance(ledger_binding, Mapping):
             raise ActionEffectQualificationError(f"{name} ledger binding missing")
         ledger_path = _safe_child(
@@ -944,10 +1080,7 @@ def extend_action_effect_forbidden_layout_hashes(
             with ledger_path.open("r", encoding="utf-8") as handle:
                 for line in handle:
                     value = json.loads(line)
-                    if (
-                        not isinstance(value, Mapping)
-                        or value.get("type") != "episode_start"
-                    ):
+                    if not isinstance(value, Mapping) or value.get("type") != "episode_start":
                         raise ActionEffectQualificationError(
                             f"{name} ledger contains an invalid record"
                         )
@@ -974,12 +1107,9 @@ def extend_action_effect_forbidden_layout_hashes(
         if (
             not isinstance(active, list)
             or len(active) != v03.WORKERS
-            or _canonical_sha256(active)
-            != training.get("terminal_active_workers_sha256")
+            or _canonical_sha256(active) != training.get("terminal_active_workers_sha256")
         ):
-            raise ActionEffectQualificationError(
-                f"{name} terminal-active inventory changed"
-            )
+            raise ActionEffectQualificationError(f"{name} terminal-active inventory changed")
         for value in active:
             try:
                 lesson = lessons.LessonId(str(value.get("lesson_id")))
@@ -996,9 +1126,7 @@ def extend_action_effect_forbidden_layout_hashes(
             "episode_start_ledger_sha256": str(ledger_binding["sha256"]),
             "episode_start_records": records,
             "terminal_active_workers": len(active),
-            "terminal_active_workers_sha256": str(
-                training["terminal_active_workers_sha256"]
-            ),
+            "terminal_active_workers_sha256": str(training["terminal_active_workers_sha256"]),
         }
 
     applied: dict[lessons.LessonId, frozenset[str]] = {}
@@ -1018,9 +1146,7 @@ def extend_action_effect_forbidden_layout_hashes(
             ),
             "u2s_unique_layouts_seen": len(by_lesson[lesson]),
         }
-    if applied[lessons.LessonId.VISIBLE_UNLOCK] != base_mapping[
-        lessons.LessonId.VISIBLE_UNLOCK
-    ]:
+    if applied[lessons.LessonId.VISIBLE_UNLOCK] != base_mapping[lessons.LessonId.VISIBLE_UNLOCK]:
         raise ActionEffectQualificationError("Stage A changed the finite U0 guard")
     frozen = MappingProxyType(applied)
     mapping_sha256 = _canonical_sha256(
@@ -1028,10 +1154,7 @@ def extend_action_effect_forbidden_layout_hashes(
     )
     return frozen, {
         "base_mapping_sha256": _canonical_sha256(
-            {
-                lesson.value: sorted(base_mapping[lesson])
-                for lesson in lessons.LessonId
-            }
+            {lesson.value: sorted(base_mapping[lesson]) for lesson in lessons.LessonId}
         ),
         "u2s_terminal_report_sha256": U2S_TERMINAL_REPORT_SHA256,
         "u2s_arms": arm_records,
@@ -1063,10 +1186,8 @@ def _authenticate_parent_and_guards(
         parent_public["checkpoint_sha256"] != v03.PARENT_CHECKPOINT_SHA256
         or parent_public["sidecar_sha256"] != PARENT_SIDECAR_SHA256
         or parent_public["manifest_sha256"] != PARENT_MANIFEST_SHA256
-        or parent_public["policy_tensor_sha256"]
-        != v03.PARENT_POLICY_TENSOR_SHA256
-        or parent_public["optimizer_state_sha256"]
-        != v03.PARENT_OPTIMIZER_STATE_SHA256
+        or parent_public["policy_tensor_sha256"] != v03.PARENT_POLICY_TENSOR_SHA256
+        or parent_public["optimizer_state_sha256"] != v03.PARENT_OPTIMIZER_STATE_SHA256
         or parent_public["u1_child_seed"] != v03.PARENT_U1_SEED
         or parent_public["trained_timesteps"] != v03.PARENT_LIFETIME_ACTIONS
         or parent_public["n_updates"] != v03.PARENT_OPTIMIZER_UPDATES
@@ -1076,31 +1197,25 @@ def _authenticate_parent_and_guards(
             "confirmed U1 parent provenance or model state changed"
         )
     seed_access = base_qualification.seed_access()
-    base_mapping, base_guard_evidence = (
-        u2s_qualify.build_u2s_forbidden_layout_hashes(
-            base_qualification.verified_report(),
-            failed_u2_parent.confirmation_snapshot(),
-            access=seed_access,
-            terminal_report=u2r_terminal,
-        )
+    base_mapping, base_guard_evidence = u2s_qualify.build_u2s_forbidden_layout_hashes(
+        base_qualification.verified_report(),
+        failed_u2_parent.confirmation_snapshot(),
+        access=seed_access,
+        terminal_report=u2r_terminal,
     )
     u2s_terminal = authenticate_u2s_terminal()
     mapping, guards = extend_action_effect_forbidden_layout_hashes(
         base_mapping,
         u2s_terminal["_report"],
     )
-    terminal_public = {
-        key: value for key, value in u2s_terminal.items() if key != "_report"
-    }
+    terminal_public = {key: value for key, value in u2s_terminal.items() if key != "_report"}
     predecessors = {
         "base_qualification": base_qualification.public_dict(),
         "u2_confirmation": failed_u2_parent.public_dict(),
         "u2r_terminal": {
             "report_sha256": u2s_qualify.U2R_REPORT_SHA256,
             "verdict": u2r_terminal["verdict"],
-            "eligible_for_fresh_confirmation": u2r_terminal[
-                "eligible_for_fresh_confirmation"
-            ],
+            "eligible_for_fresh_confirmation": u2r_terminal["eligible_for_fresh_confirmation"],
             "failed_r0_launch": failed_u2r_r0,
         },
         "u2s_terminal": terminal_public,
@@ -1123,14 +1238,10 @@ def _sampler_preflight(
     )
     public = [dict(record) for record in records]
     if len(public) != len(lessons.LessonId) * v03.WORKERS:
-        raise ActionEffectQualificationError(
-            "v0.3 sampler preflight is incomplete"
-        )
+        raise ActionEffectQualificationError("v0.3 sampler preflight is incomplete")
     streams = {int(record.get("worker_stream", -1)) for record in public}
     if streams != set(v03.WORKER_STREAMS):
-        raise ActionEffectQualificationError(
-            "v0.3 sampler preflight worker streams changed"
-        )
+        raise ActionEffectQualificationError("v0.3 sampler preflight worker streams changed")
     return public
 
 
@@ -1143,8 +1254,7 @@ def _validate_rng_identity(value: Any, label: str) -> dict[str, Any]:
         raise ActionEffectQualificationError(f"{label} is missing")
     components = value.get("components")
     if (
-        value.get("phase")
-        not in {"post_reset_pre_action_one", "post_rollout_pre_optimizer"}
+        value.get("phase") not in {"post_reset_pre_action_one", "post_rollout_pre_optimizer"}
         or not isinstance(components, Mapping)
         or value.get("aggregate_sha256") != _canonical_sha256(components)
     ):
@@ -1183,16 +1293,12 @@ def _validate_rng_identity(value: Any, label: str) -> dict[str, Any]:
             "action_space",
             "observation_space",
         }:
-            raise ActionEffectQualificationError(
-                f"{label} worker schema changed"
-            )
+            raise ActionEffectQualificationError(f"{label} worker schema changed")
         if (
             worker.get("worker_index") != index
             or worker.get("worker_stream") != v03.WORKER_STREAMS[index]
         ):
-            raise ActionEffectQualificationError(
-                f"{label} worker identity changed"
-            )
+            raise ActionEffectQualificationError(f"{label} worker identity changed")
         _require_sha256(
             worker["curriculum_sha256"],
             f"{label} worker curriculum",
@@ -1239,9 +1345,7 @@ def _validate_space_rng_identity(
             IMAGE_KEY,
             ACTION_EFFECT_KEY,
         }:
-            raise ActionEffectQualificationError(
-                f"{label} Dict children changed"
-            )
+            raise ActionEffectQualificationError(f"{label} Dict children changed")
         _validate_space_rng_identity(
             children[IMAGE_KEY],
             f"{label} image child",
@@ -1255,16 +1359,10 @@ def _validate_space_rng_identity(
 
 
 def _validate_sampler_preflight(value: Any) -> list[dict[str, Any]]:
-    if not isinstance(value, list) or len(value) != (
-        len(lessons.LessonId) * v03.WORKERS
-    ):
-        raise ActionEffectQualificationError(
-            "v0.3 smoke sampler preflight is incomplete"
-        )
+    if not isinstance(value, list) or len(value) != (len(lessons.LessonId) * v03.WORKERS):
+        raise ActionEffectQualificationError("v0.3 smoke sampler preflight is incomplete")
     expected_pairs = [
-        (lesson.value, stream)
-        for lesson in lessons.LessonId
-        for stream in v03.WORKER_STREAMS
+        (lesson.value, stream) for lesson in lessons.LessonId for stream in v03.WORKER_STREAMS
     ]
     normalized: list[dict[str, Any]] = []
     for record, expected_pair in zip(value, expected_pairs, strict=True):
@@ -1277,9 +1375,7 @@ def _validate_sampler_preflight(value: Any) -> list[dict[str, Any]]:
             "forbidden_layouts",
             "max_attempts",
         }:
-            raise ActionEffectQualificationError(
-                "v0.3 smoke sampler record schema changed"
-            )
+            raise ActionEffectQualificationError("v0.3 smoke sampler record schema changed")
         pair = (record.get("lesson_id"), record.get("worker_stream"))
         if (
             pair != expected_pair
@@ -1291,9 +1387,7 @@ def _validate_sampler_preflight(value: Any) -> list[dict[str, Any]]:
             or int(record["forbidden_layouts"]) < 0
             or record.get("max_attempts") != 8_192
         ):
-            raise ActionEffectQualificationError(
-                "v0.3 smoke sampler record changed"
-            )
+            raise ActionEffectQualificationError("v0.3 smoke sampler record changed")
         _require_sha256(
             record["layout_sha256"],
             "v0.3 smoke sampler layout",
@@ -1304,9 +1398,7 @@ def _validate_sampler_preflight(value: Any) -> list[dict[str, Any]]:
 
 def _validate_smoke_workers(value: Any, arm_name: str) -> list[dict[str, Any]]:
     if not isinstance(value, list) or len(value) != v03.WORKERS:
-        raise ActionEffectQualificationError(
-            f"v0.3 smoke workers changed: {arm_name}"
-        )
+        raise ActionEffectQualificationError(f"v0.3 smoke workers changed: {arm_name}")
     normalized: list[dict[str, Any]] = []
     expected_keys = {
         "worker_index",
@@ -1327,9 +1419,7 @@ def _validate_smoke_workers(value: Any, arm_name: str) -> list[dict[str, Any]]:
     }
     for index, worker in enumerate(value):
         if not isinstance(worker, Mapping) or set(worker) != expected_keys:
-            raise ActionEffectQualificationError(
-                f"v0.3 smoke worker schema changed: {arm_name}"
-            )
+            raise ActionEffectQualificationError(f"v0.3 smoke worker schema changed: {arm_name}")
         actions = worker["action_counts"]
         lesson_counts = worker["lesson_transition_counts"]
         if (
@@ -1342,20 +1432,14 @@ def _validate_smoke_workers(value: Any, arm_name: str) -> list[dict[str, Any]]:
             or any(not isinstance(count, int) or count < 0 for count in actions.values())
             or sum(actions.values()) != v03.ROLLOUT_STEPS
             or not isinstance(lesson_counts, Mapping)
-            or set(lesson_counts)
-            != {lesson.value for lesson in lessons.LessonId}
-            or any(
-                not isinstance(count, int) or count < 0
-                for count in lesson_counts.values()
-            )
+            or set(lesson_counts) != {lesson.value for lesson in lessons.LessonId}
+            or any(not isinstance(count, int) or count < 0 for count in lesson_counts.values())
             or sum(lesson_counts.values()) != v03.ROLLOUT_STEPS
             or worker.get("penalty_events") != 0
             or worker.get("penalty_eligible_events") != 0
             or worker.get("maximum_episode_penalty_count") != 0
         ):
-            raise ActionEffectQualificationError(
-                f"v0.3 smoke worker totals changed: {arm_name}"
-            )
+            raise ActionEffectQualificationError(f"v0.3 smoke worker totals changed: {arm_name}")
         for key in (
             "episode_starts_sha256",
             "trajectory_sha256",
@@ -1375,13 +1459,9 @@ def _validate_smoke_workers(value: Any, arm_name: str) -> list[dict[str, Any]]:
                     f"{arm_name} worker {key} is invalid"
                 ) from error
             if not math.isfinite(measured):
-                raise ActionEffectQualificationError(
-                    f"{arm_name} worker {key} is not finite"
-                )
+                raise ActionEffectQualificationError(f"{arm_name} worker {key} is not finite")
         if float.fromhex(str(worker["penalty_total_hex"])) != 0.0:
-            raise ActionEffectQualificationError(
-                f"{arm_name} smoke used reward shaping"
-            )
+            raise ActionEffectQualificationError(f"{arm_name} smoke used reward shaping")
         normalized.append(json.loads(json.dumps(dict(worker))))
     return normalized
 
@@ -1402,26 +1482,21 @@ def _validate_seed_evidence(
         "protected_seed_hits",
         "confirmation_or_final_seed_generated",
     }
-    expected_protected = sorted(
-        role.value for role in smoke.frozen_smoke._PROTECTED_ROLES
-    )
+    expected_protected = sorted(role.value for role in smoke.frozen_smoke._PROTECTED_ROLES)
     if (
         not isinstance(value, Mapping)
         or set(value) != expected_keys
         or value.get("episode_starts") != episode_starts
         or not isinstance(value.get("minimum_seed"), int)
         or not isinstance(value.get("maximum_seed"), int)
-        or not 0 <= int(value["minimum_seed"])
-        <= int(value["maximum_seed"]) < 1_000_000
+        or not 0 <= int(value["minimum_seed"]) <= int(value["maximum_seed"]) < 1_000_000
         or value.get("training_range_only") is not True
         or value.get("separated_unlock_roles") not in ([], ["training"])
         or value.get("protected_roles") != expected_protected
         or value.get("protected_seed_hits") != []
         or value.get("confirmation_or_final_seed_generated") is not False
     ):
-        raise ActionEffectQualificationError(
-            f"v0.3 smoke seed evidence changed: {arm_name}"
-        )
+        raise ActionEffectQualificationError(f"v0.3 smoke seed evidence changed: {arm_name}")
     return json.loads(json.dumps(dict(value)))
 
 
@@ -1476,17 +1551,12 @@ def validate_disposable_smoke(
         or not isinstance(source.get("branch"), str)
         or source.get("dirty") is not False
         or value.get("parent_checkpoint") != str(v03.PARENT_CHECKPOINT)
-        or value.get("parent_checkpoint_sha256")
-        != v03.PARENT_CHECKPOINT_SHA256
+        or value.get("parent_checkpoint_sha256") != v03.PARENT_CHECKPOINT_SHA256
         or value.get("worker_streams") != list(v03.WORKER_STREAMS)
-        or value.get("guard_mapping_sha256")
-        != guard_mapping_sha256
-        or value.get("sampler_preflight_sha256")
-        != sampler_preflight_sha256
-        or value.get("sampler_preflight_sha256")
-        != _canonical_sha256(sampler)
-        or int(value.get("actions_per_arm", -1))
-        != v03.ROLLOUT_TRANSITIONS
+        or value.get("guard_mapping_sha256") != guard_mapping_sha256
+        or value.get("sampler_preflight_sha256") != sampler_preflight_sha256
+        or value.get("sampler_preflight_sha256") != _canonical_sha256(sampler)
+        or int(value.get("actions_per_arm", -1)) != v03.ROLLOUT_TRANSITIONS
         or not isinstance(arms, Mapping)
         or set(arms) != set(_ARMS)
         or any(
@@ -1506,9 +1576,7 @@ def validate_disposable_smoke(
         or value.get("scientific_evidence") is not False
         or value.get("checkpoint_reuse_authorized") is not False
     ):
-        raise ActionEffectQualificationError(
-            "v0.3 disposable smoke contract changed"
-        )
+        raise ActionEffectQualificationError("v0.3 disposable smoke contract changed")
     sham = arms[ActionEffectMode.SHAM.value]
     candidate = arms[ActionEffectMode.ACTION_EFFECT.value]
     if not isinstance(sham, Mapping) or not isinstance(candidate, Mapping):
@@ -1532,16 +1600,13 @@ def validate_disposable_smoke(
         not isinstance(before, Mapping)
         or before.get("trained_timesteps") != v03.PARENT_LIFETIME_ACTIONS
         or before.get("optimizer_updates") != v03.PARENT_OPTIMIZER_UPDATES
-        or before.get("policy_tensor_sha256")
-        == sham.get("after", {}).get("policy_tensor_sha256")
+        or before.get("policy_tensor_sha256") == sham.get("after", {}).get("policy_tensor_sha256")
         or before.get("optimizer_state_sha256")
         == sham.get("after", {}).get("optimizer_state_sha256")
         or sham.get("effect_projection_nonzero_parameters") != 0
         or int(candidate.get("effect_projection_nonzero_parameters", 0)) <= 0
     ):
-        raise ActionEffectQualificationError(
-            "v0.3 smoke transplant/update boundary changed"
-        )
+        raise ActionEffectQualificationError("v0.3 smoke transplant/update boundary changed")
     for name, arm in (
         (ActionEffectMode.SHAM.value, sham),
         (ActionEffectMode.ACTION_EFFECT.value, candidate),
@@ -1549,22 +1614,16 @@ def validate_disposable_smoke(
         after = arm.get("after")
         transplant = arm.get("transplant")
         equivalence = (
-            transplant.get("zero_context_equivalence")
-            if isinstance(transplant, Mapping)
-            else None
+            transplant.get("zero_context_equivalence") if isinstance(transplant, Mapping) else None
         )
         transplant_record = (
-            transplant.get("transplant")
-            if isinstance(transplant, Mapping)
-            else None
+            transplant.get("transplant") if isinstance(transplant, Mapping) else None
         )
         workers = _validate_smoke_workers(arm.get("workers"), name)
         trajectory = arm.get("trajectory_identity")
         expected_trajectory = smoke._trajectory_identity(workers)
         ledger = arm.get("episode_ledger")
-        episode_starts = sum(
-            int(worker["episodes_started"]) for worker in workers
-        )
+        episode_starts = sum(int(worker["episodes_started"]) for worker in workers)
         if (
             not isinstance(arm, Mapping)
             or set(arm)
@@ -1588,8 +1647,7 @@ def validate_disposable_smoke(
             or not isinstance(after, Mapping)
             or after.get("trained_timesteps")
             != v03.PARENT_LIFETIME_ACTIONS + v03.ROLLOUT_TRANSITIONS
-            or after.get("optimizer_updates")
-            != v03.PARENT_OPTIMIZER_UPDATES + v03.PPO_EPOCHS
+            or after.get("optimizer_updates") != v03.PARENT_OPTIMIZER_UPDATES + v03.PPO_EPOCHS
             or not isinstance(transplant, Mapping)
             or not isinstance(equivalence, Mapping)
             or any(
@@ -1603,8 +1661,7 @@ def validate_disposable_smoke(
                 )
             )
             or not isinstance(transplant_record, Mapping)
-            or transplant_record.get("missing_optimizer_state_names")
-            not in ([], ())
+            or transplant_record.get("missing_optimizer_state_names") not in ([], ())
             or transplant_record.get("effect_encoder_zero") is not True
             or arm.get("updated_archive_reloaded_exactly") is not True
             or arm.get("development_checkpoint_reuse_authorized") is not False
@@ -1613,9 +1670,7 @@ def validate_disposable_smoke(
             or set(ledger) != {"records", "normalized_sha256"}
             or ledger.get("records") != episode_starts
         ):
-            raise ActionEffectQualificationError(
-                f"v0.3 smoke arm contract changed: {name}"
-            )
+            raise ActionEffectQualificationError(f"v0.3 smoke arm contract changed: {name}")
         _require_sha256(
             ledger["normalized_sha256"],
             f"{name} first-rollout episode ledger",
@@ -1629,17 +1684,13 @@ def validate_disposable_smoke(
             f"{name} pre-action RNG identity",
         )
         if pre_action["phase"] != "post_reset_pre_action_one":
-            raise ActionEffectQualificationError(
-                f"{name} pre-action RNG phase changed"
-            )
+            raise ActionEffectQualificationError(f"{name} pre-action RNG phase changed")
         post_rollout = _validate_rng_identity(
             arm["post_rollout_rng_identity"],
             f"{name} post-rollout RNG identity",
         )
         if post_rollout["phase"] != "post_rollout_pre_optimizer":
-            raise ActionEffectQualificationError(
-                f"{name} post-rollout RNG phase changed"
-            )
+            raise ActionEffectQualificationError(f"{name} post-rollout RNG phase changed")
         _validate_seed_evidence(
             arm["seed_evidence"],
             episode_starts=episode_starts,
@@ -1663,18 +1714,10 @@ def validate_disposable_smoke(
         "actions_per_arm": v03.ROLLOUT_TRANSITIONS,
         "pre_action_rng_identity": pre_action,
         "pre_action_rng_identity_sha256": _canonical_sha256(pre_action),
-        "first_rollout_policy_output_sha256": str(
-            sham["policy_output_sha256"]
-        ),
-        "first_rollout_trajectory_sha256": _canonical_sha256(
-            sham["trajectory_identity"]
-        ),
-        "first_rollout_episode_ledger_sha256": str(
-            sham["episode_ledger"]["normalized_sha256"]
-        ),
-        "post_rollout_rng_identity_sha256": _canonical_sha256(
-            sham["post_rollout_rng_identity"]
-        ),
+        "first_rollout_policy_output_sha256": str(sham["policy_output_sha256"]),
+        "first_rollout_trajectory_sha256": _canonical_sha256(sham["trajectory_identity"]),
+        "first_rollout_episode_ledger_sha256": str(sham["episode_ledger"]["normalized_sha256"]),
+        "post_rollout_rng_identity_sha256": _canonical_sha256(sham["post_rollout_rng_identity"]),
         "transplant_sha256": _canonical_sha256(sham["transplant"]),
         "matched_through_first_rollout": True,
         "optimizer_phase_completed_for_both": True,
@@ -1700,9 +1743,7 @@ def _storage_preflight(
         parent_stat = volume.parent.stat()
         dungeon_stat = dungeon_root.stat()
     except OSError as error:
-        raise ActionEffectQualificationError(
-            "cannot inspect Stage-A storage"
-        ) from error
+        raise ActionEffectQualificationError("cannot inspect Stage-A storage") from error
     if (
         not stat.S_ISDIR(volume_stat.st_mode)
         or not stat.S_ISDIR(dungeon_stat.st_mode)
@@ -1710,22 +1751,16 @@ def _storage_preflight(
         or volume_stat.st_dev == parent_stat.st_dev
         or dungeon_stat.st_dev != volume_stat.st_dev
     ):
-        raise ActionEffectQualificationError(
-            "T7 Developer is not a separate mounted volume"
-        )
+        raise ActionEffectQualificationError("T7 Developer is not a separate mounted volume")
     fresh = (CANONICAL_COHORT_ROOT, CANONICAL_MEDIA_ROOT)
     managed_roots_absent = True
     for path in fresh:
         if path.is_symlink():
-            raise ActionEffectQualificationError(
-                "Stage-A cohort or media root is unsafe"
-            )
+            raise ActionEffectQualificationError("Stage-A cohort or media root is unsafe")
         if path.exists():
             managed_roots_absent = False
             if not permit_bound_managed_roots:
-                raise ActionEffectQualificationError(
-                    "Stage-A cohort or media root is not fresh"
-                )
+                raise ActionEffectQualificationError("Stage-A cohort or media root is not fresh")
             try:
                 metadata = path.stat()
                 resolved = path.resolve(strict=True)
@@ -1738,16 +1773,11 @@ def _storage_preflight(
                 or resolved != path
                 or metadata.st_dev != volume_stat.st_dev
             ):
-                raise ActionEffectQualificationError(
-                    "Stage-A managed root changed device or type"
-                )
+                raise ActionEffectQualificationError("Stage-A managed root changed device or type")
     if require_qualification_absent and (
-        CANONICAL_QUALIFICATION_DIRECTORY.exists()
-        or CANONICAL_QUALIFICATION_DIRECTORY.is_symlink()
+        CANONICAL_QUALIFICATION_DIRECTORY.exists() or CANONICAL_QUALIFICATION_DIRECTORY.is_symlink()
     ):
-        raise ActionEffectQualificationError(
-            "Stage-A qualification root is not fresh"
-        )
+        raise ActionEffectQualificationError("Stage-A qualification root is not fresh")
     protected = (
         v03.PARENT_CHECKPOINT,
         frozen_u2.CANONICAL_U1_CONFIRMATION,
@@ -1765,15 +1795,11 @@ def _storage_preflight(
     for artifact in protected:
         resolved = artifact.expanduser().resolve()
         if any(resolved == root or root in resolved.parents for root in managed):
-            raise ActionEffectQualificationError(
-                "Stage-A roots overlap predecessor evidence"
-            )
+            raise ActionEffectQualificationError("Stage-A roots overlap predecessor evidence")
     usage = shutil.disk_usage(volume)
     minimum = int(v03.MINIMUM_FREE_GIB * 1024**3)
     if usage.free < minimum:
-        raise ActionEffectQualificationError(
-            "T7 Developer lacks the Stage-A free-space reserve"
-        )
+        raise ActionEffectQualificationError("T7 Developer lacks the Stage-A free-space reserve")
     return {
         "volume": str(volume),
         "dungeon_root": str(dungeon_root),
@@ -1820,13 +1846,9 @@ def _verify_storage_preflight(value: Any) -> None:
     try:
         timestamp = datetime.fromisoformat(str(value["measured_at"]))
     except (KeyError, ValueError) as error:
-        raise ActionEffectQualificationError(
-            "storage preflight timestamp is invalid"
-        ) from error
+        raise ActionEffectQualificationError("storage preflight timestamp is invalid") from error
     if timestamp.tzinfo is None or timestamp.utcoffset() != UTC.utcoffset(None):
-        raise ActionEffectQualificationError(
-            "storage preflight timestamp must be UTC"
-        )
+        raise ActionEffectQualificationError("storage preflight timestamp must be UTC")
 
 
 def _collect_static_inputs(
@@ -1839,9 +1861,7 @@ def _collect_static_inputs(
     dict[str, Any],
     list[dict[str, Any]],
 ]:
-    parent, base, mapping, guards, predecessors = (
-        _authenticate_parent_and_guards(repository)
-    )
+    parent, base, mapping, guards, predecessors = _authenticate_parent_and_guards(repository)
     sampler = _sampler_preflight(mapping, seed_access=base.seed_access())
     return parent, base, mapping, guards, predecessors, sampler
 
@@ -1856,12 +1876,8 @@ def build_action_effect_tag_payload(
     commit = _require_git_object(source_commit, "v0.3 source commit")
     protocol_path = repository.expanduser().resolve() / PROTOCOL_DOCUMENT
     if protocol_path.is_symlink() or not protocol_path.is_file():
-        raise ActionEffectQualificationError(
-            "v0.3 protocol document is missing or unsafe"
-        )
-    parent, _base, _mapping, guards, predecessors, sampler = (
-        _collect_static_inputs(repository)
-    )
+        raise ActionEffectQualificationError("v0.3 protocol document is missing or unsafe")
+    parent, _base, _mapping, guards, predecessors, sampler = _collect_static_inputs(repository)
     protected = _protected_seed_partitions()
     contract = _architecture_contract()
     failed_attempt = authenticate_failed_stage_a_attempt(
@@ -1920,9 +1936,7 @@ def build_action_effect_tag_payload(
         "resume_rule": _resume_rule(),
     }
     if set(payload) != TAG_FIELDS:
-        raise ActionEffectQualificationError(
-            "internal v0.3 tag payload is incomplete"
-        )
+        raise ActionEffectQualificationError("internal v0.3 tag payload is incomplete")
     return payload
 
 
@@ -1941,22 +1955,16 @@ def verify_source_tag(
         _git(root, ["rev-parse", "--verify", "HEAD^{commit}"], runner=runner),
         "v0.3 source commit",
     )
-    if (
-        expected_source_commit is not None
-        and head
-        != _require_git_object(expected_source_commit, "expected source commit")
+    if expected_source_commit is not None and head != _require_git_object(
+        expected_source_commit, "expected source commit"
     ):
-        raise ActionEffectQualificationError(
-            "v0.3 source differs from qualification"
-        )
+        raise ActionEffectQualificationError("v0.3 source differs from qualification")
     if _git(
         root,
         ["status", "--porcelain=v1", "--untracked-files=all"],
         runner=runner,
     ):
-        raise ActionEffectQualificationError(
-            "v0.3 qualification requires a clean repository"
-        )
+        raise ActionEffectQualificationError("v0.3 qualification requires a clean repository")
     ref = f"refs/tags/{QUALIFIED_TAG}"
     if _git(root, ["cat-file", "-t", ref], runner=runner) != "tag":
         raise ActionEffectQualificationError("v0.3 source tag must be annotated")
@@ -1964,10 +1972,8 @@ def verify_source_tag(
         _git(root, ["rev-parse", "--verify", ref], runner=runner),
         "v0.3 tag object",
     )
-    if (
-        expected_tag_object is not None
-        and tag_object
-        != _require_git_object(expected_tag_object, "expected tag object")
+    if expected_tag_object is not None and tag_object != _require_git_object(
+        expected_tag_object, "expected tag object"
     ):
         raise ActionEffectQualificationError("v0.3 tag object changed")
     if _git(root, ["rev-list", "-n", "1", ref], runner=runner) != head:
@@ -1985,24 +1991,18 @@ def verify_source_tag(
         runner=runner,
     ).split()
     if remote != [tag_object, ref]:
-        raise ActionEffectQualificationError(
-            "v0.3 annotated tag is not published"
-        )
+        raise ActionEffectQualificationError("v0.3 annotated tag is not published")
     raw_message = _git(
         root,
         ["for-each-ref", "--format=%(contents)", ref],
         runner=runner,
     )
     if "\n" in raw_message:
-        raise ActionEffectQualificationError(
-            "v0.3 tag message must be one JSON line"
-        )
+        raise ActionEffectQualificationError("v0.3 tag message must be one JSON line")
     try:
         payload = json.loads(raw_message)
     except json.JSONDecodeError as error:
-        raise ActionEffectQualificationError(
-            "v0.3 tag message is not JSON"
-        ) from error
+        raise ActionEffectQualificationError("v0.3 tag message is not JSON") from error
     expected = (
         build_action_effect_tag_payload(root, source_commit=head)
         if expected_tag_payload is None
@@ -2020,9 +2020,7 @@ def verify_source_tag(
         or payload != expected
         or raw_message != canonical
     ):
-        raise ActionEffectQualificationError(
-            "v0.3 tag payload differs from live protocol inputs"
-        )
+        raise ActionEffectQualificationError("v0.3 tag payload differs from live protocol inputs")
     return {
         "commit": head,
         "dirty": False,
@@ -2046,9 +2044,7 @@ def _expected_report(
     Any,
     Mapping[lessons.LessonId, frozenset[str]],
 ]:
-    parent, base, mapping, guards, predecessors, sampler = (
-        _collect_static_inputs(repository)
-    )
+    parent, base, mapping, guards, predecessors, sampler = _collect_static_inputs(repository)
     sampler_digest = _canonical_sha256(sampler)
     smoke_evidence = validate_disposable_smoke(
         smoke_report,
@@ -2144,21 +2140,15 @@ class ActionEffectQualificationEvidence:
             "sampler_preflight_sha256": self.sampler_preflight_sha256,
             "architecture_contract_sha256": self.architecture_contract_sha256,
             "smoke_evidence_sha256": self.smoke_evidence_sha256,
-            "protected_partitions_sha256": (
-                self.protected_partitions_sha256
-            ),
-            "failed_stage_a_attempt_sha256": (
-                self.failed_stage_a_attempt_sha256
-            ),
+            "protected_partitions_sha256": (self.protected_partitions_sha256),
+            "failed_stage_a_attempt_sha256": (self.failed_stage_a_attempt_sha256),
             "storage_caps": dict(self.storage_caps),
         }
 
     def verified_report(self) -> dict[str, Any]:
         value = json.loads(self._report_bytes)
         if not isinstance(value, dict):
-            raise ActionEffectQualificationError(
-                "verified v0.3 report bytes changed"
-            )
+            raise ActionEffectQualificationError("verified v0.3 report bytes changed")
         return value
 
     def seed_access(self) -> Any:
@@ -2168,10 +2158,7 @@ class ActionEffectQualificationEvidence:
         self,
     ) -> Mapping[lessons.LessonId, frozenset[str]]:
         return MappingProxyType(
-            {
-                lesson: frozenset(values)
-                for lesson, values in self._forbidden_layouts.items()
-            }
+            {lesson: frozenset(values) for lesson, values in self._forbidden_layouts.items()}
         )
 
 
@@ -2187,19 +2174,20 @@ def _assert_canonical_report(path: Path) -> Path:
 
 def _verify_checksum(path: Path, digest: str) -> None:
     try:
-        fields = _regular_file_bytes(
-            path,
-            "v0.3 qualification checksum",
-            maximum=256,
-        ).decode("ascii").strip().split()
-    except UnicodeDecodeError as error:
-        raise ActionEffectQualificationError(
-            "v0.3 checksum is not ASCII"
-        ) from error
-    if fields != [digest, CANONICAL_REPORT.name]:
-        raise ActionEffectQualificationError(
-            "v0.3 qualification checksum changed"
+        fields = (
+            _regular_file_bytes(
+                path,
+                "v0.3 qualification checksum",
+                maximum=256,
+            )
+            .decode("ascii")
+            .strip()
+            .split()
         )
+    except UnicodeDecodeError as error:
+        raise ActionEffectQualificationError("v0.3 checksum is not ASCII") from error
+    if fields != [digest, CANONICAL_REPORT.name]:
+        raise ActionEffectQualificationError("v0.3 qualification checksum changed")
 
 
 def verify_action_effect_qualification(
@@ -2230,25 +2218,17 @@ def verify_action_effect_qualification(
     try:
         report = json.loads(report_bytes)
     except json.JSONDecodeError as error:
-        raise ActionEffectQualificationError(
-            "v0.3 qualification report is invalid JSON"
-        ) from error
+        raise ActionEffectQualificationError("v0.3 qualification report is invalid JSON") from error
     if not isinstance(report, dict) or set(report) != _REPORT_FIELDS:
-        raise ActionEffectQualificationError(
-            "v0.3 qualification report fields changed"
-        )
+        raise ActionEffectQualificationError("v0.3 qualification report fields changed")
     digest = hashlib.sha256(report_bytes).hexdigest()
     _verify_checksum(CANONICAL_CHECKSUM, digest)
     claim = _read_json(CANONICAL_CLAIM, "v0.3 qualification claim")
     if report.get("claim") != claim:
-        raise ActionEffectQualificationError(
-            "v0.3 qualification claim binding changed"
-        )
+        raise ActionEffectQualificationError("v0.3 qualification claim binding changed")
     smoke_report = report.get("smoke_evidence", {}).get("_full_report")
     if not isinstance(smoke_report, Mapping):
-        raise ActionEffectQualificationError(
-            "v0.3 report lacks its disposable smoke transcript"
-        )
+        raise ActionEffectQualificationError("v0.3 report lacks its disposable smoke transcript")
     expected, base, mapping = _expected_report(
         repository,
         source=source,
@@ -2259,20 +2239,14 @@ def verify_action_effect_qualification(
     expected["created_at"] = report.get("created_at")
     expected["smoke_evidence"]["_full_report"] = smoke_report
     if report != expected:
-        raise ActionEffectQualificationError(
-            "v0.3 qualification evidence differs from live inputs"
-        )
+        raise ActionEffectQualificationError("v0.3 qualification evidence differs from live inputs")
     _verify_storage_preflight(report["storage_preflight"])
     try:
         created_at = datetime.fromisoformat(str(report["created_at"]))
     except ValueError as error:
-        raise ActionEffectQualificationError(
-            "v0.3 qualification timestamp is invalid"
-        ) from error
+        raise ActionEffectQualificationError("v0.3 qualification timestamp is invalid") from error
     if created_at.tzinfo is None or created_at.utcoffset() != UTC.utcoffset(None):
-        raise ActionEffectQualificationError(
-            "v0.3 qualification timestamp must be UTC"
-        )
+        raise ActionEffectQualificationError("v0.3 qualification timestamp must be UTC")
     return ActionEffectQualificationEvidence(
         report=str(report_path),
         report_sha256=digest,
@@ -2284,25 +2258,13 @@ def verify_action_effect_qualification(
         verdict=VERDICT,
         protocol_document_sha256=str(report["protocol_document"]["sha256"]),
         guard_mapping_sha256=str(report["guards"]["applied_mapping_sha256"]),
-        sampler_preflight_sha256=_canonical_sha256(
-            report["sampler_preflight"]
-        ),
-        architecture_contract_sha256=_canonical_sha256(
-            report["architecture_contract"]
-        ),
+        sampler_preflight_sha256=_canonical_sha256(report["sampler_preflight"]),
+        architecture_contract_sha256=_canonical_sha256(report["architecture_contract"]),
         smoke_evidence_sha256=_canonical_sha256(
-            {
-                key: value
-                for key, value in report["smoke_evidence"].items()
-                if key != "_full_report"
-            }
+            {key: value for key, value in report["smoke_evidence"].items() if key != "_full_report"}
         ),
-        protected_partitions_sha256=_canonical_sha256(
-            report["protected_partitions"]
-        ),
-        failed_stage_a_attempt_sha256=_canonical_sha256(
-            report["failed_stage_a_attempt"]
-        ),
+        protected_partitions_sha256=_canonical_sha256(report["protected_partitions"]),
+        failed_stage_a_attempt_sha256=_canonical_sha256(report["failed_stage_a_attempt"]),
         storage_caps=MappingProxyType(dict(report["storage_caps"])),
         _report_bytes=report_bytes,
         _base_qualification=base,
@@ -2352,10 +2314,7 @@ def collect_action_effect_qualification(
             seed_access=smoke_base.seed_access(),
             forbidden_layout_hashes=smoke_mapping,
         )
-        if (
-            smoke_report.get("guard_mapping_sha256")
-            != smoke_guards["applied_mapping_sha256"]
-        ):
+        if smoke_report.get("guard_mapping_sha256") != smoke_guards["applied_mapping_sha256"]:
             raise ActionEffectQualificationError(
                 "v0.3 disposable smoke used a different static history guard"
             )
@@ -2365,15 +2324,11 @@ def collect_action_effect_qualification(
             claim=claim,
             smoke_report=smoke_report,
         )
-        expected["smoke_evidence"]["_full_report"] = json.loads(
-            json.dumps(smoke_report)
-        )
+        expected["smoke_evidence"]["_full_report"] = json.loads(json.dumps(smoke_report))
         expected["storage_preflight"] = storage_preflight
         expected["created_at"] = utc_now()
         if set(expected) != _REPORT_FIELDS:
-            raise ActionEffectQualificationError(
-                "internal v0.3 report schema is incomplete"
-            )
+            raise ActionEffectQualificationError("internal v0.3 report schema is incomplete")
         report_bytes = _canonical_json_bytes(expected)
         with report_path.open("xb") as handle:
             handle.write(report_bytes)
@@ -2420,9 +2375,7 @@ def main() -> None:
             repository,
             ["status", "--porcelain=v1", "--untracked-files=all"],
         ):
-            raise SystemExit(
-                "v0.3 tag payload requires a clean committed repository"
-            )
+            raise SystemExit("v0.3 tag payload requires a clean committed repository")
         print(
             json.dumps(
                 build_action_effect_tag_payload(

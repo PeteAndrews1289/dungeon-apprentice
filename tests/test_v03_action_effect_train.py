@@ -543,7 +543,7 @@ def _write_terminal_arm(
     run = root / arm.value
     checkpoints = run / "checkpoints" / "rolling"
     checkpoints.mkdir(parents=True)
-    cohort_id = "v0.3-action-effect-stage-a-r1-20260724"
+    cohort_id = "v0.3-action-effect-stage-a-r2-20260724"
     contract_sha256 = "a" * 64
     source = {"commit": source_commit, "dirty": False}
     qualification = {"report_sha256": "b" * 64}
@@ -890,7 +890,7 @@ def test_trainer_consumes_launcher_owned_paths_without_mutating_them(
     contract = {
         "schema_version": 1,
         "protocol": trainer.PROTOCOL,
-        "cohort_id": "v0.3-action-effect-stage-a-r1-20260724",
+        "cohort_id": "v0.3-action-effect-stage-a-r2-20260724",
         "source": {
             "commit": source["commit"],
             "dirty": False,
@@ -940,6 +940,8 @@ def test_trainer_consumes_launcher_owned_paths_without_mutating_them(
         arm=ActionEffectMode.SHAM,
         run_directory=run,
         media_directory=arm_media,
+        expected_cohort_root=cohort,
+        expected_media_root=media_root,
         source=source,
         qualification=qualification,
     )
@@ -948,3 +950,87 @@ def test_trainer_consumes_launcher_owned_paths_without_mutating_them(
     assert verified_root == cohort
     assert verified_media == media_root
     assert sorted(path.name for path in cohort.iterdir()) == before
+
+
+def test_trainer_rejects_noncanonical_roots_and_arm_directories(
+    tmp_path: Path,
+) -> None:
+    cohort = tmp_path / "cohort"
+    media_root = tmp_path / "media"
+    run = cohort / "sham"
+    arm_media = media_root / "sham"
+    run.mkdir(parents=True)
+    arm_media.mkdir(parents=True)
+    source = {"commit": "1" * 40, "dirty": False}
+    qualification = SimpleNamespace(
+        public_dict=lambda: {
+            "report_sha256": "2" * 64,
+            "tag_object": "3" * 40,
+        }
+    )
+    contract = {
+        "schema_version": 1,
+        "protocol": trainer.PROTOCOL,
+        "cohort_id": "v0.3-action-effect-stage-a-r2-20260724",
+        "source": source,
+        "qualification": {
+            "report_sha256": "2" * 64,
+            "tag_object": "3" * 40,
+        },
+        "parent": {
+            "checkpoint_sha256": v03.PARENT_CHECKPOINT_SHA256,
+            "policy_tensor_sha256": v03.PARENT_POLICY_TENSOR_SHA256,
+            "optimizer_state_sha256": v03.PARENT_OPTIMIZER_STATE_SHA256,
+        },
+        "roots": {"cohort": str(cohort), "media": str(media_root)},
+        "matched_design": {
+            "arm_order": [arm.value for arm in v03.ARM_ORDER],
+            "action_cap_per_arm": v03.CHILD_ACTION_BUDGET,
+            "evaluation_every": v03.EVALUATION_INTERVAL,
+            "fresh_only": True,
+            "resumable": False,
+            "checkpoint_promotable": False,
+        },
+        "arms": [
+            {"id": "sham", "directory": "sham", "media_directory": "sham"},
+            {
+                "id": "action-effect",
+                "directory": "action-effect",
+                "media_directory": "action-effect",
+            },
+        ],
+    }
+    contract_path = cohort / "cohort-contract.json"
+    atomic_write_json(contract_path, contract)
+
+    with pytest.raises(
+        trainer.ActionEffectTrainingError,
+        match="cohort contract is missing or unsafe",
+    ):
+        trainer.verify_cohort_contract(
+            path=contract_path,
+            arm=ActionEffectMode.SHAM,
+            run_directory=run,
+            media_directory=arm_media,
+            expected_cohort_root=tmp_path / "immutable-r1",
+            expected_media_root=tmp_path / "immutable-r1-media",
+            source=source,
+            qualification=qualification,
+        )
+
+    contract["arms"][0]["directory"] = ".v03-staging"
+    atomic_write_json(contract_path, contract)
+    with pytest.raises(
+        trainer.ActionEffectTrainingError,
+        match="cohort contract changed",
+    ):
+        trainer.verify_cohort_contract(
+            path=contract_path,
+            arm=ActionEffectMode.SHAM,
+            run_directory=run,
+            media_directory=arm_media,
+            expected_cohort_root=cohort,
+            expected_media_root=media_root,
+            source=source,
+            qualification=qualification,
+        )

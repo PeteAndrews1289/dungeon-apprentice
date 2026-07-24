@@ -326,14 +326,17 @@ activation was selected. The full
 [U2-S result](docs/results/v0.2-u2s-r1-stability-ablation.md) preserves the exact evidence and
 claim limits.
 
-### v0.3 — attempt 0 closed at zero actions; r1 replacement prepared
+### v0.3 — two operational lessons; r2 replacement prepared
 
 The ablation resolved the next design decision: another reward amount or gentler PPO schedule is
 not enough. The original
 [v0.3 architecture protocol](docs/protocol-v0.3-action-effect-architecture.md) moved the missing
 causal fact into a learnable network pathway; its operationally corrected
-[r1 replacement](docs/protocol-v0.3-action-effect-architecture-r1.md) preserves that scientific
-question unchanged.
+[r1 replacement](docs/protocol-v0.3-action-effect-architecture-r1.md) preserved that scientific
+question unchanged and fixed the dashboard boundary. Its launcher then exposed a second,
+independent process-control defect. The current
+[r2 replacement](docs/protocol-v0.3-action-effect-architecture-r2.md) preserves the same question
+while correcting process classification and abnormal-exit cleanup.
 
 Both fresh twins inherit the exact confirmed U1 `20260733` CNN, actor/critic LSTMs, action/value
 heads, and Adam moments by parameter name. Both have the same new nine-value input and a
@@ -362,24 +365,38 @@ artifact existed. Its fail-closed trap wrote a synthetic sham crash record, corr
 root as `operationally_incomplete`. This is a zero-action operational failure, not a learning
 result; see the [attempt-0 closeout](docs/results/v0.3-action-effect-launch-attempt-0.md).
 
-r1 changes no scientific variable. The dashboard deep-authenticates once before binding, then
-every live poll rereads mutable status and rehashes the immutable contract, qualification report,
-and checksum. The API payload is authenticated by identity; it does not expose a literal
-`healthy: true` field. The fresh, not-yet-created r1 assignments are:
+r1 changed no scientific variable. Its dashboard deep-authenticated once before binding, every
+live poll reread mutable status, and the health check succeeded. The learner started, verified its
+first matched sham rollout, and reached 38,912 trained child actions. Final status recorded 40,004
+collected actions; the later append-only episode ledger reached 40,960. The sham completed 19
+optimizer phases, 76 new optimizer updates, and one scheduled 32,768-action exam boundary. Its one
+baseline plus one scheduled exam produced eight lesson rows and 640 deterministic cases.
+
+The launcher's whole-command-line process search then counted the supervisor's embedded child
+command as a second trainer. The failed shell function also bypassed the intended `EXIT` cleanup,
+so sham continued until explicitly stopped. No safe checkpoint exists, the action-effect arm never
+started, and the matched scientific comparison never occurred. r1 is terminal
+`operationally_incomplete`; see the
+[authenticated incident record](docs/results/v0.3-action-effect-stage-a-r1-operational-failure.md).
+Its roots and checkpoints are immutable and unusable.
+
+r2 again changes no scientific variable. It classifies processes from their leading executable
+arguments and uses explicit cleanup branches rather than implicit zsh `errexit`. Both arms restart
+fresh from confirmed U1. The prospective assignments are:
 
 | Boundary | Assigned identity |
 | --- | --- |
-| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-r1-20260724` |
-| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r1-20260724` |
-| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-20260724` |
-| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-media-20260724` |
-| Dashboard | `http://127.0.0.1:8789/` |
-| Sole launcher | `scripts/run_v03_action_effect_stage_a_r1.sh` |
+| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-r2-20260724` |
+| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r2-20260724` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-20260724` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-media-20260724` |
+| Dashboard | `http://127.0.0.1:8790/` |
+| Sole launcher | `scripts/run_v03_action_effect_stage_a_r2.sh` |
 
-Attempt 0's tag and evidence roots are immutable historical records and must never be reused. At
-this r1 preparation checkpoint, no r1 tag, qualification claim/report, cohort, media root, policy
-action, or r1 result exists. The exact replacement release sequence is preserved in the
-[operations runbook](docs/runbook.md#release-qualify-and-launch-v03-stage-a-r1).
+Attempt 0 and r1 are separate immutable historical records and must never be reused. At this r2
+preparation checkpoint, no final r2 source hash, tag object, qualification claim/report, cohort,
+media root, policy action, or result exists. The exact replacement release sequence is preserved in
+the [operations runbook](docs/runbook.md#release-qualify-and-launch-v03-stage-a-r2).
 
 ## Evidence standard
 
@@ -405,7 +422,7 @@ See [the experiment contract](docs/experiment-contract.md),
 [roadmap](docs/roadmap.md). The completed v0.1 capability result is preserved in the
 [Navigate canary report](docs/results/v0.1-navigate-canaries.md), and the next proposed protocol is
 specified in [the v0.2 design](docs/protocol-v0.2-design.md). The current controlled decision point
-is the implemented but not yet qualified
-[v0.3 Stage-A r1 action-effect architecture study](docs/protocol-v0.3-action-effect-architecture-r1.md).
+is the implemented but not yet frozen or qualified
+[v0.3 Stage-A r2 action-effect architecture study](docs/protocol-v0.3-action-effect-architecture-r2.md).
 U2r-r1 ended in a valid terminal stability failure, U2-S r1 completed with no eligible mechanism,
 and U3 remains blocked.

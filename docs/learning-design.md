@@ -24,15 +24,17 @@ encoder turns a 56 × 56 pixel view into features. The LSTM can retain evidence 
 location leaves view. The action head chooses among seven buttons. PPO changes all of these weights
 using trajectories produced by the policy itself.
 
-The implemented, not-yet-qualified v0.3 release candidate adds a small fourth pathway without
-replacing those learned components.
+The prospective v0.3 Stage-A r2 release adds a small fourth pathway without replacing those learned
+components.
 It tells the same recurrent policy which primitive it selected one transition ago and whether the
 next visible RGB frame changed or remained identical. This is not a key label, success flag, route,
 or object detector. It is the digital equivalent of remembering “I just tried this, and I saw
 nothing happen.” A matched sham has the same parameters and input shape but receives zeros.
 
-The model begins with random parameters. It is not reset when a new tier unlocks. The point of the
-experiment is whether one growing policy can acquire and retain a repertoire.
+At the beginning of the overall project, the model starts with random parameters and is not reset
+when a new tier unlocks. v0.3 itself is a later architecture study: both matched arms restart from
+the exact confirmed U1 policy and optimizer, then add the new zero-initialized pathway. The point is
+still whether one growing policy can acquire and retain a repertoire.
 
 ## Exploration without a walkthrough
 
@@ -128,9 +130,11 @@ selection means its hidden state was never explicitly told which action actually
 hundred identical toggles can therefore look like a generic unchanged scene rather than a specific
 failed cause-and-effect experiment.
 
-The implemented, qualification-pending
-[v0.3 Stage-A r1 protocol](protocol-v0.3-action-effect-architecture-r1.md) supplies that missing
-sensorimotor link while keeping the task signal untouched:
+The prospective
+[v0.3 Stage-A r2 protocol](protocol-v0.3-action-effect-architecture-r2.md) supplies that missing
+sensorimotor link while keeping the task signal untouched. Attempt 0 never reached action one; r1
+reached only a partial sham arm before an operational process-control failure. Neither failure
+tested the matched architecture question:
 
 1. At episode start, context is all zero.
 2. The policy selects one of the same seven actions.

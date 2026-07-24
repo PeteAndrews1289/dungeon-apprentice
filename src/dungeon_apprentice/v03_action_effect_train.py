@@ -2432,13 +2432,22 @@ def verify_cohort_contract(
     arm: ActionEffectMode,
     run_directory: Path,
     media_directory: Path,
+    expected_cohort_root: Path,
+    expected_media_root: Path,
     source: Mapping[str, Any],
     qualification: Any,
 ) -> tuple[dict[str, Any], str, Path, Path]:
     """Bind one trainer invocation to the launcher-owned immutable contract."""
 
     contract_path = path.expanduser().resolve()
-    if contract_path.is_symlink() or not contract_path.is_file():
+    canonical_cohort_root = expected_cohort_root.expanduser().resolve()
+    canonical_media_root = expected_media_root.expanduser().resolve()
+    canonical_contract_path = canonical_cohort_root / "cohort-contract.json"
+    if (
+        contract_path != canonical_contract_path
+        or contract_path.is_symlink()
+        or not contract_path.is_file()
+    ):
         raise ActionEffectTrainingError("v0.3 cohort contract is missing or unsafe")
     contract = _read_json(contract_path, "v0.3 cohort contract")
     digest = file_sha256(contract_path)
@@ -2449,17 +2458,38 @@ def verify_cohort_contract(
     qualification_public = _qualification_public(qualification)
     qualification_binding = contract.get("qualification")
     contract_source = contract.get("source")
+    expected_arm_directories = [
+        (
+            ActionEffectMode.SHAM.value,
+            ActionEffectMode.SHAM.value,
+            ActionEffectMode.SHAM.value,
+        ),
+        (
+            ActionEffectMode.ACTION_EFFECT.value,
+            ActionEffectMode.ACTION_EFFECT.value,
+            ActionEffectMode.ACTION_EFFECT.value,
+        ),
+    ]
     if (
         contract.get("schema_version") != 1
         or contract.get("protocol") != PROTOCOL
-        or contract.get("cohort_id")
-        != "v0.3-action-effect-stage-a-r1-20260724"
+        or contract.get("cohort_id") != "v0.3-action-effect-stage-a-r2-20260724"
         or not isinstance(contract_source, Mapping)
         or contract_source.get("commit") != source.get("commit")
         or contract_source.get("dirty") is not False
         or source.get("dirty") is not False
         or not isinstance(roots, Mapping)
         or not isinstance(arms, list)
+        or [
+            (
+                value.get("id"),
+                value.get("directory"),
+                value.get("media_directory"),
+            )
+            for value in arms
+            if isinstance(value, Mapping)
+        ]
+        != expected_arm_directories
         or not isinstance(matched, Mapping)
         or not isinstance(parent, Mapping)
         or not isinstance(qualification_binding, Mapping)
@@ -2485,7 +2515,9 @@ def verify_cohort_contract(
         None,
     )
     if (
-        not isinstance(selected, Mapping)
+        cohort_root != canonical_cohort_root
+        or media_root != canonical_media_root
+        or not isinstance(selected, Mapping)
         or run != (cohort_root / str(selected.get("directory", ""))).resolve()
         or media != (media_root / str(selected.get("media_directory", ""))).resolve()
         or run.is_symlink()
@@ -2519,6 +2551,8 @@ def train_arm(args: argparse.Namespace) -> None:
         raise SystemExit("v0.3 confirmed U1 parent changed")
 
     from dungeon_apprentice.v03_action_effect_qualify import (
+        CANONICAL_COHORT_ROOT,
+        CANONICAL_MEDIA_ROOT,
         verify_action_effect_qualification,
     )
 
@@ -2556,6 +2590,8 @@ def train_arm(args: argparse.Namespace) -> None:
         arm=arm,
         run_directory=run_directory,
         media_directory=media_directory,
+        expected_cohort_root=CANONICAL_COHORT_ROOT,
+        expected_media_root=CANONICAL_MEDIA_ROOT,
         source=source,
         qualification=qualification,
     )

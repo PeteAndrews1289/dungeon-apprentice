@@ -697,7 +697,7 @@ def _clear_process_rows() -> list[dict[str, object]]:
             "command": (
                 "python -m "
                 "dungeon_apprentice.v03_action_effect_dashboard "
-                "--run-root /fixture --port 8789"
+                "--run-root /fixture --port 8790"
             ),
         },
     ]
@@ -723,11 +723,11 @@ def test_manifest_identity_is_v03_fresh_only_and_has_no_resume() -> None:
     assert helper.PROTOCOL == (
         "dungeon-apprentice-v0.3-action-effect-architecture"
     )
-    assert helper.COHORT_ID == "v0.3-action-effect-stage-a-r1-20260724"
+    assert helper.COHORT_ID == "v0.3-action-effect-stage-a-r2-20260724"
     assert helper.TAG_NAME == (
-        "action-effect-architecture-v0.3-stage-a-r1-20260724"
+        "action-effect-architecture-v0.3-stage-a-r2-20260724"
     )
-    assert helper.DEFAULT_DASHBOARD_PORT == 8789
+    assert helper.DEFAULT_DASHBOARD_PORT == 8790
     assert helper.ARM_ORDER == ("sham", "action-effect")
     parser = helper.build_parser()
     parsed = parser.parse_args(

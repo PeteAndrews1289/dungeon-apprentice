@@ -22,11 +22,11 @@ from urllib.parse import parse_qs, urlparse
 from dungeon_apprentice import v03_action_effect as v03
 
 DEFAULT_HOST = "127.0.0.1"
-DEFAULT_PORT = 8789
+DEFAULT_PORT = 8790
 PROTOCOL = v03.PROTOCOL
 QUALIFICATION_PROTOCOL = PROTOCOL
-COHORT_ID = "v0.3-action-effect-stage-a-r1-20260724"
-TAG_NAME = "action-effect-architecture-v0.3-stage-a-r1-20260724"
+COHORT_ID = "v0.3-action-effect-stage-a-r2-20260724"
+TAG_NAME = "action-effect-architecture-v0.3-stage-a-r2-20260724"
 ACTION_CAP = v03.CHILD_ACTION_BUDGET
 ARM_ORDER = ("sham", "action-effect")
 LESSONS = (
@@ -45,12 +45,8 @@ PROCESS_INVENTORY_MAX_BYTES = 8 * 1024 * 1024
 PROCESS_INVENTORY_MAX_ROWS = 4096
 PROCESS_SCAN_TIMEOUT_SECONDS = 10
 PROCESS_SCAN_COMMAND = ["/bin/ps", "-axo", "pid=,ppid=,command="]
-PROCESS_ROLES = frozenset(
-    {"unrelated", "dashboard", "trainer", "supervisor", "caffeinate"}
-)
-PROHIBITED_PROCESS_ROLES = frozenset(
-    {"trainer", "supervisor", "caffeinate"}
-)
+PROCESS_ROLES = frozenset({"unrelated", "dashboard", "trainer", "supervisor", "caffeinate"})
+PROHIBITED_PROCESS_ROLES = frozenset({"trainer", "supervisor", "caffeinate"})
 HEARTBEAT_STALE_SECONDS = 180
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 
@@ -225,28 +221,20 @@ def _read_json(
     try:
         metadata = path.lstat()
     except FileNotFoundError as error:
-        raise V03DashboardError(
-            f"dashboard evidence is missing: {path.name}"
-        ) from error
+        raise V03DashboardError(f"dashboard evidence is missing: {path.name}") from error
     if (
         stat.S_ISLNK(metadata.st_mode)
         or not stat.S_ISREG(metadata.st_mode)
         or metadata.st_size <= 0
         or metadata.st_size > maximum
     ):
-        raise V03DashboardError(
-            f"dashboard evidence is unsafe: {path.name}"
-        )
+        raise V03DashboardError(f"dashboard evidence is unsafe: {path.name}")
     try:
         payload = json.loads(path.read_bytes())
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
-        raise V03DashboardError(
-            f"cannot read dashboard evidence {path.name}"
-        ) from error
+        raise V03DashboardError(f"cannot read dashboard evidence {path.name}") from error
     if not isinstance(payload, dict):
-        raise V03DashboardError(
-            f"dashboard evidence is not an object: {path.name}"
-        )
+        raise V03DashboardError(f"dashboard evidence is not an object: {path.name}")
     return payload
 
 
@@ -276,9 +264,7 @@ def _timestamp_age(value: Any) -> float | None:
         return None
     return max(
         0.0,
-        (
-            datetime.now(UTC) - timestamp.astimezone(UTC)
-        ).total_seconds(),
+        (datetime.now(UTC) - timestamp.astimezone(UTC)).total_seconds(),
     )
 
 
@@ -296,9 +282,7 @@ def _lesson_rows(exam: Mapping[str, Any]) -> list[Mapping[str, Any]]:
             if isinstance(value, Mapping)
         ]
     if isinstance(lessons, list):
-        return [
-            value for value in lessons if isinstance(value, Mapping)
-        ]
+        return [value for value in lessons if isinstance(value, Mapping)]
     return []
 
 
@@ -327,28 +311,20 @@ def _group_records(
                 ),
                 "practice_profile": (
                     rows[0].get("practice_profile")
-                    if rows
-                    and len({row.get("practice_profile") for row in rows}) == 1
+                    if rows and len({row.get("practice_profile") for row in rows}) == 1
                     else None
                 ),
-                "lessons": {
-                    str(row["lesson_id"]): dict(row) for row in rows
-                },
+                "lessons": {str(row["lesson_id"]): dict(row) for row in rows},
                 "case_diagnostics": {
                     "max_case_ineffective_interactions": max(
-                        (
-                            int(row.get("max_ineffective_interactions", -1))
-                            for row in rows
-                        ),
+                        (int(row.get("max_ineffective_interactions", -1)) for row in rows),
                         default=-1,
                     ),
                     "cases_with_ineffective_at_least_10": sum(
                         int(
                             (
                                 row.get("ineffective_tail")
-                                if isinstance(
-                                    row.get("ineffective_tail"), Mapping
-                                )
+                                if isinstance(row.get("ineffective_tail"), Mapping)
                                 else {}
                             )
                             .get("ineffective_threshold_counts", {})
@@ -381,9 +357,7 @@ def _evaluation_records(
     for key in ("exam_records", "evaluation_history", "evaluations"):
         value = status.get(key)
         if isinstance(value, list):
-            records = [
-                item for item in value if isinstance(item, Mapping)
-            ]
+            records = [item for item in value if isinstance(item, Mapping)]
             grouped = _group_records(records)
             return grouped or [dict(item) for item in records]
     ledger = directory / "evaluations.jsonl"
@@ -402,14 +376,10 @@ def _evaluation_records(
                     continue
                 payload = json.loads(line)
                 if not isinstance(payload, Mapping):
-                    raise V03DashboardError(
-                        "v0.3 evaluation row is not an object"
-                    )
+                    raise V03DashboardError("v0.3 evaluation row is not an object")
                 rows.append(payload)
         except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
-            raise V03DashboardError(
-                "cannot read v0.3 evaluation ledger"
-            ) from error
+            raise V03DashboardError("cannot read v0.3 evaluation ledger") from error
         return _group_records(rows)
     latest = status.get("latest_evaluation")
     return [dict(latest)] if isinstance(latest, Mapping) else []
@@ -420,9 +390,7 @@ def _public_exam(exam: Mapping[str, Any]) -> dict[str, Any]:
     lessons = [
         {
             "lesson_id": lesson_id,
-            "lesson_label": next(
-                label for item, label in LESSONS if item == lesson_id
-            ),
+            "lesson_label": next(label for item, label in LESSONS if item == lesson_id),
             "successes": _integer(row.get("successes")),
             "episodes": _integer(row.get("episodes")),
             "panel_successes": (
@@ -430,18 +398,12 @@ def _public_exam(exam: Mapping[str, Any]) -> dict[str, Any]:
                 if isinstance(row.get("panel_successes"), list)
                 else []
             ),
-            "mean_ineffective_interactions": _number(
-                row.get("mean_ineffective_interactions")
-            ),
+            "mean_ineffective_interactions": _number(row.get("mean_ineffective_interactions")),
         }
         for lesson_id in (item[0] for item in LESSONS)
         if (
             row := next(
-                (
-                    value
-                    for value in rows
-                    if value.get("lesson_id") == lesson_id
-                ),
+                (value for value in rows if value.get("lesson_id") == lesson_id),
                 None,
             )
         )
@@ -461,14 +423,8 @@ def _public_exam(exam: Mapping[str, Any]) -> dict[str, Any]:
             )
         ),
         "lessons": lessons,
-        "max_case_ineffective": _integer(
-            diagnostics.get("max_case_ineffective_interactions")
-        ),
-        "max_interaction_run": _integer(
-            diagnostics.get(
-                "max_repeated_identical_interaction_run"
-            )
-        ),
+        "max_case_ineffective": _integer(diagnostics.get("max_case_ineffective_interactions")),
+        "max_interaction_run": _integer(diagnostics.get("max_repeated_identical_interaction_run")),
         "passed": passed,
     }
 
@@ -492,11 +448,7 @@ def _safe_relative_frame(
     if not isinstance(relative_value, str):
         raise V03DashboardError("v0.3 frame path is invalid")
     relative = Path(relative_value)
-    if (
-        relative.is_absolute()
-        or ".." in relative.parts
-        or relative.suffix.lower() != ".png"
-    ):
+    if relative.is_absolute() or ".." in relative.parts or relative.suffix.lower() != ".png":
         raise V03DashboardError("v0.3 frame path escapes its arm")
     arm_root = root / arm_id
     candidate = arm_root / relative
@@ -520,13 +472,10 @@ def _safe_relative_frame(
     with resolved.open("rb") as stream:
         if stream.read(8) != b"\x89PNG\r\n\x1a\n":
             raise V03DashboardError("v0.3 frame is not a PNG")
-    if (
-        declared_sha256 is not None
-        and (
-            not isinstance(declared_sha256, str)
-            or SHA256_PATTERN.fullmatch(declared_sha256) is None
-            or _sha256(resolved) != declared_sha256
-        )
+    if declared_sha256 is not None and (
+        not isinstance(declared_sha256, str)
+        or SHA256_PATTERN.fullmatch(declared_sha256) is None
+        or _sha256(resolved) != declared_sha256
     ):
         raise V03DashboardError("v0.3 frame checksum changed")
     return resolved
@@ -558,9 +507,7 @@ def _authenticate_live_qualification(
             verify_action_effect_qualification,
         )
     except ImportError as error:
-        raise V03DashboardError(
-            "v0.3 qualification verifier is unavailable"
-        ) from error
+        raise V03DashboardError("v0.3 qualification verifier is unavailable") from error
     repository = Path(__file__).resolve().parents[2]
     try:
         evidence = verify_action_effect_qualification(
@@ -575,9 +522,7 @@ def _authenticate_live_qualification(
             f"live v0.3 qualification authentication failed: {error}"
         ) from error
     if not isinstance(public, dict):
-        raise V03DashboardError(
-            "v0.3 qualification verifier returned no public evidence"
-        )
+        raise V03DashboardError("v0.3 qualification verifier returned no public evidence")
     return json.loads(json.dumps(public))
 
 
@@ -608,19 +553,15 @@ def _validate_contract(
         or qualification.get("verdict") != "qualified"
         or qualification.get("source_commit") != source.get("commit")
         or qualification.get("tag") != TAG_NAME
-        or qualification.get("tag_object")
-        != preregistration.get("tag_object")
+        or qualification.get("tag_object") != preregistration.get("tag_object")
         or not isinstance(replacement, Mapping)
         or replacement.get("failed_attempt_evidence_sha256")
         != qualification.get("failed_stage_a_attempt_sha256")
         or replacement.get("failed_attempt_resume_authorized") is not False
-        or replacement.get("failed_attempt_root_reuse_authorized")
-        is not False
-        or replacement.get("restarts_both_arms_from_confirmed_u1")
-        is not True
+        or replacement.get("failed_attempt_root_reuse_authorized") is not False
+        or replacement.get("restarts_both_arms_from_confirmed_u1") is not True
         or not isinstance(parent, Mapping)
-        or parent.get("checkpoint_sha256")
-        != v03.PARENT_CHECKPOINT_SHA256
+        or parent.get("checkpoint_sha256") != v03.PARENT_CHECKPOINT_SHA256
         or not isinstance(roots, Mapping)
         or roots.get("cohort") != str(root)
         or not isinstance(matched, Mapping)
@@ -632,16 +573,12 @@ def _validate_contract(
         or process_contract.get("required_before_finalization") is not True
         or process_contract.get("evidence_path") != PROCESS_CLOSEOUT_NAME
         or process_contract.get("collector") != PROCESS_SCAN_COMMAND
-        or process_contract.get("maximum_rows")
-        != PROCESS_INVENTORY_MAX_ROWS
-        or process_contract.get("maximum_inventory_bytes")
-        != PROCESS_INVENTORY_MAX_BYTES
-        or process_contract.get("prohibited_roles")
-        != sorted(PROHIBITED_PROCESS_ROLES)
+        or process_contract.get("maximum_rows") != PROCESS_INVENTORY_MAX_ROWS
+        or process_contract.get("maximum_inventory_bytes") != PROCESS_INVENTORY_MAX_BYTES
+        or process_contract.get("prohibited_roles") != sorted(PROHIBITED_PROCESS_ROLES)
         or process_contract.get("dashboard_may_remain") is not True
         or not isinstance(arms, list)
-        or [arm.get("id") for arm in arms if isinstance(arm, Mapping)]
-        != list(ARM_ORDER)
+        or [arm.get("id") for arm in arms if isinstance(arm, Mapping)] != list(ARM_ORDER)
     ):
         raise V03DashboardError("immutable v0.3 cohort contract is invalid")
     qualification_path = Path(str(qualification.get("report")))
@@ -666,9 +603,7 @@ def _startup_authentication(root: Path) -> V03DashboardAuthentication:
         contract_sha256=_sha256(contract_path),
         qualification_binding_sha256=_canonical_sha256(qualification),
         qualification_report=Path(str(qualification["report"])),
-        qualification_report_sha256=str(
-            qualification["report_sha256"]
-        ),
+        qualification_report_sha256=str(qualification["report_sha256"]),
         qualification_checksum=Path(str(qualification["checksum"])),
         source_commit=str(contract["source"]["commit"]),
         tag_object=str(contract["preregistration"]["tag_object"]),
@@ -698,23 +633,16 @@ def _verify_cached_authentication(
         root != authentication.root
         or contract_sha256 != authentication.contract_sha256
         or not isinstance(qualification, Mapping)
-        or _canonical_sha256(qualification)
-        != authentication.qualification_binding_sha256
-        or Path(str(qualification.get("report")))
-        != authentication.qualification_report
-        or qualification.get("report_sha256")
-        != authentication.qualification_report_sha256
-        or Path(str(qualification.get("checksum")))
-        != authentication.qualification_checksum
+        or _canonical_sha256(qualification) != authentication.qualification_binding_sha256
+        or Path(str(qualification.get("report"))) != authentication.qualification_report
+        or qualification.get("report_sha256") != authentication.qualification_report_sha256
+        or Path(str(qualification.get("checksum"))) != authentication.qualification_checksum
         or not isinstance(source, Mapping)
         or source.get("commit") != authentication.source_commit
         or not isinstance(preregistration, Mapping)
-        or preregistration.get("tag_object")
-        != authentication.tag_object
+        or preregistration.get("tag_object") != authentication.tag_object
     ):
-        raise V03DashboardError(
-            "cached v0.3 qualification contract binding changed"
-        )
+        raise V03DashboardError("cached v0.3 qualification contract binding changed")
     report_bytes = _bounded_regular_bytes(
         authentication.qualification_report,
         maximum=STATUS_MAX_BYTES,
@@ -722,9 +650,7 @@ def _verify_cached_authentication(
     )
     digest = hashlib.sha256(report_bytes).hexdigest()
     if digest != authentication.qualification_report_sha256:
-        raise V03DashboardError(
-            "cached v0.3 qualification report checksum changed"
-        )
+        raise V03DashboardError("cached v0.3 qualification report checksum changed")
     try:
         checksum_fields = (
             _bounded_regular_bytes(
@@ -737,16 +663,12 @@ def _verify_cached_authentication(
             .split()
         )
     except UnicodeDecodeError as error:
-        raise V03DashboardError(
-            "cached v0.3 qualification checksum is not ASCII"
-        ) from error
+        raise V03DashboardError("cached v0.3 qualification checksum is not ASCII") from error
     if checksum_fields != [
         digest,
         authentication.qualification_report.name,
     ]:
-        raise V03DashboardError(
-            "cached v0.3 qualification checksum changed"
-        )
+        raise V03DashboardError("cached v0.3 qualification checksum changed")
 
 
 def _verified_process_closeout(
@@ -756,9 +678,7 @@ def _verified_process_closeout(
 ) -> dict[str, Any]:
     binding = state.get("process_closeout")
     if not isinstance(binding, Mapping):
-        raise V03DashboardError(
-            "terminal process closeout evidence is missing"
-        )
+        raise V03DashboardError("terminal process closeout evidence is missing")
     path = root / PROCESS_CLOSEOUT_NAME
     evidence = _read_json(path, maximum=PROCESS_CLOSEOUT_MAX_BYTES)
     inventory = evidence.get("inventory")
@@ -789,28 +709,22 @@ def _verified_process_closeout(
         or not isinstance(evidence.get("captured_at"), str)
         or not isinstance(collector, Mapping)
         or collector.get("command") != PROCESS_SCAN_COMMAND
-        or collector.get("timeout_seconds")
-        != PROCESS_SCAN_TIMEOUT_SECONDS
-        or collector.get("maximum_inventory_bytes")
-        != PROCESS_INVENTORY_MAX_BYTES
+        or collector.get("timeout_seconds") != PROCESS_SCAN_TIMEOUT_SECONDS
+        or collector.get("maximum_inventory_bytes") != PROCESS_INVENTORY_MAX_BYTES
         or collector.get("maximum_rows") != PROCESS_INVENTORY_MAX_ROWS
         or not isinstance(inventory, list)
         or not inventory
         or len(inventory) > PROCESS_INVENTORY_MAX_ROWS
         or collector.get("observed_rows") != len(inventory)
         or not isinstance(policy, Mapping)
-        or policy.get("prohibited_roles")
-        != sorted(PROHIBITED_PROCESS_ROLES)
+        or policy.get("prohibited_roles") != sorted(PROHIBITED_PROCESS_ROLES)
         or policy.get("dashboard_may_remain") is not True
         or policy.get("commands_redacted_to_sha256") is not True
         or evidence.get("prohibited_matches") != []
         or not isinstance(dashboards, list)
-        or _canonical_sha256(inventory)
-        != evidence.get("inventory_sha256")
+        or _canonical_sha256(inventory) != evidence.get("inventory_sha256")
     ):
-        raise V03DashboardError(
-            "terminal process closeout evidence changed"
-        )
+        raise V03DashboardError("terminal process closeout evidence changed")
     seen: set[int] = set()
     expected_dashboards: list[dict[str, Any]] = []
     for item in inventory:
@@ -826,24 +740,14 @@ def _verified_process_closeout(
             or item["ppid"] < 0
             or item.get("role") not in PROCESS_ROLES
             or item.get("role") in PROHIBITED_PROCESS_ROLES
-            or SHA256_PATTERN.fullmatch(
-                str(item.get("command_sha256", ""))
-            )
-            is None
+            or SHA256_PATTERN.fullmatch(str(item.get("command_sha256", ""))) is None
         ):
-            raise V03DashboardError(
-                "terminal process closeout inventory changed"
-            )
+            raise V03DashboardError("terminal process closeout inventory changed")
         seen.add(item["pid"])
         if item["role"] == "dashboard":
             expected_dashboards.append(dict(item))
-    if (
-        [item["pid"] for item in inventory] != sorted(seen)
-        or dashboards != expected_dashboards
-    ):
-        raise V03DashboardError(
-            "terminal process closeout ordering changed"
-        )
+    if [item["pid"] for item in inventory] != sorted(seen) or dashboards != expected_dashboards:
+        raise V03DashboardError("terminal process closeout ordering changed")
     expected_binding = {
         "path": PROCESS_CLOSEOUT_NAME,
         "sha256": _sha256(path),
@@ -855,9 +759,7 @@ def _verified_process_closeout(
         "verdict": "clear",
     }
     if dict(binding) != expected_binding:
-        raise V03DashboardError(
-            "terminal process closeout binding changed"
-        )
+        raise V03DashboardError("terminal process closeout binding changed")
     return expected_binding
 
 
@@ -880,16 +782,13 @@ def _verified_closeout(
     if (
         _sha256(report_path) != terminal.get("sha256")
         or _sha256(integrity_path) != terminal.get("integrity_sha256")
-        or terminal.get("process_closeout_sha256")
-        != process_closeout.get("sha256")
+        or terminal.get("process_closeout_sha256") != process_closeout.get("sha256")
         or integrity.get("protocol") != PROTOCOL
         or integrity.get("cohort_id") != COHORT_ID
         or integrity.get("report_sha256") != terminal.get("sha256")
         or integrity.get("cohort_contract_sha256") != contract_sha256
-        or integrity.get("process_closeout_sha256")
-        != process_closeout.get("sha256")
-        or integrity.get("process_inventory_sha256")
-        != process_closeout.get("inventory_sha256")
+        or integrity.get("process_closeout_sha256") != process_closeout.get("sha256")
+        or integrity.get("process_inventory_sha256") != process_closeout.get("inventory_sha256")
         or report.get("protocol") != PROTOCOL
         or report.get("cohort_id") != COHORT_ID
         or report.get("cohort_contract_sha256") != contract_sha256
@@ -902,12 +801,8 @@ def _verified_closeout(
         or _source_commit(report) != contract["source"]["commit"]
         or report.get("qualification", {}).get("report_sha256")
         != contract["qualification"]["report_sha256"]
-        or report.get("checkpoint_rule", {}).get(
-            "stage_a_checkpoint_reuse_authorized"
-        )
-        is not False
-        or report.get("checkpoint_rule", {}).get("u3_authorized")
-        is not False
+        or report.get("checkpoint_rule", {}).get("stage_a_checkpoint_reuse_authorized") is not False
+        or report.get("checkpoint_rule", {}).get("u3_authorized") is not False
     ):
         raise V03DashboardError("v0.3 terminal closeout is unauthenticated")
     arm_records: dict[str, list[Mapping[str, Any]]] = {}
@@ -917,17 +812,9 @@ def _verified_closeout(
             maximum=REPORT_MAX_BYTES,
         )
         controller = arm_report.get("controller")
-        exams = (
-            controller.get("exam_records")
-            if isinstance(controller, Mapping)
-            else None
-        )
-        if not isinstance(exams, list) or not all(
-            isinstance(exam, Mapping) for exam in exams
-        ):
-            raise V03DashboardError(
-                f"{arm_id} terminal exams are unavailable"
-            )
+        exams = controller.get("exam_records") if isinstance(controller, Mapping) else None
+        if not isinstance(exams, list) or not all(isinstance(exam, Mapping) for exam in exams):
+            raise V03DashboardError(f"{arm_id} terminal exams are unavailable")
         arm_records[arm_id] = exams
     selection = v03.select_architecture(arm_records)
     if (
@@ -938,9 +825,7 @@ def _verified_closeout(
             != (selection["selected_architecture"] is None)
         )
     ):
-        raise V03DashboardError(
-            "dashboard recomputation differs from v0.3 closeout"
-        )
+        raise V03DashboardError("dashboard recomputation differs from v0.3 closeout")
     return report
 
 
@@ -974,10 +859,8 @@ def load_v03_snapshot(
         or state.get("contract_sha256") != contract_sha256
         or state.get("source_commit") != contract["source"]["commit"]
         or state.get("tag") != TAG_NAME
-        or state.get("tag_object")
-        != contract["preregistration"]["tag_object"]
-        or state.get("qualification_sha256")
-        != contract["qualification"]["report_sha256"]
+        or state.get("tag_object") != contract["preregistration"]["tag_object"]
+        or state.get("qualification_sha256") != contract["qualification"]["report_sha256"]
         or state.get("phase")
         not in {
             "ready",
@@ -988,13 +871,9 @@ def load_v03_snapshot(
             "integrity_failed",
         }
         or not isinstance(arms, list)
-        or [arm.get("id") for arm in arms if isinstance(arm, Mapping)]
-        != list(ARM_ORDER)
+        or [arm.get("id") for arm in arms if isinstance(arm, Mapping)] != list(ARM_ORDER)
         or sum(arm.get("state") == "training" for arm in arms) > 1
-        or (
-            state.get("phase") == "completed"
-            and not isinstance(process_binding, Mapping)
-        )
+        or (state.get("phase") == "completed" and not isinstance(process_binding, Mapping))
         or (
             process_binding is not None
             and (
@@ -1008,13 +887,9 @@ def load_v03_snapshot(
             )
         )
     ):
-        raise V03DashboardError(
-            "mutable v0.3 state differs from its contract"
-        )
+        raise V03DashboardError("mutable v0.3 state differs from its contract")
     process_closeout = (
-        _verified_process_closeout(root, state=state)
-        if process_binding is not None
-        else None
+        _verified_process_closeout(root, state=state) if process_binding is not None else None
     )
     closeout = (
         _verified_closeout(
@@ -1030,72 +905,48 @@ def load_v03_snapshot(
     public_arms: list[dict[str, Any]] = []
     ages: list[float] = []
     active_age: float | None = None
-    for definition, arm_state in zip(
-        contract["arms"], arms, strict=True
-    ):
+    for definition, arm_state in zip(contract["arms"], arms, strict=True):
         arm_id = definition["id"]
         directory = root / arm_id
         status: dict[str, Any] = {}
         if directory.exists() or directory.is_symlink():
             if directory.is_symlink() or not directory.is_dir():
-                raise V03DashboardError(
-                    f"unsafe v0.3 arm directory: {arm_id}"
-                )
+                raise V03DashboardError(f"unsafe v0.3 arm directory: {arm_id}")
             status = _read_json(directory / "status.json")
             if (
                 status.get("protocol") != PROTOCOL
                 or status.get("cohort_id") != COHORT_ID
                 or status.get("arm") != arm_id
                 or _source_commit(status) != contract["source"]["commit"]
-                or status.get("qualification_sha256")
-                != contract["qualification"]["report_sha256"]
-                or status.get("cohort_contract_sha256")
-                != contract_sha256
-                or status.get("parent_checkpoint_sha256")
-                != v03.PARENT_CHECKPOINT_SHA256
+                or status.get("qualification_sha256") != contract["qualification"]["report_sha256"]
+                or status.get("cohort_contract_sha256") != contract_sha256
+                or status.get("parent_checkpoint_sha256") != v03.PARENT_CHECKPOINT_SHA256
                 or _integer(status.get("action_cap")) != ACTION_CAP
             ):
-                raise V03DashboardError(
-                    f"{arm_id} status differs from the cohort contract"
-                )
+                raise V03DashboardError(f"{arm_id} status differs from the cohort contract")
             age = _timestamp_age(status.get("updated_at"))
             if age is not None:
                 ages.append(age)
                 if state.get("active_arm") == arm_id:
                     active_age = age
         elif arm_state.get("state") != "pending":
-            raise V03DashboardError(
-                f"{arm_id} state has no arm directory"
-            )
+            raise V03DashboardError(f"{arm_id} state has no arm directory")
         if arm_state.get("state") == "completed":
             report = _read_json(
                 directory / "report.json",
                 maximum=REPORT_MAX_BYTES,
             )
             controller = report.get("controller")
-            raw_exams = (
-                controller.get("exam_records")
-                if isinstance(controller, Mapping)
-                else None
-            )
-            if (
-                not isinstance(raw_exams, list)
-                or not all(
-                    isinstance(exam, Mapping) for exam in raw_exams
-                )
+            raw_exams = controller.get("exam_records") if isinstance(controller, Mapping) else None
+            if not isinstance(raw_exams, list) or not all(
+                isinstance(exam, Mapping) for exam in raw_exams
             ):
-                raise V03DashboardError(
-                    f"{arm_id} report has no exam records"
-                )
+                raise V03DashboardError(f"{arm_id} report has no exam records")
             terminal = arm_state.get("terminal")
-            if (
-                not isinstance(terminal, Mapping)
-                or _sha256(directory / "report.json")
-                != terminal.get("report_sha256")
-            ):
-                raise V03DashboardError(
-                    f"{arm_id} terminal report changed"
-                )
+            if not isinstance(terminal, Mapping) or _sha256(
+                directory / "report.json"
+            ) != terminal.get("report_sha256"):
+                raise V03DashboardError(f"{arm_id} terminal report changed")
             context_encoder = report.get("context_encoder")
             context_summary = report.get("context_summary")
             first_rollout = report.get("first_rollout")
@@ -1104,9 +955,7 @@ def load_v03_snapshot(
             context_encoder = status.get("encoder_latest", {})
             context_summary = status.get("context_metrics", {})
             first_rollout = {
-                "aggregate_sha256": status.get(
-                    "first_rollout_identity_sha256"
-                ),
+                "aggregate_sha256": status.get("first_rollout_identity_sha256"),
                 "verified": status.get("first_rollout_verified") is True,
                 "first_divergence": (
                     "after_first_optimizer"
@@ -1131,9 +980,7 @@ def load_v03_snapshot(
                     raw_exams,
                 ).eligible
             except (RuntimeError, TypeError, ValueError) as error:
-                raise V03DashboardError(
-                    f"{arm_id} terminal grade is invalid"
-                ) from error
+                raise V03DashboardError(f"{arm_id} terminal grade is invalid") from error
         frame_available = False
         if status and _integer(status.get("frame_revision")):
             frame_available = _safe_relative_frame(
@@ -1150,55 +997,29 @@ def load_v03_snapshot(
                 "phase": status.get("phase"),
                 "context_enabled": definition.get("context_enabled"),
                 "updated_at": status.get("updated_at"),
-                "trained_actions": (
-                    _integer(status.get("child_trained_actions")) or 0
-                ),
-                "collected_actions": (
-                    _integer(status.get("child_collected_actions")) or 0
-                ),
-                "remaining_action_budget": _integer(
-                    status.get("remaining_action_budget")
-                ),
-                "optimizer_updates": _integer(
-                    status.get("optimizer_updates")
-                ),
+                "trained_actions": (_integer(status.get("child_trained_actions")) or 0),
+                "collected_actions": (_integer(status.get("child_collected_actions")) or 0),
+                "remaining_action_budget": _integer(status.get("remaining_action_budget")),
+                "optimizer_updates": _integer(status.get("optimizer_updates")),
                 "exams_completed": len(exams),
                 "exams": exams,
                 "terminal_checks": terminal_checks,
                 "eligible": eligible,
                 "context_encoder": (
-                    dict(context_encoder)
-                    if isinstance(context_encoder, Mapping)
-                    else {}
+                    dict(context_encoder) if isinstance(context_encoder, Mapping) else {}
                 ),
                 "context_summary": (
-                    dict(context_summary)
-                    if isinstance(context_summary, Mapping)
-                    else {}
+                    dict(context_summary) if isinstance(context_summary, Mapping) else {}
                 ),
                 "first_rollout": (
-                    dict(first_rollout)
-                    if isinstance(first_rollout, Mapping)
-                    else {}
+                    dict(first_rollout) if isinstance(first_rollout, Mapping) else {}
                 ),
-                "frame_revision": (
-                    _integer(status.get("frame_revision")) or 0
-                ),
-                "frame_url": (
-                    f"/api/frame?arm={arm_id}"
-                    if frame_available
-                    else None
-                ),
+                "frame_revision": (_integer(status.get("frame_revision")) or 0),
+                "frame_url": (f"/api/frame?arm={arm_id}" if frame_available else None),
             }
         )
-    heartbeat_age = (
-        active_age if state.get("active_arm") is not None else max(ages, default=0.0)
-    )
-    selected = (
-        closeout.get("selected_architecture")
-        if isinstance(closeout, Mapping)
-        else None
-    )
+    heartbeat_age = active_age if state.get("active_arm") is not None else max(ages, default=0.0)
+    selected = closeout.get("selected_architecture") if isinstance(closeout, Mapping) else None
     return {
         "protocol": PROTOCOL,
         "cohort_id": COHORT_ID,
@@ -1208,31 +1029,18 @@ def load_v03_snapshot(
         "source_commit": contract["source"]["commit"],
         "tag": TAG_NAME,
         "tag_object": contract["preregistration"]["tag_object"],
-        "qualification_report_sha256": contract["qualification"][
-            "report_sha256"
-        ],
+        "qualification_report_sha256": contract["qualification"]["report_sha256"],
         "contract_sha256": contract_sha256,
         "heartbeat_age_seconds": heartbeat_age,
         "heartbeat_stale": (
             state.get("active_arm") is not None
-            and (
-                active_age is None
-                or active_age > HEARTBEAT_STALE_SECONDS
-            )
+            and (active_age is None or active_age > HEARTBEAT_STALE_SECONDS)
         ),
-        "total_trained_actions": sum(
-            arm["trained_actions"] for arm in public_arms
-        ),
-        "total_exams": sum(
-            arm["exams_completed"] for arm in public_arms
-        ),
+        "total_trained_actions": sum(arm["trained_actions"] for arm in public_arms),
+        "total_exams": sum(arm["exams_completed"] for arm in public_arms),
         "arms": public_arms,
         "selected_architecture": selected,
-        "terminal_verdict": (
-            closeout.get("verdict")
-            if isinstance(closeout, Mapping)
-            else None
-        ),
+        "terminal_verdict": (closeout.get("verdict") if isinstance(closeout, Mapping) else None),
         "process_closeout": process_closeout,
         "checkpoint_promotable": False,
         "u3_authorized": False,

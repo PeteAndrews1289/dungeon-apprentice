@@ -1,5 +1,12 @@
 # Protocol v0.3: Matched Action-Effect Architecture Study
 
+> **Controlling operational amendment:** the scientific design below remains unchanged. Original
+> Stage-A attempt 0 failed before action one; r1 then reached 38,912 trained sham actions but failed
+> before the action-effect arm because of process-control defects. The current prospective launch
+> boundary is the fresh
+> [Stage-A r2 amendment](protocol-v0.3-action-effect-architecture-r2.md). Neither failed root or
+> checkpoint may be resumed or reused.
+
 > **Release-candidate status:** implementation complete; clean freeze and qualification pending.
 > The tag, qualification claim/report, cohort root, media root, policy actions, and training result
 > do not yet exist. Source files, tests, entry points, and this document are not authority to begin

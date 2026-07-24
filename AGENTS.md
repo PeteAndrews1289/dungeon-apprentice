@@ -101,17 +101,32 @@
   matching media root, or its qualification root. The cohort contract and state SHA-256 values are
   respectively `15a180d7a38af6dbc459870b0e4f06a565b291399971fc2165774bce91c6e72c` and
   `c35441207060ab9a5c55e82289924ab0530effc7f0e5e50fb11b2a0ab83f68eb`.
-- The current v0.3 boundary is the separately committed r1 replacement in
-  `docs/protocol-v0.3-action-effect-architecture-r1.md`. Its assigned annotated tag is
-  `action-effect-architecture-v0.3-stage-a-r1-20260724`; assigned qualification, cohort, and media
+- v0.3 Stage-A r1 is immutable partial-sham operational-failure evidence. Its launcher used
+  whole-command-line process matching, so the supervisor's embedded child command was
+  misclassified as a second trainer. That function-return failure under zsh `set -e` also bypassed
+  the intended `EXIT` cleanup. Sham reached 38,912 trained child actions; final status recorded
+  40,004 collected actions, while the append-only episode ledger reached 40,960. It completed 19
+  optimizer phases, 76 new updates, one scheduled 32,768-action boundary, eight evaluation rows,
+  and 640 deterministic cases. No safe checkpoint exists and `action-effect` never started, so no
+  scientific comparison or architecture verdict exists. Never resume, rename, reuse, prune,
+  overwrite, or train from the r1 cohort, media, qualification, or checkpoint roots. See
+  `docs/results/v0.3-action-effect-stage-a-r1-operational-failure.md`. The canonical 33-file
+  evidence-map SHA-256 is
+  `eb529df93a43be803d47ba73069ac428bdf953065aa7258d34c2d1dd333bbdc2`; the canonical returned
+  failed-r1 evidence-object SHA-256 is
+  `5d8038681355264b51c51fd4b5c2b93d3e49804286bc78c8d89a1efd21265110`.
+- The current v0.3 boundary is the prospective r2 replacement in
+  `docs/protocol-v0.3-action-effect-architecture-r2.md`. Its assigned annotated tag is
+  `action-effect-architecture-v0.3-stage-a-r2-20260724`; assigned qualification, cohort, and media
   roots are respectively
-  `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r1-20260724`,
-  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-20260724`, and
-  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-media-20260724`; dashboard
-  is `http://127.0.0.1:8789/`; the sole canonical launcher is
-  `scripts/run_v03_action_effect_stage_a_r1.sh`. The new tag, qualification, and managed roots do
-  not exist and are not authorized while the source is dirty. r1 must reauthenticate attempt 0
-  and restart both arms fresh from confirmed U1.
+  `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r2-20260724`,
+  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-20260724`, and
+  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-media-20260724`; dashboard
+  is `http://127.0.0.1:8790/`; the sole canonical launcher is
+  `scripts/run_v03_action_effect_stage_a_r2.sh`. These are prospective assignments: no r2 source
+  hash, tag object, qualification digest, cohort, policy action, or result exists before the clean
+  release sequence. r2 must authenticate both failed predecessors and restart both arms fresh from
+  confirmed U1.
 - Preserve the v0.3 non-circular release order: the published annotated tag preregisters
   source/protocol/roots/contracts; the durable qualification claim/report binds that exact tag
   object; the cohort manifest binds the exact qualification-report SHA-256. Never claim that the

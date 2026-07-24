@@ -144,19 +144,74 @@ def _terminal_fixture(
     return report, report_sha256, integrity_sha256
 
 
-def test_failed_stage_a_attempt_authenticates_zero_action_inventory(
+def test_failed_stage_a_attempt_authenticates_partial_sham_inventory(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    root = tmp_path / "attempt-0"
-    media = tmp_path / "attempt-0-media"
-    qualification = tmp_path / "attempt-0-qualification"
+    root = tmp_path / "stage-a-r1"
+    media = tmp_path / "stage-a-r1-media"
+    qualification = tmp_path / "stage-a-r1-qualification"
     root.mkdir()
     media.mkdir()
+    (media / "sham").mkdir()
     qualification.mkdir()
+    expected_directories = {
+        ".v03-staging",
+        "sham",
+        "sham/checkpoints",
+        "sham/checkpoints/rolling",
+        "sham/frames",
+    }
+    for relative in sorted(expected_directories):
+        (root / relative).mkdir(parents=True, exist_ok=True)
+    expected_files = {
+        "cohort-contract.json",
+        "cohort.json",
+        "dashboard.log",
+        "dashboard.pid",
+        "launcher-sham-attempt-0.json",
+        "sham/checkpoints/initial.cases.json",
+        "sham/checkpoints/initial.integrity.json",
+        "sham/checkpoints/initial.json",
+        "sham/checkpoints/initial.zip",
+        "sham/checkpoints/latest-observed.integrity.json",
+        "sham/checkpoints/latest-observed.json",
+        "sham/checkpoints/latest-observed.zip",
+        "sham/checkpoints/rolling/exam-0032768.cases.json",
+        "sham/checkpoints/rolling/exam-0032768.integrity.json",
+        "sham/checkpoints/rolling/exam-0032768.json",
+        "sham/checkpoints/rolling/exam-0032768.zip",
+        "sham/episode-starts.jsonl",
+        "sham/episodes.jsonl",
+        "sham/evaluations.jsonl",
+        "sham/events.jsonl",
+        "sham/first-rollout.json",
+        "sham/frames/exam-navigate-full.png",
+        "sham/frames/exam-unlock-u0-visible.png",
+        "sham/frames/exam-unlock-u1-local.png",
+        "sham/frames/exam-unlock-u2-separated.png",
+        "sham/frames/latest.png",
+        "sham/manifest.json",
+        "sham/optimizer.jsonl",
+        "sham/status.json",
+    }
     source = "a" * 40
-    tag = "attempt-0-tag"
+    tag = "stage-a-r1-tag"
     tag_object = "b" * 40
+    tag_payload_sha256 = _digest("9")
+    first_rollout_sha256 = _digest("7")
+    initial_rng_sha256 = _digest("8")
+    prior_attempt = {
+        "attempt_id": "v0.3-action-effect-stage-a-20260724-attempt-0",
+        "disposition": "operationally_incomplete",
+        "cohort": {
+            "classification": "pre_arm_dashboard_health_failure",
+            "recorded_child_actions": 0,
+        },
+        "resume_authorized": False,
+        "reuse_authorized": False,
+    }
+    prior_attempt_sha256 = qualify._canonical_sha256(prior_attempt)
 
     claim = {
         "schema_version": 1,
@@ -178,7 +233,9 @@ def test_failed_stage_a_attempt_authenticates_zero_action_inventory(
             "dirty": False,
             "tag": tag,
             "tag_object": tag_object,
+            "tag_payload_sha256": tag_payload_sha256,
         },
+        "failed_stage_a_attempt": prior_attempt,
     }
     report_sha256 = _write_json(qualification / "report.json", report)
     checksum = qualification / "report.json.sha256"
@@ -189,21 +246,31 @@ def test_failed_stage_a_attempt_authenticates_zero_action_inventory(
     contract = {
         "schema_version": 1,
         "protocol": qualify.PROTOCOL,
-        "cohort_id": "v0.3-action-effect-stage-a-20260724",
+        "cohort_id": "v0.3-action-effect-stage-a-r1-20260724",
         "source": {"commit": source, "dirty": False},
         "preregistration": {
             "tag": tag,
             "tag_object": tag_object,
             "peeled_commit": source,
         },
-        "qualification": {"report_sha256": report_sha256},
+        "qualification": {
+            "report_sha256": report_sha256,
+            "tag_payload_sha256": tag_payload_sha256,
+            "failed_stage_a_attempt_sha256": prior_attempt_sha256,
+        },
         "roots": {"cohort": str(root), "media": str(media)},
+        "replacement": {
+            "failed_attempt_evidence_sha256": prior_attempt_sha256,
+            "failed_attempt_resume_authorized": False,
+            "failed_attempt_root_reuse_authorized": False,
+            "restarts_both_arms_from_confirmed_u1": True,
+        },
     }
     contract_sha256 = _write_json(root / "cohort-contract.json", contract)
     cohort = {
         "schema_version": 1,
         "protocol": qualify.PROTOCOL,
-        "cohort_id": "v0.3-action-effect-stage-a-20260724",
+        "cohort_id": "v0.3-action-effect-stage-a-r1-20260724",
         "contract_sha256": contract_sha256,
         "source_commit": source,
         "tag": tag,
@@ -221,7 +288,7 @@ def test_failed_stage_a_attempt_authenticates_zero_action_inventory(
                     {
                         "index": 0,
                         "state": "crashed",
-                        "trainer_exit_code": 130,
+                        "trainer_exit_code": 1,
                     }
                 ],
                 "terminal": None,
@@ -235,10 +302,157 @@ def test_failed_stage_a_attempt_authenticates_zero_action_inventory(
         ],
     }
     cohort_sha256 = _write_json(root / "cohort.json", cohort)
+
+    first_exam = root / "sham/checkpoints/rolling/exam-0032768.zip"
+    first_exam.write_bytes(b"portable first frozen exam\n")
+    first_exam_sha256 = hashlib.sha256(first_exam.read_bytes()).hexdigest()
+    first_exam_sidecar = (
+        root / "sham/checkpoints/rolling/exam-0032768.json"
+    )
+    first_exam_sidecar_sha256 = _write_json(
+        first_exam_sidecar,
+        {
+            "protocol": qualify.PROTOCOL,
+            "kind": "exam",
+            "child_trained_actions": 32_768,
+        },
+    )
+    _write_json(
+        root / "sham/checkpoints/rolling/exam-0032768.integrity.json",
+        {
+            "protocol": qualify.PROTOCOL,
+            "checkpoint_sha256": first_exam_sha256,
+            "sidecar_sha256": first_exam_sidecar_sha256,
+        },
+    )
+
+    latest_observed = root / "sham/checkpoints/latest-observed.zip"
+    latest_observed.write_bytes(b"portable latest observed checkpoint\n")
+    latest_observed_sha256 = hashlib.sha256(
+        latest_observed.read_bytes()
+    ).hexdigest()
+    _write_json(
+        root / "sham/first-rollout.json",
+        {
+            "arm": "sham",
+            "captured_before_first_optimizer": True,
+            "checkpoint_reuse_authorized": False,
+            "identity": {
+                "aggregate_sha256": first_rollout_sha256,
+                "trajectory_identity": [
+                    {"worker_index": index, "transitions": 512}
+                    for index in range(4)
+                ],
+            },
+        },
+    )
+    _write_json(
+        root / "sham/status.json",
+        {
+            "protocol": qualify.PROTOCOL,
+            "cohort_id": "v0.3-action-effect-stage-a-r1-20260724",
+            "cohort_contract_sha256": contract_sha256,
+            "qualification_sha256": report_sha256,
+            "arm": "sham",
+            "source": {"commit": source, "dirty": False},
+            "phase": "training",
+            "child_collected_actions": 40_004,
+            "child_trained_actions": 38_912,
+            "lifetime_collected_actions": 826_436,
+            "lifetime_trained_actions": 825_344,
+            "optimizer_updates": 1_612,
+            "exam_count": 1,
+            "exams_completed": 1,
+            "initial_rng_identity_sha256": initial_rng_sha256,
+            "first_rollout_identity_sha256": first_rollout_sha256,
+            "first_rollout_verified": True,
+            "latest_observed_checkpoint_sha256": latest_observed_sha256,
+            "latest_safe_checkpoint": None,
+            "latest_safe_checkpoint_sha256": None,
+            "latest_evaluated_checkpoint": {
+                "child_trained_actions": 32_768,
+                "checkpoint_sha256": first_exam_sha256,
+                "counts_toward_architecture_gate": True,
+            },
+            "report_sha256": None,
+            "resume_authorized": False,
+            "replacement_requires_both_fresh_arms": True,
+        },
+    )
+    _write_json(
+        root / "launcher-sham-attempt-0.json",
+        {
+            "state": "exited",
+            "forwarded_signal": "SIGTERM",
+            "exit_status": -15,
+            "supervisor_pid": 1234,
+            "trainer_pid": 1235,
+        },
+    )
+    (root / "sham/episodes.jsonl").write_text(
+        ("{}\n" * 1_919)
+        + json.dumps(
+            {
+                "child_collected_actions": 40_960,
+                "child_trained_actions": 38_912,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (root / "sham/evaluations.jsonl").write_text(
+        "{}\n" * 8,
+        encoding="utf-8",
+    )
+    (root / "sham/optimizer.jsonl").write_text(
+        "{}\n" * 19,
+        encoding="utf-8",
+    )
     dashboard_log = root / "dashboard.log"
-    dashboard_log.write_text("health check failed\n", encoding="utf-8")
+    dashboard_log.write_text(
+        "r1 dashboard and trainer remained healthy until launcher rejection\n",
+        encoding="utf-8",
+    )
+    (root / "dashboard.pid").write_text("1233\n", encoding="ascii")
+
+    for relative in sorted(expected_files):
+        path = root / relative
+        if not path.exists():
+            path.write_bytes(f"portable fixture: {relative}\n".encode())
+    root_hashes = {
+        relative: hashlib.sha256((root / relative).read_bytes()).hexdigest()
+        for relative in sorted(expected_files)
+    }
+
     launcher_log = tmp_path / "launcher.log"
-    launcher_log.write_bytes(b"")
+    launcher_log.write_text(
+        "\n".join(
+            [
+                "v0.3 Stage-A dashboard: http://127.0.0.1:8789/",
+                "Starting v0.3 Stage-A arm sham (fresh matched twin).",
+                (
+                    "v0.3 sham artifacts: /Volumes/T7 Developer/"
+                    "DungeonApprentice/v03-action-effect-stage-a-r1-20260724/sham"
+                ),
+                "v0.3 does not have exactly one neural trainer",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    assert launcher_log.stat().st_size == 250
+    launcher_log_sha256 = hashlib.sha256(launcher_log.read_bytes()).hexdigest()
+    artifact_map_sha256 = qualify._canonical_sha256(
+        {
+            "cohort": root_hashes,
+            "qualification": {
+                "report.json": report_sha256,
+                "claim.json": claim_sha256,
+                "report.json.sha256": hashlib.sha256(checksum.read_bytes()).hexdigest(),
+            },
+            "launcher_log": {str(launcher_log): launcher_log_sha256},
+        }
+    )
 
     replacements = {
         "FAILED_STAGE_A_ATTEMPT_ROOT": root,
@@ -259,12 +473,27 @@ def test_failed_stage_a_attempt_authenticates_zero_action_inventory(
         ),
         "FAILED_STAGE_A_ATTEMPT_CONTRACT_SHA256": contract_sha256,
         "FAILED_STAGE_A_ATTEMPT_COHORT_SHA256": cohort_sha256,
+        "FAILED_STAGE_A_ATTEMPT_PREDECESSOR_SHA256": (
+            prior_attempt_sha256
+        ),
+        "FAILED_STAGE_A_ATTEMPT_TAG_PAYLOAD_SHA256": (
+            tag_payload_sha256
+        ),
+        "FAILED_STAGE_A_ATTEMPT_FIRST_ROLLOUT_SHA256": (
+            first_rollout_sha256
+        ),
+        "FAILED_STAGE_A_ATTEMPT_INITIAL_RNG_SHA256": initial_rng_sha256,
+        "FAILED_STAGE_A_ATTEMPT_LATEST_OBSERVED_SHA256": (
+            latest_observed_sha256
+        ),
+        "FAILED_STAGE_A_ATTEMPT_FIRST_EXAM_SHA256": first_exam_sha256,
+        "FAILED_STAGE_A_ATTEMPT_ARTIFACT_MAP_SHA256": artifact_map_sha256,
+        "FAILED_STAGE_A_ATTEMPT_ROOT_FILE_SHA256": root_hashes,
+        "FAILED_STAGE_A_ATTEMPT_ROOT_DIRECTORIES": expected_directories,
         "FAILED_STAGE_A_ATTEMPT_DASHBOARD_LOG_SHA256": (
             hashlib.sha256(dashboard_log.read_bytes()).hexdigest()
         ),
-        "FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG_SHA256": hashlib.sha256(
-            b""
-        ).hexdigest(),
+        "FAILED_STAGE_A_ATTEMPT_LAUNCHER_LOG_SHA256": launcher_log_sha256,
     }
     for name, value in replacements.items():
         monkeypatch.setattr(qualify, name, value)
@@ -273,14 +502,35 @@ def test_failed_stage_a_attempt_authenticates_zero_action_inventory(
 
     assert evidence["disposition"] == "operationally_incomplete"
     assert evidence["cohort"]["classification"] == (
-        "pre_arm_dashboard_health_failure"
+        "launcher_process_cardinality_false_positive"
     )
-    assert evidence["recorded_training_evidence"]["recorded_child_actions"] == 0
-    assert evidence["recorded_training_evidence"]["trainer_started"] is False
+    assert (
+        evidence["qualification"]["predecessor_attempt_sha256"]
+        == prior_attempt_sha256
+    )
+    training = evidence["recorded_training_evidence"]
+    assert training["recorded_child_actions"] == 38_912
+    assert training["status_collected_actions"] == 40_004
+    assert training["episode_ledger_collected_actions"] == 40_960
+    assert training["optimizer_updates_total"] == 1_612
+    assert training["optimizer_updates_inherited"] == 1_536
+    assert training["optimizer_updates_new"] == 76
+    assert training["rollout_boundaries"] == 19
+    assert training["frozen_exams"] == 1
+    assert training["evaluation_rows"] == 8
+    assert training["evaluation_cases"] == 640
+    assert training["trainer_started"] is True
+    assert evidence["cohort"]["manifest_arm_outcome"]["exit_code"] == 1
+    assert evidence["operational_failure"]["worker_stop"] == {
+        "supervisor_forwarded_signal": "SIGTERM",
+        "worker_exit_status": -15,
+        "status_remained_phase": "training",
+    }
+    assert evidence["launcher_log"]["bytes"] == 250
     assert evidence["resume_authorized"] is False
     assert evidence["reuse_authorized"] is False
 
-    (root / "sham").mkdir()
+    (root / "sham/unexpected.bin").write_bytes(b"unexpected")
     with pytest.raises(
         qualify.ActionEffectQualificationError,
         match="inventory changed",

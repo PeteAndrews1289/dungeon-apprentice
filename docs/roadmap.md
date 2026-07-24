@@ -40,7 +40,10 @@
 - [x] Pass attempt 0's disposable matched first-rollout gate and one-shot qualification
 - [x] Preserve v0.3 attempt 0 as a zero-action operational failure under its original tag/root
 - [x] Implement the dashboard-authentication correction and assign fresh r1 identities
-- [ ] Freeze, qualify, tag, and externally anchor the non-resumable v0.3 Stage-A r1 study
+- [x] Freeze, qualify, tag, and externally anchor the non-resumable v0.3 Stage-A r1 study
+- [x] Preserve r1 as a partial-sham operational failure; never resume its 38,912-action checkpoint
+- [x] Implement explicit process-role and abnormal-exit corrections under fresh r2 identities
+- [ ] Freeze, qualify, tag, and externally anchor the non-resumable v0.3 Stage-A r2 study
 - [ ] Run sham and action-effect through the full matched budget and terminal-three gate
 - [ ] If and only if action-effect qualifies, preregister three fresh independent U1-parent replications
 - [ ] Confirm all three replicated v0.3 policies with a fresh no-update instrument before opening U3
@@ -156,12 +159,20 @@ eliminated the tail but scored 70, 69, and 71 against the 72/80 terminal floor. 
 `ablation_failed`. No mechanism, checkpoint, successor cohort, confirmation, or U3 activation was
 selected. The [authenticated result](results/v0.2-u2s-r1-stability-ablation.md) closes that branch.
 
-The next bounded question is therefore a new
-[v0.3 Stage-A r1 action-effect architecture study](protocol-v0.3-action-effect-architecture-r1.md), not another
-reward or PPO rescue. It creates two fresh twins from the same confirmed U1 parent. Both retain the
-original reward, optimizer settings, curriculum, and 512→256 recurrent topology. Both add the same
-zero-initialized context projection. Sham always receives zero; the candidate receives only its own
-preceding action and a visible changed/unchanged outcome.
+The next bounded question remains the
+[v0.3 Stage-A action-effect architecture study](protocol-v0.3-action-effect-architecture.md), not
+another reward or PPO rescue. Attempt 0 failed at zero actions. r1 fixed that dashboard boundary and
+reached 38,912 trained sham actions, but a false process count and missed exit cleanup closed it
+before action-effect began. Its [incident record](results/v0.3-action-effect-stage-a-r1-operational-failure.md)
+preserves one scheduled exam, 76 new optimizer updates, and the absence of any safe checkpoint or
+matched result.
+
+The fresh [r2 boundary](protocol-v0.3-action-effect-architecture-r2.md) creates two new twins from
+the same confirmed U1 parent. Both retain the original reward, optimizer settings, curriculum, and
+512→256 recurrent topology. Both add the same zero-initialized context projection. Sham always
+receives zero; the candidate receives only its own preceding action and a visible
+changed/unchanged outcome. r2 changes only process classification and explicit abnormal-exit
+cleanup.
 
 Stage A must prove that the transplant is exactly parent-equivalent at zero context and that the two
 arms produce the same first 2,048-transition trajectory before their first update. They then run

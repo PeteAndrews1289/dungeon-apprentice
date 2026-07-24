@@ -29,21 +29,17 @@ from dungeon_apprentice import v03_action_effect as v03
 PROTOCOL = v03.PROTOCOL
 QUALIFICATION_PROTOCOL = PROTOCOL
 SMOKE_PROTOCOL = "dungeon-apprentice-v0.3-action-effect-disposable-smoke"
-COHORT_ID = "v0.3-action-effect-stage-a-r1-20260724"
-TAG_NAME = "action-effect-architecture-v0.3-stage-a-r1-20260724"
-DEFAULT_ROOT = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/"
-    "v03-action-effect-stage-a-r1-20260724"
-)
+COHORT_ID = "v0.3-action-effect-stage-a-r2-20260724"
+TAG_NAME = "action-effect-architecture-v0.3-stage-a-r2-20260724"
+DEFAULT_ROOT = Path("/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-20260724")
 DEFAULT_MEDIA_ROOT = Path(
-    "/Volumes/T7 Developer/DungeonApprentice/"
-    "v03-action-effect-stage-a-r1-media-20260724"
+    "/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-media-20260724"
 )
 QUALIFICATION_REPORT = Path(
     "/Volumes/T7 Developer/DungeonApprentice/qualifications/"
-    "v0.3-action-effect-stage-a-r1-20260724/report.json"
+    "v0.3-action-effect-stage-a-r2-20260724/report.json"
 )
-DEFAULT_DASHBOARD_PORT = 8789
+DEFAULT_DASHBOARD_PORT = 8790
 
 ACTION_CAP = v03.CHILD_ACTION_BUDGET
 TOTAL_ACTION_CAP = 2 * ACTION_CAP
@@ -54,8 +50,7 @@ EXPECTED_CASE_COUNT = EXAM_COUNT * EXAM_EPISODES * 4
 PARENT_LIFETIME_ACTIONS = v03.PARENT_LIFETIME_ACTIONS
 TERMINAL_LIFETIME_ACTIONS = PARENT_LIFETIME_ACTIONS + ACTION_CAP
 TERMINAL_OPTIMIZER_UPDATES = (
-    v03.PARENT_OPTIMIZER_UPDATES
-    + ACTION_CAP // v03.ROLLOUT_TRANSITIONS * v03.PPO_EPOCHS
+    v03.PARENT_OPTIMIZER_UPDATES + ACTION_CAP // v03.ROLLOUT_TRANSITIONS * v03.PPO_EPOCHS
 )
 ARM_ORDER = ("sham", "action-effect")
 ARM_LABELS = {
@@ -80,27 +75,19 @@ PROCESS_INVENTORY_MAX_ROWS = 4096
 PROCESS_COMMAND_MAX_BYTES = 64 * 1024
 PROCESS_SCAN_TIMEOUT_SECONDS = 10
 PROCESS_SCAN_COMMAND = ("/bin/ps", "-axo", "pid=,ppid=,command=")
-PROCESS_ROLES = frozenset(
-    {"unrelated", "dashboard", "trainer", "supervisor", "caffeinate"}
-)
-PROHIBITED_PROCESS_ROLES = frozenset(
-    {"trainer", "supervisor", "caffeinate"}
-)
+PROCESS_ROLES = frozenset({"unrelated", "dashboard", "trainer", "supervisor", "caffeinate"})
+PROHIBITED_PROCESS_ROLES = frozenset({"trainer", "supervisor", "caffeinate"})
 TRAINER_PROCESS_PATTERN = re.compile(
     r"(?:^|[\s/])(?:dungeon-train|"
     r"dungeon_apprentice\.(?:train|v02_sentinel|v02_u1|v02_u2|"
     r"v02_u2r|v02_u2s|v03_action_effect_train))(?=\s|$)"
 )
-SUPERVISOR_PROCESS_PATTERN = re.compile(
-    r"(?:^|[\s/])u2_trainer_supervisor\.py(?=\s|$)"
-)
+SUPERVISOR_PROCESS_PATTERN = re.compile(r"(?:^|[\s/])u2_trainer_supervisor\.py(?=\s|$)")
 DASHBOARD_PROCESS_PATTERN = re.compile(
     r"(?:^|[\s/])dungeon_apprentice\.v03_action_effect_dashboard"
     r"(?=\s|$)"
 )
-CAFFEINATE_PROCESS_PATTERN = re.compile(
-    r"(?:^|\s)(?:/usr/bin/)?caffeinate(?=\s|$)"
-)
+CAFFEINATE_PROCESS_PATTERN = re.compile(r"(?:^|\s)(?:/usr/bin/)?caffeinate(?=\s|$)")
 COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40,64}$")
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 ARM_STATES = frozenset(
@@ -262,9 +249,7 @@ def _verified_qualification_binding(
     try:
         from dungeon_apprentice import v03_action_effect_qualify as qualifier
     except ImportError as error:
-        raise V03ManifestError(
-            "v0.3 qualification verifier is unavailable"
-        ) from error
+        raise V03ManifestError("v0.3 qualification verifier is unavailable") from error
     repository = Path(__file__).resolve().parents[1]
     if (
         report_path.expanduser().absolute() != qualifier.CANONICAL_REPORT
@@ -272,9 +257,7 @@ def _verified_qualification_binding(
         or media_root != qualifier.CANONICAL_MEDIA_ROOT
         or TAG_NAME != qualifier.QUALIFIED_TAG
     ):
-        raise V03ManifestError(
-            "v0.3 qualification, cohort, or media identity changed"
-        )
+        raise V03ManifestError("v0.3 qualification, cohort, or media identity changed")
     try:
         evidence = qualifier.verify_action_effect_qualification(
             report_path,
@@ -285,9 +268,7 @@ def _verified_qualification_binding(
         public = evidence.public_dict()
         report = evidence.verified_report()
     except (OSError, RuntimeError, TypeError, ValueError) as error:
-        raise V03ManifestError(
-            f"v0.3 qualification is invalid: {error}"
-        ) from error
+        raise V03ManifestError(f"v0.3 qualification is invalid: {error}") from error
     restrictions = report.get("restrictions")
     smoke = report.get("smoke_evidence")
     failed_attempt = report.get("failed_stage_a_attempt")
@@ -304,21 +285,16 @@ def _verified_qualification_binding(
         or public.get("tag") != TAG_NAME
         or public.get("tag_object") != tag_object
         or public.get("verdict") != "qualified"
-        or _sha256(qualifier.CANONICAL_REPORT)
-        != public.get("report_sha256")
+        or _sha256(qualifier.CANONICAL_REPORT) != public.get("report_sha256")
         or public.get("storage_caps") != expected_storage_caps
-        or SHA256_PATTERN.fullmatch(
-            str(public.get("failed_stage_a_attempt_sha256", ""))
-        )
-        is None
+        or SHA256_PATTERN.fullmatch(str(public.get("failed_stage_a_attempt_sha256", ""))) is None
         or report.get("protocol") != PROTOCOL
         or report.get("kind") != qualifier.KIND
         or report.get("verdict") != "qualified"
         or not isinstance(smoke, Mapping)
         or not isinstance(smoke.get("_full_report"), Mapping)
         or not isinstance(failed_attempt, Mapping)
-        or _canonical_sha256(failed_attempt)
-        != public.get("failed_stage_a_attempt_sha256")
+        or _canonical_sha256(failed_attempt) != public.get("failed_stage_a_attempt_sha256")
         or failed_attempt.get("disposition") != "operationally_incomplete"
         or failed_attempt.get("resume_authorized") is not False
         or failed_attempt.get("reuse_authorized") is not False
@@ -327,19 +303,11 @@ def _verified_qualification_binding(
         or restrictions.get("stage_a_resume_supported") is not False
         or restrictions.get("failed_attempt_resume_authorized") is not False
         or restrictions.get("failed_attempt_root_reuse_authorized") is not False
-        or restrictions.get(
-            "replacement_restarts_both_arms_from_confirmed_u1"
-        )
-        is not True
-        or restrictions.get(
-            "development_checkpoint_reuse_authorized"
-        )
-        is not False
+        or restrictions.get("replacement_restarts_both_arms_from_confirmed_u1") is not True
+        or restrictions.get("development_checkpoint_reuse_authorized") is not False
         or restrictions.get("u3_authorized") is not False
     ):
-        raise V03ManifestError(
-            "v0.3 qualification public binding is incomplete"
-        )
+        raise V03ManifestError("v0.3 qualification public binding is incomplete")
     return json.loads(json.dumps(public))
 
 
@@ -363,9 +331,7 @@ def _expected_contract(
         },
         "qualification": dict(qualification),
         "replacement": {
-            "failed_attempt_evidence_sha256": qualification[
-                "failed_stage_a_attempt_sha256"
-            ],
+            "failed_attempt_evidence_sha256": qualification["failed_stage_a_attempt_sha256"],
             "failed_attempt_resume_authorized": False,
             "failed_attempt_root_reuse_authorized": False,
             "restarts_both_arms_from_confirmed_u1": True,
@@ -392,9 +358,7 @@ def _expected_contract(
         },
         "matched_design": {
             "arm_order": list(ARM_ORDER),
-            "architecture_initialization_seed": (
-                v03.ARCHITECTURE_INITIALIZATION_SEED
-            ),
+            "architecture_initialization_seed": (v03.ARCHITECTURE_INITIALIZATION_SEED),
             "algorithm_seed": v03.ALGORITHM_SEED,
             "worker_streams": list(v03.WORKER_STREAMS),
             "action_cap_per_arm": ACTION_CAP,
@@ -455,9 +419,7 @@ def _expected_state(contract: Mapping[str, Any]) -> dict[str, Any]:
         "source_commit": contract["source"]["commit"],
         "tag": TAG_NAME,
         "tag_object": contract["preregistration"]["tag_object"],
-        "qualification_sha256": contract["qualification"][
-            "report_sha256"
-        ],
+        "qualification_sha256": contract["qualification"]["report_sha256"],
         "phase": "ready",
         "active_arm": None,
         "created_at": now,
@@ -499,21 +461,14 @@ def _validate_contract(contract: Mapping[str, Any]) -> None:
         or not isinstance(preregistration, Mapping)
         or preregistration.get("tag") != TAG_NAME
         or preregistration.get("peeled_commit") != source.get("commit")
-        or COMMIT_PATTERN.fullmatch(
-            str(preregistration.get("tag_object", ""))
-        )
-        is None
+        or COMMIT_PATTERN.fullmatch(str(preregistration.get("tag_object", ""))) is None
         or not isinstance(qualification, Mapping)
         or not isinstance(parent, Mapping)
-        or parent.get("checkpoint_sha256")
-        != v03.PARENT_CHECKPOINT_SHA256
-        or parent.get("policy_tensor_sha256")
-        != v03.PARENT_POLICY_TENSOR_SHA256
-        or parent.get("optimizer_state_sha256")
-        != v03.PARENT_OPTIMIZER_STATE_SHA256
+        or parent.get("checkpoint_sha256") != v03.PARENT_CHECKPOINT_SHA256
+        or parent.get("policy_tensor_sha256") != v03.PARENT_POLICY_TENSOR_SHA256
+        or parent.get("optimizer_state_sha256") != v03.PARENT_OPTIMIZER_STATE_SHA256
         or parent.get("lifetime_actions") != PARENT_LIFETIME_ACTIONS
-        or parent.get("optimizer_updates")
-        != v03.PARENT_OPTIMIZER_UPDATES
+        or parent.get("optimizer_updates") != v03.PARENT_OPTIMIZER_UPDATES
         or not isinstance(replacement, Mapping)
         or replacement.get("failed_attempt_evidence_sha256")
         != qualification.get("failed_stage_a_attempt_sha256")
@@ -531,15 +486,11 @@ def _validate_contract(contract: Mapping[str, Any]) -> None:
         or matched.get("u3_authorized") is not False
         or not isinstance(process_closeout, Mapping)
         or process_closeout.get("required_before_finalization") is not True
-        or process_closeout.get("evidence_path")
-        != PROCESS_CLOSEOUT_NAME
+        or process_closeout.get("evidence_path") != PROCESS_CLOSEOUT_NAME
         or process_closeout.get("collector") != list(PROCESS_SCAN_COMMAND)
-        or process_closeout.get("maximum_rows")
-        != PROCESS_INVENTORY_MAX_ROWS
-        or process_closeout.get("maximum_inventory_bytes")
-        != PROCESS_INVENTORY_MAX_BYTES
-        or process_closeout.get("prohibited_roles")
-        != sorted(PROHIBITED_PROCESS_ROLES)
+        or process_closeout.get("maximum_rows") != PROCESS_INVENTORY_MAX_ROWS
+        or process_closeout.get("maximum_inventory_bytes") != PROCESS_INVENTORY_MAX_BYTES
+        or process_closeout.get("prohibited_roles") != sorted(PROHIBITED_PROCESS_ROLES)
         or process_closeout.get("dashboard_may_remain") is not True
         or not isinstance(observation, Mapping)
         or observation.get("kind") != "Dict"
@@ -547,10 +498,8 @@ def _validate_contract(contract: Mapping[str, Any]) -> None:
         or observation["action_effect"].get("shape") != [9]
         or observation["action_effect"].get("privileged_state") is not False
         or not isinstance(arms, list)
-        or [arm.get("id") for arm in arms if isinstance(arm, Mapping)]
-        != list(ARM_ORDER)
-        or [arm.get("selectable") for arm in arms]
-        != [False, True]
+        or [arm.get("id") for arm in arms if isinstance(arm, Mapping)] != list(ARM_ORDER)
+        or [arm.get("selectable") for arm in arms] != [False, True]
     ):
         raise V03ManifestError("immutable v0.3 cohort contract changed")
 
@@ -570,14 +519,11 @@ def _validate_state(
         or state.get("contract_sha256") != contract_sha256
         or state.get("source_commit") != contract["source"]["commit"]
         or state.get("tag") != TAG_NAME
-        or state.get("tag_object")
-        != contract["preregistration"]["tag_object"]
-        or state.get("qualification_sha256")
-        != contract["qualification"]["report_sha256"]
+        or state.get("tag_object") != contract["preregistration"]["tag_object"]
+        or state.get("qualification_sha256") != contract["qualification"]["report_sha256"]
         or state.get("phase") not in COHORT_PHASES
         or not isinstance(arms, list)
-        or [arm.get("id") for arm in arms if isinstance(arm, Mapping)]
-        != list(ARM_ORDER)
+        or [arm.get("id") for arm in arms if isinstance(arm, Mapping)] != list(ARM_ORDER)
     ):
         raise V03ManifestError("mutable v0.3 state differs from its contract")
     training = []
@@ -603,8 +549,7 @@ def _validate_state(
         or (
             phase == "completed"
             and (
-                [arm["state"] for arm in arms]
-                != ["completed", "completed"]
+                [arm["state"] for arm in arms] != ["completed", "completed"]
                 or not isinstance(state.get("terminal_report"), Mapping)
                 or not isinstance(process_closeout, Mapping)
             )
@@ -639,24 +584,16 @@ def _load_verified(
     _validate_contract(contract)
     commit = _object_id(source_commit, label="source commit")
     tag = _object_id(tag_object, label="tag object")
-    if (
-        contract["source"]["commit"] != commit
-        or contract["preregistration"]["tag_object"] != tag
-    ):
+    if contract["source"]["commit"] != commit or contract["preregistration"]["tag_object"] != tag:
         raise V03ManifestError("v0.3 source or annotated tag changed")
     roots = contract.get("roots")
-    if (
-        not isinstance(roots, Mapping)
-        or roots.get("cohort") != str(resolved)
-    ):
+    if not isinstance(roots, Mapping) or roots.get("cohort") != str(resolved):
         raise V03ManifestError("v0.3 cohort root binding changed")
     media = _regular_directory(
         Path(str(roots.get("media"))),
         label="v0.3 media root",
     )
-    qualification_path = Path(
-        str(contract["qualification"].get("report"))
-    )
+    qualification_path = Path(str(contract["qualification"].get("report")))
     live_binding = _verified_qualification_binding(
         qualification_path,
         source_commit=commit,
@@ -750,9 +687,7 @@ def _first_rollout_evidence(
         )
         != aggregate
     ):
-        raise V03ManifestError(
-            f"{arm_id} first-rollout boundary is unauthenticated"
-        )
+        raise V03ManifestError(f"{arm_id} first-rollout boundary is unauthenticated")
     _digest(value.get("policy_output_sha256"), label=f"{arm_id} policy output")
     _digest(
         value.get("episode_ledger_normalized_sha256"),
@@ -803,9 +738,7 @@ def _context_encoder_evidence(
             )
         )
     ):
-        raise V03ManifestError(
-            f"{arm_id} context-encoder boundary changed"
-        )
+        raise V03ManifestError(f"{arm_id} context-encoder boundary changed")
     return {
         "history_records": len(history_value),
         "initial": dict(initial),
@@ -860,11 +793,9 @@ def _validate_status_identity(
         or status.get("cohort_id") != COHORT_ID
         or status.get("arm") != arm_id
         or _source_commit(status) != contract["source"]["commit"]
-        or status.get("qualification_sha256")
-        != contract["qualification"]["report_sha256"]
+        or status.get("qualification_sha256") != contract["qualification"]["report_sha256"]
         or status.get("cohort_contract_sha256") != contract_sha256
-        or status.get("parent_checkpoint_sha256")
-        != v03.PARENT_CHECKPOINT_SHA256
+        or status.get("parent_checkpoint_sha256") != v03.PARENT_CHECKPOINT_SHA256
         or int(status.get("action_cap", -1)) != ACTION_CAP
     ):
         raise V03ManifestError(f"{arm_id} status provenance changed")
@@ -882,9 +813,7 @@ def _verified_arm_terminal(
             verify_arm_terminal_report,
         )
     except ImportError as error:
-        raise V03ManifestError(
-            "v0.3 terminal arm verifier is unavailable"
-        ) from error
+        raise V03ManifestError("v0.3 terminal arm verifier is unavailable") from error
     status_path = directory / "status.json"
     report_path = directory / "report.json"
     integrity_path = directory / "report.integrity.json"
@@ -908,28 +837,19 @@ def _verified_arm_terminal(
             expected_source_commit=contract["source"]["commit"],
             expected_cohort_id=COHORT_ID,
             expected_contract_sha256=contract_sha256,
-            expected_qualification_sha256=contract["qualification"][
-                "report_sha256"
-            ],
+            expected_qualification_sha256=contract["qualification"]["report_sha256"],
         )
     except (OSError, RuntimeError, TypeError, ValueError) as error:
-        raise V03ManifestError(
-            f"{arm_id} failed the trainer-owned terminal verifier"
-        ) from error
+        raise V03ManifestError(f"{arm_id} failed the trainer-owned terminal verifier") from error
     progress = report.get("progress")
     controller = report.get("controller")
     qualification = report.get("qualification")
-    raw_exams = (
-        controller.get("exam_records")
-        if isinstance(controller, Mapping)
-        else None
-    )
+    raw_exams = controller.get("exam_records") if isinstance(controller, Mapping) else None
     if (
         status.get("phase") != "completed"
         or int(status.get("child_trained_actions", -1)) != ACTION_CAP
         or int(status.get("remaining_action_budget", -1)) != 0
-        or int(status.get("optimizer_updates", -1))
-        != TERMINAL_OPTIMIZER_UPDATES
+        or int(status.get("optimizer_updates", -1)) != TERMINAL_OPTIMIZER_UPDATES
         or int(status.get("exam_count", -1)) != EXAM_COUNT
         or report.get("schema_version") != 1
         or report.get("protocol") != PROTOCOL
@@ -938,8 +858,7 @@ def _verified_arm_terminal(
         or _source_commit(report) != contract["source"]["commit"]
         or qualification != contract["qualification"]
         or report.get("cohort_contract_sha256") != contract_sha256
-        or report.get("development_checkpoint_reuse_authorized")
-        is not False
+        or report.get("development_checkpoint_reuse_authorized") is not False
         or integrity.get("schema_version") != 1
         or integrity.get("protocol") != PROTOCOL
         or integrity.get("cohort_id") != COHORT_ID
@@ -949,12 +868,10 @@ def _verified_arm_terminal(
         or integrity.get("cohort_contract_sha256") != contract_sha256
         or status.get("report_sha256") != report_sha256
         or verified.get("report_sha256") != report_sha256
-        or verified.get("report_integrity_sha256")
-        != _sha256(integrity_path)
+        or verified.get("report_integrity_sha256") != _sha256(integrity_path)
         or verified.get("cohort_id") != COHORT_ID
         or verified.get("cohort_contract_sha256") != contract_sha256
-        or verified.get("qualification_sha256")
-        != contract["qualification"]["report_sha256"]
+        or verified.get("qualification_sha256") != contract["qualification"]["report_sha256"]
         or not isinstance(progress, Mapping)
     ):
         raise V03ManifestError(f"{arm_id} terminal report is not authentic")
@@ -967,9 +884,7 @@ def _verified_arm_terminal(
     try:
         grade = v03.grade_terminal(arm_id, raw_exams)
     except (RuntimeError, TypeError, ValueError) as error:
-        raise V03ManifestError(
-            f"{arm_id} terminal grade cannot be reproduced"
-        ) from error
+        raise V03ManifestError(f"{arm_id} terminal grade cannot be reproduced") from error
     first_rollout = _first_rollout_evidence(
         report.get("first_rollout_identity"),
         arm_id=arm_id,
@@ -985,16 +900,12 @@ def _verified_arm_terminal(
     )
     case_inventory = report.get("case_evidence")
     case_count = (
-        int(case_inventory.get("record_count", -1))
-        if isinstance(case_inventory, Mapping)
-        else -1
+        int(case_inventory.get("record_count", -1)) if isinstance(case_inventory, Mapping) else -1
     )
     if (
         int(progress.get("child_trained_actions", -1)) != ACTION_CAP
-        or int(progress.get("lifetime_trained_actions", -1))
-        != TERMINAL_LIFETIME_ACTIONS
-        or int(progress.get("optimizer_updates", -1))
-        != TERMINAL_OPTIMIZER_UPDATES
+        or int(progress.get("lifetime_trained_actions", -1)) != TERMINAL_LIFETIME_ACTIONS
+        or int(progress.get("optimizer_updates", -1)) != TERMINAL_OPTIMIZER_UPDATES
         or int(progress.get("exam_count", -1)) != EXAM_COUNT
         or case_count != EXPECTED_CASE_COUNT
         or report.get("grade") != grade.public_dict()
@@ -1003,8 +914,7 @@ def _verified_arm_terminal(
         or verified.get("case_count") != case_count
         or verified.get("first_rollout_identity") != first_rollout
         or verified.get("context_metrics") != report.get("context_metrics")
-        or verified.get("terminal_encoder")
-        != report.get("terminal_encoder")
+        or verified.get("terminal_encoder") != report.get("terminal_encoder")
     ):
         raise V03ManifestError(f"{arm_id} terminal counters or grade changed")
     return (
@@ -1058,23 +968,17 @@ def _gather_process_rows() -> list[dict[str, Any]]:
             timeout=PROCESS_SCAN_TIMEOUT_SECONDS,
         )
     except (OSError, subprocess.SubprocessError) as error:
-        raise V03ManifestError(
-            f"cannot gather the terminal process inventory: {error}"
-        ) from error
+        raise V03ManifestError(f"cannot gather the terminal process inventory: {error}") from error
     if (
         completed.returncode != 0
         or len(completed.stdout) > PROCESS_INVENTORY_MAX_BYTES
         or len(completed.stderr) > PROCESS_COMMAND_MAX_BYTES
     ):
-        raise V03ManifestError(
-            "terminal process inventory exceeded its bound or failed"
-        )
+        raise V03ManifestError("terminal process inventory exceeded its bound or failed")
     try:
         lines = completed.stdout.decode("utf-8").splitlines()
     except UnicodeDecodeError as error:
-        raise V03ManifestError(
-            "terminal process inventory is not UTF-8"
-        ) from error
+        raise V03ManifestError("terminal process inventory is not UTF-8") from error
     if len(lines) > PROCESS_INVENTORY_MAX_ROWS:
         raise V03ManifestError("terminal process inventory has too many rows")
     rows: list[dict[str, Any]] = []
@@ -1082,9 +986,7 @@ def _gather_process_rows() -> list[dict[str, Any]]:
     for line in lines:
         match = re.fullmatch(r"\s*(\d+)\s+(\d+)\s+(.+)", line)
         if match is None:
-            raise V03ManifestError(
-                "terminal process inventory contains an invalid row"
-            )
+            raise V03ManifestError("terminal process inventory contains an invalid row")
         pid = int(match.group(1))
         ppid = int(match.group(2))
         command = match.group(3).strip()
@@ -1095,9 +997,7 @@ def _gather_process_rows() -> list[dict[str, Any]]:
             or not command
             or len(command.encode()) > PROCESS_COMMAND_MAX_BYTES
         ):
-            raise V03ManifestError(
-                "terminal process inventory contains an unsafe identity"
-            )
+            raise V03ManifestError("terminal process inventory contains an unsafe identity")
         seen.add(pid)
         rows.append({"pid": pid, "ppid": ppid, "command": command})
     if not rows:
@@ -1106,10 +1006,10 @@ def _gather_process_rows() -> list[dict[str, Any]]:
 
 
 def _process_role(command: str) -> str:
-    if TRAINER_PROCESS_PATTERN.search(command):
-        return "trainer"
     if SUPERVISOR_PROCESS_PATTERN.search(command):
         return "supervisor"
+    if TRAINER_PROCESS_PATTERN.search(command):
+        return "trainer"
     if CAFFEINATE_PROCESS_PATTERN.search(command):
         return "caffeinate"
     if DASHBOARD_PROCESS_PATTERN.search(command):
@@ -1144,37 +1044,24 @@ def _process_closeout_evidence(
             or not command
             or len(command.encode()) > PROCESS_COMMAND_MAX_BYTES
         ):
-            raise V03ManifestError(
-                "terminal process inventory contains an unsafe row"
-            )
+            raise V03ManifestError("terminal process inventory contains an unsafe row")
         seen.add(pid)
         normalized.append(
             {
                 "pid": pid,
                 "ppid": ppid,
-                "command_sha256": hashlib.sha256(
-                    command.encode()
-                ).hexdigest(),
+                "command_sha256": hashlib.sha256(command.encode()).hexdigest(),
                 "role": _process_role(command),
             }
         )
     normalized.sort(key=lambda item: item["pid"])
-    prohibited = [
-        dict(item)
-        for item in normalized
-        if item["role"] in PROHIBITED_PROCESS_ROLES
-    ]
+    prohibited = [dict(item) for item in normalized if item["role"] in PROHIBITED_PROCESS_ROLES]
     if prohibited:
-        identities = ", ".join(
-            f"{item['role']}:{item['pid']}" for item in prohibited
-        )
+        identities = ", ".join(f"{item['role']}:{item['pid']}" for item in prohibited)
         raise V03ManifestError(
-            "terminal process closeout still sees prohibited processes: "
-            f"{identities}"
+            f"terminal process closeout still sees prohibited processes: {identities}"
         )
-    dashboards = [
-        dict(item) for item in normalized if item["role"] == "dashboard"
-    ]
+    dashboards = [dict(item) for item in normalized if item["role"] == "dashboard"]
     captured_at = _utc_now()
     return {
         "schema_version": 1,
@@ -1209,9 +1096,7 @@ def _verified_process_closeout(
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     binding = state.get("process_closeout")
     if not isinstance(binding, Mapping):
-        raise V03ManifestError(
-            "terminal process closeout evidence has not been sealed"
-        )
+        raise V03ManifestError("terminal process closeout evidence has not been sealed")
     evidence_path = root / PROCESS_CLOSEOUT_NAME
     evidence = _read_json(
         evidence_path,
@@ -1246,28 +1131,22 @@ def _verified_process_closeout(
         or not isinstance(evidence.get("captured_at"), str)
         or not isinstance(collector, Mapping)
         or collector.get("command") != list(PROCESS_SCAN_COMMAND)
-        or collector.get("timeout_seconds")
-        != PROCESS_SCAN_TIMEOUT_SECONDS
-        or collector.get("maximum_inventory_bytes")
-        != PROCESS_INVENTORY_MAX_BYTES
+        or collector.get("timeout_seconds") != PROCESS_SCAN_TIMEOUT_SECONDS
+        or collector.get("maximum_inventory_bytes") != PROCESS_INVENTORY_MAX_BYTES
         or collector.get("maximum_rows") != PROCESS_INVENTORY_MAX_ROWS
         or not isinstance(inventory, list)
         or not inventory
         or len(inventory) > PROCESS_INVENTORY_MAX_ROWS
         or collector.get("observed_rows") != len(inventory)
         or not isinstance(policy, Mapping)
-        or policy.get("prohibited_roles")
-        != sorted(PROHIBITED_PROCESS_ROLES)
+        or policy.get("prohibited_roles") != sorted(PROHIBITED_PROCESS_ROLES)
         or policy.get("dashboard_may_remain") is not True
         or policy.get("commands_redacted_to_sha256") is not True
         or evidence.get("prohibited_matches") != []
         or not isinstance(dashboards, list)
-        or _canonical_sha256(inventory)
-        != evidence.get("inventory_sha256")
+        or _canonical_sha256(inventory) != evidence.get("inventory_sha256")
     ):
-        raise V03ManifestError(
-            "terminal process closeout contract changed"
-        )
+        raise V03ManifestError("terminal process closeout contract changed")
     seen: set[int] = set()
     expected_dashboards: list[dict[str, Any]] = []
     for item in inventory:
@@ -1283,24 +1162,14 @@ def _verified_process_closeout(
             or item["ppid"] < 0
             or item.get("role") not in PROCESS_ROLES
             or item.get("role") in PROHIBITED_PROCESS_ROLES
-            or SHA256_PATTERN.fullmatch(
-                str(item.get("command_sha256", ""))
-            )
-            is None
+            or SHA256_PATTERN.fullmatch(str(item.get("command_sha256", ""))) is None
         ):
-            raise V03ManifestError(
-                "terminal process closeout inventory changed"
-            )
+            raise V03ManifestError("terminal process closeout inventory changed")
         seen.add(item["pid"])
         if item["role"] == "dashboard":
             expected_dashboards.append(dict(item))
-    if (
-        [item["pid"] for item in inventory] != sorted(seen)
-        or dashboards != expected_dashboards
-    ):
-        raise V03ManifestError(
-            "terminal process closeout ordering changed"
-        )
+    if [item["pid"] for item in inventory] != sorted(seen) or dashboards != expected_dashboards:
+        raise V03ManifestError("terminal process closeout ordering changed")
     digest = _sha256(evidence_path)
     expected_binding = {
         "path": PROCESS_CLOSEOUT_NAME,
@@ -1313,9 +1182,7 @@ def _verified_process_closeout(
         "verdict": "clear",
     }
     if dict(binding) != expected_binding:
-        raise V03ManifestError(
-            "terminal process closeout binding changed"
-        )
+        raise V03ManifestError("terminal process closeout binding changed")
     return expected_binding, evidence
 
 
@@ -1335,10 +1202,7 @@ def create_cohort(
     commit = _object_id(source_commit, label="source commit")
     tag = _object_id(tag_object, label="tag object")
     with _mutation_lock(resolved):
-        if any(
-            entry.name != ".v03-manifest.lock"
-            for entry in resolved.iterdir()
-        ):
+        if any(entry.name != ".v03-manifest.lock" for entry in resolved.iterdir()):
             raise V03ManifestError("fresh v0.3 cohort root must be empty")
         if any(resolved_media.iterdir()):
             raise V03ManifestError("fresh v0.3 media root must be empty")
@@ -1358,9 +1222,7 @@ def create_cohort(
         )
         state = _expected_state(contract)
         _exclusive_write(resolved / "cohort-contract.json", contract)
-        state["contract_sha256"] = _sha256(
-            resolved / "cohort-contract.json"
-        )
+        state["contract_sha256"] = _sha256(resolved / "cohort-contract.json")
         _exclusive_write(resolved / "cohort.json", state)
     return state
 
@@ -1388,18 +1250,14 @@ def start_arm(
         _assert_fixed_order(state, arm_id)
         arm = _arm_state(state, arm_id)
         directory = resolved / arm["directory"]
-        media_directory = Path(contract["roots"]["media"]) / arm[
-            "media_directory"
-        ]
+        media_directory = Path(contract["roots"]["media"]) / arm["media_directory"]
         if (
             directory.exists()
             or directory.is_symlink()
             or media_directory.exists()
             or media_directory.is_symlink()
         ):
-            raise V03ManifestError(
-                f"fresh v0.3 arm target already exists: {arm_id}"
-            )
+            raise V03ManifestError(f"fresh v0.3 arm target already exists: {arm_id}")
         now = _utc_now()
         attempt = {
             "index": 0,
@@ -1412,9 +1270,7 @@ def start_arm(
         state["active_arm"] = arm_id
         state["phase"] = "training"
         state["updated_at"] = now
-        state["history"].append(
-            {"event": "arm_started", "arm": arm_id, "at": now}
-        )
+        state["history"].append({"event": "arm_started", "arm": arm_id, "at": now})
         _atomic_write(resolved / "cohort.json", state)
     return {"arm": arm_id, "attempt": 0}
 
@@ -1431,15 +1287,11 @@ def _mark_integrity_failed(
         arm = _arm_state(state, arm_id)
         arm["state"] = "integrity_failed"
         if arm["attempts"]:
-            arm["attempts"][-1].update(
-                {"state": "integrity_failed", "finished_at": now}
-            )
+            arm["attempts"][-1].update({"state": "integrity_failed", "finished_at": now})
     state["active_arm"] = None
     state["phase"] = "integrity_failed"
     state["updated_at"] = now
-    state["history"].append(
-        {"event": "integrity_failed", "arm": arm_id, "stage": stage, "at": now}
-    )
+    state["history"].append({"event": "integrity_failed", "arm": arm_id, "stage": stage, "at": now})
     _atomic_write(root / "cohort.json", state)
 
 
@@ -1465,21 +1317,13 @@ def finish_arm(
             tag_object=tag_object,
         )
         arm = _arm_state(state, arm_id)
-        if (
-            state["active_arm"] != arm_id
-            or arm["state"] != "training"
-            or len(arm["attempts"]) != 1
-        ):
-            raise V03ManifestError(
-                "only the one active fresh v0.3 arm may finish"
-            )
+        if state["active_arm"] != arm_id or arm["state"] != "training" or len(arm["attempts"]) != 1:
+            raise V03ManifestError("only the one active fresh v0.3 arm may finish")
         directory = resolved / arm["directory"]
         terminal: dict[str, Any] | None = None
         if outcome == "completed":
             if exit_code != 0:
-                raise V03ManifestError(
-                    "nonzero trainer exit cannot complete a v0.3 arm"
-                )
+                raise V03ManifestError("nonzero trainer exit cannot complete a v0.3 arm")
             try:
                 terminal, _report = _verified_arm_terminal(
                     directory,
@@ -1494,13 +1338,9 @@ def finish_arm(
                     arm_id=arm_id,
                     stage="arm_terminal_closeout",
                 )
-                raise V03ManifestError(
-                    f"{arm_id} terminal evidence failed closed"
-                ) from error
+                raise V03ManifestError(f"{arm_id} terminal evidence failed closed") from error
         elif outcome == "crashed" and exit_code == 0:
-            raise V03ManifestError(
-                "a crashed v0.3 arm requires nonzero trainer exit"
-            )
+            raise V03ManifestError("a crashed v0.3 arm requires nonzero trainer exit")
         elif outcome == "interrupted":
             status = _read_json(
                 directory / "status.json",
@@ -1513,9 +1353,7 @@ def finish_arm(
                 contract_sha256=state["contract_sha256"],
             )
             if status.get("phase") != "interrupted":
-                raise V03ManifestError(
-                    "interrupted arm lacks interrupted trainer status"
-                )
+                raise V03ManifestError("interrupted arm lacks interrupted trainer status")
         now = _utc_now()
         arm["state"] = outcome
         arm["attempts"][-1].update(
@@ -1566,21 +1404,16 @@ def seal_process_closeout(
         if (
             state["phase"] != "awaiting_closeout"
             or state["active_arm"] is not None
-            or [arm["state"] for arm in state["arms"]]
-            != ["completed", "completed"]
+            or [arm["state"] for arm in state["arms"]] != ["completed", "completed"]
         ):
-            raise V03ManifestError(
-                "process closeout requires both completed v0.3 arms"
-            )
+            raise V03ManifestError("process closeout requires both completed v0.3 arms")
         evidence_path = resolved / PROCESS_CLOSEOUT_NAME
         if (
             state.get("process_closeout") is not None
             or evidence_path.exists()
             or evidence_path.is_symlink()
         ):
-            raise V03ManifestError(
-                "refusing to replace terminal process closeout evidence"
-            )
+            raise V03ManifestError("refusing to replace terminal process closeout evidence")
         evidence = _process_closeout_evidence(_gather_process_rows())
         _exclusive_write(evidence_path, evidence)
         binding = {
@@ -1589,9 +1422,7 @@ def seal_process_closeout(
             "inventory_sha256": evidence["inventory_sha256"],
             "captured_at": evidence["captured_at"],
             "observed_rows": len(evidence["inventory"]),
-            "dashboard_pids": [
-                item["pid"] for item in evidence["dashboard_processes"]
-            ],
+            "dashboard_pids": [item["pid"] for item in evidence["dashboard_processes"]],
             "prohibited_count": 0,
             "verdict": "clear",
         }
@@ -1616,25 +1447,14 @@ def _paired_first_rollout(
     sham = verified["sham"]["first_rollout"]
     candidate = verified["action-effect"]["first_rollout"]
     if sham != candidate:
-        raise V03ManifestError(
-            "v0.3 twins diverged before their first optimizer phase"
-        )
-    candidate_first_nonzero = verified["action-effect"][
-        "context_encoder"
-    ]["first_nonzero_child_trained_actions"]
-    if (
-        verified["sham"]["context_encoder"][
-            "first_nonzero_child_trained_actions"
-        ]
-        is not None
-        or (
-            candidate_first_nonzero is not None
-            and candidate_first_nonzero < v03.ROLLOUT_TRANSITIONS
-        )
+        raise V03ManifestError("v0.3 twins diverged before their first optimizer phase")
+    candidate_first_nonzero = verified["action-effect"]["context_encoder"][
+        "first_nonzero_child_trained_actions"
+    ]
+    if verified["sham"]["context_encoder"]["first_nonzero_child_trained_actions"] is not None or (
+        candidate_first_nonzero is not None and candidate_first_nonzero < v03.ROLLOUT_TRANSITIONS
     ):
-        raise V03ManifestError(
-            "v0.3 context encoder diverged before its first optimizer phase"
-        )
+        raise V03ManifestError("v0.3 context encoder diverged before its first optimizer phase")
     return {
         "transitions": v03.ROLLOUT_TRANSITIONS,
         "identical_before_first_optimizer": True,
@@ -1660,34 +1480,20 @@ def finalize_cohort(
         if (
             state["phase"] != "awaiting_closeout"
             or state["active_arm"] is not None
-            or [arm["state"] for arm in state["arms"]]
-            != ["completed", "completed"]
+            or [arm["state"] for arm in state["arms"]] != ["completed", "completed"]
         ):
-            raise V03ManifestError(
-                "v0.3 closeout requires both complete arms in fixed order"
-            )
-        process_closeout, _process_evidence = (
-            _verified_process_closeout(resolved, state=state)
-        )
+            raise V03ManifestError("v0.3 closeout requires both complete arms in fixed order")
+        process_closeout, _process_evidence = _verified_process_closeout(resolved, state=state)
         # Re-scan immediately before closeout.  We intentionally do not
         # require unrelated PID equality with the earlier sealed snapshot;
         # only a newly appeared prohibited role blocks finalization.
-        finalization_process_evidence = _process_closeout_evidence(
-            _gather_process_rows()
-        )
+        finalization_process_evidence = _process_closeout_evidence(_gather_process_rows())
         process_finalization_recheck = {
             "captured_at": finalization_process_evidence["captured_at"],
-            "inventory_sha256": finalization_process_evidence[
-                "inventory_sha256"
-            ],
-            "observed_rows": len(
-                finalization_process_evidence["inventory"]
-            ),
+            "inventory_sha256": finalization_process_evidence["inventory_sha256"],
+            "observed_rows": len(finalization_process_evidence["inventory"]),
             "dashboard_pids": [
-                item["pid"]
-                for item in finalization_process_evidence[
-                    "dashboard_processes"
-                ]
+                item["pid"] for item in finalization_process_evidence["dashboard_processes"]
             ],
             "prohibited_count": 0,
             "verdict": "clear",
@@ -1705,45 +1511,27 @@ def finalize_cohort(
                     contract_sha256=state["contract_sha256"],
                 )
                 recorded = _arm_state(state, arm_id).get("terminal")
-                if (
-                    not isinstance(recorded, Mapping)
-                    or recorded != evidence
-                ):
-                    raise V03ManifestError(
-                        f"{arm_id} evidence changed after arm closeout"
-                    )
+                if not isinstance(recorded, Mapping) or recorded != evidence:
+                    raise V03ManifestError(f"{arm_id} evidence changed after arm closeout")
                 size = _tree_size(
                     directory,
                     label=f"{arm_id} scientific artifacts",
                 )
                 if size > LINEAGE_CAP_BYTES:
-                    raise V03ManifestError(
-                        f"{arm_id} exceeds the v0.3 lineage cap"
-                    )
+                    raise V03ManifestError(f"{arm_id} exceeds the v0.3 lineage cap")
                 verified[arm_id] = evidence
                 reports[arm_id] = report
                 arm_sizes[arm_id] = size
             paired = _paired_first_rollout(verified)
             selection = v03.select_architecture(
-                {
-                    arm_id: reports[arm_id]["controller"][
-                        "exam_records"
-                    ]
-                    for arm_id in ARM_ORDER
-                }
+                {arm_id: reports[arm_id]["controller"]["exam_records"] for arm_id in ARM_ORDER}
             )
             if (
-                selection.get("verdict")
-                not in {"architecture_selected", "architecture_failed"}
-                or selection.get(
-                    "development_checkpoint_reuse_authorized"
-                )
-                is not False
+                selection.get("verdict") not in {"architecture_selected", "architecture_failed"}
+                or selection.get("development_checkpoint_reuse_authorized") is not False
                 or selection.get("u3_authorized") is not False
             ):
-                raise V03ManifestError(
-                    "v0.3 selector violated the Stage-A stop rule"
-                )
+                raise V03ManifestError("v0.3 selector violated the Stage-A stop rule")
             media_root = _regular_directory(
                 Path(contract["roots"]["media"]),
                 label="v0.3 media root",
@@ -1756,8 +1544,7 @@ def finalize_cohort(
             if (
                 scientific_bytes > COHORT_SCIENTIFIC_CAP_BYTES
                 or media_bytes > MEDIA_CAP_BYTES
-                or scientific_bytes + media_bytes
-                > COMBINED_PLANNED_CAP_BYTES
+                or scientific_bytes + media_bytes > COMBINED_PLANNED_CAP_BYTES
             ):
                 raise V03ManifestError("v0.3 storage cap exceeded")
             report = {
@@ -1774,21 +1561,15 @@ def finalize_cohort(
                 "cohort_contract": "cohort-contract.json",
                 "cohort_contract_sha256": state["contract_sha256"],
                 "process_closeout": process_closeout,
-                "process_finalization_recheck": (
-                    process_finalization_recheck
-                ),
+                "process_finalization_recheck": (process_finalization_recheck),
                 "arm_evidence": verified,
                 "paired_first_rollout": paired,
                 "selection": selection,
-                "selected_architecture": selection[
-                    "selected_architecture"
-                ],
+                "selected_architecture": selection["selected_architecture"],
                 "checkpoint_rule": {
                     "stage_a_checkpoint_reuse_authorized": False,
                     "successor_checkpoint": None,
-                    "replication_protocol_authorized": selection[
-                        "replication_protocol_authorized"
-                    ],
+                    "replication_protocol_authorized": selection["replication_protocol_authorized"],
                     "u3_authorized": False,
                 },
                 "storage": {
@@ -1807,9 +1588,7 @@ def finalize_cohort(
                 or integrity_path.exists()
                 or integrity_path.is_symlink()
             ):
-                raise V03ManifestError(
-                    "refusing to replace v0.3 terminal closeout evidence"
-                )
+                raise V03ManifestError("refusing to replace v0.3 terminal closeout evidence")
             _exclusive_write(report_path, report)
             report_sha256 = _sha256(report_path)
             integrity = {
@@ -1819,16 +1598,11 @@ def finalize_cohort(
                 "report": "report.json",
                 "report_sha256": report_sha256,
                 "cohort_contract_sha256": state["contract_sha256"],
-                "arm_report_sha256": {
-                    arm: verified[arm]["report_sha256"]
-                    for arm in ARM_ORDER
-                },
+                "arm_report_sha256": {arm: verified[arm]["report_sha256"] for arm in ARM_ORDER},
                 "paired_first_rollout_sha256": _canonical_sha256(paired),
                 "selection_sha256": _canonical_sha256(selection),
                 "process_closeout_sha256": process_closeout["sha256"],
-                "process_inventory_sha256": process_closeout[
-                    "inventory_sha256"
-                ],
+                "process_inventory_sha256": process_closeout["inventory_sha256"],
                 "process_finalization_recheck_sha256": (
                     _canonical_sha256(process_finalization_recheck)
                 ),
@@ -1842,9 +1616,7 @@ def finalize_cohort(
                 arm_id=None,
                 stage="cohort_terminal_closeout",
             )
-            raise V03ManifestError(
-                "v0.3 terminal closeout failed closed"
-            ) from error
+            raise V03ManifestError("v0.3 terminal closeout failed closed") from error
         now = _utc_now()
         state["phase"] = "completed"
         state["terminal_report"] = {
@@ -1854,9 +1626,7 @@ def finalize_cohort(
             "integrity_sha256": integrity_sha256,
             "verdict": report["verdict"],
             "selected_architecture": (
-                "action-effect"
-                if report["selected_architecture"] is not None
-                else None
+                "action-effect" if report["selected_architecture"] is not None else None
             ),
             "stage_a_checkpoint_reuse_authorized": False,
             "u3_authorized": False,
@@ -1913,10 +1683,7 @@ def next_plan(
         "arm": pending["id"],
         "attempt": 0,
         "run_dir": str(resolved / pending["directory"]),
-        "media_dir": str(
-            Path(contract["roots"]["media"])
-            / pending["media_directory"]
-        ),
+        "media_dir": str(Path(contract["roots"]["media"]) / pending["media_directory"]),
     }
 
 

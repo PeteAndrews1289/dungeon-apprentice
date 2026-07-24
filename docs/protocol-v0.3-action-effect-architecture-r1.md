@@ -1,6 +1,17 @@
 # v0.3 Stage-A r1: action-effect architecture replacement
 
-Status: **implemented, not yet tagged, qualified, or launched**
+Status: **terminal `operationally_incomplete`; superseded by r2**
+
+> **Historical protocol.** r1 was subsequently committed as
+> `b9dc80b4c5f95b4b0a8bf7a681b9431764c6f0ec`, externally anchored by annotated tag object
+> `1f11b98fae6691dc9282682c44cdaa33ea55e5ab`, qualified, and launched. Sham reached 38,912
+> trained child actions, but a whole-command-line process-count false positive and a zsh
+> `errexit` cleanup bypass closed the cohort `operationally_incomplete`. Final status recorded
+> 40,004 collected actions; the episode ledger reached 40,960. There is no safe checkpoint, the
+> action-effect arm never started, and no scientific comparison occurred. Preserve this frozen
+> contract as historical context; the full incident is
+> [documented separately](results/v0.3-action-effect-stage-a-r1-operational-failure.md), and the
+> fresh replacement is [r2](protocol-v0.3-action-effect-architecture-r2.md).
 
 This document is the separately committed replacement-attempt protocol for the matched
 `dungeon-apprentice-v0.3-action-effect-architecture` Stage-A experiment. It incorporates the
@@ -133,3 +144,6 @@ Qualification smoke artifacts are disposable and non-scientific. The launcher ha
 Any r1 interruption or crash makes the complete r1 root terminal `operationally_incomplete`; a
 future replacement would require another committed protocol-attempt identity, tag, qualification,
 and set of fresh roots.
+
+That contingency occurred. r1 must never be resumed or reused. r2 supplies the separately
+committed replacement boundary and restarts both arms from confirmed U1.

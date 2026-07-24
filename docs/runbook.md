@@ -463,7 +463,7 @@ fresh from confirmed U1 parents; it does not itself confirm U2.
 
 The actual all-arm result was negative, so that conditional successor did not open. U3 remains
 closed. The current prospective boundary is the
-[v0.3 Stage-A r1 action-effect architecture study](protocol-v0.3-action-effect-architecture-r1.md).
+[v0.3 Stage-A r2 action-effect architecture study](protocol-v0.3-action-effect-architecture-r2.md).
 
 ## Prepare the implemented v0.3 action-effect architecture study
 
@@ -488,32 +488,57 @@ root as `operationally_incomplete`; its synthetic sham crash does not represent 
 the [attempt-0 closeout](results/v0.3-action-effect-launch-attempt-0.md) and never reuse its tag,
 qualification, cohort, or media root.
 
-The separately committed r1 replacement changes only dashboard authentication timing. Its fresh
-operational identities are assigned but have not been created:
+The separately committed r1 replacement corrected dashboard authentication timing and then
+successfully reached sham training. It nevertheless closed `operationally_incomplete` after a
+different launcher defect:
 
-| Boundary | Assigned identity |
+- whole-command-line process matching counted the supervisor's embedded child command as a second
+  trainer;
+- the failed assertion returned from a zsh function under `set -e`, bypassing the intended
+  `EXIT` cleanup;
+- sham reached 38,912 trained actions, while status and the later episode ledger recorded 40,004
+  and 40,960 collected actions respectively;
+- 19 optimizer phases produced 76 new updates and one scheduled 32,768-action exam;
+- eight evaluation rows contain 640 deterministic cases;
+- no safe checkpoint exists; and
+- action-effect never started, so no scientific comparison occurred.
+
+Preserve the
+[r1 incident record](results/v0.3-action-effect-stage-a-r1-operational-failure.md) and never resume,
+reuse, rename, prune, or overwrite its tag, qualification, cohort, media root, or checkpoint.
+
+The prospective r2 replacement keeps every scientific variable fixed and changes only process-role
+classification and explicit abnormal-exit cleanup:
+
+| Boundary | Prospective r2 identity |
 | --- | --- |
-| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-r1-20260724` |
-| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r1-20260724` |
-| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-20260724` |
-| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r1-media-20260724` |
-| Dashboard | `http://127.0.0.1:8789/` |
-| Sole launcher | `scripts/run_v03_action_effect_stage_a_r1.sh` |
+| Cohort ID | `v0.3-action-effect-stage-a-r2-20260724` |
+| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-r2-20260724` |
+| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-r2-20260724` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-20260724` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-r2-media-20260724` |
+| Dashboard | `http://127.0.0.1:8790/` |
+| Sole launcher | `scripts/run_v03_action_effect_stage_a_r2.sh` |
 
-No r1 tag, qualification claim/report, cohort, media root, policy action, or result exists at this
-source entry. Do not improvise a root, adapt the attempt-0 launcher, or call the lower-level trainer
-directly. Scientific training remains blocked until one clean r1 release:
+No final r2 source hash, tag object, qualification claim/report, cohort, media root, policy action,
+or result exists at this source entry. Do not improvise a root, adapt either failed launcher, call
+the lower-level trainer directly, or invent release hashes. Scientific training remains blocked
+until one clean r2 release:
 
 1. freezes and pushes the exact source and protocol;
 2. publishes the assigned annotated tag and its one-line source-preregistration payload;
-3. authenticates the confirmed U1 parent and every immutable predecessor result;
+3. authenticates the confirmed U1 parent, attempt 0, r1, and every immutable predecessor result;
 4. proves the Dict observation and exact named tensor/Adam transplant;
 5. proves bit-exact zero-context equivalence and matched first-rollout identity in a disposable
    four-worker smoke;
 6. verifies unchanged reward/PPO/curriculum and the static layout guards;
-7. proves zero confirmation/final seed access, a mounted T7 with the declared reserve, and no
+7. proves that a real supervisor carrying its child command counts as one supervisor and one
+   trainer;
+8. proves explicit cleanup leaves no trainer, supervisor, or `caffeinate` process after every
+   post-spawn failure;
+9. proves zero confirmation/final seed access, a mounted T7 with the declared reserve, and no
    competing trainer; and
-8. emits one claim-bearing qualification report bound to that exact tag object before action one.
+10. emits one claim-bearing qualification report bound to that exact tag object before action one.
 
 The old sealed U2 qualification range may not be reopened. The v0.3 engineering smoke must use only
 disposable engineering layouts, leave canonical and predecessor evidence unchanged, and destroy
@@ -529,7 +554,7 @@ fresh lineages from confirmed U1 children `20260725`, `20260729`, and `20260733`
 streams and no Stage A state. Even a successful Stage B would still require a separate,
 prospectively frozen no-update confirmation before U3 could open.
 
-### Release, qualify, and launch v0.3 Stage A r1
+### Release, qualify, and launch v0.3 Stage A r2
 
 The release chain is intentionally non-circular:
 
@@ -564,10 +589,10 @@ V03_TAG_PAYLOAD="$(
   .venv/bin/python -m dungeon_apprentice.v03_action_effect_qualify \
     --tag-payload-only
 )"
-git tag -a action-effect-architecture-v0.3-stage-a-r1-20260724 \
+git tag -a action-effect-architecture-v0.3-stage-a-r2-20260724 \
   -m "$V03_TAG_PAYLOAD"
 git push origin HEAD
-git push origin refs/tags/action-effect-architecture-v0.3-stage-a-r1-20260724
+git push origin refs/tags/action-effect-architecture-v0.3-stage-a-r2-20260724
 ```
 
 Do not hand-edit the payload. The tag preregisters inputs; it does **not** contain a qualification
@@ -588,21 +613,30 @@ do not delete the claim or retry it under the same tag and roots.
 Only after the qualification report verifies may the fixed launcher be invoked once:
 
 ```bash
-./scripts/run_v03_action_effect_stage_a_r1.sh
+./scripts/run_v03_action_effect_stage_a_r2.sh
 ```
 
 The launcher owns cohort/media creation, contract sealing, fixed arm order (`sham`, then
 `action-effect`), trainer supervision, sleep prevention, the read-only dashboard at
-`http://127.0.0.1:8789/`, and terminal closeout. The dashboard performs its expensive full evidence
+`http://127.0.0.1:8790/`, and terminal closeout. The dashboard performs its expensive full evidence
 authentication once before binding. Each poll rereads live status and rehashes the immutable
 contract, qualification report, and checksum. The launcher validates the payload identities; the
-API does not return a literal `healthy: true` field. After both trainers exit it stops sleep prevention,
-asks the manifest to gather and seal a command-redacted process inventory, and rescans immediately
-before finalization. Any remaining trainer, supervisor, or `caffeinate` process blocks the terminal
-report; the read-only dashboard may remain. The launcher accepts no arm, seed, parent, checkpoint,
-budget, root, or resume override. Closing the dashboard tab does not stop training; stopping the
-launcher, trainer, machine, or storage connection closes the non-resumable cohort as operationally
-incomplete.
+API does not return a literal `healthy: true` field.
+
+r2 classifies roles only from leading executable arguments. A supervisor's embedded child command
+must not classify the supervisor as a trainer. Every critical post-spawn assertion uses an explicit,
+idempotent failure branch that gives the authenticated supervisor/trainer a fixed graceful window,
+escalates through `SIGTERM`, and—only after reauthenticating the trainer's PID, parent, process
+group, command, and supervisor state—kills that owned process group within a second fixed deadline.
+It then stops sleep prevention, records the arm failure, and terminalizes the non-resumable cohort
+before returning. The read-only dashboard may remain to show the terminal evidence.
+
+After both trainers exit normally, the launcher stops sleep prevention, asks the manifest to gather
+and seal a command-redacted process inventory, and rescans immediately before finalization. Any
+remaining trainer, supervisor, or `caffeinate` process blocks the terminal report; the read-only
+dashboard may remain. The launcher accepts no arm, seed, parent, checkpoint, budget, root, or resume
+override. Closing the dashboard tab does not stop training; stopping the launcher, trainer, machine,
+or storage connection closes the non-resumable cohort as operationally incomplete.
 
 The v0.3 entry points declared in `pyproject.toml` are:
 
@@ -610,14 +644,14 @@ The v0.3 entry points declared in `pyproject.toml` are:
 | --- | --- | --- |
 | `dungeon-smoke-v03-action-effect` | Disposable engineering comparison used by qualification | No |
 | `dungeon-qualify-v03-action-effect` | Tag-payload generation and one-shot qualification | No |
-| `dungeon-train-v03-action-effect` | Lower-level single-arm trainer used by the fixed launcher | Never call directly |
+| `dungeon-train-v03-action-effect` | Lower-level single-arm trainer used by the fixed launcher; it rejects noncanonical roots and arm mappings | Never call directly |
 | `dungeon-dashboard-v03-action-effect` | Read-only evidence server | No |
 
 They are refreshed by the repository's editable-install command. The canonical instructions above
 use the equivalent module entry point so their availability does not depend on a stale generated
 shell wrapper.
 
-The sole scientific start command is `scripts/run_v03_action_effect_stage_a_r1.sh`.
+The sole scientific start command is `scripts/run_v03_action_effect_stage_a_r2.sh`.
 
 ## Resume a legacy v0/v0.1 run after interruption
 

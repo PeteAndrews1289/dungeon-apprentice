@@ -48,15 +48,9 @@ ARCHITECTURE_VERSION = "retrospective-action-effect-context-v1"
 PARENT_CHILD_SEED = 20260745
 PARENT_U1_SEED = 20260733
 PARENT_CHECKPOINT = frozen_u2.FROZEN_PARENTS[PARENT_CHILD_SEED].archive
-PARENT_CHECKPOINT_SHA256 = (
-    "3d2950e63491d07d3e483660469b8bec869fa137fa61d6b4d22b3d9f0ded2104"
-)
-PARENT_POLICY_TENSOR_SHA256 = (
-    "e555d3f7e2364f74e3b43371938c2f25e2ddbf62558a810038509a70868e6888"
-)
-PARENT_OPTIMIZER_STATE_SHA256 = (
-    "cc07791b374620d680e5cbb3602d59ab83eb55f195d26808abc0adf5f0e3bc5f"
-)
+PARENT_CHECKPOINT_SHA256 = "3d2950e63491d07d3e483660469b8bec869fa137fa61d6b4d22b3d9f0ded2104"
+PARENT_POLICY_TENSOR_SHA256 = "e555d3f7e2364f74e3b43371938c2f25e2ddbf62558a810038509a70868e6888"
+PARENT_OPTIMIZER_STATE_SHA256 = "cc07791b374620d680e5cbb3602d59ab83eb55f195d26808abc0adf5f0e3bc5f"
 PARENT_LIFETIME_ACTIONS = 786_432
 PARENT_OPTIMIZER_UPDATES = 1_536
 
@@ -84,7 +78,7 @@ LINEAGE_CAP_BYTES = 2 * 1024**3
 COHORT_SCIENTIFIC_CAP_BYTES = 4 * 1024**3
 MEDIA_CAP_BYTES = 6 * 1024**3
 COMBINED_PLANNED_CAP_BYTES = 10 * 1024**3
-PROTOCOL_DOCUMENT = "docs/protocol-v0.3-action-effect-architecture-r1.md"
+PROTOCOL_DOCUMENT = "docs/protocol-v0.3-action-effect-architecture-r2.md"
 
 ARM_ORDER = (
     ActionEffectMode.SHAM,
@@ -152,9 +146,7 @@ def policy_kwargs() -> dict[str, Any]:
 def public_policy_contract() -> dict[str, Any]:
     return {
         "policy_class": "RecurrentMultiInputActorCriticPolicy",
-        "feature_extractor": (
-            "dungeon_apprentice.action_effect.ActionEffectNatureCNN"
-        ),
+        "feature_extractor": ("dungeon_apprentice.action_effect.ActionEffectNatureCNN"),
         "visual_features": 512,
         "action_effect_features": ACTION_EFFECT_DIM,
         "feature_fusion": "zero_initialized_additive_residual",
@@ -223,8 +215,7 @@ def _validate_transplanted_model(model: Any) -> None:
         or len(policy.mlp_extractor.policy_net) != 0
         or len(policy.mlp_extractor.value_net) != 0
         or expected_new not in parameter_names
-        or tuple(extractor.action_effect_encoder.weight.shape)
-        != (512, ACTION_EFFECT_DIM)
+        or tuple(extractor.action_effect_encoder.weight.shape) != (512, ACTION_EFFECT_DIM)
     ):
         raise ActionEffectProtocolError("v0.3 policy topology changed")
 
@@ -273,9 +264,7 @@ def build_transplanted_model(
         or transplant.inherited_optimizer_updates != PARENT_OPTIMIZER_UPDATES
         or transplant.missing_optimizer_state_names
     ):
-        raise ActionEffectProtocolError(
-            "v0.3 parent counters or Adam moments changed"
-        )
+        raise ActionEffectProtocolError("v0.3 parent counters or Adam moments changed")
     if equivalence_images is None:
         generator = np.random.default_rng(ARCHITECTURE_INITIALIZATION_SEED)
         equivalence_images = generator.integers(
@@ -326,19 +315,12 @@ def grade_terminal(
     checks: dict[str, bool] = {
         "exact_exam_count": len(exam_records) == EXAM_COUNT,
         "terminal_boundary": bool(exam_records)
-        and int(exam_records[-1].get("child_trained_actions", -1))
-        == CHILD_ACTION_BUDGET,
-        "three_terminal_exams_available": (
-            len(exam_records) >= FINAL_STABILITY_EXAMS
-        ),
+        and int(exam_records[-1].get("child_trained_actions", -1)) == CHILD_ACTION_BUDGET,
+        "three_terminal_exams_available": (len(exam_records) >= FINAL_STABILITY_EXAMS),
     }
-    boundaries = [
-        int(record.get("child_trained_actions", -1))
-        for record in exam_records
-    ]
+    boundaries = [int(record.get("child_trained_actions", -1)) for record in exam_records]
     checks["contiguous_exam_boundaries"] = boundaries == [
-        index * EVALUATION_INTERVAL
-        for index in range(1, len(exam_records) + 1)
+        index * EVALUATION_INTERVAL for index in range(1, len(exam_records) + 1)
     ]
     terminal = tuple(exam_records[-FINAL_STABILITY_EXAMS:])
     for index, exam in enumerate(terminal, start=1):
@@ -351,8 +333,7 @@ def grade_terminal(
         checks=MappingProxyType(checks),
         reasons=reasons,
         final_exam_actions=tuple(
-            int(record.get("child_trained_actions", -1))
-            for record in terminal
+            int(record.get("child_trained_actions", -1)) for record in terminal
         ),
     )
 
@@ -366,39 +347,24 @@ def select_architecture(
     """Select only the action-effect definition when its own gate passes."""
 
     normalized = {
-        ActionEffectMode(name): tuple(records)
-        for name, records in arm_exam_records.items()
+        ActionEffectMode(name): tuple(records) for name, records in arm_exam_records.items()
     }
     if set(normalized) != set(ARM_ORDER):
-        raise ActionEffectProtocolError(
-            "architecture decision requires both matched arms"
-        )
-    grades = {
-        arm: grade_terminal(arm, normalized[arm])
-        for arm in ARM_ORDER
-    }
+        raise ActionEffectProtocolError("architecture decision requires both matched arms")
+    grades = {arm: grade_terminal(arm, normalized[arm]) for arm in ARM_ORDER}
     candidate_passed = grades[ActionEffectMode.ACTION_EFFECT].eligible
     return {
         "protocol": PROTOCOL,
         "selection_kind": "architecture_definition_only",
         "selected_architecture": (
-            ARM_SPECS[ActionEffectMode.ACTION_EFFECT].public_dict()
-            if candidate_passed
-            else None
+            ARM_SPECS[ActionEffectMode.ACTION_EFFECT].public_dict() if candidate_passed else None
         ),
         "sham_is_calibration_only": True,
         "development_checkpoint_reuse_authorized": False,
         "replication_protocol_authorized": candidate_passed,
         "u3_authorized": False,
-        "grades": {
-            arm.value: grades[arm].public_dict()
-            for arm in ARM_ORDER
-        },
-        "verdict": (
-            "architecture_selected"
-            if candidate_passed
-            else "architecture_failed"
-        ),
+        "grades": {arm.value: grades[arm].public_dict() for arm in ARM_ORDER},
+        "verdict": ("architecture_selected" if candidate_passed else "architecture_failed"),
     }
 
 
@@ -422,9 +388,7 @@ def effective_config(mode: ActionEffectMode | str) -> dict[str, Any]:
             "optimizer_updates": PARENT_OPTIMIZER_UPDATES,
         },
         "paired_randomness": {
-            "architecture_initialization_seed": (
-                ARCHITECTURE_INITIALIZATION_SEED
-            ),
+            "architecture_initialization_seed": (ARCHITECTURE_INITIALIZATION_SEED),
             "algorithm_seed": ALGORITHM_SEED,
             "worker_streams": list(WORKER_STREAMS),
             "same_across_both_arms": True,
@@ -435,10 +399,8 @@ def effective_config(mode: ActionEffectMode | str) -> dict[str, Any]:
             "exam_interval": EVALUATION_INTERVAL,
             "exam_count": EXAM_COUNT,
             "terminal_exam_actions": [
-                CHILD_ACTION_BUDGET
-                - 2 * EVALUATION_INTERVAL,
-                CHILD_ACTION_BUDGET
-                - EVALUATION_INTERVAL,
+                CHILD_ACTION_BUDGET - 2 * EVALUATION_INTERVAL,
+                CHILD_ACTION_BUDGET - EVALUATION_INTERVAL,
                 CHILD_ACTION_BUDGET,
             ],
         },
@@ -452,9 +414,7 @@ def effective_config(mode: ActionEffectMode | str) -> dict[str, Any]:
                 "previous_action_one_hot": 7,
                 "visible_outcome_one_hot": ["changed", "unchanged"],
                 "reset_sentinel": "all_zero",
-                "sham_always_zero": (
-                    selected is ActionEffectMode.SHAM
-                ),
+                "sham_always_zero": (selected is ActionEffectMode.SHAM),
                 "derived_only_from_policy_visible_pixels": True,
             },
             "recurrent_state_units": 256,
