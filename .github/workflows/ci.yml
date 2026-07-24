@@ -44,6 +44,17 @@ jobs:
             tests/test_v02_u1_confirm.py \
             tests/test_v02_u1_confirm_v2.py \
             tests/test_v02_u2_smoke.py
+      - name: Test v0.3 action-effect architecture paths
+        run: |
+          pytest -q \
+            tests/test_action_effect.py \
+            tests/test_v03_action_effect.py \
+            tests/test_v03_action_effect_smoke.py \
+            tests/test_v03_action_effect_qualify.py \
+            tests/test_v03_action_effect_train.py \
+            tests/test_v03_action_effect_dashboard.py \
+            tests/test_v03_action_effect_operational.py \
+            tests/test_v03_action_effect_launcher.py
       - name: Train, save, resume, and evaluate
         run: |
           dungeon-train \

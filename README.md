@@ -35,16 +35,23 @@ declared protocol versions rather than mid-run patches.
 
 ## Information boundary
 
-The policy receives a `56 × 56 × 3` partial RGB image. It does not receive:
+The established v0.2 policy receives a `56 × 56 × 3` partial RGB image. The implemented v0.3
+architecture study keeps that image and adds only two facts an embodied agent has from its own
+experience: its immediately preceding primitive action and whether the next visible pixels changed
+or stayed identical. The matched sham receives the same new network and observation shape but an
+all-zero context. Neither version receives:
 
 - its coordinates or facing direction as numbers;
 - the full map or a visited-cell map;
 - object names, route distance, shortest paths, or mission text;
 - the procedural seed;
-- oracle actions, demonstrations, pretrained weights, or online language-model output.
+- oracle actions, demonstrations, externally pretrained game knowledge, or online language-model
+  output.
 
 Trainer-only information records the tier, seed, success, timeout, and generated-layout signature.
 It grades behavior but cannot choose a button.
+
+![The v0.3 study compares matched sham and action-effect twins from the same inherited policy](docs/assets/v0.3-action-effect-architecture.svg)
 
 ## Installation
 
@@ -285,10 +292,10 @@ The attractive penultimate checkpoint cannot replace the prospectively required 
 The reserved `15_240_000`–`15_279_999` confirmation candidates remained unopened, both U2r roots
 are terminal evidence, and U3 remains closed.
 
-### U2-S r1 — prospective matched learner ablation
+### U2-S r1 — complete matched ablation; no mechanism selected
 
-U2r showed that more unchanged PPO experience can produce excellent behavior temporarily without
-preserving it reliably. The next question therefore separates two candidate mechanisms:
+U2r showed that more unchanged PPO experience could produce excellent behavior temporarily without
+preserving it reliably. U2-S therefore separated two candidate mechanisms:
 
 | Arm | PPO | Pixels-only repeated no-effect feedback |
 | --- | --- | --- |
@@ -299,26 +306,68 @@ preserving it reliably. The next question therefore separates two candidate mech
 
 ![Four matched children separate gentler PPO updates from pixels-only no-effect feedback](docs/assets/v0.2-u2s-stability-ablation.svg)
 
-The [prospective U2-S protocol](docs/protocol-v0.2-u2s-stability-ablation.md) starts every arm fresh
-from the same confirmed U1 `20260733` policy and optimizer—never from U2 or U2r. All four receive
-the same matched RNG streams and exactly 1,048,576 new U2 actions. Only their fixed final three
-exams count, with case-level loop-tail gates that means alone cannot hide.
+After that safely preserved zero-action attempt, r1 completed all four matched arms. Each began
+fresh from confirmed U1 child `20260733`, ran the full 1,048,576-action budget, and produced all 32
+frozen exams. The fixed terminal-three outcome was:
 
-The ablation selects the simplest eligible **configuration**, in the frozen order control,
-conservative, no-effect, combined. It never promotes an arm checkpoint, opens confirmation/final
-seeds, or activates U3. If no arm qualifies, this PPO-and-reward mechanism study stops rather than
-adding another unplanned rescue.
+| Arm | First exam | Final three U2 scores | Cases with 10+ ineffective interactions | Worst terminal case |
+| --- | ---: | --- | --- | --- |
+| Control | 21/80 | 78, 76, 77 | 3, 1, 2 | 124, 156, 21 |
+| Conservative | 31/80 | 64, 64, 64 | 0, 3, 2 | 5, 152, 155 |
+| No-effect | 33/80 | 78, 79, 76 | 0, 1, 1 | 2, 28, 126 |
+| Combined | 36/80 | 70, 69, 71 | 0, 0, 0 | 7, 1, 7 |
 
-The four-cell comparison is intentionally non-resumable. If any arm is interrupted or crashes, the
-entire cohort closes as `operationally_incomplete`; a replacement must restart all four arms from
-the same confirmed U1 parent under a new prospective source commit, annotated tag, protocol-attempt
-identity, and root. This prevents one arm from receiving a different environment or recurrent-state
-continuation than the other matched cells.
+Control retained capability but not reliability. Conservative PPO suppressed capability without
+removing every tail. No-effect came closest to joining both, yet still produced rare catastrophic
+loops. Combined removed the tails but finished just below the frozen 72/80 capability floor in all
+three deciding exams. No arm passed every gate; the authenticated verdict is
+**`ablation_failed`**. No configuration, checkpoint, successor cohort, confirmation, or U3
+activation was selected. The full
+[U2-S result](docs/results/v0.2-u2s-r1-stability-ablation.md) preserves the exact evidence and
+claim limits.
 
-That rule was exercised before action one: [launch attempt 0](docs/results/v0.2-u2s-launch-attempt-0.md)
-failed safely because its per-arm media directory was missing. It produced no policy actions,
-updates, exams, or checkpoints. The r1 launcher adds the exact directory-creation guard and starts
-all four children fresh under new source, tag, qualification, and storage identities.
+### v0.3 — implemented matched action-effect architecture; qualification pending
+
+The ablation resolved the next design decision: another reward amount or gentler PPO schedule is
+not enough. The new [v0.3 architecture protocol](docs/protocol-v0.3-action-effect-architecture.md)
+moves the missing causal fact into a learnable network pathway.
+
+Both fresh twins inherit the exact confirmed U1 `20260733` CNN, actor/critic LSTMs, action/value
+heads, and Adam moments by parameter name. Both have the same new nine-value input and a
+zero-initialized residual into the existing 512-feature representation. The sham always receives
+zeros. The action-effect twin receives a one-hot copy of its own previous action plus a
+changed/unchanged comparison of two consecutive visible frames. It receives no game state, object
+name, reward label, route, demonstration, or online model advice.
+
+Because the residual begins exactly at zero, the transplanted model must reproduce the U1 parent's
+features, values, deterministic actions, and recurrent states exactly. The two arms must also
+produce the same first real 2,048-transition trajectory; learning may make them diverge only after
+the first optimizer phase. Reward, curiosity, PPO, curriculum, horizons, full action budget, and
+the complete U2-S terminal-three gate remain fixed.
+
+This first stage can select only the architecture definition. Its checkpoints are development
+artifacts and cannot be promoted. A genuine candidate pass would authorize a separately frozen
+three-parent replication; only a later successful independent replication and untouched no-update
+confirmation could reopen U3.
+
+The complete local Stage-A pathway now exists: action-effect observation and network code, audited
+parent/Adam transplantation, matched disposable smoke, fail-closed qualification, sequential
+manifest and trainer, read-only dashboard, bounded evidence, a terminal redacted process-inventory
+seal, and one fixed launcher. Its assigned release identities are:
+
+| Boundary | Assigned identity |
+| --- | --- |
+| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-20260724` |
+| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-20260724` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-20260724` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-media-20260724` |
+| Dashboard | `http://127.0.0.1:8788/` |
+| Sole launcher | `scripts/run_v03_action_effect_stage_a.sh` |
+
+That is implementation readiness, not experimental evidence. At this implementation checkpoint,
+no canonical tag, qualification claim/report, cohort, media root, policy action, or v0.3 result
+exists yet. The exact clean-release sequence is preserved in the
+[operations runbook](docs/runbook.md#release-qualify-and-launch-v03-stage-a).
 
 ## Evidence standard
 
@@ -344,7 +393,7 @@ See [the experiment contract](docs/experiment-contract.md),
 [roadmap](docs/roadmap.md). The completed v0.1 capability result is preserved in the
 [Navigate canary report](docs/results/v0.1-navigate-canaries.md), and the next proposed protocol is
 specified in [the v0.2 design](docs/protocol-v0.2-design.md). The current controlled decision point
-is the prospective
-[U2-S matched stability ablation](docs/protocol-v0.2-u2s-stability-ablation.md). U2r-r1 ended in a
-valid terminal stability failure, U2-S attempt 0 is preserved as a zero-action infrastructure
-failure, its r1 replacement is prospective, and U3 remains blocked.
+is the implemented but not yet qualified
+[v0.3 matched action-effect architecture study](docs/protocol-v0.3-action-effect-architecture.md).
+U2r-r1 ended in a valid terminal stability failure, U2-S r1 completed with no eligible mechanism,
+and U3 remains blocked.

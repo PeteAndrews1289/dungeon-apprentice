@@ -17,12 +17,19 @@ This is different from the earlier Pokémon experiments in four decisive ways:
 There are no human gameplay traces, savestate lessons, route scripts, online language-model calls,
 or objective-specific action rules. A human defines the game and the exam, not the move sequence.
 
-## One policy, three components
+## One policy, three core components
 
 The policy has a convolutional vision encoder, an LSTM memory, and an action/value head. The vision
 encoder turns a 56 × 56 pixel view into features. The LSTM can retain evidence after an object or
 location leaves view. The action head chooses among seven buttons. PPO changes all of these weights
 using trajectories produced by the policy itself.
+
+The implemented, not-yet-qualified v0.3 release candidate adds a small fourth pathway without
+replacing those learned components.
+It tells the same recurrent policy which primitive it selected one transition ago and whether the
+next visible RGB frame changed or remained identical. This is not a key label, success flag, route,
+or object detector. It is the digital equivalent of remembering “I just tried this, and I saw
+nothing happen.” A matched sham has the same parameters and input shape but receives zeros.
 
 The model begins with random parameters. It is not reset when a new tier unlocks. The point of the
 experiment is whether one growing policy can acquire and retain a repertoire.
@@ -102,6 +109,52 @@ collision-aware, no-update confirmation. Thus:
 - the old failed confirmation remains failed in every future outcome.
 
 This is what prevents “keep testing until it passes” from masquerading as learning.
+
+## Why action-effect context is the next learning question
+
+The terminal U2-S ablation tested whether ordinary optimization, conservative optimization, a
+bounded pixels-only penalty, or both could make Separated Unlock simultaneously capable and
+reliable. It did not produce a winner:
+
+- control finished at 78, 76, and 77/80 U2 but still contained catastrophic interaction loops;
+- conservative finished at 64/80 three times and still developed rare tails;
+- no-effect finished at 78, 79, and 76/80 and reduced the tail, but did not eliminate it; and
+- combined had no 10-plus-ineffective cases, yet finished at 70, 69, and 71/80.
+
+That is useful negative evidence. The problem is not simply “too much learning” or “no penalty for
+bad buttons.” With the v0.2 interface, the LSTM processes the current frame before the policy samples
+an action. On the next frame it can notice that pixels did not change, but stochastic action
+selection means its hidden state was never explicitly told which action actually occurred. A
+hundred identical toggles can therefore look like a generic unchanged scene rather than a specific
+failed cause-and-effect experiment.
+
+The implemented, qualification-pending
+[v0.3 protocol](protocol-v0.3-action-effect-architecture.md) supplies that missing
+sensorimotor link while keeping the task signal untouched:
+
+1. At episode start, context is all zero.
+2. The policy selects one of the same seven actions.
+3. The wrapper compares only the visible before/after pixel bytes.
+4. The next observation contains the prior action one-hot and exactly one
+   changed/unchanged outcome bit.
+5. A learned `9 → 512` residual decides whether and how that context should alter the inherited
+   visual features.
+
+There is no hand-coded action ban. An unchanged pickup may be useless in one state and a necessary
+failed probe in another; the policy must learn that distinction from later returns. Evaluation uses
+the same context derivation but disables all parameter updates, just as it disables curiosity.
+
+The migration is designed not to erase what U1 already proved. The NatureCNN, actor and critic
+LSTMs, action head, value head, and every associated Adam moment transfer by exact parameter name.
+The one new projection starts at zero, so the candidate initially behaves exactly like its parent.
+That supports a particularly clean comparison: sham and action-effect must generate the same first
+real rollout, and only learning after that rollout may make them diverge.
+
+One successful development twin would still be insufficient. Stage A can select only the
+architecture definition. A later protocol must train three fresh children from all three confirmed
+U1 parents, and all three must pass independent development and untouched confirmation gates before
+U3 opens. This retains the project's central standard: an architectural idea counts only when it
+reliably creates learned behavior, not when one attractive checkpoint appears.
 
 ## Why timing matters
 

@@ -26,14 +26,15 @@
   arm's media directory. Never resume, rename, reuse, prune, or overwrite
   `/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-20260723` or its matching media root; see
   `docs/results/v0.2-u2s-launch-attempt-0.md`.
-- The replacement prospective decision is the matched
+- The replacement matched
   `dungeon-apprentice-v0.2-u2s-stability-ablation` in
   `docs/protocol-v0.2-u2s-stability-ablation.md`, with r1 cohort ID
-  `v0.2-u2s-ablation-r1-20260723`. This branch contains its implementation and preflight tests, but
-  source and documentation alone do not imply r1 qualification, external anchoring, canonical root
-  creation, or training. Before action one, a clean r1 release must bind the protocol, exact parent,
-  four interventions, seeds, lesson-specific guard digests, terminal rule, protected partitions,
-  storage boundary, and dashboard identity.
+  `v0.2-u2s-ablation-r1-20260723`, is now terminal. All four arms completed exactly 1,048,576 child
+  actions and 32 frozen exams. No arm passed every final-three capability-and-stability gate, so the
+  authenticated verdict is `ablation_failed`, no configuration was selected, no successor cohort
+  was authorized, and no ablation checkpoint may be reused. The cohort report SHA-256 is
+  `dfd288955bd2f8367ba3818e7242ff29c4a6e8e5a03d248df45e85f43b562e44`; see
+  `docs/results/v0.2-u2s-r1-stability-ablation.md`.
 - U2-S may load only confirmed U1 child `20260733`, archive SHA-256
   `3d2950e63491d07d3e483660469b8bec869fa137fa61d6b4d22b3d9f0ded2104`, including its optimizer.
   It may not load any U2, U2r, or earlier U2-S policy. Four sequential arms—control, conservative,
@@ -69,8 +70,51 @@
   four arms; do not add an earlier arm's layouts to a later arm's hard guard. The trainer may never
   load old evidence images, scores, roles, seeds, or action traces, and within-arm layouts need not
   be globally unique. Persist every episode-start and active-worker layout identity.
-- The learning agent receives pixels and its own recurrent state only. Do not add coordinates,
-  map IDs, shortest paths, object labels, oracle actions, or mission text to policy observations.
+- The next prospective question is the separately versioned
+  `dungeon-apprentice-v0.3-action-effect-architecture`. It is a matched architecture study, not a
+  U2-S successor cohort and not a reward/PPO retune. Both `sham` and `action-effect` restart from
+  exact confirmed U1 child `20260733`, including every legacy Adam moment by parameter name. They
+  may not load a U2, U2r, or U2-S checkpoint.
+- Both v0.3 arms have identical Dict observation spaces, parameter sets, initialization, original
+  U2 control reward/PPO, algorithm seed `20260757`, worker streams `20260757`–`20260760`, and
+  exactly 1,048,576 new actions. `image` is the unchanged partial RGB view. `action_effect` is nine
+  floats: the preceding self-selected action one-hot plus visible `changed`/`unchanged` one-hot.
+  Reset is all zero; the sham arm is always all zero. The context is derived only from consecutive
+  policy-visible pixel bytes and the policy's own action.
+- The v0.3 context residual must be exactly zero after construction and parent transplantation.
+  Before action one, legacy logits, values, deterministic actions, and recurrent state must be
+  exactly equal under zero context. The matched twins' first complete 2,048-transition trajectory
+  must be identical; behavioral divergence may begin only after the declared first optimizer
+  phase. Orthogonal reinitialization and positional optimizer-state loading are prohibited.
+- v0.3 uses the complete U2-S final-three capability-and-stability gate without change. Sham is
+  calibration only. Only the `action-effect` architecture definition can qualify, and neither
+  development checkpoint may be reused. A pass authorizes writing a separate three-lineage
+  replication protocol; it does not itself authorize confirmation, U3, Retrieve, or a game claim.
+  Stage A is non-resumable and must be separately committed, tagged, qualified, and externally
+  anchored before canonical action one.
+- The v0.3 release candidate is implemented but remains unfrozen and unqualified. Its assigned
+  annotated tag is `action-effect-architecture-v0.3-stage-a-20260724`; assigned qualification,
+  cohort, and media roots are respectively
+  `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-20260724`,
+  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-20260724`, and
+  `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-media-20260724`; dashboard is
+  `http://127.0.0.1:8788/`; the sole canonical launcher is
+  `scripts/run_v03_action_effect_stage_a.sh`. None exists or is authorized while the source is
+  dirty.
+- Preserve the v0.3 non-circular release order: the published annotated tag preregisters
+  source/protocol/roots/contracts; the durable qualification claim/report binds that exact tag
+  object; the cohort manifest binds the exact qualification-report SHA-256. Never claim that the
+  earlier tag contains or anchors the later qualification report digest.
+- v0.3 terminal finalization requires `process-closeout.json`, gathered and sealed by the manifest
+  after both trainers and sleep prevention stop. It must contain no trainer, supervisor, or
+  `caffeinate` match, its digest must be bound into the cohort report and integrity record, and a
+  second clean live scan must occur immediately before finalization. The read-only dashboard may
+  remain.
+- The v0.2 learning agent received pixels and its own recurrent state only. v0.3 deliberately
+  broadens that declared boundary only to pixels, its own preceding primitive action, and a
+  changed/unchanged comparison of its own consecutive visible frames. Do not add coordinates, map
+  IDs, shortest paths, object labels, inventory labels, oracle actions, trainer `info`, or mission
+  text to policy observations.
 - Trainer-visible `info` fields may grade outcomes and create reports, but may never select or
   replace an action.
 - The scripted oracle proves generated levels are solvable. Its actions are never training data.

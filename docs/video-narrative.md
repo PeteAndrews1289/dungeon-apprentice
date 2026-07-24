@@ -286,6 +286,89 @@ chapter a tragedy. The result will distinguish three different limits: unchanged
 not stabilize the terminal policy; development stability did not generalize; or one bounded
 continuation did create a usable third parent. Each is a real answer.
 
+### Act X — Four ways to miss
+
+U2r's terminal failure should not cut directly to another tweak. First show what it taught us:
+capability was still present, but two rare interaction loops could dominate an otherwise strong
+exam. Then introduce U2-S as the moment the project stops rescuing a policy and tests the learning
+mechanism itself.
+
+Use the matched 2 × 2 grid in
+[the U2-S result visual](assets/v0.2-u2s-stability-ablation.svg). Four fresh children begin from the
+same confirmed U1 brain, optimizer, and random state. Across the top, the project either leaves
+reward alone or adds a tiny pixels-only signal after repeated visibly ineffective interactions.
+Down the side, it either keeps the existing PPO updates or makes them gentler. Every cell receives
+the full 1,048,576-action budget. There is no race, early winner, or “best checkpoint” cursor.
+
+Start the animation with the shared inherited U2 score—24/80—and reveal the first 32,768-action
+exam: 21 for control, 31 for conservative, 33 for no-effect, and 36 for combined. That ordering is
+tempting, then deliberately leave it unresolved. Early progress is not the decision.
+
+At the fixed final three exams, split the screen into capability and reliability:
+
+| Arm | Final-three U2 | 10+ cases | Worst loop | What it learned |
+| --- | --- | ---: | ---: | --- |
+| Control | 78, 76, 77 | 6 | 156 | The quest, but not when to stop |
+| Conservative | 64, 64, 64 | 5 | 155 | Too cautiously to reach the gate |
+| No-effect | 78, 79, 76 | 2 | 126 | Better restraint, still brittle |
+| Combined | 70, 69, 71 | 0 | 2 | Restraint, but not enough quest |
+
+This is the visual thesis of the act: one axis preserves capability, the other improves stability,
+but no square contains both. Control and no-effect clear every U2 score and panel gate; their rare
+tails disqualify them. Combined removes every 10+ terminal case, yet misses 72/80 in all three
+exams. Conservative does neither.
+
+Let the verdict land without softening it:
+
+> `ablation_failed` — no configuration selected — no checkpoint advances — U3 closed
+
+The negative result is the pivot, not an anticlimax. A penalty can make a behavior expensive
+without giving the network a durable concept of **“I just tried this and nothing changed.”** The
+next chapter changes the learner's internal vocabulary: it may observe only pixels plus its own
+previous action and the visible consequence of that action, learned through experience. That keeps
+the no-walkthrough, no-oracle, no-GPT premise while moving the experiment from reward engineering
+to architecture.
+
+Do not describe no-effect as the winning arm because its mean was attractive, and do not describe
+combined as a stability success that earned continuation. The terminal rule required the same cell
+to satisfy both. None did.
+
+### Act XI — Give the apprentice a sense of consequence
+
+The next chapter should not feel like a fifth rescue attempt. The four-cell ablation already
+answered that question: changing how hard the learner is pushed can trade capability for stability,
+but it did not give one policy both. The architectural pivot asks something more human:
+
+> What if the apprentice could remember not only what it sees, but what it just tried and whether
+> the visible world responded?
+
+Show the v0.3 architecture visual as two identical brains growing the same small input. The sham
+twin's nine values are always zero. The action-effect twin sees a one-hot copy of its own previous
+button plus changed/unchanged visible pixels. Keep the exclusions on screen: no coordinates, object
+labels, route, mission text, oracle action, demonstration, reward label, or online GPT call.
+
+The first dramatic test is not a score. It is enforced equality. Both twins must reproduce the
+confirmed U1 parent at zero context, then generate the same complete 2,048-transition first
+rollout. Put the two action traces on top of each other until they look like one line. Only after
+the first optimizer update is divergence allowed. That makes the experiment legible: before
+learning, the intervention is behaviorally inert; afterward, only the candidate has useful context
+from which to learn.
+
+The release process can become a short credibility montage:
+
+1. a clean source commit becomes the published one-line preregistration tag;
+2. a durable qualification report binds that exact tag object and proves the real matched smoke;
+3. the cohort manifest binds the report digest; and
+4. one fixed launcher opens sham, then action-effect, while dashboard 8788 only reads evidence.
+
+Do not depict the tag as containing the later qualification digest. The point is the opposite: each
+step commits to what is knowable at that moment, without a circular or post-hoc claim.
+
+If Stage A eventually succeeds, frame it as permission to replicate the **idea**, not promotion of
+the attractive model on screen. Both Stage-A checkpoints are discarded. Three fresh policies from
+three independently confirmed U1 parents must learn the same architecture under a separately
+frozen protocol, and untouched no-update confirmation must still pass before U3 can open.
+
 ### Ending options
 
 - **Full success:** one policy retrieves the relic on unseen final levels and retains every prior
@@ -339,6 +422,20 @@ continuation did create a usable third parent. Each is a real answer.
 - the unopened `15_240_000`–`15_279_999` U2r confirmation envelope;
 - if activated, the exact title card “two direct + one prospectively remediated,” never “original
   U2 3/3”;
+- the U2-S matched 2 × 2 grid with one shared 24/80 inherited baseline;
+- four synchronized 32-exam clocks ending at exactly 1,048,576 actions per arm;
+- the final-three split screen: control/no-effect above the capability line, combined below the
+  loop-tail line, and no cell satisfying both;
+- the exact U2-S end card: `ablation_failed`, `selected_configuration: null`, no checkpoint reuse,
+  U3 closed;
+- the v0.3 twin diagram: identical parent/transplant, zero sham context versus previous
+  action + visible effect;
+- overlapping first-rollout traces through all 2,048 pre-update transitions, followed by a clear
+  “learning may diverge here” marker at the first optimizer phase;
+- the non-circular v0.3 evidence chain: source tag → qualification report → cohort manifest →
+  fixed launcher, with dashboard 8788 labeled read-only;
+- the v0.3 Stage-A end card, whatever its eventual outcome, explicitly stating that no Stage-A
+  checkpoint advances and U3 remains closed;
 - one example of curiosity encouraging exploration without task knowledge;
 - failed runs, including the first checkpoint-publication bug;
 - the v0 audit, reward inversion, and stale-policy evaluation timeline;
@@ -357,4 +454,6 @@ disjoint confirmation. Do not describe 169/200 as a pass, “round it” to 85%,
 passing policies satisfy an all-three preregistered rule. Equally, do not frame the one-case miss as
 a total learning collapse. Do not present U2r as a rerun of the failed exam, hide that its stability
 criteria were designed after observing the failure, select an intermediate checkpoint, or describe
-a future U2r pass as retroactive 3/3 confirmation.
+a future U2r pass as retroactive 3/3 confirmation. Do not call no-effect an U2-S winner because its
+averages were attractive, call combined eligible because it removed the measured tails, reuse an
+ablation checkpoint, or imply that the failed mechanism study authorized U3.

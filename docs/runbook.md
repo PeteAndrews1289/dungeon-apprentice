@@ -368,6 +368,11 @@ U2-S is a four-arm development mechanism study, not another continuation and not
 Its complete scientific contract is
 [Protocol v0.2 U2-S](protocol-v0.2-u2s-stability-ablation.md).
 
+> **Terminal historical procedure:** r1 completed all four arms and selected no eligible
+> configuration. The cohort is immutable `ablation_failed` evidence. Do not run its qualification
+> or launcher again, do not resume an arm, and do not reuse any U2-S checkpoint. The commands below
+> document the already consumed procedure; they are not current operating authority.
+
 | Field | Fixed identity |
 | --- | --- |
 | Protocol | `dungeon-apprentice-v0.2-u2s-stability-ablation` |
@@ -456,10 +461,160 @@ The ablation selects only a configuration. No arm checkpoint may be copied into 
 or a successor. A positive result permits writing a separate multi-lineage protocol that starts
 fresh from confirmed U1 parents; it does not itself confirm U2.
 
+The actual all-arm result was negative, so that conditional successor did not open. U3 remains
+closed. The next prospective boundary is the
+[v0.3 matched action-effect architecture study](protocol-v0.3-action-effect-architecture.md).
+
+## Prepare the implemented v0.3 action-effect architecture study
+
+v0.3 is not a continuation of U2-S and does not reuse an ablation checkpoint. It is a two-arm,
+matched architecture study from the exact confirmed U1 child `20260733`:
+
+| Arm | Observation context | Role |
+| --- | --- | --- |
+| `sham` | Same Dict policy, new pathway, and comparison work; context always zero | Calibration only |
+| `action-effect` | Previous primitive action plus whether consecutive visible RGB bytes changed | Only selectable candidate |
+
+Both twins inherit the U1 policy and Adam state by verified parameter name, add only one
+zero-initialized `512 × 9` context weight, and use the original U2 reward, PPO, curriculum, full
+1,048,576-action budget, 32-exam schedule, and terminal U2-S gate. They share algorithm seed
+`20260757` and worker streams `20260757`–`20260760`. Their complete first 2,048-transition
+pre-update rollout must be identical; the first optimizer update is the earliest valid divergence.
+
+The Stage-A implementation is complete, but implementation alone is still **unfrozen and
+unqualified**. The operational identities are assigned; at this preregistration checkpoint they
+have not been created:
+
+| Boundary | Assigned identity |
+| --- | --- |
+| Annotated source-preregistration tag | `action-effect-architecture-v0.3-stage-a-20260724` |
+| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-20260724` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-20260724` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-media-20260724` |
+| Dashboard | `http://127.0.0.1:8788/` |
+| Sole launcher | `scripts/run_v03_action_effect_stage_a.sh` |
+
+No canonical tag, qualification claim/report, cohort, media root, policy action, or result exists at
+this source entry. Do not improvise a root, adapt a U2-S script, or call the lower-level trainer
+directly. Scientific training remains blocked until one clean release:
+
+1. freezes and pushes the exact source and protocol;
+2. publishes the assigned annotated tag and its one-line source-preregistration payload;
+3. authenticates the confirmed U1 parent and every immutable predecessor result;
+4. proves the Dict observation and exact named tensor/Adam transplant;
+5. proves bit-exact zero-context equivalence and matched first-rollout identity in a disposable
+   four-worker smoke;
+6. verifies unchanged reward/PPO/curriculum and the static layout guards;
+7. proves zero confirmation/final seed access, a mounted T7 with the declared reserve, and no
+   competing trainer; and
+8. emits one claim-bearing qualification report bound to that exact tag object before action one.
+
+The old sealed U2 qualification range may not be reopened. The v0.3 engineering smoke must use only
+disposable engineering layouts, leave canonical and predecessor evidence unchanged, and destroy
+its updated policy copies.
+
+Stage A is non-resumable. An interruption closes the entire matched root as
+`operationally_incomplete`; neither twin may continue or be reused. A valid full-budget result
+selects the architecture definition only when the `action-effect` arm passes all three fixed
+terminal exams. It never selects a Stage A checkpoint and never opens U3.
+
+If the candidate passes, the only next action is to author a separate Stage B protocol for three
+fresh lineages from confirmed U1 children `20260725`, `20260729`, and `20260733`, with fresh random
+streams and no Stage A state. Even a successful Stage B would still require a separate,
+prospectively frozen no-update confirmation before U3 could open.
+
+### Release, qualify, and launch v0.3 Stage A
+
+The release chain is intentionally non-circular:
+
+1. the published annotated tag preregisters the exact source commit, protocol digest, parent,
+   predecessor verdict, guard/sampler/architecture contracts, protected partitions, canonical
+   roots, dashboard, storage caps, non-resume rule, CPU-only training/smoke devices, and runtime
+   snapshot (Python, platform, machine, Gymnasium, MiniGrid, NumPy, sb3-contrib,
+   Stable-Baselines3, and Torch);
+2. the durable qualification claim and report then bind that already-published tag object and prove
+   the real four-worker matched smoke; and
+3. the cohort contract and manifest bind the exact qualification-report SHA-256 before either
+   trainer may act.
+
+Run the ordinary repository checks while the tree is still a working candidate:
+
+```bash
+.venv/bin/ruff check .
+.venv/bin/pytest
+.venv/bin/dungeon-qualify --seeds 100
+git diff --check
+```
+
+Then review the complete diff, commit it, push that exact commit to the approved `origin`, and
+confirm the repository is clean. Do not substitute a commit identifier in this document; the
+qualifier derives and verifies the eventual release commit itself.
+
+Generate the canonical one-line tag payload only from that clean commit, create the annotated tag
+with that exact line as its complete message, and publish it:
+
+```bash
+V03_TAG_PAYLOAD="$(
+  .venv/bin/python -m dungeon_apprentice.v03_action_effect_qualify \
+    --tag-payload-only
+)"
+git tag -a action-effect-architecture-v0.3-stage-a-20260724 \
+  -m "$V03_TAG_PAYLOAD"
+git push origin HEAD
+git push origin refs/tags/action-effect-architecture-v0.3-stage-a-20260724
+```
+
+Do not hand-edit the payload. The tag preregisters inputs; it does **not** contain a qualification
+report digest that can only exist later.
+
+With the T7 mounted, at least 25 GiB free, no competing trainer, all three assigned roots absent,
+and the repository still clean at the tagged commit, create the one-shot qualification:
+
+```bash
+.venv/bin/python -m dungeon_apprentice.v03_action_effect_qualify
+```
+
+The qualifier creates the durable claim first, runs the disposable real four-worker rollout/update
+smoke, destroys its updated policy copies, and writes `report.json` plus its SHA-256 sidecar in the
+assigned qualification root. Failure or partial output permanently consumes that attempt identity;
+do not delete the claim or retry it under the same tag and roots.
+
+Only after the qualification report verifies may the fixed launcher be invoked once:
+
+```bash
+./scripts/run_v03_action_effect_stage_a.sh
+```
+
+The launcher owns cohort/media creation, contract sealing, fixed arm order (`sham`, then
+`action-effect`), trainer supervision, sleep prevention, the read-only dashboard at
+`http://127.0.0.1:8788/`, and terminal closeout. After both trainers exit it stops sleep prevention,
+asks the manifest to gather and seal a command-redacted process inventory, and rescans immediately
+before finalization. Any remaining trainer, supervisor, or `caffeinate` process blocks the terminal
+report; the read-only dashboard may remain. The launcher accepts no arm, seed, parent, checkpoint,
+budget, root, or resume override. Closing the dashboard tab does not stop training; stopping the
+launcher, trainer, machine, or storage connection closes the non-resumable cohort as operationally
+incomplete.
+
+The v0.3 entry points declared in `pyproject.toml` are:
+
+| Command | Role | May start canonical training? |
+| --- | --- | --- |
+| `dungeon-smoke-v03-action-effect` | Disposable engineering comparison used by qualification | No |
+| `dungeon-qualify-v03-action-effect` | Tag-payload generation and one-shot qualification | No |
+| `dungeon-train-v03-action-effect` | Lower-level single-arm trainer used by the fixed launcher | Never call directly |
+| `dungeon-dashboard-v03-action-effect` | Read-only evidence server | No |
+
+They are refreshed by the repository's editable-install command. The canonical instructions above
+use the equivalent module entry point so their availability does not depend on a stale generated
+shell wrapper.
+
+The sole scientific start command remains `scripts/run_v03_action_effect_stage_a.sh`.
+
 ## Resume a legacy v0/v0.1 run after interruption
 
-This older generic procedure does not apply to U2r or U2-S. Both are terminal/non-resumable under
-their current records; never adapt this generic command to either protocol.
+This older generic procedure does not apply to U2r, U2-S, or v0.3 Stage A. U2r and
+U2-S are terminal/non-resumable under their current records, and v0.3 Stage A is declared
+non-resumable; never adapt this generic command to any of those protocols.
 
 Resume from an archive only when its matching state sidecar is present and passes digest/protocol
 validation. A resume creates a new child run rather than rewriting the parent:

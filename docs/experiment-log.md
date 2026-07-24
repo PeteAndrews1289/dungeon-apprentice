@@ -912,3 +912,80 @@ and validate its ancestor chain. Because attempt 0 is non-resumable, r1 receives
 commit, annotated tag `u2s-stability-ablation-v0.2-u2s-r1-20260723`, qualification root, cohort
 root `/Volumes/T7 Developer/DungeonApprentice/u2s-ablation-r1-20260723`, and four entirely fresh
 children from the confirmed U1 parent.
+
+### July 23–24, 2026 — U2-S r1 completes; no mechanism qualifies
+
+The corrected matched ablation ran all four cells sequentially from the byte-identical confirmed
+U1 `20260733` parent. Every arm authenticated the same pre-action RNG digest
+`dba44c0603a35614fd5f7b56706fe6d5abf83e893a086eca6f2fbaa4d1428030`,
+spent exactly 1,048,576 new U2 actions, completed all 32 fixed post-update exams, and exited
+normally. Across the cohort that is 4,194,304 actions, 128 exams, and 40,960 deterministic case
+records.
+
+The fixed terminal-three-exam comparison was:
+
+| Arm | U2 successes | Mean U2 ineffective | 10+ cases | Worst loop | Frozen outcome |
+| --- | --- | ---: | ---: | ---: | --- |
+| `control` | 78, 76, 77 | 1.1083 | 6 | 156 | Capability passed; tails failed |
+| `conservative` | 64, 64, 64 | 3.2542 | 5 | 155 | Capability and tails failed |
+| `no-effect` | 78, 79, 76 | 0.3500 | 2 | 126 | One clean exam; later tails failed |
+| `combined` | 70, 69, 71 | 0.1167 | 0 | 2 | Stability passed; capability failed |
+
+Control showed that the existing learner can retain strong U2 capability while remaining
+deterministically brittle. The bounded pixels-only no-effect signal improved both average
+capability and tail frequency relative to control, but one 28-action loop and one 126-action loop
+made its second and third terminal exams ineligible. Conservative PPO weakened U2 learning.
+Combining conservative PPO with the no-effect signal removed the measured catastrophic loops, but
+held the weaker U2 panel below 34/40 and all three overall scores below 72/80.
+
+No arm made capability and stability coexist under every frozen terminal condition. The cohort
+verdict is **`ablation_failed`**, `selected_configuration` is `null`, ablation checkpoint reuse is
+forbidden, no successor cohort is authorized, and U3 remains closed. The report SHA-256 is
+`dfd288955bd2f8367ba3818e7242ff29c4a6e8e5a03d248df45e85f43b562e44`;
+the full authenticated closeout is in
+[the U2-S r1 result](results/v0.2-u2s-r1-stability-ablation.md).
+
+This closes the “rescue it with more PPO or a small reward adjustment” branch. The useful lesson is
+architectural: the policy needs an internal representation of action and visible consequence,
+rather than a stronger external force telling it not to repeat an action. Any such experiment must
+be separately preregistered, restart at an authorized confirmed boundary, and may not load an
+U2-S checkpoint.
+
+### July 24, 2026 — v0.3 Stage-A implementation reaches qualification boundary
+
+The next experiment is now implemented as a complete release candidate rather than another
+reward/PPO adjustment. Two fresh twins reconstruct the exact confirmed U1 `20260733` policy and
+Adam state by parameter name. Both receive the same Dict observation and new bias-free `9 → 512`
+residual; sham receives zeros, while the candidate receives only its own previous primitive action
+and whether its next visible frame changed. The projection starts exactly at zero, preserving the
+inherited policy at the intervention boundary.
+
+The implementation now includes the observation wrapper, named policy/optimizer transplant,
+bit-exact zero-context checks, a disposable matched four-worker rollout/update smoke, one-shot
+qualification, two sequential full-budget trainers, a fail-closed cohort state machine, bounded
+artifacts, a read-only dashboard, and a fixed non-resumable launcher. The runtime contract fixes
+both scientific training and qualification smoke to CPU and records Python, platform, machine,
+Gymnasium, MiniGrid, NumPy, sb3-contrib, Stable-Baselines3, and Torch identities.
+
+The assigned release identities are:
+
+| Boundary | Assigned identity |
+| --- | --- |
+| Annotated tag | `action-effect-architecture-v0.3-stage-a-20260724` |
+| Qualification root | `/Volumes/T7 Developer/DungeonApprentice/qualifications/v0.3-action-effect-stage-a-20260724` |
+| Cohort root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-20260724` |
+| Media root | `/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-media-20260724` |
+| Dashboard | `http://127.0.0.1:8788/` |
+| Launcher | `scripts/run_v03_action_effect_stage_a.sh` |
+
+This entry records implementation readiness only and intentionally predates source freeze. The
+annotated tag, durable qualification claim/report, cohort, media root, policy actions, and learning
+result do not yet exist. The eventual release must preserve a non-circular chain: the
+published tag first preregisters source and contracts; qualification then binds that exact tag
+object; the cohort manifest finally binds the qualification-report SHA-256.
+
+The scientific question is narrower and stronger than “did another tweak help?” The matched first
+rollout must prove that the new pathway initially changes nothing. Only after the first PPO update
+may the candidate learn to use its own action/outcome memory. If it passes all three fixed terminal
+exams, Stage A selects only the architecture definition for a separate three-lineage replication.
+It never promotes a checkpoint and never opens U3 by itself.

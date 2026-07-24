@@ -33,9 +33,15 @@
 - [x] Implement, preflight, qualify, and externally anchor U2-S attempt 0
 - [x] Preserve U2-S attempt 0 as a zero-action operational failure under its original tag/root
 - [x] Implement the fail-closed r1 launcher correction and assign fresh identities
-- [ ] Qualify and externally anchor the frozen U2-S r1 release
-- [ ] Run all four full-budget arms and select only a learner configuration from the fixed terminal rule
-- [ ] If a configuration qualifies, preregister a fresh multi-lineage U2-S cohort from confirmed U1 parents
+- [x] Qualify and externally anchor the frozen U2-S r1 release
+- [x] Run all four full-budget arms and preserve the fixed `ablation_failed` terminal decision
+- [x] Stop the U2-S reward/PPO mechanism family because no configuration qualified
+- [x] Implement the fail-closed v0.3 action-effect Stage-A release candidate
+- [ ] Pass the disposable matched first-rollout gate for the v0.3 action-effect architecture
+- [ ] Freeze, qualify, tag, and externally anchor the non-resumable v0.3 Stage-A study
+- [ ] Run sham and action-effect through the full matched budget and terminal-three gate
+- [ ] If and only if action-effect qualifies, preregister three fresh independent U1-parent replications
+- [ ] Confirm all three replicated v0.3 policies with a fresh no-update instrument before opening U3
 - [ ] Implement and qualify the proposed v0.2 Unlock staircase
 - [ ] Demonstrate full Unlock with retained Navigate across multiple random seeds
 
@@ -139,21 +145,28 @@ The fresh `15_240_000`–`15_279_999` confirmation ranges were never opened beca
 artifact was ineligible. Both U2r roots are terminal evidence, U3 remains closed, and no second
 continuation is permitted.
 
-The next bounded question is the prospective
-[U2-S matched stability ablation](protocol-v0.2-u2s-stability-ablation.md). Four sequential arms
-restart from confirmed U1 child `20260733`, not from a U2 or U2r policy. They cross unchanged versus
-conservative PPO with absence versus presence of a pixels-only penalty on repeated visibly
-ineffective interactions. Every arm receives the same matched RNG streams and 1,048,576-action
-budget. Only the fixed final three exams count, including case-level loop-tail gates. The frozen
-priority chooses the simplest eligible configuration—control, conservative, no-effect, then
-combined—and never promotes an ablation checkpoint. No eligible arm means the mechanism study
-stops; an eligible configuration permits only a new separately preregistered multi-lineage cohort.
-The factorial cohort is non-resumable: an interruption invalidates the whole comparison, and any
-replacement requires a new committed/tagged protocol attempt and root before all four arms restart.
-That condition occurred in attempt 0 before action one when the launcher omitted the control arm's
-media directory. The [incident record](results/v0.2-u2s-launch-attempt-0.md) preserves the zero-action
-failure. U2-S r1 adds only the missing fail-closed directory step and restarts all four arms under
-fresh release identities.
+The [U2-S matched stability ablation](protocol-v0.2-u2s-stability-ablation.md) is now complete. Each
+of its four arms restarted from confirmed U1 child `20260733`, consumed exactly 1,048,576 actions,
+and produced 32 exams. The experiment exposed a real tradeoff rather than a winner: control kept
+terminal capability but produced extreme loops; conservative PPO reduced capability; no-effect
+kept the strongest average capability and reduced the tail but did not eliminate it; combined
+eliminated the tail but scored 70, 69, and 71 against the 72/80 terminal floor. The fixed verdict is
+`ablation_failed`. No mechanism, checkpoint, successor cohort, confirmation, or U3 activation was
+selected. The [authenticated result](results/v0.2-u2s-r1-stability-ablation.md) closes that branch.
+
+The next bounded question is therefore a new
+[v0.3 action-effect architecture study](protocol-v0.3-action-effect-architecture.md), not another
+reward or PPO rescue. It creates two fresh twins from the same confirmed U1 parent. Both retain the
+original reward, optimizer settings, curriculum, and 512→256 recurrent topology. Both add the same
+zero-initialized context projection. Sham always receives zero; the candidate receives only its own
+preceding action and a visible changed/unchanged outcome.
+
+Stage A must prove that the transplant is exactly parent-equivalent at zero context and that the two
+arms produce the same first 2,048-transition trajectory before their first update. They then run
+the same fixed full budget and U2-S terminal-three gate. Sham is calibration only, and neither
+checkpoint can be reused. A candidate pass opens only a separately preregistered three-lineage
+replication from all three confirmed U1 parents. U3 remains closed until those independent children
+also pass a fresh no-update confirmation.
 
 ## Scalability gates
 

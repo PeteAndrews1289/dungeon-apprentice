@@ -172,3 +172,91 @@ their one-shot evaluator. The `20_000_000` final
 allocation remains closed. Episode-start and active-worker layout identity now become part of every
 checkpoint record so a future collision-aware selector can exclude the complete successor history,
 including episodes active at the terminal boundary.
+
+## v0.3 action-effect architecture boundary
+
+U2-S completed without an eligible reward/PPO configuration. Its four cells made the missing
+relationship unusually clear: strong updates could learn capability but occasionally collapse into
+hundred-action interaction loops; conservative updates could suppress those loops only by losing
+capability; pixels-only negative feedback narrowed but did not close the gap. v0.3 therefore changes
+the policy input architecture while holding reward and PPO fixed.
+
+```mermaid
+flowchart LR
+    P["Confirmed U1 parent 20260733"] --> T["Named tensor + Adam transplant"]
+    T --> S["Sham twin"]
+    T --> E["Action-effect twin"]
+    RGB["Current 56×56 RGB view"] --> S
+    RGB --> E
+    A["Previous self-selected action"] --> C["9-value context"]
+    D["Visible pixels changed / unchanged"] --> C
+    C --> E
+    Z["All-zero context"] --> S
+    S --> G["Same full U2-S gate"]
+    E --> G
+    G -->|"candidate passes"| R["Separate three-lineage replication protocol"]
+    G -->|"candidate fails"| X["Architecture study stops"]
+```
+
+The vector is retrospective sensorimotor context, not a game hint. Seven coordinates identify the
+policy's own immediately preceding primitive action. Two identify whether the next visible RGB
+bytes changed or remained identical. Episode start is all zero. The wrapper never reads reward,
+coordinates, inventory, objects, milestones, seed roles, oracle state, or trainer-only `info`.
+
+The custom extractor directly subclasses the existing NatureCNN. Its inherited `cnn` and `linear`
+parameter names and 512-feature output therefore remain unchanged. One new bias-free `9 → 512`
+linear projection is added as a residual before the existing actor and critic LSTMs. It is zeroed
+after complete policy construction, and the policy disables the default post-LSTM multilayer head:
+
+```text
+image ── NatureCNN (inherited) ── 512 features ──┐
+                                                ├─ add ─ actor/critic LSTMs ─ heads
+context ── zero-initialized 9→512 projection ───┘
+```
+
+Every old CNN, LSTM, action-head, and value-head tensor is copied by exact state-dict name and shape.
+Every old Adam state is joined to its new parameter by that same name; positional optimizer loading
+is forbidden because inserting one parameter would otherwise shift moment ownership. The new
+projection begins with no Adam state. Its zero output makes the migrated policy exactly equivalent
+to the parent at the boundary even though the archive now has a Dict observation space.
+
+That equivalence is executable, not rhetorical. Qualification must compare visual features,
+deterministic actions, values, log probabilities, and both recurrent-state branches on a fixed
+pixel corpus. The two arms must then produce byte-identical action/environment evidence over their
+first real 2,048-transition rollout. Only the subsequent PPO phase may use the nonzero candidate
+context to change the projection and create behavioral divergence.
+
+The study remains deliberately narrow:
+
+- both twins restart from confirmed U1, never from U2, U2r, or U2-S;
+- reward, curiosity, curriculum, horizon, PPO, worker streams, action budget, and exams are matched;
+- the complete U2-S final-three capability-and-stability gate is reused without relaxation;
+- sham is calibration and cannot be selected;
+- a passing candidate selects only the architecture definition, never its development checkpoint;
+- Stage A is non-resumable, and an interruption requires a new frozen attempt for both twins; and
+- U3 remains closed until a later three-parent replication and untouched confirmation both pass.
+
+This boundary also prepares the eventual party-management game. A shared local policy must know not
+only what an adventurer sees, but what that adventurer just attempted and whether the world visibly
+responded. Because the context is per-agent and contains no class or objective shortcut, the same
+weights can later be evaluated independently for several party members while their equipment,
+class, local view, and higher-level tactics remain explicit future mechanics.
+
+The release machinery for that boundary is now implemented but not yet exercised canonically:
+
+```mermaid
+flowchart LR
+    C["Clean published source commit"] --> T["Annotated preregistration tag"]
+    T --> Q["Durable qualification claim + matched smoke report"]
+    Q --> M["Cohort contract binds report SHA-256"]
+    M --> L["Fixed launcher"]
+    L --> D["Read-only dashboard :8788"]
+```
+
+The tag `action-effect-architecture-v0.3-stage-a-20260724` binds the source, protocol, roots,
+architecture and runtime contracts; it cannot contain a report generated later. The qualification
+root then binds that tag object, and the cohort manifest binds the qualification report. The only
+launcher is `scripts/run_v03_action_effect_stage_a.sh`; its assigned cohort and media roots are
+`/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-20260724` and
+`/Volumes/T7 Developer/DungeonApprentice/v03-action-effect-stage-a-media-20260724`. None of those
+canonical artifacts exists while the current source remains unfrozen.
