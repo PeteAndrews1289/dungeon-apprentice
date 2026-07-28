@@ -1,4 +1,9 @@
-# Roadmap
+# Historical research roadmap
+
+> **Status: concluded July 2026.** Completed items record what the study actually delivered.
+> Unchecked capability items are intentionally unpursued: the frozen reliability gates stopped the
+> progression before Full Unlock and Retrieve. They remain visible to preserve the original scope,
+> not to imply active development.
 
 ## Foundation
 

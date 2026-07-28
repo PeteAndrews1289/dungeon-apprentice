@@ -1,4 +1,8 @@
-# Dungeon Apprentice
+# Dungeon Apprentice — Cumulative Learning Research
+
+[![CI](https://github.com/PeteAndrews1289/dungeon-apprentice/actions/workflows/ci.yml/badge.svg)](https://github.com/PeteAndrews1289/dungeon-apprentice/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-22c55e.svg)](LICENSE)
+![Research status: concluded](https://img.shields.io/badge/research-concluded-475569.svg)
 
 **Can one visual agent learn the idea of a quest—and use it in a dungeon it has never seen?**
 
@@ -8,7 +12,51 @@ view. It must learn navigation, interaction, memory, backtracking, and eventuall
 those skills without demonstrations, walkthroughs, coordinates, online model decisions, or human
 controller actions.
 
-The project begins deliberately small. Protocol v0.1 has three capability tiers:
+> **Research concluded in July 2026.** The study established replicated cumulative learning through
+> Local Unlock, then stopped when increasingly capable agents continued to exhibit rare,
+> catastrophic interaction loops. No v0.5 study or U3 transition is authorized. The frozen
+> protocols, positive results, negative results, and operational failures remain here as the
+> complete research record.
+
+The companion
+[Dungeon Apprentice game](https://github.com/PeteAndrews1289/dungeon-apprentice-game) translates
+the research lessons into a deterministic, player-facing product. This repository is the
+experimental foundation; the game repository is the portfolio-ready playable implementation.
+
+## Research conclusion
+
+**Average task success was not a sufficient reliability measure.** The agent repeatedly learned
+strong ordinary-case behavior, but prospectively frozen tail-risk gates exposed rare 121–157-action
+failure loops. Those gates prevented a favorable average from being promoted as a trustworthy
+result.
+
+| Research stage | Outcome | Evidence-backed conclusion |
+| --- | --- | --- |
+| Navigate, Visible Unlock, Local Unlock | **Replicated and confirmed** | Three independent lineages learned a cumulative visual skill sequence while retaining earlier capabilities |
+| Separated Unlock development | **Replicated** | All three inherited policies reached the frozen development mastery gate |
+| Separated Unlock confirmation | **Strict cohort failed** | Two policies passed; the third scored 169/200 against a preregistered 170/200 requirement |
+| Stability remediation and ablation | **No mechanism selected** | Capability and reliability improved in different configurations, but no candidate passed every frozen gate |
+| v0.3 and v0.4 architecture studies | **No architecture selected** | New inputs became active and supported high average capability, yet catastrophic interaction tails persisted |
+
+![A higher average hid a reliability failure in the terminal v0.4 study](docs/assets/v0.4-ineffective-trace-result.svg)
+
+The most important result is therefore not that the entire game was solved. It is that a
+reproducible evaluation system distinguished **capability** from **dependable capability**, and
+preserved an honest negative result instead of weakening the success criterion after observation.
+
+### Review the project
+
+- [Terminal v0.4 result](docs/results/v0.4-ineffective-trace-stage-a.md) — the clearest final
+  experiment and visualization
+- [Reproduction guide](docs/reproduction.md) — what a clean clone can verify versus what belongs
+  to the immutable historical runs
+- [Architecture](docs/architecture.md) — environment, policy boundary, training, and evidence flow
+- [Experiment contract](docs/experiment-contract.md) — preregistration, seed separation, promotion,
+  and retention rules
+- [Audit record](docs/audit.md) — defects found, corrected, and preserved without rewriting history
+- [Full experiment log](docs/experiment-log.md) — cumulative chronology and exact claim boundaries
+
+The project began deliberately small. Protocol v0.1 has three capability tiers:
 
 | Tier | Objective | New demand |
 | ---: | --- | --- |
@@ -27,11 +75,13 @@ The names `U0`–`U3` refer to progressively harder **Unlock lessons** inside Ti
 
 MiniGrid supplies fast grid simulation and rendering. This repository owns the dungeon generator,
 game rules, key-consumption mechanic, objective tiers, reward contract, agent information boundary,
-solvability oracle, curriculum, evaluation suites, training runner, dashboard, and future mechanics.
+solvability oracle, curriculum, evaluation suites, training runner, dashboard, and
+experiment-specific mechanics.
 
-The game can later grow to include multiple keys, decoys, levers, traps, enemies, inventory limits,
-movable blocks, light, multiple floors, and composed final adventures. Those additions will be new
-declared protocol versions rather than mid-run patches.
+Within the research program, additions such as multiple keys, decoys, levers, traps, enemies,
+inventory limits, movable blocks, light, and multiple floors would have required new declared
+protocol versions rather than mid-run patches. The study concluded before those expansions; the
+separate game repository now owns the product direction.
 
 ## Information boundary
 
@@ -55,11 +105,16 @@ It grades behavior but cannot choose a button.
 
 ![The v0.3 study compares matched sham and action-effect twins from the same inherited policy](docs/assets/v0.3-action-effect-architecture.svg)
 
-## Installation
+## Portable verification
+
+The supported public workflow verifies the software, procedural generator, oracle, evaluation
+contracts, and a small train/save/resume/evaluate path on a clean clone:
 
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -e ".[dev,train]"
+.venv/bin/ruff check .
+.venv/bin/pytest
 ```
 
 Prove the first 300 generated levels are solvable:
@@ -68,15 +123,20 @@ Prove the first 300 generated levels are solvable:
 .venv/bin/dungeon-qualify --seeds 100
 ```
 
-Launch the initial automatic curriculum:
+Optionally launch a fresh local curriculum run:
 
 ```bash
 .venv/bin/dungeon-train --total-timesteps 1000000
 ```
 
+This creates a new run under `runs/`; it does not recreate, resume, or replace any frozen historical
+cohort. The exact published experiments depended on preregistered identities, external immutable
+artifacts, and machine-specific run roots that are intentionally not bundled into the repository.
+See the [reproduction guide](docs/reproduction.md) before interpreting a new run as a replication.
+
 The training process writes a run manifest, atomic checkpoints, live status, evaluation history,
 frames, and a local dashboard. Once launched from an ordinary Terminal session, gameplay and
-learning are entirely local and consume no GPT or Codex usage.
+learning run entirely locally with no online model dependency.
 
 The learner is recurrent PPO: a compact vision network interprets pixels, an LSTM carries memory
 between steps, and PPO updates the policy from its own attempts. During training, bounded episodic
@@ -85,7 +145,7 @@ can contribute at most `0.1` across an entire attempt; repeated or unchanged vie
 Curiosity knows nothing about keys, doors, coordinates, routes, or objectives. Evaluation disables
 it and measures game success alone.
 
-## Current experimental status
+## Full experimental record
 
 The first v0 canary proved that the software could train and occasionally discover the exit, but it
 did **not** establish learned capability. Its curiosity bonus could make unsuccessful wandering more

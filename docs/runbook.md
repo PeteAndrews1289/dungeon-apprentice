@@ -757,13 +757,16 @@ Qualification was one shot and is now consumed. Never delete or rerun it:
 
 The historical procedure reauthenticated `report.json` and its checksum, required both canonical
 scientific roots and the screen log to remain absent, required port 8792 to be free, and required at
-least 25 GiB on T7. It then launched exactly once from a user-context detached `screen`:
+least 25 GiB on T7. It then launched exactly once from a user-context detached `screen`. The
+machine-local checkout path is represented by an exported variable here because it is not part of
+the scientific identity:
 
 ```bash
+export DUNGEON_APPRENTICE_REPO="$(git rev-parse --show-toplevel)"
 screen -dmS dungeon_v04_ineffective_trace_20260724 \
   -L \
   -Logfile "/Volumes/T7 Developer/DungeonApprentice/launch-recovery/v04-ineffective-trace-stage-a-20260724-screen.log" \
-  zsh -lc 'cd "/Users/peterandrews/.codex/.chatgpt-projects/g-p-6a5c438a364c8191b4c85ae374791810/dungeon-apprentice" && exec ./scripts/run_v04_ineffective_trace_stage_a.sh'
+  zsh -lc 'cd "$DUNGEON_APPRENTICE_REPO" && exec ./scripts/run_v04_ineffective_trace_stage_a.sh'
 ```
 
 The launcher accepted no options and had no resume path. Any stop, crash, machine restart, storage
