@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Three apprentices independently master U2 Separated Unlock</title>
+  <desc id="desc">A line chart compares each policy's inherited baseline, first 32,768-action exam, and mastery score. U2 scores rise from 30 to 41.25 percent at baseline to 90 to 93.75 percent at mastery. All three pass the 85 percent gate while retaining earlier lessons.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#08111f"/>
+      <stop offset=".58" stop-color="#111b32"/>
+      <stop offset="1" stop-color="#18233b"/>
+    </linearGradient>
+    <linearGradient id="successCard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#153d34"/>
+      <stop offset="1" stop-color="#102b2b"/>
+    </linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity=".28"/>
+    </filter>
+    <style>
+      text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .title { fill: #f8fafc; font-size: 34px; font-weight: 760; }
+      .subtitle { fill: #aebbd4; font-size: 16px; }
+      .axis { fill: #8290aa; font-size: 12px; }
+      .axis-center { fill: #9aa8c0; font-size: 13px; font-weight: 650; text-anchor: middle; }
+      .grid { stroke: #2a3751; stroke-width: 1; }
+      .gate { stroke: #ffd86b; stroke-width: 2; stroke-dasharray: 8 7; }
+      .gate-label { fill: #ffe59a; font-size: 13px; font-weight: 700; }
+      .value { fill: #fff; font-size: 14px; font-weight: 760; text-anchor: middle; }
+      .card-heading { fill: #f8fafc; font-size: 19px; font-weight: 740; }
+      .large { fill: #d5ffe7; font-size: 44px; font-weight: 800; }
+      .metric { fill: #e8effa; font-size: 15px; font-weight: 700; }
+      .note { fill: #aebbd4; font-size: 13px; }
+      .fine { fill: #8290aa; font-size: 12px; }
+      .badge { fill: #d5ffe7; font-size: 13px; font-weight: 760; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="720" rx="24" fill="url(#background)"/>
+  <text x="56" y="58" class="title">Three apprentices learned the longer ritual</text>
+  <text x="56" y="88" class="subtitle">U2 Separated Unlock · inherited policy → first 32,768-action exam → independently earned mastery</text>
+
+  <g transform="translate(56 120)" filter="url(#shadow)">
+    <rect width="770" height="500" rx="22" fill="#0f1930" stroke="#2b3957"/>
+
+    <g transform="translate(70 38)">
+      <text x="-18" y="12" class="axis" text-anchor="end">100%</text>
+      <text x="-18" y="92" class="axis" text-anchor="end">75%</text>
+      <text x="-18" y="172" class="axis" text-anchor="end">50%</text>
+      <text x="-18" y="252" class="axis" text-anchor="end">25%</text>
+      <text x="-18" y="332" class="axis" text-anchor="end">0%</text>
+
+      <line x1="0" y1="8" x2="640" y2="8" class="grid"/>
+      <line x1="0" y1="88" x2="640" y2="88" class="grid"/>
+      <line x1="0" y1="168" x2="640" y2="168" class="grid"/>
+      <line x1="0" y1="248" x2="640" y2="248" class="grid"/>
+      <line x1="0" y1="328" x2="640" y2="328" class="grid"/>
+
+      <line x1="0" y1="56" x2="640" y2="56" class="gate"/>
+      <rect x="6" y="35" width="142" height="30" rx="15" fill="#3c3421" stroke="#8b7130"/>
+      <text x="77" y="55" class="gate-label" text-anchor="middle">85% MASTERY GATE</text>
+
+      <line x1="90" y1="328" x2="90" y2="8" stroke="#24334e"/>
+      <line x1="320" y1="328" x2="320" y2="8" stroke="#24334e"/>
+      <line x1="550" y1="328" x2="550" y2="8" stroke="#24334e"/>
+
+      <!-- Apprentice 1: 40.00 → 50.00 → 93.75 -->
+      <path d="M90 200 L320 168 L550 28" fill="none" stroke="#54a8ff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="90" cy="200" r="8" fill="#54a8ff" stroke="#d9edff" stroke-width="2"/>
+      <circle cx="320" cy="168" r="8" fill="#54a8ff" stroke="#d9edff" stroke-width="2"/>
+      <circle cx="550" cy="28" r="8" fill="#54a8ff" stroke="#d9edff" stroke-width="2"/>
+      <text x="62" y="184" class="value">40.0%</text>
+      <text x="348" y="181" class="value">50.0%</text>
+      <text x="518" y="16" class="value">93.75%</text>
+
+      <!-- Apprentice 2: 41.25 → 55.00 → 92.50 -->
+      <path d="M90 196 L320 152 L550 32" fill="none" stroke="#ad8dff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="90" cy="196" r="8" fill="#ad8dff" stroke="#efe9ff" stroke-width="2"/>
+      <circle cx="320" cy="152" r="8" fill="#ad8dff" stroke="#efe9ff" stroke-width="2"/>
+      <circle cx="550" cy="32" r="8" fill="#ad8dff" stroke="#efe9ff" stroke-width="2"/>
+      <text x="118" y="220" class="value">41.25%</text>
+      <text x="292" y="134" class="value">55.0%</text>
+      <text x="586" y="32" class="value">92.5%</text>
+
+      <!-- Apprentice 3: 30.00 → 36.25 → 90.00 -->
+      <path d="M90 232 L320 212 L550 40" fill="none" stroke="#43d49f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="90" cy="232" r="8" fill="#43d49f" stroke="#d9fff2" stroke-width="2"/>
+      <circle cx="320" cy="212" r="8" fill="#43d49f" stroke="#d9fff2" stroke-width="2"/>
+      <circle cx="550" cy="40" r="8" fill="#43d49f" stroke="#d9fff2" stroke-width="2"/>
+      <text x="90" y="258" class="value">30.0%</text>
+      <text x="320" y="238" class="value">36.25%</text>
+      <text x="550" y="78" class="value">90.0%</text>
+
+      <text x="90" y="362" class="axis-center">Inherited baseline</text>
+      <text x="320" y="362" class="axis-center">First exam</text>
+      <text x="320" y="382" class="fine" text-anchor="middle">32,768 new actions</text>
+      <text x="550" y="362" class="axis-center">Mastery</text>
+      <text x="550" y="382" class="fine" text-anchor="middle">two adjacent passes</text>
+
+      <g transform="translate(0 416)">
+        <circle cx="8" cy="5" r="6" fill="#54a8ff"/>
+        <text x="22" y="10" class="note">20260737 · 688,128 actions</text>
+        <circle cx="230" cy="5" r="6" fill="#ad8dff"/>
+        <text x="244" y="10" class="note">20260741 · 557,056</text>
+        <circle cx="438" cy="5" r="6" fill="#43d49f"/>
+        <text x="452" y="10" class="note">20260745 · 688,128</text>
+      </g>
+    </g>
+  </g>
+
+  <g transform="translate(850 120)" filter="url(#shadow)">
+    <rect width="294" height="500" rx="22" fill="url(#successCard)" stroke="#2f8467"/>
+    <text x="24" y="42" class="card-heading">Replication verdict</text>
+    <text x="24" y="100" class="large">3 / 3</text>
+    <text x="24" y="128" class="metric">independent lineages mastered</text>
+
+    <rect x="24" y="156" width="246" height="1" fill="#315848"/>
+    <text x="24" y="190" class="metric">Average U2</text>
+    <text x="24" y="219" fill="#d5ffe7" font-size="22" font-weight="780">37.1% → 47.1% → 92.1%</text>
+
+    <text x="24" y="262" class="metric">Earlier skills at terminal</text>
+    <text x="24" y="290" class="note">Navigate · 92.5–98.75%</text>
+    <text x="24" y="314" class="note">Visible U0 · 95–100%</text>
+    <text x="24" y="338" class="note">Local U1 · 96.25–100%</text>
+
+    <rect x="24" y="348" width="246" height="1" fill="#315848"/>
+    <text x="24" y="380" class="metric">1.93 million actions</text>
+    <text x="24" y="403" class="note">61.5% of the cohort ceiling</text>
+    <text x="24" y="427" class="note">Two lineages invoked recovery.</text>
+    <text x="24" y="449" class="note">Two early passes later fell back.</text>
+
+    <rect x="24" y="464" width="246" height="28" rx="14" fill="#1b4b3c" stroke="#47bd8d"/>
+    <text x="147" y="483" class="badge">ALL FROZEN GATES PASSED</text>
+  </g>
+
+  <rect x="56" y="646" width="1088" height="44" rx="14" fill="#0c1629" stroke="#2b3957"/>
+  <text x="78" y="674" class="note">Pixel-only recurrent PPO · no demonstrations · no oracle actions · no online model calls · development replication, with disjoint confirmation still required</text>
+</svg>

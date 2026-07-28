@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">U2-S terminal ablation result</title>
+  <desc id="desc">Four matched arms reached the full 1,048,576-action budget. Control and no-effect retained U2 capability but failed interaction-tail gates. Combined eliminated the tails but missed the capability gate. Conservative missed both. No configuration was selected.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="1" stop-color="#17142b"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ef4444"/>
+      <stop offset="1" stop-color="#fb7185"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <style>
+      .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .title { font-size: 35px; font-weight: 800; letter-spacing: -0.8px; fill: #f8fafc; }
+      .sub { font-size: 16px; font-weight: 520; fill: #a8b5cf; }
+      .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 1.35px; }
+      .head { font-size: 21px; font-weight: 760; fill: #f8fafc; }
+      .body { font-size: 14px; font-weight: 540; fill: #cbd5e1; }
+      .small { font-size: 12px; font-weight: 540; fill: #94a3b8; }
+      .metric { font-size: 28px; font-weight: 820; fill: #fff; }
+      .metric-label { font-size: 11px; font-weight: 760; fill: #94a3b8; letter-spacing: 0.7px; }
+      .axis { font-size: 13px; font-weight: 740; fill: #dbeafe; letter-spacing: 0.3px; }
+      .verdict { font-size: 23px; font-weight: 820; fill: #fecdd3; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="760" fill="url(#background)"/>
+  <circle cx="80" cy="700" r="260" fill="#06b6d4" opacity="0.05"/>
+  <circle cx="1220" cy="40" r="245" fill="#8b5cf6" opacity="0.07"/>
+
+  <g class="sans">
+    <text class="title" x="50" y="57">U2-S: no square held both capability and stability</text>
+    <text class="sub" x="50" y="88">One matched 2 × 2 study • 4,194,304 actions • 128 frozen exams • fixed terminal decision</text>
+
+    <g transform="translate(50 112)">
+      <rect width="1180" height="55" rx="16" fill="#111d2d" stroke="#334155"/>
+      <text class="eyebrow" x="20" y="23" fill="#67e8f9">SHARED INHERITED BASELINE</text>
+      <text class="body" x="20" y="43">Confirmed U1 policy: U2 24/80 (13, 11) • mean ineffective 54.875 • identical parent, optimizer, streams, and pre-action RNG</text>
+    </g>
+
+    <text class="axis" x="340" y="199">NO ADDED FEEDBACK</text>
+    <text class="axis" x="778" y="199">PIXELS-ONLY NO-EFFECT FEEDBACK</text>
+    <text class="axis" transform="translate(72 390) rotate(-90)">EXISTING PPO</text>
+    <text class="axis" transform="translate(72 615) rotate(-90)">CONSERVATIVE PPO</text>
+
+    <g transform="translate(104 218)" filter="url(#shadow)">
+      <rect width="500" height="196" rx="22" fill="#171d2f" stroke="#f59e0b"/>
+      <text class="eyebrow" x="22" y="31" fill="#fbbf24">A · CONTROL — CAPABLE, BRITTLE</text>
+      <text class="head" x="22" y="64">U2: 78 · 76 · 77</text>
+      <text class="metric-label" x="22" y="95">TERMINAL MEAN</text>
+      <text class="metric" x="22" y="126">77.00</text>
+      <text class="metric-label" x="185" y="95">10+ CASES</text>
+      <text class="metric" x="185" y="126">6</text>
+      <text class="metric-label" x="318" y="95">WORST LOOP</text>
+      <text class="metric" x="318" y="126">156</text>
+      <rect x="22" y="148" width="456" height="30" rx="10" fill="#3a2918"/>
+      <text class="body" x="36" y="168">Capability gates passed • stability tails failed</text>
+    </g>
+
+    <g transform="translate(626 218)" filter="url(#shadow)">
+      <rect width="500" height="196" rx="22" fill="#172035" stroke="#f59e0b"/>
+      <text class="eyebrow" x="22" y="31" fill="#fbbf24">C · NO-EFFECT — CLOSEST, STILL BRITTLE</text>
+      <text class="head" x="22" y="64">U2: 78 · 79 · 76</text>
+      <text class="metric-label" x="22" y="95">TERMINAL MEAN</text>
+      <text class="metric" x="22" y="126">77.67</text>
+      <text class="metric-label" x="185" y="95">10+ CASES</text>
+      <text class="metric" x="185" y="126">2</text>
+      <text class="metric-label" x="318" y="95">WORST LOOP</text>
+      <text class="metric" x="318" y="126">126</text>
+      <rect x="22" y="148" width="456" height="30" rx="10" fill="#3a2918"/>
+      <text class="body" x="36" y="168">First terminal exam passed • next two tails failed</text>
+    </g>
+
+    <g transform="translate(104 440)" filter="url(#shadow)">
+      <rect width="500" height="196" rx="22" fill="#211b35" stroke="#ef4444"/>
+      <text class="eyebrow" x="22" y="31" fill="#fda4af">B · CONSERVATIVE — UNDERLEARNED</text>
+      <text class="head" x="22" y="64">U2: 64 · 64 · 64</text>
+      <text class="metric-label" x="22" y="95">TERMINAL MEAN</text>
+      <text class="metric" x="22" y="126">64.00</text>
+      <text class="metric-label" x="185" y="95">10+ CASES</text>
+      <text class="metric" x="185" y="126">5</text>
+      <text class="metric-label" x="318" y="95">WORST LOOP</text>
+      <text class="metric" x="318" y="126">155</text>
+      <rect x="22" y="148" width="456" height="30" rx="10" fill="#3b1f2a"/>
+      <text class="body" x="36" y="168">Capability and stability conditions failed</text>
+    </g>
+
+    <g transform="translate(626 440)" filter="url(#shadow)">
+      <rect width="500" height="196" rx="22" fill="#19283a" stroke="#ef4444"/>
+      <text class="eyebrow" x="22" y="31" fill="#fda4af">D · COMBINED — STABLE, BELOW GATE</text>
+      <text class="head" x="22" y="64">U2: 70 · 69 · 71</text>
+      <text class="metric-label" x="22" y="95">TERMINAL MEAN</text>
+      <text class="metric" x="22" y="126">70.00</text>
+      <text class="metric-label" x="185" y="95">10+ CASES</text>
+      <text class="metric" x="185" y="126">0</text>
+      <text class="metric-label" x="318" y="95">WORST LOOP</text>
+      <text class="metric" x="318" y="126">2</text>
+      <rect x="22" y="148" width="456" height="30" rx="10" fill="#3b1f2a"/>
+      <text class="body" x="36" y="168">Tail gates passed • U2 ≥72 and panels failed</text>
+    </g>
+
+    <g transform="translate(50 662)">
+      <rect width="1180" height="66" rx="18" fill="#3a1621" stroke="url(#red)"/>
+      <text class="verdict" x="22" y="31">ablation_failed</text>
+      <text class="body" x="230" y="30">selected configuration: none</text>
+      <text class="body" x="488" y="30">checkpoint reuse: forbidden</text>
+      <text class="body" x="770" y="30">successor: not authorized</text>
+      <text class="body" x="1030" y="30">U3: closed</text>
+      <text class="small" x="22" y="52">The next experiment moves from reward tuning to an architecture that can represent action → visible consequence.</text>
+    </g>
+  </g>
+</svg>

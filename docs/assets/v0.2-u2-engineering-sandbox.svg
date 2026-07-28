@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">U2 engineering sandbox distributions</title>
+  <desc id="desc">Bar charts for shortest oracle solution length and initial key and door visibility across 1000 engineering maps.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#07120d"/>
+      <stop offset="1" stop-color="#10271a"/>
+    </linearGradient>
+    <linearGradient id="actions" x1="0" x2="1">
+      <stop offset="0" stop-color="#6fcbea"/>
+      <stop offset="1" stop-color="#69e18c"/>
+    </linearGradient>
+    <style>
+      .title{font:700 34px system-ui,sans-serif;fill:#eef9f1}.subtitle{font:400 16px system-ui,sans-serif;fill:#9ab1a2}
+      .section{font:700 20px system-ui,sans-serif;fill:#eef9f1}.label{font:500 14px system-ui,sans-serif;fill:#c8d8cc}
+      .value{font:700 14px system-ui,sans-serif;fill:#eef9f1}.axis{stroke:#315241;stroke-width:1}.panel{fill:#101d17;stroke:#294035;stroke-width:1}
+    </style>
+  </defs>
+  <rect width="1200" height="720" rx="28" fill="url(#bg)"/>
+  <text x="54" y="64" class="title">U2 engineering sandbox · 1,000 maps</text>
+  <text x="54" y="94" class="subtitle">Disposable seeds 5,200,000–5,200,999 · generator/oracle evidence, not policy learning</text>
+
+  <rect x="42" y="124" width="720" height="540" rx="20" class="panel"/>
+  <text x="72" y="166" class="section">Shortest live solution length</text>
+  <text x="72" y="190" class="subtitle">The accepted set spans every preregistered length from 17 to 26 actions.</text>
+  <line x1="88" y1="586" x2="730" y2="586" class="axis"/>
+  <rect x="102" y="258" width="45" height="328" rx="6" fill="url(#actions)"/><text x="124" y="244" text-anchor="middle" class="value">192</text><text x="124" y="613" text-anchor="middle" class="label">17</text>
+  <rect x="164" y="294" width="45" height="292" rx="6" fill="url(#actions)"/><text x="186" y="280" text-anchor="middle" class="value">171</text><text x="186" y="613" text-anchor="middle" class="label">18</text>
+  <rect x="226" y="321" width="45" height="265" rx="6" fill="url(#actions)"/><text x="248" y="307" text-anchor="middle" class="value">155</text><text x="248" y="613" text-anchor="middle" class="label">19</text>
+  <rect x="288" y="338" width="45" height="248" rx="6" fill="url(#actions)"/><text x="310" y="324" text-anchor="middle" class="value">145</text><text x="310" y="613" text-anchor="middle" class="label">20</text>
+  <rect x="350" y="401" width="45" height="185" rx="6" fill="url(#actions)"/><text x="372" y="387" text-anchor="middle" class="value">108</text><text x="372" y="613" text-anchor="middle" class="label">21</text>
+  <rect x="412" y="427" width="45" height="159" rx="6" fill="url(#actions)"/><text x="434" y="413" text-anchor="middle" class="value">93</text><text x="434" y="613" text-anchor="middle" class="label">22</text>
+  <rect x="474" y="471" width="45" height="115" rx="6" fill="url(#actions)"/><text x="496" y="457" text-anchor="middle" class="value">67</text><text x="496" y="613" text-anchor="middle" class="label">23</text>
+  <rect x="536" y="521" width="45" height="65" rx="6" fill="url(#actions)"/><text x="558" y="507" text-anchor="middle" class="value">38</text><text x="558" y="613" text-anchor="middle" class="label">24</text>
+  <rect x="598" y="554" width="45" height="32" rx="6" fill="url(#actions)"/><text x="620" y="540" text-anchor="middle" class="value">19</text><text x="620" y="613" text-anchor="middle" class="label">25</text>
+  <rect x="660" y="566" width="45" height="20" rx="6" fill="url(#actions)"/><text x="682" y="552" text-anchor="middle" class="value">12</text><text x="682" y="613" text-anchor="middle" class="label">26</text>
+
+  <rect x="786" y="124" width="372" height="540" rx="20" class="panel"/>
+  <text x="816" y="166" class="section">Initial visibility</text>
+  <text x="816" y="190" class="subtitle">Key / door visibility at the first frame</text>
+  <text x="816" y="245" class="label">Hidden / hidden</text><text x="1124" y="245" text-anchor="end" class="value">403</text>
+  <rect x="816" y="260" width="308" height="28" rx="7" fill="#bb9cff"/>
+  <text x="816" y="335" class="label">Hidden / visible</text><text x="1124" y="335" text-anchor="end" class="value">212</text>
+  <rect x="816" y="350" width="162" height="28" rx="7" fill="#6fcbea"/>
+  <text x="816" y="425" class="label">Visible / hidden</text><text x="1124" y="425" text-anchor="end" class="value">201</text>
+  <rect x="816" y="440" width="154" height="28" rx="7" fill="#69e18c"/>
+  <text x="816" y="515" class="label">Visible / visible</text><text x="1124" y="515" text-anchor="end" class="value">184</text>
+  <rect x="816" y="530" width="141" height="28" rx="7" fill="#f0ca70"/>
+  <line x1="816" y1="586" x2="1124" y2="586" class="axis"/>
+  <text x="816" y="620" class="subtitle">1,000 / 1,000 unique exact layouts</text>
+  <text x="816" y="644" class="subtitle">1,000 / 1,000 contract-complete</text>
+</svg>

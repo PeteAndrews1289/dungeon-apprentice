@@ -5,16 +5,22 @@ build-backend = "hatchling.build"
 [project]
 name = "dungeon-apprentice"
 version = "0.1.0"
-description = "A procedural visual dungeon for studying cumulative experiential learning."
+description = "A reproducible study of cumulative visual reinforcement learning and reliability-gated evaluation."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "Peter Andrews" }]
+keywords = [
+  "reinforcement-learning",
+  "procedural-generation",
+  "reproducible-research",
+  "reliability",
+]
 dependencies = [
-  "gymnasium>=1.1,<2",
-  "minigrid>=3.0,<4",
-  "numpy>=2.0,<3",
-  "pillow>=10,<13",
+  "gymnasium==1.3.0",
+  "minigrid==3.1.0",
+  "numpy==2.5.1",
+  "pillow==12.3.0",
 ]
 
 [project.optional-dependencies]
@@ -23,16 +29,44 @@ dev = [
   "ruff>=0.11,<1",
 ]
 train = [
-  "sb3-contrib>=2.6,<3",
-  "stable-baselines3>=2.6,<3",
-  "torch>=2.7",
+  "sb3-contrib==2.9.0",
+  "stable-baselines3==2.9.0",
+  "torch>=2.13,<2.14",
 ]
+
+[project.urls]
+Repository = "https://github.com/PeteAndrews1289/dungeon-apprentice"
+"Research results" = "https://github.com/PeteAndrews1289/dungeon-apprentice/tree/main/docs/results"
+"Playable game" = "https://github.com/PeteAndrews1289/dungeon-apprentice-game"
 
 [project.scripts]
 dungeon-qualify = "dungeon_apprentice.qualify:main"
 dungeon-train = "dungeon_apprentice.train:main"
+dungeon-train-v02-sentinel = "dungeon_apprentice.v02_sentinel:main"
+dungeon-train-v02-u1 = "dungeon_apprentice.v02_u1:main"
+dungeon-train-v02-u2 = "dungeon_apprentice.v02_u2:main"
+dungeon-train-v02-u2r = "dungeon_apprentice.v02_u2r:main"
+dungeon-train-v02-u2s = "dungeon_apprentice.v02_u2s:main"
+dungeon-train-v03-action-effect = "dungeon_apprentice.v03_action_effect_train:main"
+dungeon-train-v04-ineffective-trace = "dungeon_apprentice.v04_ineffective_trace_train:main"
+dungeon-smoke-v02-u2 = "dungeon_apprentice.v02_u2_smoke:main"
+dungeon-smoke-v02-u2s = "dungeon_apprentice.v02_u2s_smoke:main"
+dungeon-smoke-v03-action-effect = "dungeon_apprentice.v03_action_effect_smoke:main"
+dungeon-smoke-v04-ineffective-trace = "dungeon_apprentice.v04_ineffective_trace_smoke:main"
+dungeon-confirm-v02-u0 = "dungeon_apprentice.v02_confirm:main"
+dungeon-confirm-v02-u1 = "dungeon_apprentice.v02_u1_confirm:main"
+dungeon-confirm-v02-u1-v2 = "dungeon_apprentice.v02_u1_confirm_v2:main"
+dungeon-confirm-v02-u2 = "dungeon_apprentice.v02_u2_confirm:main"
+dungeon-qualify-v02-u2 = "dungeon_apprentice.v02_u2_qualify:main"
+dungeon-qualify-v02-u2s = "dungeon_apprentice.v02_u2s_qualify:main"
+dungeon-qualify-v03-action-effect = "dungeon_apprentice.v03_action_effect_qualify:main"
+dungeon-qualify-v04-ineffective-trace = "dungeon_apprentice.v04_ineffective_trace_qualify:main"
 dungeon-evaluate = "dungeon_apprentice.evaluate:main"
 dungeon-dashboard = "dungeon_apprentice.dashboard:main"
+dungeon-dashboard-v02-u2 = "dungeon_apprentice.v02_u2_dashboard:main"
+dungeon-dashboard-v02-u2s = "dungeon_apprentice.v02_u2s_dashboard:main"
+dungeon-dashboard-v03-action-effect = "dungeon_apprentice.v03_action_effect_dashboard:main"
+dungeon-dashboard-v04-ineffective-trace = "dungeon_apprentice.v04_ineffective_trace_dashboard:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/dungeon_apprentice"]
@@ -47,4 +81,3 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
-

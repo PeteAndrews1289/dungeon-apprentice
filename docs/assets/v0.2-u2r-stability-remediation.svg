@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">U2r stability remediation protocol</title>
+  <desc id="desc">The original U2 confirmation remains failed at two of three. Only failed seed 20260745 continues for eleven fixed training windows. Only its full-budget terminal checkpoint may face four fresh one-shot confirmation streams. U3 opens only as two direct policies plus one prospectively remediated policy.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071321"/>
+      <stop offset="1" stop-color="#17152c"/>
+    </linearGradient>
+    <linearGradient id="amber" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f59e0b"/>
+      <stop offset="1" stop-color="#fcd34d"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#06b6d4"/>
+      <stop offset="1" stop-color="#67e8f9"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#14b8a6"/>
+      <stop offset="1" stop-color="#6ee7b7"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#000" flood-opacity="0.28"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7dd3fc"/>
+    </marker>
+    <style>
+      .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .title { font-size: 34px; font-weight: 780; letter-spacing: -0.7px; fill: #f8fafc; }
+      .sub { font-size: 16px; font-weight: 520; fill: #a8b5cf; }
+      .step { font-size: 13px; font-weight: 800; letter-spacing: 1.4px; }
+      .head { font-size: 23px; font-weight: 760; fill: #f8fafc; }
+      .body { font-size: 15px; font-weight: 540; fill: #cbd5e1; }
+      .small { font-size: 12px; font-weight: 540; fill: #94a3b8; }
+      .number { font-size: 31px; font-weight: 820; fill: #fff; }
+      .gate { font-size: 13px; font-weight: 700; fill: #e2e8f0; }
+      .footer { font-size: 19px; font-weight: 730; fill: #d1fae5; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="760" fill="url(#bg)"/>
+  <circle cx="88" cy="710" r="230" fill="#06b6d4" opacity="0.055"/>
+  <circle cx="1195" cy="55" r="220" fill="#8b5cf6" opacity="0.075"/>
+
+  <g class="sans">
+    <text class="title" x="54" y="58">U2r: one bounded route forward—without moving the line</text>
+    <text class="sub" x="54" y="89">The failed exam stays failed • one lineage • eleven fixed windows • one entirely fresh confirmation</text>
+
+    <g transform="translate(48 130)" filter="url(#shadow)">
+      <rect width="320" height="445" rx="24" fill="#151a2c" stroke="#3b3657"/>
+      <text class="step" x="24" y="36" fill="#fda4af">IMMUTABLE RESULT</text>
+      <text class="head" x="24" y="73">Original U2 confirmation</text>
+
+      <rect x="24" y="102" width="272" height="62" rx="14" fill="#102d2c" stroke="#2dd4bf"/>
+      <circle cx="48" cy="133" r="10" fill="#2dd4bf"/>
+      <text class="body" x="70" y="129">Seed 20260737</text>
+      <text class="small" x="70" y="149">passed all four skills</text>
+
+      <rect x="24" y="177" width="272" height="62" rx="14" fill="#102d2c" stroke="#2dd4bf"/>
+      <circle cx="48" cy="208" r="10" fill="#2dd4bf"/>
+      <text class="body" x="70" y="204">Seed 20260741</text>
+      <text class="small" x="70" y="224">passed all four skills</text>
+
+      <rect x="24" y="252" width="272" height="105" rx="14" fill="#3a1d2c" stroke="#fb7185"/>
+      <circle cx="48" cy="283" r="10" fill="#fb7185"/>
+      <text class="body" x="70" y="279">Seed 20260745</text>
+      <text class="number" x="70" y="320">169 / 200</text>
+      <text class="small" x="70" y="342" fill="#fecdd3">frozen gate: 170 • both panels passed</text>
+
+      <text class="body" x="24" y="392">Strict cohort: 2 / 3</text>
+      <rect x="24" y="408" width="272" height="12" rx="6" fill="#3a2738"/>
+      <rect x="24" y="408" width="181" height="12" rx="6" fill="#fb7185"/>
+      <text class="small" x="24" y="441">Verdict remains capability_failed forever.</text>
+    </g>
+
+    <path d="M 383 350 C 412 350, 417 350, 442 350" fill="none" stroke="#7dd3fc" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <g transform="translate(456 130)" filter="url(#shadow)">
+      <rect width="368" height="445" rx="24" fill="#161b2d" stroke="#6b5530"/>
+      <text class="step" x="24" y="36" fill="#fcd34d">FIXED CONTINUATION</text>
+      <text class="head" x="24" y="73">Only the failed lineage moves</text>
+      <text class="small" x="24" y="96">Exact archive + policy + inherited optimizer</text>
+
+      <text class="number" x="24" y="147">11 windows</text>
+      <text class="body" x="24" y="174">360,448 additional actions</text>
+      <text class="small" x="24" y="196">688,128 → 1,048,576 child actions</text>
+
+      <g transform="translate(24 224)">
+        <rect width="26" height="16" rx="5" fill="#f59e0b"/>
+        <rect x="30" width="26" height="16" rx="5" fill="#f59e0b"/>
+        <rect x="60" width="26" height="16" rx="5" fill="#f59e0b"/>
+        <rect x="90" width="26" height="16" rx="5" fill="#f59e0b"/>
+        <rect x="120" width="26" height="16" rx="5" fill="#f59e0b"/>
+        <rect x="150" width="26" height="16" rx="5" fill="#f59e0b"/>
+        <rect x="180" width="26" height="16" rx="5" fill="#f59e0b"/>
+        <rect x="210" width="26" height="16" rx="5" fill="#f59e0b"/>
+        <rect x="240" width="26" height="16" rx="5" fill="#f59e0b"/>
+        <rect x="270" width="26" height="16" rx="5" fill="#f59e0b"/>
+        <rect x="300" width="26" height="16" rx="5" fill="url(#amber)"/>
+      </g>
+
+      <rect x="24" y="272" width="320" height="139" rx="16" fill="#242134" stroke="#665a78"/>
+      <text class="gate" x="42" y="300">TERMINAL ONLY • NO “BEST” CHECKPOINT</text>
+      <text class="small" x="42" y="327">Both final exams: all original gates pass</text>
+      <text class="small" x="42" y="348">U2 ≥ 72/80 • both U2 panels ≥ 34/40</text>
+      <text class="small" x="42" y="369">U0/U1/U2 ineffective interactions ≤ 3.0</text>
+      <text class="small" x="42" y="390">No terminal lesson drops more than 2/80</text>
+
+      <text class="small" x="24" y="433">Seed 20260749 • workers 49–52 • terminal optimizer counter 3,584</text>
+    </g>
+
+    <path d="M 839 350 C 868 350, 873 350, 898 350" fill="none" stroke="#7dd3fc" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <g transform="translate(912 130)" filter="url(#shadow)">
+      <rect width="320" height="445" rx="24" fill="#141d2d" stroke="#2b6672"/>
+      <text class="step" x="24" y="36" fill="#67e8f9">ONE FRESH ENVELOPE</text>
+      <text class="head" x="24" y="73">No-update confirmation</text>
+      <text class="small" x="24" y="96">Opens only after terminal eligibility</text>
+
+      <g transform="translate(24 121)">
+        <rect width="272" height="49" rx="12" fill="#102b38" stroke="#0e7490"/>
+        <text class="body" x="16" y="21">Separated U2</text>
+        <text class="small" x="16" y="39">15,240,000–15,249,999</text>
+
+        <rect y="60" width="272" height="49" rx="12" fill="#102b38" stroke="#0e7490"/>
+        <text class="body" x="16" y="81">Navigate</text>
+        <text class="small" x="16" y="99">15,250,000–15,259,999</text>
+
+        <rect y="120" width="272" height="49" rx="12" fill="#102b38" stroke="#0e7490"/>
+        <text class="body" x="16" y="141">Visible U0</text>
+        <text class="small" x="16" y="159">15,260,000–15,269,999</text>
+
+        <rect y="180" width="272" height="49" rx="12" fill="#102b38" stroke="#0e7490"/>
+        <text class="body" x="16" y="201">Local U1</text>
+        <text class="small" x="16" y="219">15,270,000–15,279,999</text>
+      </g>
+
+      <text class="gate" x="24" y="384">200 cases per skill • panels 100 + 100</text>
+      <text class="small" x="24" y="407">Same 170 overall and 80/85 panel gates.</text>
+      <text class="small" x="24" y="429">Old 15.20–15.239m cases stay permanently closed.</text>
+    </g>
+
+    <g transform="translate(48 617)">
+      <rect width="1184" height="95" rx="20" fill="#12312e" stroke="#2dd4bf"/>
+      <text class="step" x="24" y="30" fill="#6ee7b7">ONLY POSITIVE ACTIVATION PATH</text>
+      <text class="footer" x="24" y="59">U3 parents = 2 directly confirmed policies + 1 prospectively remediated policy</text>
+      <text class="small" x="24" y="80">A U2r miss leaves U3 closed. The untouched 20-million final allocation never opens here.</text>
+    </g>
+  </g>
+</svg>

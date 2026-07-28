@@ -26,3 +26,97 @@ jobs:
         run: pytest
       - name: Prove 150 generated levels solvable
         run: dungeon-qualify --seeds 50
+
+  training-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install training stack
+        run: python -m pip install -e ".[dev,train]"
+      - name: Test training-dependent confirmation paths
+        run: |
+          pytest -q \
+            tests/test_v02_u1_confirm.py \
+            tests/test_v02_u1_confirm_v2.py \
+            tests/test_v02_u2_smoke.py \
+            tests/test_v02_u2s.py::test_diagnostic_rng_guard_restores_the_actual_pre_action_state
+      - name: Test v0.3 action-effect architecture paths
+        run: |
+          pytest -q \
+            tests/test_action_effect.py \
+            tests/test_v03_action_effect.py \
+            tests/test_v03_action_effect_smoke.py \
+            tests/test_v03_action_effect_qualify.py \
+            tests/test_v03_action_effect_train.py \
+            tests/test_v03_action_effect_dashboard.py \
+            tests/test_v03_action_effect_operational.py \
+            tests/test_v03_action_effect_launcher.py
+      - name: Test v0.4 ineffective-trace architecture paths
+        run: |
+          pytest -q \
+            tests/test_action_streak.py \
+            tests/test_v04_ineffective_trace.py \
+            tests/test_v04_ineffective_trace_smoke.py \
+            tests/test_v04_ineffective_trace_qualify.py \
+            tests/test_v04_ineffective_trace_train.py \
+            tests/test_v04_ineffective_trace_dashboard.py \
+            tests/test_v04_ineffective_trace_operational.py \
+            tests/test_v04_ineffective_trace_launcher.py
+      - name: Train, save, resume, and evaluate
+        run: |
+          dungeon-train \
+            --total-timesteps 64 \
+            --workers 1 \
+            --rollout-steps 64 \
+            --batch-size 64 \
+            --n-epochs 1 \
+            --gamma 0.995 \
+            --gae-lambda 0.98 \
+            --evaluation-every 64 \
+            --evaluation-seeds 1 \
+            --checkpoint-every 64 \
+            --frame-every 64 \
+            --qualification-seeds 1 \
+            --run-root "$RUNNER_TEMP/dungeon-runs" \
+            --run-name ci-training-smoke \
+            --seed 12345 \
+            --device cpu \
+            --minimum-free-gib 0 \
+            --no-dashboard
+          test -s "$RUNNER_TEMP/dungeon-runs/ci-training-smoke/checkpoints/latest.json"
+          dungeon-train \
+            --resume "$RUNNER_TEMP/dungeon-runs/ci-training-smoke/checkpoints/latest.zip" \
+            --total-timesteps 64 \
+            --workers 1 \
+            --size 9 \
+            --rollout-steps 64 \
+            --batch-size 64 \
+            --n-epochs 1 \
+            --learning-rate 0.00025 \
+            --gamma 0.995 \
+            --gae-lambda 0.98 \
+            --curiosity-scale 0.002 \
+            --evaluation-every 64 \
+            --evaluation-seeds 1 \
+            --checkpoint-every 64 \
+            --frame-every 64 \
+            --qualification-seeds 1 \
+            --run-root "$RUNNER_TEMP/dungeon-runs" \
+            --run-name ci-resume-smoke \
+            --seed 12345 \
+            --device cpu \
+            --minimum-free-gib 0 \
+            --no-dashboard
+          python -c 'import json,sys; p=json.load(open(sys.argv[1])); assert p["progress"] == {"collected_timesteps": 128, "n_updates": 2, "segment_collected_timesteps": 64, "segment_trained_timesteps": 64, "trained_timesteps": 128}' \
+            "$RUNNER_TEMP/dungeon-runs/ci-resume-smoke/checkpoints/completed.json"
+          dungeon-evaluate \
+            "$RUNNER_TEMP/dungeon-runs/ci-resume-smoke/checkpoints/latest.zip" \
+            --tier 0 \
+            --seeds 1 \
+            --output "$RUNNER_TEMP/dungeon-runs/ci-resume-smoke/ci-evaluation.json"
+          test -s "$RUNNER_TEMP/dungeon-runs/ci-resume-smoke/ci-evaluation.json"

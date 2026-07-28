@@ -1,11 +1,12 @@
-"""Frozen Version-0 constants shared by the game, trainer, and evaluator."""
+"""Frozen Version-0.1 constants shared by the game, trainer, and evaluator."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import IntEnum
 
-PROTOCOL = "dungeon-apprentice-v0"
+PROTOCOL = "dungeon-apprentice-v0.1"
+CHECKPOINT_SCHEMA_VERSION = 1
 OBSERVATION_SIZE = 7
 PIXEL_TILE_SIZE = 8
 PIXEL_SHAPE = (OBSERVATION_SIZE * PIXEL_TILE_SIZE,) * 2 + (3,)
@@ -14,10 +15,13 @@ STEP_REWARD = -0.001
 VALIDATION_SEED_BASE = 10_000_000
 FINAL_SEED_BASE = 20_000_000
 TRAINING_SEED_LIMIT = 1_000_000
+EVALUATION_TIER_STRIDE = 100_000
 PROMOTION_THRESHOLD = 0.90
 RETENTION_THRESHOLD = 0.80
 NEWEST_TIER_FRACTION = 0.70
-DEFAULT_CURIOSITY_SCALE = 0.01
+DEFAULT_CURIOSITY_SCALE = 0.002
+CURIOSITY_BUDGET = 0.1
+MINIMUM_GAMMA = 0.995
 
 
 class DungeonTier(IntEnum):
@@ -63,5 +67,28 @@ def evaluation_seeds(tier: DungeonTier, count: int, *, final: bool = False) -> t
 
     if count <= 0:
         raise ValueError("evaluation seed count must be positive")
+    if count > EVALUATION_TIER_STRIDE:
+        raise ValueError(
+            "evaluation seed count cannot exceed the "
+            f"{EVALUATION_TIER_STRIDE}-seed tier allocation"
+        )
     base = FINAL_SEED_BASE if final else VALIDATION_SEED_BASE
-    return tuple(base + int(tier) * 100_000 + offset for offset in range(count))
+    return tuple(base + int(tier) * EVALUATION_TIER_STRIDE + offset for offset in range(count))
+
+
+def discounted_reward_bounds(
+    tier: DungeonTier, gamma: float
+) -> tuple[float, float]:
+    """Return worst late-success and best early-curiosity failure from episode start."""
+
+    horizon = TIER_RULES[tier].max_steps
+    success = sum(STEP_REWARD * gamma**step for step in range(horizon - 1))
+    success += SUCCESS_REWARD * gamma ** (horizon - 1)
+
+    remaining_curiosity = CURIOSITY_BUDGET
+    failure = 0.0
+    for step in range(horizon):
+        bonus = min(DEFAULT_CURIOSITY_SCALE, remaining_curiosity)
+        remaining_curiosity -= bonus
+        failure += (STEP_REWARD + bonus) * gamma**step
+    return success, failure
