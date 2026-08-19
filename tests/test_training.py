@@ -10,6 +10,7 @@ from dungeon_apprentice.artifacts import atomic_write_json, file_sha256
 from dungeon_apprentice.contracts import PROTOCOL
 from dungeon_apprentice.env import CurriculumState
 from dungeon_apprentice.evaluate import TierEvaluation
+from dungeon_apprentice.training import callbacks as training_callbacks
 
 
 class _FakeBaseCallback:
@@ -107,7 +108,7 @@ def _passed_evaluation(_model: Any, tier: Any, _seeds: Any, **_kwargs: Any) -> T
 def test_checkpoint_and_exam_wait_for_optimizer_boundary(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(train, "evaluate_policy", _failed_evaluation)
+    monkeypatch.setattr(training_callbacks, "evaluate_policy", _failed_evaluation)
     callback = _callback(tmp_path)
     callback._on_training_start()
     assert callback.model.save_calls == 1
@@ -203,7 +204,7 @@ def test_partial_rollout_is_never_saved_as_a_success(tmp_path: Path) -> None:
 def test_policy_cannot_cross_two_curriculum_gates_without_another_update(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(train, "evaluate_policy", _passed_evaluation)
+    monkeypatch.setattr(training_callbacks, "evaluate_policy", _passed_evaluation)
     callback = _callback(tmp_path)
     callback._on_training_start()
     callback.model.num_timesteps = 2
@@ -228,7 +229,7 @@ def test_policy_cannot_cross_two_curriculum_gates_without_another_update(
 def test_failed_promotion_checkpoint_rolls_back_live_curriculum(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(train, "evaluate_policy", _passed_evaluation)
+    monkeypatch.setattr(training_callbacks, "evaluate_policy", _passed_evaluation)
     callback = _callback(tmp_path)
     callback._on_training_start()
     callback.model.num_timesteps = 2
@@ -251,7 +252,7 @@ def test_failed_promotion_checkpoint_rolls_back_live_curriculum(
 def test_failed_final_tier_exam_clears_current_mastery(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(train, "evaluate_policy", _failed_evaluation)
+    monkeypatch.setattr(training_callbacks, "evaluate_policy", _failed_evaluation)
     callback = _callback(tmp_path)
     callback.curriculum.max_tier = train.DungeonTier.RETRIEVE
     callback.mastered = True
